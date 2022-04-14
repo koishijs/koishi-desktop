@@ -1,0 +1,21 @@
+root = true
+
+[*]
+indent_style = space
+indent_size = 2
+insert_final_newline = true
+trim_trailing_whitespace = true
+end_of_line = lf
+charset = utf-8
+
+[{CMakeLists.txt,*.cmake,*.cmake.in}]
+indent_size = 4
+
+[*.py]
+indent_size = 4
+
+[{*.go,go.mod,go.sum}]
+indent_size = 4
+
+[{Dockerfile,*.dockerfile}]
+indent_size = 4
