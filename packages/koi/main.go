@@ -27,11 +27,14 @@ func main() {
 	l.Infof("Koi %s", Version)
 	l.Infof("Go: %s", runtime.Version())
 
-	// Spin
 	for true {
+		l.Debug("Start spin")
 		err := cli.Run(os.Args)
 		if err == nil {
+			l.Debug("err == nil. Breaking.")
 			break
-		} // Else: KOI_ERR_SPIN
+		}
+		l.Debug("Err: ", err)
+		l.Debug("Spin")
 	}
 }
