@@ -1,3 +1,3 @@
-module https://github.com/koishijs/koi
+module koi
 
 go 1.16
