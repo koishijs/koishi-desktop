@@ -18,6 +18,7 @@ export async function mkdir() {
   await mkdirp(resolve('.', 'buildTemp'))
   await mkdirp(resolve('.', 'dist'))
   await mkdirp(resolve('.', 'distData'))
+  await mkdirp(resolve('node', 'distData'))
 }
 
 export const all = series(clean, mkdir, prepareNode)

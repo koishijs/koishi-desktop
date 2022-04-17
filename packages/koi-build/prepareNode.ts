@@ -9,6 +9,10 @@ import { nodeVersion } from './config'
 import { resolve } from './path'
 import { exists } from './utils'
 
+import lzma from 'lzma-native'
+
+import tar from 'tar'
+
 const nodeFolderWin = `node-v${nodeVersion}-win-${process.arch}`
 const srcPathWin = `https://nodejs.org/dist/v${nodeVersion}/${nodeFolderWin}.zip`
 const destPathWin = resolve('node.zip', 'buildTemp')
@@ -32,8 +36,9 @@ const buildDownloadNode =
     info('Now downloading.')
     const res = await axios.get(srcPath, { responseType: 'stream' })
     const writeStream = fs.createWriteStream(destPath)
-    ;(res.data as stream.Readable).pipe(writeStream)
-    await promisify(stream.finished)(writeStream)
+    await promisify(stream.finished)(
+      (res.data as stream.Readable).pipe(writeStream)
+    )
   }
 
 async function extractNodeWin() {
@@ -50,6 +55,39 @@ async function extractNodeWin() {
   await zip.close()
 }
 
+async function extractNodeMac() {
+  info('Checking temporary cache.')
+  if (!(await exists(destPathMac))) {
+    const err = "Node.js dist not found. Try 'gulp clean && gulp prepareNode'."
+    error(err)
+    throw new Error(err)
+  }
+
+  info('Now extracting.')
+  await promisify(stream.finished)(
+    fs
+      .createReadStream(destPathMac)
+      .pipe(tar.extract({ cwd: resolve('node', 'distData'), strip: 1 }))
+  )
+}
+
+async function extractNodeLinux() {
+  info('Checking temporary cache.')
+  if (!(await exists(destPathLinux))) {
+    const err = "Node.js dist not found. Try 'gulp clean && gulp prepareNode'."
+    error(err)
+    throw new Error(err)
+  }
+
+  info('Now extracting.')
+  await promisify(stream.finished)(
+    fs
+      .createReadStream(destPathLinux)
+      .pipe(lzma.createDecompressor())
+      .pipe(tar.extract({ cwd: resolve('node', 'distData'), strip: 1 }))
+  )
+}
+
 export async function prepareNode(): Promise<void> {
   info(`Downloading Node.js for ${process.platform} on ${process.arch}.`)
 
@@ -60,9 +98,11 @@ export async function prepareNode(): Promise<void> {
       break
     case 'darwin':
       await buildDownloadNode(srcPathMac, destPathMac)()
+      await extractNodeMac()
       break
     case 'linux':
-      buildDownloadNode(srcPathLinux, destPathLinux)()
+      await buildDownloadNode(srcPathLinux, destPathLinux)()
+      await extractNodeLinux()
       break
     default:
       const err = `Platform ${process.platform} not supported yet`
