@@ -8,6 +8,9 @@
   "scripts": {
     "lint": "eslint --ext .ts --ignore-path .gitignore . --fix"
   },
+  "resolutions": {
+    "graceful-fs": "^4"
+  },
   "dependencies": {
     "mkdirp": "^1"
   },
