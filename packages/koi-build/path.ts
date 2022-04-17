@@ -6,7 +6,7 @@ const resolveMap = {
   build: '../../build/',
   buildTemp: '../../build/tmp/',
   dist: '../../build/koi/',
-  distData: '../../build/dist-data/',
+  distPre: '../../build/dist-pre/',
 
   koi: '../koi/',
 }

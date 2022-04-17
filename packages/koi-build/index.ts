@@ -17,10 +17,11 @@ export function cleanDist(): Promise<string[]> {
 export async function mkdir() {
   await mkdirp(resolve('.', 'buildTemp'))
   await mkdirp(resolve('.', 'dist'))
-  await mkdirp(resolve('.', 'distData'))
-  await mkdirp(resolve('node', 'distData'))
+  await mkdirp(resolve('data/node', 'distPre'))
 }
 
-export const all = series(clean, mkdir, prepareNode)
+export const dev = series(mkdir, prepareNode)
 
-export default all
+export const all = series(clean, dev)
+
+export default dev

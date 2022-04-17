@@ -51,7 +51,7 @@ async function extractNodeWin() {
 
   info('Now extracting.')
   const zip = new StreamZip.async({ file: destPathWin })
-  await zip.extract(nodeFolderWin, resolve('node', 'distData'))
+  await zip.extract(nodeFolderWin, resolve('data/node', 'distPre'))
   await zip.close()
 }
 
@@ -67,7 +67,7 @@ async function extractNodeMac() {
   await promisify(stream.finished)(
     fs
       .createReadStream(destPathMac)
-      .pipe(tar.extract({ cwd: resolve('node', 'distData'), strip: 1 }))
+      .pipe(tar.extract({ cwd: resolve('data/node', 'distPre'), strip: 1 }))
   )
 }
 
@@ -84,7 +84,7 @@ async function extractNodeLinux() {
     fs
       .createReadStream(destPathLinux)
       .pipe(lzma.createDecompressor())
-      .pipe(tar.extract({ cwd: resolve('node', 'distData'), strip: 1 }))
+      .pipe(tar.extract({ cwd: resolve('data/node', 'distPre'), strip: 1 }))
   )
 }
 
