@@ -5,7 +5,12 @@
   "workspaces": [
     "packages/koi-build"
   ],
+  "scripts": {
+    "lint": "eslint --ext .ts --ignore-path .gitignore . --fix"
+  },
   "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "*",
+    "@typescript-eslint/parser": "*",
     "eslint": "*",
     "eslint-config-prettier": "*",
     "eslint-import-resolver-typescript": "*",
