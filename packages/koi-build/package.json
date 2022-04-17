@@ -5,9 +5,6 @@
   "dependencies": {
     "axios": "^0.26.1",
     "del": "^6",
-    "unzip": "^0.1.11"
-  },
-  "devDependencies": {
-    "@types/unzip": "^0.1.1"
+    "node-stream-zip": "^1.15.0"
   }
 }

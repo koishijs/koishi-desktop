@@ -2,18 +2,21 @@ import axios from 'axios'
 import * as fs from 'fs'
 // @ts-ignore
 import { error, info } from 'gulplog'
+import StreamZip from 'node-stream-zip'
 import stream from 'stream'
-import unzip from 'unzip'
 import { promisify } from 'util'
 import { nodeVersion } from './config'
 import { resolve } from './path'
 import { exists } from './utils'
 
-const srcPathWin = `https://nodejs.org/dist/v${nodeVersion}/node-v${nodeVersion}-win-${process.arch}.zip`
+const nodeFolderWin = `node-v${nodeVersion}-win-${process.arch}`
+const srcPathWin = `https://nodejs.org/dist/v${nodeVersion}/${nodeFolderWin}.zip`
 const destPathWin = resolve('node.zip', 'buildTemp')
-const srcPathMac = `https://nodejs.org/dist/v${nodeVersion}/node-v${nodeVersion}-darwin-${process.arch}.tar.gz`
+const nodeFolderMac = `node-v${nodeVersion}-darwin-${process.arch}`
+const srcPathMac = `https://nodejs.org/dist/v${nodeVersion}/${nodeFolderMac}.tar.gz`
 const destPathMac = resolve('node.tar.gz', 'buildTemp')
-const srcPathLinux = `https://nodejs.org/dist/v${nodeVersion}/node-v${nodeVersion}-linux-${process.arch}.tar.xz`
+const nodeFolderLinux = `node-v${nodeVersion}-linux-${process.arch}`
+const srcPathLinux = `https://nodejs.org/dist/v${nodeVersion}/${nodeFolderLinux}.tar.xz`
 const destPathLinux = resolve('node.tar.xz', 'buildTemp')
 
 const buildDownloadNode =
@@ -42,9 +45,9 @@ async function extractNodeWin() {
   }
 
   info('Now extracting.')
-  fs.createReadStream(destPathWin).pipe(
-    unzip.Extract({ path: resolve('node', 'distData') })
-  )
+  const zip = new StreamZip.async({ file: destPathWin })
+  await zip.extract(nodeFolderWin, resolve('node', 'distData'))
+  await zip.close()
 }
 
 export async function prepareNode(): Promise<void> {
