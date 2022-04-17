@@ -1,18 +1,31 @@
 package env
 
 import (
+	log "github.com/sirupsen/logrus"
 	"os"
+	goPath "path"
 	"path/filepath"
 )
 
-func DirName() (string, error) {
+var (
+	// Log
+	l = log.WithField("package", "env")
+
+	DirName = dirName()
+)
+
+func dirName() string {
 	path, err := os.Executable()
 	if err != nil {
-		return "", err
+		l.Fatal("Cannot get executable.")
 	}
 	path, err = filepath.EvalSymlinks(filepath.Dir(path))
 	if err != nil {
-		return "", err
+		l.Fatal("Cannot get executable dir.")
 	}
-	return path, nil
+	return path
+}
+
+func Resolve(base string, path string) string {
+	return goPath.Clean(goPath.Join(base, path))
 }
