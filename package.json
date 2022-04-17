@@ -1,0 +1,19 @@
+{
+  "name": "koi-workspace",
+  "private": true,
+  "version": "0.1.0",
+  "workspaces": [
+    "packages/koi-build"
+  ],
+  "devDependencies": {
+    "eslint": "*",
+    "eslint-config-prettier": "*",
+    "eslint-import-resolver-typescript": "*",
+    "eslint-plugin-import": "*",
+    "eslint-plugin-prettier": "*",
+    "gulp": "^4",
+    "prettier": "*",
+    "ts-node": "^10",
+    "typescript": "*"
+  }
+}
