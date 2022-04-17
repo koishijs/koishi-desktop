@@ -9,6 +9,7 @@
     "lint": "eslint --ext .ts --ignore-path .gitignore . --fix"
   },
   "devDependencies": {
+    "@types/gulp": "^4",
     "@typescript-eslint/eslint-plugin": "*",
     "@typescript-eslint/parser": "*",
     "eslint": "*",
