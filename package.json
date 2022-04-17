@@ -8,8 +8,12 @@
   "scripts": {
     "lint": "eslint --ext .ts --ignore-path .gitignore . --fix"
   },
+  "dependencies": {
+    "mkdirp": "^1"
+  },
   "devDependencies": {
     "@types/gulp": "^4",
+    "@types/mkdirp": "^1",
     "@typescript-eslint/eslint-plugin": "*",
     "@typescript-eslint/parser": "*",
     "eslint": "*",
