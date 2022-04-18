@@ -14,10 +14,12 @@ export function cleanDist(): Promise<string[]> {
   return del(resolve('build/koi', 'root'))
 }
 
-export async function mkdir() {
+export async function mkdir(): Promise<void> {
   await mkdirp(resolve('.', 'buildTemp'))
-  await mkdirp(resolve('.', 'dist'))
-  await mkdirp(resolve('data/node', 'dist'))
+  await mkdirp(resolve('home', 'distData'))
+  await mkdirp(resolve('node', 'distData'))
+  await mkdirp(resolve('temp', 'distData'))
+  await mkdirp(resolve('.', 'defaultInstance'))
 }
 
 export const dev = series(mkdir, prepareNode)

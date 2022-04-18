@@ -1,4 +1,5 @@
 import { resolve as pathResolve } from 'path'
+import { defaultInstance } from './config'
 
 const resolveMap = {
   root: '../../',
@@ -6,6 +7,8 @@ const resolveMap = {
   build: '../../build/',
   buildTemp: '../../build/tmp/',
   dist: '../../build/koi/',
+  distData: '../../build/koi/data/',
+  defaultInstance: `../../build/koi/data/instances/${defaultInstance}/`,
 
   koi: '../koi/',
 }
