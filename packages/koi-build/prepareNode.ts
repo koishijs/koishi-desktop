@@ -2,16 +2,14 @@ import axios from 'axios'
 import * as fs from 'fs'
 // @ts-ignore
 import { error, info } from 'gulplog'
+import * as lzma from 'lzma-native'
 import StreamZip from 'node-stream-zip'
 import stream from 'stream'
+import * as tar from 'tar'
 import { promisify } from 'util'
 import { nodeVersion } from './config'
 import { resolve } from './path'
 import { exists } from './utils'
-
-import lzma from 'lzma-native'
-
-import tar from 'tar'
 
 const nodeFolderWin = `node-v${nodeVersion}-win-${process.arch}`
 const srcPathWin = `https://nodejs.org/dist/v${nodeVersion}/${nodeFolderWin}.zip`
@@ -104,9 +102,10 @@ export async function prepareNode(): Promise<void> {
       await buildDownloadNode(srcPathLinux, destPathLinux)()
       await extractNodeLinux()
       break
-    default:
+    default: {
       const err = `Platform ${process.platform} not supported yet`
       error(err)
       throw new Error(err)
+    }
   }
 }
