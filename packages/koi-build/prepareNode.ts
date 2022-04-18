@@ -1,6 +1,5 @@
 import axios from 'axios'
 import * as fs from 'fs'
-// @ts-ignore
 import { error, info } from 'gulplog'
 import * as lzma from 'lzma-native'
 import StreamZip from 'node-stream-zip'
