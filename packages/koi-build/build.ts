@@ -21,7 +21,7 @@ export async function buildExe() {
       '-v',
       '-trimpath',
       '-ldflags',
-      `-w -s -X koi/main.Version=${await getKoiVersion()}`,
+      `-w -s -X koi/config.Version=${await getKoiVersion()}`,
     ],
     { cwd: resolve('.', 'koi') }
   )

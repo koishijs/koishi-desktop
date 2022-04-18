@@ -2,6 +2,7 @@ package cli
 
 import (
 	"github.com/urfave/cli/v2"
+	"koi/config"
 
 	log "github.com/sirupsen/logrus"
 )
@@ -21,6 +22,11 @@ var (
 
 func Run(args []string) error {
 	l.Debug("Constructing cli app")
+
+	cli.VersionPrinter = func(c *cli.Context) {
+		l.Info(config.Version)
+	}
+
 	app := &cli.App{
 		Name:  "Koi",
 		Usage: "The Koishi Launcher.",
@@ -48,11 +54,12 @@ func Run(args []string) error {
 			},
 
 			cli.HelpFlag,
+			cli.VersionFlag,
 			cli.BashCompletionFlag,
 		},
 
 		Commands: []*cli.Command{
-			&cli.Command{
+			{
 				Name:   "Run",
 				Usage:  "Run Koishi",
 				Action: RunAction,

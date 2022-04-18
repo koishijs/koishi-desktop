@@ -2,6 +2,7 @@ package main
 
 import (
 	"koi/cli"
+	"koi/config"
 	"os"
 	"runtime"
 
@@ -12,8 +13,6 @@ import (
 var (
 	// Log
 	l = log.WithField("package", "main")
-
-	Version = "INTERNAL"
 )
 
 func main() {
@@ -24,7 +23,7 @@ func main() {
 	})
 
 	// Initialize environment
-	l.Infof("Koi %s", Version)
+	l.Infof("Koi %s", config.Version)
 	l.Infof("Go: %s", runtime.Version())
 
 	for true {
