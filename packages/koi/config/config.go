@@ -10,7 +10,8 @@ var (
 )
 
 type KoiConfig struct {
-	Mode string `yaml:"mode"`
+	Mode   string `yaml:"mode"`
+	Target string `yaml:"target"`
 
 	// Internal
 	ConfigDir string `yaml:"configDir,omitempty"`
