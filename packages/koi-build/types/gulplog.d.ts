@@ -6,8 +6,8 @@ declare module 'gulplog' {
    * @param msg Message to log
    * @param args Arguments to format message with via util.format()
    */
-  export function debug(msg: string, ...args: any[]): void
-  export function debug(msg: any): void
+  export function debug(msg: string, ...args: unknown[]): void
+  export function debug(msg: unknown): void
   /**
    * Standard log level. Typically used for user information.
    *
@@ -15,8 +15,8 @@ declare module 'gulplog' {
    * @param msg Message to log
    * @param args Arguments to format message with via util.format()
    */
-  export function info(msg: string, ...args: any[]): void
-  export function info(msg: any): void
+  export function info(msg: string, ...args: unknown[]): void
+  export function info(msg: unknown): void
   /**
    * Warning log level. Typically used for warnings.
    *
@@ -24,8 +24,8 @@ declare module 'gulplog' {
    * @param msg Message to log
    * @param args Arguments to format message with via util.format()
    */
-  export function warn(msg: string, ...args: any[]): void
-  export function warn(msg: any): void
+  export function warn(msg: string, ...args: unknown[]): void
+  export function warn(msg: unknown): void
   /**
    * Error log level. Typically used when things went horribly wrong.
    *
@@ -33,6 +33,6 @@ declare module 'gulplog' {
    * @param msg Message to log
    * @param args Arguments to format message with via util.format()
    */
-  export function error(msg: string, ...args: any[]): void
-  export function error(msg: any): void
+  export function error(msg: string, ...args: unknown[]): void
+  export function error(msg: unknown): void
 }
