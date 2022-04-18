@@ -8,3 +8,7 @@ export async function exists(path: fs.PathLike): Promise<boolean> {
   }
   return true
 }
+
+export async function notEmpty(path: fs.PathLike): Promise<boolean> {
+  return Boolean((await fs.promises.readdir(path)).length)
+}

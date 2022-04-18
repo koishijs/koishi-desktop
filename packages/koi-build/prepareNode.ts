@@ -8,7 +8,7 @@ import * as tar from 'tar'
 import { promisify } from 'util'
 import { nodeVersion } from './config'
 import { resolve } from './path'
-import { exists } from './utils'
+import { exists, notEmpty } from './utils'
 
 const nodeFolderWin = `node-v${nodeVersion}-win-${process.arch}`
 const srcPathWin = `https://nodejs.org/dist/v${nodeVersion}/${nodeFolderWin}.zip`
@@ -38,51 +38,48 @@ const buildDownloadNode =
     )
   }
 
-async function extractNodeWin() {
+async function extractNode(destPath: string) {
   info('Checking temporary cache.')
-  if (!(await exists(destPathWin))) {
+  if (await notEmpty(resolve('node', 'distData'))) {
+    info('Node.js exists. Skipping extract.')
+    return
+  }
+
+  if (!(await exists(destPath))) {
     const err = "Node.js dist not found. Try 'gulp clean && gulp prepareNode'."
     error(err)
     throw new Error(err)
   }
 
   info('Now extracting.')
-  const zip = new StreamZip.async({ file: destPathWin })
-  await zip.extract(nodeFolderWin, resolve('data/node', 'dist'))
-  await zip.close()
-}
-
-async function extractNodeMac() {
-  info('Checking temporary cache.')
-  if (!(await exists(destPathMac))) {
-    const err = "Node.js dist not found. Try 'gulp clean && gulp prepareNode'."
-    error(err)
-    throw new Error(err)
+  switch (process.platform) {
+    case 'win32': {
+      const zip = new StreamZip.async({ file: destPath })
+      await zip.extract(nodeFolderWin, resolve('data/node', 'dist'))
+      await zip.close()
+      break
+    }
+    case 'darwin':
+      await promisify(stream.finished)(
+        fs
+          .createReadStream(destPath)
+          .pipe(tar.extract({ cwd: resolve('data/node', 'dist'), strip: 1 }))
+      )
+      break
+    case 'linux':
+      await promisify(stream.finished)(
+        fs
+          .createReadStream(destPath)
+          .pipe(lzma.createDecompressor())
+          .pipe(tar.extract({ cwd: resolve('data/node', 'dist'), strip: 1 }))
+      )
+      break
+    default: {
+      const err = `Platform ${process.platform} not supported yet`
+      error(err)
+      throw new Error(err)
+    }
   }
-
-  info('Now extracting.')
-  await promisify(stream.finished)(
-    fs
-      .createReadStream(destPathMac)
-      .pipe(tar.extract({ cwd: resolve('data/node', 'dist'), strip: 1 }))
-  )
-}
-
-async function extractNodeLinux() {
-  info('Checking temporary cache.')
-  if (!(await exists(destPathLinux))) {
-    const err = "Node.js dist not found. Try 'gulp clean && gulp prepareNode'."
-    error(err)
-    throw new Error(err)
-  }
-
-  info('Now extracting.')
-  await promisify(stream.finished)(
-    fs
-      .createReadStream(destPathLinux)
-      .pipe(lzma.createDecompressor())
-      .pipe(tar.extract({ cwd: resolve('data/node', 'dist'), strip: 1 }))
-  )
 }
 
 export async function prepareNode(): Promise<void> {
@@ -91,15 +88,15 @@ export async function prepareNode(): Promise<void> {
   switch (process.platform) {
     case 'win32':
       await buildDownloadNode(srcPathWin, destPathWin)()
-      await extractNodeWin()
+      await extractNode(destPathWin)
       break
     case 'darwin':
       await buildDownloadNode(srcPathMac, destPathMac)()
-      await extractNodeMac()
+      await extractNode(destPathMac)
       break
     case 'linux':
       await buildDownloadNode(srcPathLinux, destPathLinux)()
-      await extractNodeLinux()
+      await extractNode(destPathLinux)
       break
     default: {
       const err = `Platform ${process.platform} not supported yet`
