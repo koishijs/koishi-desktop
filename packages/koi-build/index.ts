@@ -1,8 +1,10 @@
+export * from './build'
 export * from './prepareNode'
 
 import del from 'del'
 import { series } from 'gulp'
 import mkdirp from 'mkdirp'
+import { build } from './build'
 import { resolve } from './path'
 import { prepareNode } from './prepareNode'
 
@@ -22,7 +24,7 @@ export async function mkdir(): Promise<void> {
   await mkdirp(resolve('.', 'defaultInstance'))
 }
 
-export const dev = series(mkdir, prepareNode)
+export const dev = series(mkdir, prepareNode, build)
 
 export const all = series(clean, dev)
 
