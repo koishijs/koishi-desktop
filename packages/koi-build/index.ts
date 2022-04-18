@@ -7,11 +7,11 @@ import { resolve } from './path'
 import { prepareNode } from './prepareNode'
 
 export function clean(): Promise<string[]> {
-  return del(resolve('build', 'root'))
+  return del(resolve('.', 'build'))
 }
 
 export function cleanDist(): Promise<string[]> {
-  return del(resolve('build/koi', 'root'))
+  return del(resolve('.', 'dist'))
 }
 
 export async function mkdir(): Promise<void> {
