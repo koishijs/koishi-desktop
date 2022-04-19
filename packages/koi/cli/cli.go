@@ -28,8 +28,9 @@ func Run(args []string) error {
 	}
 
 	app := &cli.App{
-		Name:  "Koi",
-		Usage: "The Koishi Launcher.",
+		Name:    "Koi",
+		Usage:   "The Koishi Launcher.",
+		Version: config.Version,
 		Authors: []*cli.Author{
 			{
 				Name:  "Il Harper",
