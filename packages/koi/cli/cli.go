@@ -51,11 +51,11 @@ var (
 			{
 				Name:   "run",
 				Usage:  "Run Koishi",
-				Action: RunAction,
+				Action: runAction,
 			},
 		},
 
-		Before: PreAction,
+		Before: preAction,
 		CommandNotFound: func(context *cli.Context, s string) {
 			l.Fatalf("Command not found: %s", s)
 		},

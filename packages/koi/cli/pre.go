@@ -6,7 +6,7 @@ import (
 	"koi/config"
 )
 
-func PreAction(c *cli.Context) error {
+func preAction(c *cli.Context) error {
 	l.Debug("Trigger pseudo action: pre")
 
 	l.Debug("Checking flag debug...")
