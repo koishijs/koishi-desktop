@@ -14,10 +14,6 @@ const (
 var (
 	// Log
 	l = log.WithField("package", "cli")
-
-	// Config
-	configPath = "./koi.yml"
-	configFile = ""
 )
 
 func Run(args []string) error {

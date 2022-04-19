@@ -7,6 +7,8 @@ var (
 	l = log.WithField("package", "config")
 
 	Version = "INTERNAL"
+
+	Config *KoiConfig
 )
 
 type KoiConfig struct {
@@ -15,4 +17,13 @@ type KoiConfig struct {
 
 	// Internal
 	ConfigDir string `yaml:"configDir,omitempty"`
+}
+
+func LoadConfig(configPath string) {
+	l.Debug("Now loading koi config.")
+	config, err := ReadConfig(configPath)
+	if err != nil {
+		l.Fatal(err)
+	}
+	Config = config
 }
