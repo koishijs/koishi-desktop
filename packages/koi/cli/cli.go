@@ -14,14 +14,6 @@ const (
 var (
 	// Log
 	l = log.WithField("package", "cli")
-)
-
-func Run(args []string) error {
-	l.Debug("Constructing cli app")
-
-	cli.VersionPrinter = func(c *cli.Context) {
-		l.Info(config.Version)
-	}
 
 	app := &cli.App{
 		Name:    "Koi",
@@ -69,6 +61,14 @@ func Run(args []string) error {
 		},
 
 		//Action: RunAction,
+	}
+)
+
+func Run(args []string) error {
+	l.Debug("Constructing cli app")
+
+	cli.VersionPrinter = func(c *cli.Context) {
+		l.Info(config.Version)
 	}
 
 	l.Debug("Running cli app")
