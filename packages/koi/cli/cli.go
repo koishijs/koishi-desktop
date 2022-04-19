@@ -15,7 +15,7 @@ var (
 	// Log
 	l = log.WithField("package", "cli")
 
-	app := &cli.App{
+	app = &cli.App{
 		Name:    "Koi",
 		Usage:   "The Koishi Launcher.",
 		Version: config.Version,
