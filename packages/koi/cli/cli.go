@@ -60,7 +60,7 @@ func Run(args []string) error {
 
 		Commands: []*cli.Command{
 			{
-				Name:   "Run",
+				Name:   "run",
 				Usage:  "Run Koishi",
 				Action: RunAction,
 			},
