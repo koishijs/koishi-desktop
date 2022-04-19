@@ -16,7 +16,7 @@ type KoiConfig struct {
 	Target string `yaml:"target"`
 
 	// Internal
-	ConfigDir string `yaml:"configDir,omitempty"`
+	ConfigDir string `yaml:"configDir"`
 }
 
 func LoadConfig(configPath string) {

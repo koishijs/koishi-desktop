@@ -66,5 +66,6 @@ func readConfigIntl(path string, recur int) (*KoiConfig, error) {
 	}
 
 	l.Debug("Config parsed successfully.")
+	config.ConfigDir = configDir
 	return config, nil
 }
