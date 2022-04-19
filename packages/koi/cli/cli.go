@@ -66,6 +66,8 @@ func Run(args []string) error {
 			},
 		},
 
+		Before: PreAction,
+
 		Action: RunAction,
 	}
 

@@ -6,7 +6,7 @@ import (
 	"os"
 )
 
-func PreAction(c *cli.Context) {
+func PreAction(c *cli.Context) error {
 	l.Debug("Trigger pseudo action: pre")
 
 	l.Debug("Checking flag debug...")
@@ -27,4 +27,6 @@ func PreAction(c *cli.Context) {
 		l.Fatal(err)
 	}
 	configFile = string(configFileRaw)
+
+	return nil
 }
