@@ -66,6 +66,18 @@ func readConfigIntl(path string, recur int) (*KoiConfig, error) {
 	}
 
 	l.Debug("Config parsed successfully.")
-	config.ConfigDir = configDir
+
+	l.Debug("Now processing postConfig.")
+	config.InternalConfigDir = configDir
+	postConfig(config)
+
 	return config, nil
+}
+
+func postConfig(c *KoiConfig) {
+	c.InternalDataDir = env.Resolve(c.InternalConfigDir, "data")
+	c.InternalHomeDir = env.Resolve(c.InternalDataDir, "home")
+	c.InternalNodeDir = env.Resolve(c.InternalDataDir, "node")
+	c.InternalTempDir = env.Resolve(c.InternalDataDir, "tmp")
+	c.InternalInstanceDir = env.Resolve(c.InternalDataDir, "instances")
 }
