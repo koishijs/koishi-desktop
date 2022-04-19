@@ -64,8 +64,11 @@ func Run(args []string) error {
 		},
 
 		Before: PreAction,
+		CommandNotFound: func(context *cli.Context, s string) {
+			l.Fatalf("Command not found: %s", s)
+		},
 
-		Action: RunAction,
+		//Action: RunAction,
 	}
 
 	l.Debug("Running cli app")
