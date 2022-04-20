@@ -5,7 +5,12 @@ export const nodeVersion = '12.22.12'
 
 export const defaultInstance = 'adace8ea4130c619a7376e8e117780102e67dca7'
 
-export const defaultNpmrc = 'registry=https://registry.npmmirror.com/'
+export const defaultNpmrc = `
+registry=https://registry.npmmirror.com/
+prefix=../node
+cache=../tmp/npm-cache
+tmp=../tmp
+`.trim()
 
 export const defaultKoiConfig = `
 mode: portable
