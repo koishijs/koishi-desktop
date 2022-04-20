@@ -31,6 +31,7 @@ type KoiConfig struct {
 	InternalDataDir     string
 	InternalHomeDir     string
 	InternalNodeDir     string
+	InternalNodeExeDir  string
 	InternalTempDir     string
 	InternalInstanceDir string
 }

@@ -5,7 +5,9 @@ import (
 	"github.com/goccy/go-yaml"
 	"koi/env"
 	"os"
+	"path"
 	"path/filepath"
+	"runtime"
 	"strings"
 )
 
@@ -76,9 +78,14 @@ func readConfigIntl(path string, recur int) (*KoiConfig, error) {
 }
 
 func postConfig(c *KoiConfig) {
-	c.InternalDataDir = env.Resolve(c.InternalConfigDir, "data")
-	c.InternalHomeDir = env.Resolve(c.InternalDataDir, "home")
-	c.InternalNodeDir = env.Resolve(c.InternalDataDir, "node")
-	c.InternalTempDir = env.Resolve(c.InternalDataDir, "tmp")
-	c.InternalInstanceDir = env.Resolve(c.InternalDataDir, "instances")
+	c.InternalDataDir = path.Join(c.InternalConfigDir, "data")
+	c.InternalHomeDir = path.Join(c.InternalDataDir, "home")
+	c.InternalNodeDir = path.Join(c.InternalDataDir, "node")
+	if runtime.GOOS == "windows" {
+		c.InternalNodeExeDir = c.InternalNodeDir
+	} else {
+		c.InternalNodeExeDir = path.Join(c.InternalNodeDir, "bin")
+	}
+	c.InternalTempDir = path.Join(c.InternalDataDir, "tmp")
+	c.InternalInstanceDir = path.Join(c.InternalDataDir, "instances")
 }
