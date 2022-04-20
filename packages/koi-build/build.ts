@@ -10,7 +10,18 @@ import {
 import { resolve } from './path'
 import { spawnAsync } from './utils'
 
-export async function buildExe() {
+export async function goModDownload() {
+  const result = await spawnAsync('go', ['mod', 'download'], {
+    cwd: resolve('.', 'koi'),
+  })
+  if (result) {
+    const err = `'go mod download' exited with error code: ${result}`
+    error(err)
+    throw new Error(err)
+  }
+}
+
+export async function goBuild() {
   const result = await spawnAsync(
     'go',
     [
@@ -31,6 +42,8 @@ export async function buildExe() {
     throw new Error(err)
   }
 }
+
+export const buildExe = series(goModDownload, goBuild)
 
 export async function writeConfig() {
   await fs.promises.writeFile(resolve('home/.npmrc', 'distData'), defaultNpmrc)
