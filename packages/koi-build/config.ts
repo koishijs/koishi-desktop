@@ -7,9 +7,9 @@ export const defaultInstance = 'adace8ea4130c619a7376e8e117780102e67dca7'
 
 export const defaultNpmrc = `
 registry=https://registry.npmmirror.com/
-prefix=../node
-cache=../tmp/npm-cache
-tmp=../tmp
+prefix=\${HOME}/../node
+cache=\${HOME}/../tmp/npm-cache
+tmp=\${HOME}/../tmp
 `.trim()
 
 export const defaultKoiConfig = `
