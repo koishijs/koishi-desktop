@@ -57,4 +57,13 @@ export async function createDefaultInstance() {
   }
 }
 
+export async function run() {
+  const result = await spawnAsync('koi', [], { cwd: resolve('.', 'dist') })
+  if (result) {
+    const err = `'koi' exited with error code: ${result}`
+    error(err)
+    throw new Error(err)
+  }
+}
+
 export const build = series(buildExe, writeConfig, createDefaultInstance)
