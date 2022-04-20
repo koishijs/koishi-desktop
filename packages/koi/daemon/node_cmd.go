@@ -39,7 +39,7 @@ func CreateNodeCmd(
 	env := os.Environ()
 
 	if config.Config.UseDataHome {
-		l.Debug("Now replace HOME.")
+		l.Debug("Now replace HOME/USERPROFILE.")
 		for {
 			flag := true
 			for i, e := range env {
@@ -56,6 +56,7 @@ func CreateNodeCmd(
 		}
 
 		env = append(env, "HOME="+config.Config.InternalHomeDir)
+		env = append(env, "USERPROFILE="+config.Config.InternalHomeDir)
 		l.Debugf("HOME=%s", config.Config.InternalHomeDir)
 	}
 
