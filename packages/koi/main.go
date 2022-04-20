@@ -1,13 +1,12 @@
 package main
 
 import (
+	formatter "github.com/antonfisher/nested-logrus-formatter"
+	log "github.com/sirupsen/logrus"
 	"koi/cli"
 	"koi/config"
 	"os"
 	"runtime"
-
-	formatter "github.com/antonfisher/nested-logrus-formatter"
-	log "github.com/sirupsen/logrus"
 )
 
 var (
