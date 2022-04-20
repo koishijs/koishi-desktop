@@ -7,4 +7,5 @@ require (
 	github.com/goccy/go-yaml v1.9.5
 	github.com/sirupsen/logrus v1.8.1
 	github.com/urfave/cli/v2 v2.4.0
+	golang.org/x/sys v0.0.0-20220412211240-33da011f77ad // indirect
 )
