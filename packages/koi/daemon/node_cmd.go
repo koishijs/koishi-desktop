@@ -55,6 +55,7 @@ func CreateNodeCmd(
 		}
 
 		env = append(env, "HOME="+config.Config.InternalHomeDir)
+		l.Debugf("HOME=%s", config.Config.InternalHomeDir)
 	}
 
 	if config.Config.UseDataTemp {
@@ -76,6 +77,7 @@ func CreateNodeCmd(
 
 		env = append(env, "TEMP="+config.Config.InternalTempDir)
 		env = append(env, "TMP="+config.Config.InternalTempDir)
+		l.Debugf("TEMP=%s", config.Config.InternalTempDir)
 	}
 
 	l.Debug("Now replace PATH.")
@@ -100,6 +102,8 @@ func CreateNodeCmd(
 		pathEnv += pathSepr
 	}
 	pathEnv += config.Config.InternalNodeDir
+	env = append(env, "PATH="+pathEnv)
+	l.Debugf("PATH=%s", pathEnv)
 
 	l.Debug("Now constructing NodeCmd.")
 	errReader, errWriter := io.Pipe()
