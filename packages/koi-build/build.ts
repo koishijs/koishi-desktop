@@ -1,3 +1,4 @@
+import del from 'del'
 import * as fs from 'fs'
 import { series } from 'gulp'
 import { error } from 'gulplog'
@@ -82,6 +83,11 @@ export async function createDefaultInstance() {
   }
 }
 
+export async function cleanupDefaultInstance(): Promise<void> {
+  del(resolve('home', 'distData'))
+  del(resolve('tmp', 'distData'))
+}
+
 export async function run() {
   const result = await spawnAsync(
     process.platform === 'win32' ? 'koi' : './koi',
@@ -95,4 +101,10 @@ export async function run() {
   }
 }
 
-export const build = series(buildExe, writeConfig, createDefaultInstance)
+export const build = series(
+  buildExe,
+  writeConfig,
+  createDefaultInstance,
+  cleanupDefaultInstance,
+  writeConfig
+)
