@@ -2,6 +2,7 @@ import * as fs from 'fs'
 import { series } from 'gulp'
 import { error } from 'gulplog'
 import {
+  boilerplateVersion,
   defaultInstance,
   defaultKoiConfig,
   defaultNpmrc,
@@ -60,6 +61,8 @@ export async function createDefaultInstance() {
       defaultInstance,
       '-p',
       '@koishijs/plugin-database-sqlite',
+      '-r',
+      boilerplateVersion,
     ],
     { cwd: resolve('.', 'dist') }
   )

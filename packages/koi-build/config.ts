@@ -17,6 +17,8 @@ mode: portable
 target: ${defaultInstance}
 `.trim()
 
+export const boilerplateVersion = '1a18326a130c33996191a300278bd288f05b24ca'
+
 let koiVersionTemp = ''
 
 export async function getKoiVersion(): Promise<string> {
