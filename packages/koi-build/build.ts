@@ -2,6 +2,7 @@ import del from 'del'
 import * as fs from 'fs'
 import { series } from 'gulp'
 import { error } from 'gulplog'
+import mkdirp from 'mkdirp'
 import {
   boilerplateVersion,
   defaultInstance,
@@ -75,8 +76,10 @@ export async function createDefaultInstance() {
 }
 
 export async function cleanupDefaultInstance(): Promise<void> {
-  del(resolve('home', 'distData'))
-  del(resolve('tmp', 'distData'))
+  await del(resolve('home', 'distData'))
+  await del(resolve('tmp', 'distData'))
+  await mkdirp(resolve('home', 'distData'))
+  await mkdirp(resolve('tmp', 'distData'))
 }
 
 export async function run() {
