@@ -75,22 +75,49 @@ export async function createDefaultInstance() {
   }
 }
 
+const list = {
+  unix: [
+    'node/lib/node_modules/npm',
+    'node/lib/node_modules/corepack',
+    'node/bin/corepack',
+    'node/bin/npm',
+    'node/bin/npx',
+    'node/share',
+  ],
+  windows: [
+    'node/node_modules/npm',
+    'node/node_modules/corepack',
+    ...['npm', 'npx', 'corepack']
+      .map((i) => ['node/' + i, 'node/' + i + '.cmd'])
+      .flat(),
+  ],
+}
+
+const yarnCmd = `\
+@IF EXIST "%~dp0\\node.exe" (
+  "%~dp0\\node.exe"  "%~dp0\\..\\..\\instances\\${defaultInstance}\\node_modules\\yarn\\bin\\yarn.js" %*
+) ELSE (
+  @SETLOCAL
+  @SET PATHEXT=%PATHEXT:;.JS;=;%
+  node  "%~dp0\\..\\..\\instances\\${defaultInstance}\\node_modules\\yarn\\bin\\yarn.js" %*
+)`
+
 export async function cleanupDefaultInstance(): Promise<void> {
   await del(resolve('home', 'distData'))
   await del(resolve('tmp', 'distData'))
-  await del(resolve('node/lib/node_modules/npm', 'distData'))
-  await del(resolve('node/lib/node_modules/corepack', 'distData'))
-  await del(resolve('node/bin/corepack', 'distData'))
-  await del(resolve('node/bin/npm', 'distData'))
-  await del(resolve('node/bin/npx', 'distData'))
-  await del(resolve('node/share', 'distData'))
-  const cwd = process.cwd()
-  process.chdir(resolve('node/bin', 'distData'))
-  fs.symlinkSync(
-    `../../instances/${defaultInstance}/node_modules/.bin/yarn`,
-    'yarn'
-  )
-  process.chdir(cwd)
+  const files = process.platform === 'win32' ? list.windows : list.unix
+  await Promise.all(files.map((file) => del(resolve(file, 'distData'))))
+  if (process.platform === 'win32') {
+    await fs.promises.writeFile(resolve('node/yarn.cmd', 'distData'), yarnCmd)
+  } else {
+    const cwd = process.cwd()
+    process.chdir(resolve('node/bin', 'distData'))
+    fs.symlinkSync(
+      `../../instances/${defaultInstance}/node_modules/.bin/yarn`,
+      'yarn'
+    )
+    process.chdir(cwd)
+  }
   await mkdirp(resolve('home', 'distData'))
   await mkdirp(resolve('tmp', 'distData'))
   const deps = JSON.parse(
@@ -129,6 +156,3 @@ export const build = series(
   cleanupDefaultInstance,
   writeConfig
 )
-function execSync() {
-  throw new Error('Function not implemented.')
-}
