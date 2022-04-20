@@ -6,6 +6,7 @@ import (
 	"koi/config"
 	"os"
 	"os/exec"
+	"path"
 	"runtime"
 	"strings"
 )
@@ -21,16 +22,16 @@ type NodeCmd struct {
 }
 
 func RunNodeCmd(
-	path string,
+	nodeExe string,
 	args []string,
 	dir string,
 ) error {
-	cmd := CreateNodeCmd(path, args, dir)
+	cmd := CreateNodeCmd(nodeExe, args, dir)
 	return cmd.Run()
 }
 
 func CreateNodeCmd(
-	path string,
+	nodeExe string,
 	args []string,
 	dir string,
 ) NodeCmd {
@@ -101,14 +102,14 @@ func CreateNodeCmd(
 	if pathEnv != "" {
 		pathEnv += pathSepr
 	}
-	pathEnv += config.Config.InternalNodeDir
+	pathEnv += config.Config.InternalNodeExeDir
 	env = append(env, "PATH="+pathEnv)
 	l.Debugf("PATH=%s", pathEnv)
 
 	l.Debug("Now constructing NodeCmd.")
 	errReader, errWriter := io.Pipe()
 	cmd := exec.Cmd{
-		Path:         path,
+		Path:         path.Join(config.Config.InternalNodeExeDir, nodeExe),
 		Args:         args,
 		Env:          env,
 		Dir:          dir,
