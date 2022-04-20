@@ -47,12 +47,6 @@ jobs:
           gulp all
         shell: bash
 
-      - name: Create Dist Package
-        uses: DuckSoft/create-7z-action@v1.0
-        with:
-          pathSource: build/koi
-          pathTarget: build/koi.7z
-
       - uses: actions/upload-artifact@v2
         with:
           name: koi-${{ fromJson(matrix.target).rid }}-${{ github.sha }}

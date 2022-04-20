@@ -3,6 +3,7 @@
   "private": true,
   "version": "0.1.0",
   "dependencies": {
+    "7zip-bin": "^5.1.1",
     "axios": "^0.26.1",
     "cross-spawn": "^7",
     "del": "^6",
