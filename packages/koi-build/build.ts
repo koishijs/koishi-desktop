@@ -78,8 +78,35 @@ export async function createDefaultInstance() {
 export async function cleanupDefaultInstance(): Promise<void> {
   await del(resolve('home', 'distData'))
   await del(resolve('tmp', 'distData'))
+  await del(resolve('node/lib/node_modules/npm', 'distData'))
+  await del(resolve('node/lib/node_modules/corepack', 'distData'))
+  await del(resolve('node/bin/corepack', 'distData'))
+  await del(resolve('node/bin/npm', 'distData'))
+  await del(resolve('node/bin/npx', 'distData'))
+  await del(resolve('node/share', 'distData'))
+  const cwd = process.cwd()
+  process.chdir(resolve('node/bin', 'distData'))
+  fs.symlinkSync(
+    `../../instances/${defaultInstance}/node_modules/.bin/yarn`,
+    'yarn'
+  )
+  process.chdir(cwd)
   await mkdirp(resolve('home', 'distData'))
   await mkdirp(resolve('tmp', 'distData'))
+  const deps = JSON.parse(
+    await fs.promises.readFile(
+      resolve(`package.json`, 'defaultInstance'),
+      'utf-8'
+    )
+  )
+  delete deps.devDependencies
+  await fs.promises.writeFile(
+    resolve('package.json', 'defaultInstance'),
+    JSON.stringify(deps, null, 2)
+  )
+  await spawnAsync('npx', ['yarn', '--production'], {
+    cwd: resolve('.', 'defaultInstance'),
+  })
 }
 
 export async function run() {
@@ -102,3 +129,6 @@ export const build = series(
   cleanupDefaultInstance,
   writeConfig
 )
+function execSync() {
+  throw new Error('Function not implemented.')
+}

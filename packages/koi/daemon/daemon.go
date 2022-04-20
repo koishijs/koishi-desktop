@@ -17,8 +17,8 @@ func Daemon() {
 		l.Info("Starting Koishi.")
 
 		err := RunNodeCmd(
-			"npm",
-			[]string{"run", "start"},
+			"yarn",
+			[]string{"start"},
 			path.Join(config.Config.InternalInstanceDir, config.Config.Target),
 		)
 

@@ -103,19 +103,17 @@ func createInstanceAction(c *cli.Context) error {
 	}
 
 	dir := path.Join(config.Config.InternalInstanceDir, name)
-	if len(packages) > 0 {
-		l.Debug("Now install packages.")
-		args = []string{"i", "-S"}
-		args = append(args, packages...)
-		err = daemon.RunNodeCmd(
-			"npm",
-			args,
-			dir,
-		)
-		if err != nil {
-			l.Error("Err when installing packages.")
-			l.Fatal(err)
-		}
+	l.Debug("Now install packages.")
+	args = []string{"yarn", "add", "yarn", "-W", "--production"}
+	args = append(args, packages...)
+	err = daemon.RunNodeCmd(
+		"npx",
+		args,
+		dir,
+	)
+	if err != nil {
+		l.Error("Err when installing packages.")
+		l.Fatal(err)
 	}
 
 	l.Info("Done. Your new instance:")
