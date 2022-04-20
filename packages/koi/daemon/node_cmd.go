@@ -24,13 +24,11 @@ func CreateNodeCmd(
 	path string,
 	args []string,
 	dir string,
-	useDataHome bool,
-	useDataTemp bool,
 ) NodeCmd {
 	l.Debug("Getting env.")
 	env := os.Environ()
 
-	if useDataHome {
+	if config.Config.UseDataHome {
 		l.Debug("Now replace HOME.")
 		for {
 			flag := true
@@ -50,7 +48,7 @@ func CreateNodeCmd(
 		env = append(env, "HOME="+config.Config.InternalHomeDir)
 	}
 
-	if useDataTemp {
+	if config.Config.UseDataTemp {
 		l.Debug("Now replace TEMP/TMP.")
 		for {
 			flag := true

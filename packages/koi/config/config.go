@@ -15,6 +15,10 @@ type KoiConfig struct {
 	Mode   string `yaml:"mode"`
 	Target string `yaml:"target"`
 
+	// Env override
+	UseDataHome bool `yaml:"useDataHome"`
+	UseDataTemp bool `yaml:"useDataTemp"`
+
 	// Internal
 	InternalConfigDir   string `yaml:"internalConfigDir"`
 	InternalDataDir     string `yaml:"internalDataDir"`
