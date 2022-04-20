@@ -78,7 +78,7 @@ func createInstanceAction(c *cli.Context) error {
 	}
 
 	l.Debug("Constructing args.")
-	args := []string{"init", "koishi", name, "-y"}
+	args := []string{"yarn", "create", "koishi", name, "-y"}
 	if ref := strings.Trim(c.String("ref"), " "); ref != "" {
 		args = append(args, "-r", ref)
 	}
@@ -93,7 +93,7 @@ func createInstanceAction(c *cli.Context) error {
 
 	l.Debug("Now init koishi.")
 	err := daemon.RunNodeCmd(
-		"npm",
+		"npx",
 		args,
 		config.Config.InternalInstanceDir,
 	)
