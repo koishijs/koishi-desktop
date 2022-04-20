@@ -93,14 +93,8 @@ const list = {
   ],
 }
 
-const yarnCmd = `\
-@IF EXIST "%~dp0\\node.exe" (
-  "%~dp0\\node.exe"  "%~dp0\\..\\..\\instances\\${defaultInstance}\\node_modules\\yarn\\bin\\yarn.js" %*
-) ELSE (
-  @SETLOCAL
-  @SET PATHEXT=%PATHEXT:;.JS;=;%
-  node  "%~dp0\\..\\..\\instances\\${defaultInstance}\\node_modules\\yarn\\bin\\yarn.js" %*
-)`
+const yarnCmd = `@echo off
+"%~dp0..\\instances\\${defaultInstance}\\node_modules\\.bin\\yarn" %*`
 
 export async function cleanupDefaultInstance(): Promise<void> {
   await del(resolve('home', 'distData'))
