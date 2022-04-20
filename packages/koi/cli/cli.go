@@ -53,6 +53,8 @@ var (
 				Usage:  "Run Koishi",
 				Action: runAction,
 			},
+
+			instanceCommand,
 		},
 
 		Before: preAction,
