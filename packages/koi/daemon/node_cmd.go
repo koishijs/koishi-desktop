@@ -20,6 +20,15 @@ type NodeCmd struct {
 	stderr io.Reader
 }
 
+func RunNodeCmd(
+	path string,
+	args []string,
+	dir string,
+) error {
+	cmd := CreateNodeCmd(path, args, dir)
+	return cmd.Run()
+}
+
 func CreateNodeCmd(
 	path string,
 	args []string,
