@@ -53,7 +53,7 @@ export async function writeConfig() {
 
 export async function createDefaultInstance() {
   const result = await spawnAsync(
-    'koi',
+    process.platform === 'win32' ? 'koi' : './koi',
     [
       'instance',
       'create',
@@ -74,7 +74,11 @@ export async function createDefaultInstance() {
 }
 
 export async function run() {
-  const result = await spawnAsync('koi', [], { cwd: resolve('.', 'dist') })
+  const result = await spawnAsync(
+    process.platform === 'win32' ? 'koi' : './koi',
+    [],
+    { cwd: resolve('.', 'dist') }
+  )
   if (result) {
     const err = `'koi' exited with error code: ${result}`
     error(err)
