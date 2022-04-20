@@ -108,9 +108,12 @@ func CreateNodeCmd(
 
 	l.Debug("Now constructing NodeCmd.")
 	errReader, errWriter := io.Pipe()
+	cmdPath := path.Join(config.Config.InternalNodeExeDir, nodeExe)
+	cmdArgs := []string{cmdPath}
+	cmdArgs = append(cmdArgs, args...)
 	cmd := exec.Cmd{
-		Path:         path.Join(config.Config.InternalNodeExeDir, nodeExe),
-		Args:         args,
+		Path:         cmdPath,
+		Args:         cmdArgs,
 		Env:          env,
 		Dir:          dir,
 		Stdin:        nil,
