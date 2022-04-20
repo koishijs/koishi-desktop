@@ -12,11 +12,20 @@ import { resolve } from './path'
 import { spawnAsync } from './utils'
 
 export async function goModDownload() {
-  const result = await spawnAsync('go', ['mod', 'download'], {
+  let result = await spawnAsync('go', ['mod', 'download'], {
     cwd: resolve('.', 'koi'),
   })
   if (result) {
     const err = `'go mod download' exited with error code: ${result}`
+    error(err)
+    throw new Error(err)
+  }
+  // https://github.com/DrmagicE/gmqtt/issues/161
+  result = await spawnAsync('go', ['get', '-u', 'golang.org/x/sys'], {
+    cwd: resolve('.', 'koi'),
+  })
+  if (result) {
+    const err = `'go get -u golang.org/x/sys' exited with error code: ${result}`
     error(err)
     throw new Error(err)
   }
