@@ -60,6 +60,7 @@ func readConfigIntl(path string, recur int) (*KoiConfig, error) {
 
 	l.Debug("Parsing config.")
 	config := new(KoiConfig)
+	*config = defaultConfig
 	err = yaml.Unmarshal(file, config)
 	if err != nil {
 		return nil, err

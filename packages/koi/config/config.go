@@ -9,6 +9,13 @@ var (
 	Version = "INTERNAL"
 
 	Config *KoiConfig
+
+	defaultConfig = KoiConfig{
+		Mode: "portable",
+
+		UseDataHome: true,
+		UseDataTemp: true,
+	}
 )
 
 type KoiConfig struct {
@@ -20,12 +27,12 @@ type KoiConfig struct {
 	UseDataTemp bool `yaml:"useDataTemp"`
 
 	// Internal
-	InternalConfigDir   string `yaml:"internalConfigDir"`
-	InternalDataDir     string `yaml:"internalDataDir"`
-	InternalHomeDir     string `yaml:"internalHomeDir"`
-	InternalNodeDir     string `yaml:"internalNodeDir"`
-	InternalTempDir     string `yaml:"internalTempDir"`
-	InternalInstanceDir string `yaml:"internalInstanceDir"`
+	InternalConfigDir   string
+	InternalDataDir     string
+	InternalHomeDir     string
+	InternalNodeDir     string
+	InternalTempDir     string
+	InternalInstanceDir string
 }
 
 func LoadConfig(configPath string) {
