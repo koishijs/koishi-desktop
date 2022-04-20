@@ -60,7 +60,7 @@ func CreateNodeCmd(
 	}
 
 	if config.Config.UseDataTemp {
-		l.Debug("Now replace TEMP/TMP.")
+		l.Debug("Now replace TMPDIR/TEMP/TMP.")
 		for {
 			flag := true
 			for i, e := range env {
@@ -76,6 +76,7 @@ func CreateNodeCmd(
 			}
 		}
 
+		env = append(env, "TMPDIR="+config.Config.InternalTempDir)
 		env = append(env, "TEMP="+config.Config.InternalTempDir)
 		env = append(env, "TMP="+config.Config.InternalTempDir)
 		l.Debugf("TEMP=%s", config.Config.InternalTempDir)
