@@ -105,7 +105,7 @@ func createInstanceAction(c *cli.Context) error {
 	dir := path.Join(config.Config.InternalInstanceDir, name)
 	if len(packages) > 0 {
 		l.Debug("Now install packages.")
-		args = []string{"i", "-S"}
+		args = []string{"i", "-S", "--production"}
 		args = append(args, packages...)
 		err = daemon.RunNodeCmd(
 			"npm",
