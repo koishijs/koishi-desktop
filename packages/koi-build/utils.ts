@@ -21,11 +21,11 @@ export async function spawnOut(
   options?: SpawnOptions
 ): Promise<string> {
   const parsedArgs = args ?? []
-  const parsedOptions: SpawnOptions = Object.assign(
-    {},
-    { stdio: 'ignore' },
-    options
-  )
+  const parsedOptions: SpawnOptions = Object.assign<
+    SpawnOptions,
+    SpawnOptions,
+    SpawnOptions | undefined
+  >({}, { stdio: 'pipe' }, options)
   const child = spawn(command, parsedArgs, parsedOptions)
   let stdout = ''
   child.stdout?.on('data', (x) => (stdout += x))
