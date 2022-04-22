@@ -89,7 +89,7 @@ func CreateNodeCmd(
 		notFound := true
 		for i, e := range env {
 			if strings.HasPrefix(e, "PATH=") {
-				pathEnv = e
+				pathEnv = e[5:]
 				env = append(env[:i], env[i+1:]...)
 				notFound = false
 				break
@@ -100,7 +100,6 @@ func CreateNodeCmd(
 			break
 		}
 	}
-	pathEnv = pathEnv[5:]
 	var pathSepr string
 	if runtime.GOOS == "windows" {
 		pathSepr = ";"
