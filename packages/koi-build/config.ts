@@ -24,8 +24,9 @@ let koiVersionTemp = ''
 export async function getKoiVersion(): Promise<string> {
   if (koiVersionTemp) return koiVersionTemp
   try {
-    koiVersionTemp =
-      'v' + (await spawnOut('git', ['describe', '--tags', '--dirty']))
+    koiVersionTemp = (
+      await spawnOut('git', ['describe', '--tags', '--dirty'])
+    ).trim()
   } catch (error) {
     koiVersionTemp = 'v0.0.1'
   }
