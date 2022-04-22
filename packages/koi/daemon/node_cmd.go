@@ -41,16 +41,16 @@ func CreateNodeCmd(
 	if config.Config.UseDataHome {
 		l.Debug("Now replace HOME/USERPROFILE.")
 		for {
-			flag := true
+			notFound := true
 			for i, e := range env {
-				if strings.HasPrefix(e, "HOME=") {
+				if strings.HasPrefix(e, "HOME=") || strings.HasPrefix(e, "USERPROFILE=") {
 					env = append(env[:i], env[i+1:]...)
-					flag = false
+					notFound = false
 					break
 				}
 			}
 
-			if flag {
+			if notFound {
 				break
 			}
 		}
@@ -63,16 +63,16 @@ func CreateNodeCmd(
 	if config.Config.UseDataTemp {
 		l.Debug("Now replace TMPDIR/TEMP/TMP.")
 		for {
-			flag := true
+			notFound := true
 			for i, e := range env {
-				if strings.HasPrefix(e, "TEMP=") || strings.HasPrefix(e, "TMP=") {
+				if strings.HasPrefix(e, "TMPDIR=") || strings.HasPrefix(e, "TEMP=") || strings.HasPrefix(e, "TMP=") {
 					env = append(env[:i], env[i+1:]...)
-					flag = false
+					notFound = false
 					break
 				}
 			}
 
-			if flag {
+			if notFound {
 				break
 			}
 		}
@@ -85,14 +85,20 @@ func CreateNodeCmd(
 
 	l.Debug("Now replace PATH.")
 	pathEnv := ""
-	for _, e := range env {
-		if strings.HasPrefix(e, "PATH=") {
-			pathEnv = e
+	for {
+		notFound := true
+		for i, e := range env {
+			if strings.HasPrefix(e, "PATH=") {
+				pathEnv = e
+				env = append(env[:i], env[i+1:]...)
+				notFound = false
+				break
+			}
+		}
+
+		if notFound {
 			break
 		}
-	}
-	if pathEnv == "" {
-		pathEnv = "PATH="
 	}
 	pathEnv = pathEnv[5:]
 	var pathSepr string
@@ -102,11 +108,14 @@ func CreateNodeCmd(
 		pathSepr = ":"
 	}
 	if pathEnv != "" {
-		pathEnv += pathSepr
+		pathEnv = config.Config.InternalNodeExeDir + pathSepr + pathEnv
+	} else {
+		pathEnv = config.Config.InternalNodeExeDir
 	}
-	pathEnv += config.Config.InternalNodeExeDir
 	env = append(env, "PATH="+pathEnv)
 	l.Debugf("PATH=%s", pathEnv)
+
+	l.Debugf("PWD=%s", dir)
 
 	l.Debug("Now constructing NodeCmd.")
 	errReader, errWriter := io.Pipe()
