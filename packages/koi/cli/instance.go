@@ -78,7 +78,7 @@ func createInstanceAction(c *cli.Context) error {
 	}
 
 	l.Debug("Constructing args.")
-	args := []string{"init", "koishi", name, "-y"}
+	args := []string{"init", "koishi", name, "-y", "-p"}
 	if ref := strings.Trim(c.String("ref"), " "); ref != "" {
 		args = append(args, "-r", ref)
 	}
