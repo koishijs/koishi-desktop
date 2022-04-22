@@ -78,6 +78,7 @@ func createInstanceAction(c *cli.Context) error {
 	}
 
 	l.Debug("Constructing args.")
+	// TODO: skip download (yarn needs to be configured first)
 	args := []string{"yarn", "create", "koishi", name, "-yp"}
 	if ref := strings.Trim(c.String("ref"), " "); ref != "" {
 		args = append(args, "-r", ref)
@@ -103,17 +104,37 @@ func createInstanceAction(c *cli.Context) error {
 	}
 
 	dir := path.Join(config.Config.InternalInstanceDir, name)
-	l.Debug("Now install packages.")
-	args = []string{"yarn", "add", "yarn", "-W", "--production"}
-	args = append(args, packages...)
-	err = daemon.RunNodeCmd(
-		"npx",
-		args,
-		dir,
-	)
-	if err != nil {
-		l.Error("Err when installing packages.")
-		l.Fatal(err)
+	tasks := []string{
+		"yarn set version berry",
+		// Need discussion: use pnp?
+		"yarn config set nodeLinker node-modules",
+		"yarn plugin import workspace-tools",
+		"yarn workspaces focus --production",
+	}
+	for _, task := range tasks {
+		err = daemon.RunNodeCmd(
+			"npx",
+			strings.Split(task, " "),
+			dir,
+		)
+		if err != nil {
+			l.Error("Err when installing yarn.")
+			l.Fatal(err)
+		}
+	}
+	if len(packages) > 0 {
+		l.Debug("Now install packages.")
+		args = []string{"yarn", "add"}
+		args = append(args, packages...)
+		err = daemon.RunNodeCmd(
+			"npx",
+			args,
+			dir,
+		)
+		if err != nil {
+			l.Error("Err when installing packages.")
+			l.Fatal(err)
+		}
 	}
 
 	l.Info("Done. Your new instance:")

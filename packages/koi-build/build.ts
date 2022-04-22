@@ -93,39 +93,33 @@ const list = {
   ],
 }
 
-const yarnCmd = `@echo off
-"%~dp0..\\instances\\${defaultInstance}\\node_modules\\.bin\\yarn" %*`
-
 export async function cleanupDefaultInstance(): Promise<void> {
   await del(resolve('home', 'distData'))
   await del(resolve('tmp', 'distData'))
+  await del(resolve('.yarn/cache', 'defaultInstance'))
   const files = process.platform === 'win32' ? list.windows : list.unix
   await Promise.all(files.map((file) => del(resolve(file, 'distData'))))
+  const [filename] = fs.readdirSync(
+    resolve('.yarn/releases', 'defaultInstance')
+  )
   if (process.platform === 'win32') {
-    await fs.promises.writeFile(resolve('node/yarn.cmd', 'distData'), yarnCmd)
+    await fs.promises.writeFile(
+      resolve('node/yarn.cmd', 'distData'),
+      `@echo off
+"%~dp0..\\instances\\${defaultInstance}\\.yarn\\releases\\${filename}" %*`
+    )
   } else {
     const cwd = process.cwd()
     process.chdir(resolve('node/bin', 'distData'))
     fs.symlinkSync(
-      `../../instances/${defaultInstance}/node_modules/.bin/yarn`,
+      `../../instances/${defaultInstance}/.yarn/releases/${filename}`,
       'yarn'
     )
     process.chdir(cwd)
   }
   await mkdirp(resolve('home', 'distData'))
   await mkdirp(resolve('tmp', 'distData'))
-  const deps = JSON.parse(
-    await fs.promises.readFile(
-      resolve(`package.json`, 'defaultInstance'),
-      'utf-8'
-    )
-  )
-  delete deps.devDependencies
-  await fs.promises.writeFile(
-    resolve('package.json', 'defaultInstance'),
-    JSON.stringify(deps, null, 2)
-  )
-  await spawnAsync('npx', ['yarn', '--production'], {
+  await spawnAsync('npx', ['yarn'], {
     cwd: resolve('.', 'defaultInstance'),
   })
 }
