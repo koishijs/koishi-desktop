@@ -137,7 +137,7 @@ func createInstanceAction(c *cli.Context) error {
 		}
 		err = daemon.RunNodeCmd(
 			"npx",
-			strings.Split("yarn workspace focus --production --a;;", " "),
+			strings.Split("yarn workspace focus --production --all", " "),
 			dir,
 		)
 		if err != nil {
