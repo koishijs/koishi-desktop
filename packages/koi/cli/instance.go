@@ -110,6 +110,7 @@ func createInstanceAction(c *cli.Context) error {
 		"yarn config set nodeLinker node-modules",
 		"yarn plugin import workspace-tools",
 		"yarn workspaces focus --production",
+		"yarn",
 	}
 	for _, task := range tasks {
 		err = daemon.RunNodeCmd(

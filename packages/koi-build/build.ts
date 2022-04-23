@@ -118,9 +118,6 @@ export async function cleanupDefaultInstance(): Promise<void> {
   }
   await mkdirp(resolve('home', 'distData'))
   await mkdirp(resolve('tmp', 'distData'))
-  await spawnAsync('npx', ['yarn'], {
-    cwd: resolve('.', 'defaultInstance'),
-  })
   await del(resolve('.yarn/cache', 'defaultInstance'))
 }
 
