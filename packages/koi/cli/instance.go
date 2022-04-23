@@ -1,12 +1,11 @@
 package cli
 
 import (
+	"github.com/urfave/cli/v2"
 	"koi/config"
 	"koi/daemon"
 	"path"
 	"strings"
-
-	"github.com/urfave/cli/v2"
 )
 
 var (
@@ -110,7 +109,7 @@ func createInstanceAction(c *cli.Context) error {
 		// Need discussion: use pnp?
 		"yarn config set nodeLinker node-modules",
 		"yarn plugin import workspace-tools",
-		"yarn workspaces focus --production",
+		"yarn workspaces focus --production --all",
 	}
 	for _, task := range tasks {
 		err = daemon.RunNodeCmd(
@@ -130,6 +129,15 @@ func createInstanceAction(c *cli.Context) error {
 		err = daemon.RunNodeCmd(
 			"npx",
 			args,
+			dir,
+		)
+		if err != nil {
+			l.Error("Err when installing packages.")
+			l.Fatal(err)
+		}
+		err = daemon.RunNodeCmd(
+			"npx",
+			strings.Split("yarn workspace focus --production --a;;", " "),
 			dir,
 		)
 		if err != nil {
