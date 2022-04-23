@@ -80,6 +80,8 @@ func CreateNodeCmd(
 		env = append(env, "TMPDIR="+config.Config.InternalTempDir)
 		env = append(env, "TEMP="+config.Config.InternalTempDir)
 		env = append(env, "TMP="+config.Config.InternalTempDir)
+		// Ignore immutable installs in ci (koishi init creates a yarn.lock v1)
+		env = append(env, "YARN_ENABLE_IMMUTABLE_INSTALLS=false")
 		l.Debugf("TEMP=%s", config.Config.InternalTempDir)
 	}
 
