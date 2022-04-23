@@ -96,7 +96,6 @@ const list = {
 export async function cleanupDefaultInstance(): Promise<void> {
   await del(resolve('home', 'distData'))
   await del(resolve('tmp', 'distData'))
-  await del(resolve('.yarn/cache', 'defaultInstance'))
   const files = process.platform === 'win32' ? list.windows : list.unix
   await Promise.all(files.map((file) => del(resolve(file, 'distData'))))
   const [filename] = fs.readdirSync(
@@ -122,6 +121,7 @@ export async function cleanupDefaultInstance(): Promise<void> {
   await spawnAsync('npx', ['yarn'], {
     cwd: resolve('.', 'defaultInstance'),
   })
+  await del(resolve('.yarn/cache', 'defaultInstance'))
 }
 
 export async function run() {
