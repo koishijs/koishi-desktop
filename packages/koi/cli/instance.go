@@ -1,11 +1,12 @@
 package cli
 
 import (
-	"github.com/urfave/cli/v2"
 	"koi/config"
 	"koi/daemon"
 	"path"
 	"strings"
+
+	"github.com/urfave/cli/v2"
 )
 
 var (
@@ -110,7 +111,6 @@ func createInstanceAction(c *cli.Context) error {
 		"yarn config set nodeLinker node-modules",
 		"yarn plugin import workspace-tools",
 		"yarn workspaces focus --production",
-		"yarn",
 	}
 	for _, task := range tasks {
 		err = daemon.RunNodeCmd(
