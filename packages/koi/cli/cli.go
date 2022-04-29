@@ -3,12 +3,9 @@ package cli
 import (
 	"github.com/urfave/cli/v2"
 	"koi/config"
+	"koi/env"
 
 	log "github.com/sirupsen/logrus"
-)
-
-const (
-	KoiErrSpin = "KOI_ERR_SPIN"
 )
 
 var (
@@ -105,7 +102,7 @@ func runIntl(args []string) error {
 
 	l.Debug("Running cli app")
 	err := app.Run(args)
-	if err != nil && err.Error() != KoiErrSpin {
+	if err != nil && err != env.KoiErrSpin {
 		l.Fatal(err)
 	}
 	return err
