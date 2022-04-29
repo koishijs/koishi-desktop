@@ -60,12 +60,12 @@ var (
 func createInstanceAction(c *cli.Context) error {
 	l.Debug("Now create instance.")
 
-	name := strings.Trim(c.String("name"), " ")
+	name := util.Trim(c.String("name"))
 	l.Infof("Creating new instance: %s", name)
 
 	var packages []string
-	for _, p := range strings.Split(strings.Trim(c.String("with-packages"), " "), ",") {
-		pp := strings.Trim(p, " ")
+	for _, p := range strings.Split(util.Trim(c.String("with-packages")), ",") {
+		pp := util.Trim(p)
 		if len(pp) > 0 {
 			packages = append(packages, pp)
 		}
@@ -79,13 +79,13 @@ func createInstanceAction(c *cli.Context) error {
 
 	l.Debug("Constructing args.")
 	args := []string{"init", "koishi", name, "-y", "-p"}
-	if ref := strings.Trim(c.String("ref"), " "); ref != "" {
+	if ref := util.Trim(c.String("ref")); ref != "" {
 		args = append(args, "-r", ref)
 	}
-	if mirror := strings.Trim(c.String("mirror"), " "); mirror != "" {
+	if mirror := util.Trim(c.String("mirror")); mirror != "" {
 		args = append(args, "-m", mirror)
 	}
-	if template := strings.Trim(c.String("template"), " "); template != "" {
+	if template := util.Trim(c.String("template")); template != "" {
 		args = append(args, "-t", template)
 	}
 	l.Debug("Constructed. Args:")
