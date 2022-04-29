@@ -13,6 +13,8 @@ var (
 	defaultConfig = KoiConfig{
 		Mode: "portable",
 
+		Strict: false,
+
 		UseDataHome: true,
 		UseDataTemp: true,
 	}
@@ -21,6 +23,8 @@ var (
 type KoiConfig struct {
 	Mode   string `yaml:"mode"`
 	Target string `yaml:"target"`
+
+	Strict bool `yaml:"strict"`
 
 	// Env override
 	UseDataHome bool `yaml:"useDataHome"`

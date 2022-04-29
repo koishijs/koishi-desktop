@@ -107,7 +107,7 @@ func CreateNodeCmd(
 	} else {
 		pathSepr = ":"
 	}
-	if pathEnv != "" {
+	if pathEnv != "" && !config.Config.Strict {
 		pathEnv = config.Config.InternalNodeExeDir + pathSepr + pathEnv
 	} else {
 		pathEnv = config.Config.InternalNodeExeDir
