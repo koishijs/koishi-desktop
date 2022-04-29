@@ -7,6 +7,5 @@ import (
 
 func runAction(c *cli.Context) error {
 	l.Debug("Trigger action: run")
-	daemon.Daemon()
-	return nil
+	return daemon.Daemon()
 }
