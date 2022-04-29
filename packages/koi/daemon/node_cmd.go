@@ -17,8 +17,9 @@ var (
 )
 
 type NodeCmd struct {
-	Cmd    exec.Cmd
-	stderr io.Reader
+	Cmd       exec.Cmd
+	errReader *io.PipeReader
+	errWriter *io.PipeWriter
 }
 
 func RunNodeCmd(
@@ -136,8 +137,9 @@ func CreateNodeCmd(
 	}
 
 	return NodeCmd{
-		Cmd:    cmd,
-		stderr: errReader,
+		Cmd:       cmd,
+		errReader: errReader,
+		errWriter: errWriter,
 	}
 }
 
@@ -154,7 +156,7 @@ func (c *NodeCmd) Start() error {
 	go func() {
 		p := make([]byte, 1024)
 		for {
-			n, err := c.stderr.Read(p)
+			n, err := c.errReader.Read(p)
 			if err == io.EOF {
 				break
 			}
@@ -171,5 +173,14 @@ func (c *NodeCmd) Start() error {
 
 func (c *NodeCmd) Wait() error {
 	l.Debug("Now wait NodeCmd.")
+
+	defer func() {
+		err := c.errWriter.Close()
+		if err != nil {
+			l.Debug("Stderr closed with err.")
+			l.Debug(err)
+		}
+	}()
+
 	return c.Cmd.Wait()
 }
