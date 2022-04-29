@@ -166,7 +166,10 @@ func (c *NodeCmd) Start() error {
 			if err != nil {
 				l.Debugf("stderr.Read() err: %s", err)
 			}
-			lKoishi.Info(util.Trim(string(p[:n])))
+			s := util.Trim(string(p[:n]))
+			if len(s) > 0 {
+				lKoishi.Info(s + util.ResetCtrlStr)
+			}
 		}
 	}()
 
