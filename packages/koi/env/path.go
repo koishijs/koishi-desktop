@@ -2,6 +2,7 @@ package env
 
 import (
 	log "github.com/sirupsen/logrus"
+	"koi/util"
 	"os"
 	"path/filepath"
 )
@@ -18,13 +19,9 @@ func dirName() string {
 	if err != nil {
 		l.Fatal("Cannot get executable.")
 	}
-	path, err = filepath.EvalSymlinks(filepath.Dir(path))
+	path, err = util.Resolve("", filepath.Dir(path), true)
 	if err != nil {
 		l.Fatal("Cannot get executable dir.")
 	}
 	return path
-}
-
-func Resolve(base string, path string) string {
-	return filepath.Clean(filepath.Join(base, path))
 }

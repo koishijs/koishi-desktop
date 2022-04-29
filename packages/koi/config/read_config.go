@@ -4,6 +4,7 @@ import (
 	"errors"
 	"github.com/goccy/go-yaml"
 	"koi/env"
+	"koi/util"
 	"os"
 	"path/filepath"
 	"runtime"
@@ -40,7 +41,12 @@ func readConfigIntl(path string, recur int) (*KoiConfig, error) {
 
 	absPath := path
 	if !filepath.IsAbs(absPath) {
-		absPath = env.Resolve(env.DirName, absPath)
+		newAbsPath, err := util.Resolve(env.DirName, absPath, true)
+		if err != nil {
+			l.Error("Failed to resolve config path:")
+			l.Fatal(absPath)
+		}
+		absPath = newAbsPath
 	}
 	configDir := filepath.Dir(absPath)
 
@@ -56,7 +62,7 @@ func readConfigIntl(path string, recur int) (*KoiConfig, error) {
 	err = redirectPath.Read(strings.NewReader(string(file)), &redirect)
 	if err == nil {
 		l.Debugf("'redirect' field detected: %s", redirect)
-		return readConfigIntl(env.Resolve(configDir, redirect), recur+1)
+		return readConfigIntl(filepath.Join(configDir, redirect), recur+1)
 	}
 
 	l.Debug("Parsing config.")
@@ -77,14 +83,52 @@ func readConfigIntl(path string, recur int) (*KoiConfig, error) {
 }
 
 func postConfig(c *KoiConfig) {
-	c.InternalDataDir = filepath.Join(c.InternalConfigDir, "data")
-	c.InternalHomeDir = filepath.Join(c.InternalDataDir, "home")
-	c.InternalNodeDir = filepath.Join(c.InternalDataDir, "node")
+	dir, err := util.Resolve(c.InternalConfigDir, "data", true)
+	if err != nil {
+		l.Error("Failed to resolve data dir. Config dir:")
+		l.Fatal(c.InternalConfigDir)
+	}
+	c.InternalDataDir = dir
+
+	if c.UseDataHome {
+		dir, err = util.Resolve(c.InternalDataDir, "home", true)
+		if err != nil {
+			l.Error("Failed to resolve home dir. Data dir:")
+			l.Fatal(c.InternalDataDir)
+		}
+		c.InternalHomeDir = dir
+	}
+
+	dir, err = util.Resolve(c.InternalDataDir, "node", true)
+	if err != nil {
+		l.Error("Failed to resolve node dir. Data dir:")
+		l.Fatal(c.InternalDataDir)
+	}
+	c.InternalNodeDir = dir
 	if runtime.GOOS == "windows" {
 		c.InternalNodeExeDir = c.InternalNodeDir
 	} else {
-		c.InternalNodeExeDir = filepath.Join(c.InternalNodeDir, "bin")
+		dir, err = util.Resolve(c.InternalNodeDir, "bin", true)
+		if err != nil {
+			l.Error("Failed to resolve node binary dir. Node dir:")
+			l.Fatal(c.InternalNodeDir)
+		}
+		c.InternalNodeExeDir = dir
 	}
-	c.InternalTempDir = filepath.Join(c.InternalDataDir, "tmp")
-	c.InternalInstanceDir = filepath.Join(c.InternalDataDir, "instances")
+
+	if c.UseDataTemp {
+		dir, err = util.Resolve(c.InternalDataDir, "tmp", true)
+		if err != nil {
+			l.Error("Failed to resolve temp dir. Data dir:")
+			l.Fatal(c.InternalDataDir)
+		}
+		c.InternalTempDir = dir
+	}
+
+	dir, err = util.Resolve(c.InternalDataDir, "instances", true)
+	if err != nil {
+		l.Error("Failed to resolve instance dir. Data dir:")
+		l.Fatal(c.InternalDataDir)
+	}
+	c.InternalInstanceDir = dir
 }

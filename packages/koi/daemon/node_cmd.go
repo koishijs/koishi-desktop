@@ -4,9 +4,9 @@ import (
 	log "github.com/sirupsen/logrus"
 	"io"
 	"koi/config"
+	"koi/util"
 	"os"
 	"os/exec"
-	"path/filepath"
 	"runtime"
 	"strings"
 )
@@ -119,7 +119,10 @@ func CreateNodeCmd(
 
 	l.Debug("Now constructing NodeCmd.")
 	errReader, errWriter := io.Pipe()
-	cmdPath := filepath.Join(config.Config.InternalNodeExeDir, nodeExe)
+	cmdPath, err := util.Resolve(config.Config.InternalNodeExeDir, nodeExe, true)
+	if err != nil {
+		l.Fatalf("Failed to resolve node executable: %s", nodeExe)
+	}
 	cmdArgs := []string{cmdPath}
 	cmdArgs = append(cmdArgs, args...)
 	cmd := exec.Cmd{

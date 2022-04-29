@@ -4,7 +4,7 @@ import (
 	"github.com/urfave/cli/v2"
 	"koi/config"
 	"koi/daemon"
-	"path/filepath"
+	"koi/util"
 	"strings"
 )
 
@@ -102,7 +102,12 @@ func createInstanceAction(c *cli.Context) error {
 		l.Fatal(err)
 	}
 
-	dir := filepath.Join(config.Config.InternalInstanceDir, name)
+	dir, err := util.Resolve(config.Config.InternalInstanceDir, name, true)
+	if err != nil {
+		l.Error("Failed to resolve dir for the new instance:")
+		l.Error(name)
+		l.Fatal("'npm init' failed?")
+	}
 	if len(packages) > 0 {
 		l.Debug("Now install packages.")
 		args = []string{"i", "-S", "--production"}

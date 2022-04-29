@@ -3,7 +3,7 @@ package daemon
 import (
 	log "github.com/sirupsen/logrus"
 	"koi/config"
-	"path/filepath"
+	"koi/util"
 )
 
 var (
@@ -16,10 +16,15 @@ func Daemon() {
 	for {
 		l.Info("Starting Koishi.")
 
-		err := RunNodeCmd(
+		dir, err := util.Resolve(config.Config.InternalInstanceDir, config.Config.Target, true)
+		if err != nil {
+			l.Fatalf("Failed to resolve target: %s", config.Config.Target)
+		}
+
+		err = RunNodeCmd(
 			"npm",
 			[]string{"run", "start"},
-			filepath.Join(config.Config.InternalInstanceDir, config.Config.Target),
+			dir,
 		)
 
 		if err == nil {
