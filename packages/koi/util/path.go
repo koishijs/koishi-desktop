@@ -18,6 +18,6 @@ func Resolve(base string, path string, ensureExists bool) (string, error) {
 		if err != nil {
 			return "", err
 		}
-		return path, nil
 	}
+	return path, nil
 }
