@@ -6,7 +6,7 @@ import (
 	"koi/config"
 	"os"
 	"os/exec"
-	"path"
+	"path/filepath"
 	"runtime"
 	"strings"
 )
@@ -119,7 +119,7 @@ func CreateNodeCmd(
 
 	l.Debug("Now constructing NodeCmd.")
 	errReader, errWriter := io.Pipe()
-	cmdPath := path.Join(config.Config.InternalNodeExeDir, nodeExe)
+	cmdPath := filepath.Join(config.Config.InternalNodeExeDir, nodeExe)
 	cmdArgs := []string{cmdPath}
 	cmdArgs = append(cmdArgs, args...)
 	cmd := exec.Cmd{

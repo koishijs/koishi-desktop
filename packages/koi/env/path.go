@@ -3,7 +3,6 @@ package env
 import (
 	log "github.com/sirupsen/logrus"
 	"os"
-	goPath "path"
 	"path/filepath"
 )
 
@@ -27,5 +26,5 @@ func dirName() string {
 }
 
 func Resolve(base string, path string) string {
-	return goPath.Clean(goPath.Join(base, path))
+	return filepath.Clean(filepath.Join(base, path))
 }

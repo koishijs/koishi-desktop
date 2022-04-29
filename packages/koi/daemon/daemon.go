@@ -3,7 +3,7 @@ package daemon
 import (
 	log "github.com/sirupsen/logrus"
 	"koi/config"
-	"path"
+	"path/filepath"
 )
 
 var (
@@ -19,7 +19,7 @@ func Daemon() {
 		err := RunNodeCmd(
 			"npm",
 			[]string{"run", "start"},
-			path.Join(config.Config.InternalInstanceDir, config.Config.Target),
+			filepath.Join(config.Config.InternalInstanceDir, config.Config.Target),
 		)
 
 		if err == nil {

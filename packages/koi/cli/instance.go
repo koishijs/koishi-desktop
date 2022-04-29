@@ -4,7 +4,7 @@ import (
 	"github.com/urfave/cli/v2"
 	"koi/config"
 	"koi/daemon"
-	"path"
+	"path/filepath"
 	"strings"
 )
 
@@ -102,7 +102,7 @@ func createInstanceAction(c *cli.Context) error {
 		l.Fatal(err)
 	}
 
-	dir := path.Join(config.Config.InternalInstanceDir, name)
+	dir := filepath.Join(config.Config.InternalInstanceDir, name)
 	if len(packages) > 0 {
 		l.Debug("Now install packages.")
 		args = []string{"i", "-S", "--production"}
