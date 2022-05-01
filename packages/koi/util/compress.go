@@ -3,9 +3,11 @@ package util
 import (
 	"archive/tar"
 	"compress/gzip"
+	"errors"
 	"io"
 	"os"
 	"path/filepath"
+	"strings"
 )
 
 func UnzipFile(src string, dest string, clean bool) error {
@@ -52,13 +54,24 @@ func Unzip(src io.Reader, dest string, clean bool) error {
 	tReader := tar.NewReader(gReader)
 
 	for {
-		header, err := tReader.Next()
+		f, err := tReader.Next()
 		if err == io.EOF {
 			break
 		}
 
-		if header.Typeflag != tar.TypeDir {
-			name := filepath.Join(dest, header.Name)
+		if err != nil {
+			l.Error("Tar reading error:")
+			l.Error(err)
+			return err
+		}
+		if !validRelPath(f.Name) {
+			err = errors.New("Tar contains invalid name: " + f.Name)
+			l.Error(err)
+			return err
+		}
+
+		if f.Typeflag != tar.TypeDir {
+			name := filepath.Join(dest, f.Name)
 			dir := filepath.Dir(name)
 			err = os.MkdirAll(dir, os.ModePerm)
 			if err != nil {
@@ -67,7 +80,7 @@ func Unzip(src io.Reader, dest string, clean bool) error {
 				return err
 			}
 
-			file, err := os.OpenFile(name, os.O_CREATE|os.O_WRONLY, os.FileMode(header.Mode))
+			file, err := os.OpenFile(name, os.O_CREATE|os.O_WRONLY, os.FileMode(f.Mode))
 			if err != nil {
 				l.Error("Failed to create:")
 				l.Error(name)
@@ -83,4 +96,11 @@ func Unzip(src io.Reader, dest string, clean bool) error {
 	}
 
 	return nil
+}
+
+func validRelPath(p string) bool {
+	if p == "" || strings.Contains(p, `\`) || strings.HasPrefix(p, "/") || strings.Contains(p, "../") {
+		return false
+	}
+	return true
 }
