@@ -6,11 +6,9 @@ export const yarnVersion = '3.2.0'
 
 export const defaultInstance = 'adace8ea4130c619a7376e8e117780102e67dca7'
 
-export const defaultNpmrc = `
-registry=https://registry.npmmirror.com/
-prefix=\${HOME}/../node
-cache=\${HOME}/../tmp/npm-cache
-tmp=\${HOME}/../tmp
+export const defaultYarnrc = `
+npmRegistryServer: https://registry.npmmirror.com/
+nodeLinker: node-modules
 `.trim()
 
 export const defaultKoiConfig = `

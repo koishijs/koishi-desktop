@@ -7,7 +7,7 @@ import {
   boilerplateVersion,
   defaultInstance,
   defaultKoiConfig,
-  defaultNpmrc,
+  defaultYarnrc,
   getKoiVersion,
 } from './config'
 import { resolve } from './path'
@@ -49,7 +49,10 @@ export async function goBuild() {
 export const buildExe = series(goModDownload, goBuild)
 
 export async function writeConfig() {
-  await fs.promises.writeFile(resolve('home/.npmrc', 'distData'), defaultNpmrc)
+  await fs.promises.writeFile(
+    resolve('yarnrc.tmpl.yml', 'distData'),
+    defaultYarnrc
+  )
   await fs.promises.writeFile(resolve('koi.yml', 'dist'), defaultKoiConfig)
 }
 

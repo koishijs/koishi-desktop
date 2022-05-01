@@ -23,7 +23,6 @@ export async function mkdir(): Promise<void> {
   await mkdirp(resolve('home', 'distData'))
   await mkdirp(resolve('node', 'distData'))
   await mkdirp(resolve('tmp', 'distData'))
-  await mkdirp(resolve('.', 'defaultInstance'))
 }
 
 export const dev = series(mkdir, prepareNode, build)

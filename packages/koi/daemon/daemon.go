@@ -104,7 +104,7 @@ func Daemon() error {
 }
 
 func daemonIntl(dir string) int {
-	err := RunNpm(
+	err := RunYarn(
 		[]string{"run", "start"},
 		dir,
 	)

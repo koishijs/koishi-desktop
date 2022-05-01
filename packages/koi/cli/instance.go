@@ -1,10 +1,16 @@
 package cli
 
 import (
+	"fmt"
 	"github.com/urfave/cli/v2"
+	"io"
 	"koi/config"
 	"koi/daemon"
 	"koi/util"
+	"net/http"
+	"os"
+	"path/filepath"
+	"regexp"
 	"strings"
 )
 
@@ -24,6 +30,12 @@ var (
 						Aliases:  []string{"n"},
 						Usage:    "Name of the new instance",
 						Required: true,
+					},
+
+					&cli.BoolFlag{
+						Name:    "force",
+						Aliases: []string{"f"},
+						Usage:   "Empty target dir before creating.",
 					},
 
 					&cli.StringFlag{
@@ -55,10 +67,12 @@ var (
 			},
 		},
 	}
+
+	refRegexp = regexp.MustCompile("^[\\da-f]{40}$")
 )
 
 func createInstanceAction(c *cli.Context) error {
-	l.Debug("Now create instance.")
+	var err error
 
 	name := util.Trim(c.String("name"))
 	l.Infof("Creating new instance: %s", name)
@@ -77,48 +91,109 @@ func createInstanceAction(c *cli.Context) error {
 		}
 	}
 
-	l.Debug("Constructing args.")
-	args := []string{"init", "koishi", name, "-y", "-p"}
-	if ref := util.Trim(c.String("ref")); ref != "" {
-		args = append(args, "-r", ref)
+	l.Debug("Checking target dir.")
+	dir := filepath.Join(config.Config.InternalInstanceDir, name)
+	if c.Bool("force") {
+		l.Info("Emptying target dir.")
+		err = os.RemoveAll(dir)
+		if err != nil {
+			l.Error("Failed to empty target dir:")
+			l.Fatal(err)
+		}
+	} else {
+		_, err := os.Stat(dir)
+		if err == nil {
+			entries, _ := os.ReadDir(dir)
+			if len(entries) > 0 {
+				l.Fatal("Instance already exists. Use '--force' if you want to recreate.")
+			}
+		}
 	}
-	if mirror := util.Trim(c.String("mirror")); mirror != "" {
-		args = append(args, "-m", mirror)
-	}
-	if template := util.Trim(c.String("template")); template != "" {
-		args = append(args, "-t", template)
-	}
-	l.Debug("Constructed. Args:")
-	l.Debug(args)
-
-	l.Debug("Now init koishi.")
-	err := daemon.RunNpm(
-		args,
-		config.Config.InternalInstanceDir,
-	)
+	err = os.MkdirAll(dir, os.ModePerm)
 	if err != nil {
-		l.Error("Err when initializing koishi.")
+		l.Error("Failed to create target dir:")
 		l.Fatal(err)
 	}
 
-	dir, err := util.Resolve(config.Config.InternalInstanceDir, name, true)
-	if err != nil {
-		l.Error("Failed to resolve dir for the new instance:")
-		l.Error(name)
-		l.Fatal("'npm init' failed?")
+	l.Debug("Constructing boilerplate url.")
+	mirror := util.Trim(c.String("mirror"))
+	if mirror == "" {
+		mirror = "https://github.com"
 	}
+	template := util.Trim(c.String("template"))
+	if template == "" {
+		template = "koishijs/boilerplate"
+	}
+	ref := util.Trim(c.String("ref"))
+	if ref == "" {
+		ref = "refs/heads/master"
+	}
+	if (!strings.HasPrefix(ref, "refs/")) && (!refRegexp.MatchString(ref)) {
+		ref = "refs/heads/" + ref
+	}
+	boilerUrl := fmt.Sprintf("%s/%s/archive/%s.tar.gz", mirror, template, ref)
+
+	l.Info("Downloading boilerplate from:")
+	l.Info(boilerUrl)
+	boilerRes, err := http.Get(boilerUrl)
+	if err != nil {
+		l.Error("Request to download boilerplate failed:")
+		l.Fatal(err)
+	}
+	defer func() {
+		_ = boilerRes.Body.Close()
+	}()
+
+	l.Info("Downloading and scaffolding project.")
+	err = util.Unzip(boilerRes.Body, dir, false)
+	if err != nil {
+		l.Error("Failed to unzip boilerplate.")
+		l.Fatal(err)
+	}
+
+	l.Info("Writing .yarnrc.yml.")
+	yarnrctmpl, err := os.Open(filepath.Join(config.Config.InternalDataDir, "yarnrc.tmpl.yml"))
+	if err != nil {
+		l.Fatal("Failed to open yarnrc.tmpl.yml.")
+	}
+	defer func() {
+		_ = yarnrctmpl.Close()
+	}()
+	yarnrc, err := os.Create(filepath.Join(dir, ".yarnrc.yml"))
+	if err != nil {
+		l.Fatal("Failed to create .yarnrc.yml.")
+	}
+	defer func() {
+		_ = yarnrc.Close()
+	}()
+	_, err = io.Copy(yarnrc, yarnrctmpl)
+	if err != nil {
+		l.Fatal("Failed to copy .yarnrc.yml.")
+	}
+	err = yarnrctmpl.Close()
+	if err != nil {
+		l.Fatal("Failed to close yarnrc.tmpl.yml.")
+	}
+	err = yarnrc.Close()
+	if err != nil {
+		l.Fatal("Failed to close .yarnrc.yml.")
+	}
+
+	l.Info("Install packages.")
+	var args []string
 	if len(packages) > 0 {
-		l.Debug("Now install packages.")
-		args = []string{"i", "-S", "--production"}
-		args = append(args, packages...)
-		err = daemon.RunNpm(
-			args,
-			dir,
-		)
-		if err != nil {
-			l.Error("Err when installing packages.")
-			l.Fatal(err)
-		}
+		args = append([]string{"add"}, packages...)
+	}
+	err = daemon.RunYarn(args, dir)
+	if err != nil {
+		l.Error("Err when installing packages.")
+		l.Fatal(err)
+	}
+
+	l.Info("Deleting yarn cache.")
+	err = os.RemoveAll(filepath.Join(dir, ".yarn"))
+	if err != nil {
+		l.Fatal("Failed to delete yarn cache.")
 	}
 
 	l.Info("Done. Your new instance:")
