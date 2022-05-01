@@ -145,7 +145,7 @@ func createInstanceAction(c *cli.Context) error {
 	}()
 
 	l.Info("Downloading and scaffolding project.")
-	err = util.Unzip(boilerRes.Body, dir, false)
+	err = util.Unzip(boilerRes.Body, dir, false, true)
 	if err != nil {
 		l.Error("Failed to unzip boilerplate.")
 		l.Fatal(err)
