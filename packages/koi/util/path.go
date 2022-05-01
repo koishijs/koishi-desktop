@@ -9,15 +9,16 @@ func Resolve(base string, path string, ensureExists bool) (string, error) {
 	if base != "" {
 		path = filepath.Join(base, path)
 	}
-	path, err := filepath.EvalSymlinks(path)
-	if err != nil {
-		return "", err
-	}
 	if ensureExists {
-		_, err = os.Stat(path)
+		ePath, err := filepath.EvalSymlinks(path)
 		if err != nil {
 			return "", err
 		}
+		_, err = os.Stat(ePath)
+		if err != nil {
+			return "", err
+		}
+		path = ePath
 	}
 	return path, nil
 }
