@@ -8,7 +8,7 @@ import (
 	"path/filepath"
 )
 
-func Unzip(src string, dest string, clean bool) error {
+func UnzipFile(src string, dest string, clean bool) error {
 	rSrc, err := Resolve("", src, true)
 	if err != nil {
 		l.Errorf("Failed to resolve %s", src)
@@ -16,6 +16,19 @@ func Unzip(src string, dest string, clean bool) error {
 	}
 	l.Debugf("Unzip: %s", rSrc)
 
+	srcFile, err := os.Open(rSrc)
+	if err != nil {
+		l.Error("Failed to open source file.")
+		return err
+	}
+	defer func() {
+		_ = srcFile.Close()
+	}()
+
+	return Unzip(srcFile, dest, clean)
+}
+
+func Unzip(src io.Reader, dest string, clean bool) error {
 	rDest, err := Resolve("", dest, false)
 	if err != nil {
 		l.Errorf("Failed to resolve %s", dest)
@@ -35,16 +48,7 @@ func Unzip(src string, dest string, clean bool) error {
 		return err
 	}
 
-	srcFile, err := os.Open(rSrc)
-	if err != nil {
-		l.Error("Failed to open source file.")
-		return err
-	}
-	defer func() {
-		_ = srcFile.Close()
-	}()
-
-	gReader, err := gzip.NewReader(srcFile)
+	gReader, err := gzip.NewReader(src)
 	if err != nil {
 		l.Error("Failed to parse gzip.")
 		return err
