@@ -72,6 +72,9 @@ func Unzip(src io.Reader, dest string, clean bool, strip bool) error {
 
 		if f.Typeflag != tar.TypeDir {
 			rel := f.Name
+			if rel == "pax_global_header" {
+				continue
+			}
 			if strip {
 				var i int
 				le := len(f.Name)
