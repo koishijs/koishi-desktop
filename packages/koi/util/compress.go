@@ -9,14 +9,9 @@ import (
 )
 
 func UnzipFile(src string, dest string, clean bool) error {
-	rSrc, err := Resolve("", src, true)
-	if err != nil {
-		l.Errorf("Failed to resolve %s", src)
-		return err
-	}
-	l.Debugf("Unzip: %s", rSrc)
+	l.Debugf("Unzip: %s", src)
 
-	srcFile, err := os.Open(rSrc)
+	srcFile, err := os.Open(src)
 	if err != nil {
 		l.Error("Failed to open source file.")
 		return err
@@ -29,20 +24,17 @@ func UnzipFile(src string, dest string, clean bool) error {
 }
 
 func Unzip(src io.Reader, dest string, clean bool) error {
-	rDest, err := Resolve("", dest, false)
-	if err != nil {
-		l.Errorf("Failed to resolve %s", dest)
-		return err
-	}
-	l.Debugf("To: %s", rDest)
+	var err error
+
+	l.Debugf("To: %s", dest)
 	if clean {
-		err = os.RemoveAll(rDest)
+		err = os.RemoveAll(dest)
 		if err != nil {
 			l.Error("Failed to clean destination dir.")
 			return err
 		}
 	}
-	err = os.MkdirAll(rDest, os.ModePerm)
+	err = os.MkdirAll(dest, os.ModePerm)
 	if err != nil {
 		l.Error("Failed to create destination dir.")
 		return err
@@ -66,7 +58,7 @@ func Unzip(src io.Reader, dest string, clean bool) error {
 		}
 
 		if header.Typeflag != tar.TypeDir {
-			name := filepath.Join(rDest, header.Name)
+			name := filepath.Join(dest, header.Name)
 			dir := filepath.Dir(name)
 			err = os.MkdirAll(dir, os.ModePerm)
 			if err != nil {
