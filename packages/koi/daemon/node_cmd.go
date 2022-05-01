@@ -35,7 +35,7 @@ func RunYarn(
 	args []string,
 	dir string,
 ) error {
-	yarnPath, err := util.Resolve(config.Config.InternalNodeExeDir, "yarn.js", true)
+	yarnPath, err := util.Resolve(config.Config.InternalNodeExeDir, "yarn.cjs", true)
 	if err != nil {
 		l.Error("Cannot resolve yarn.")
 		return err
