@@ -7,6 +7,7 @@ import (
 	"koi/util"
 	"os"
 	"os/exec"
+	"path/filepath"
 	"runtime"
 	"strings"
 )
@@ -140,10 +141,7 @@ func CreateNodeCmd(
 
 	l.Debug("Now constructing NodeCmd.")
 	errReader, errWriter := io.Pipe()
-	cmdPath, err := util.Resolve(config.Config.InternalNodeExeDir, nodeExe)
-	if err != nil {
-		l.Fatalf("Failed to resolve node executable: %s", nodeExe)
-	}
+	cmdPath := filepath.Join(config.Config.InternalNodeExeDir, nodeExe)
 	cmdArgs := []string{cmdPath}
 	cmdArgs = append(cmdArgs, args...)
 	cmd := exec.Cmd{
