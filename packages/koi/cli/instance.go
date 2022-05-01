@@ -92,8 +92,7 @@ func createInstanceAction(c *cli.Context) error {
 	l.Debug(args)
 
 	l.Debug("Now init koishi.")
-	err := daemon.RunNodeCmd(
-		"npm",
+	err := daemon.RunNpm(
 		args,
 		config.Config.InternalInstanceDir,
 	)
@@ -112,8 +111,7 @@ func createInstanceAction(c *cli.Context) error {
 		l.Debug("Now install packages.")
 		args = []string{"i", "-S", "--production"}
 		args = append(args, packages...)
-		err = daemon.RunNodeCmd(
-			"npm",
+		err = daemon.RunNpm(
 			args,
 			dir,
 		)

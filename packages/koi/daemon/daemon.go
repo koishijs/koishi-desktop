@@ -104,8 +104,7 @@ func Daemon() error {
 }
 
 func daemonIntl(dir string) int {
-	err := RunNodeCmd(
-		"npm",
+	err := RunNpm(
 		[]string{"run", "start"},
 		dir,
 	)

@@ -22,6 +22,22 @@ type NodeCmd struct {
 	errWriter *io.PipeWriter
 }
 
+func RunNode(
+	entry string,
+	args []string,
+	dir string,
+) error {
+	args = append([]string{entry}, args...)
+	return RunNodeCmd("node", args, dir)
+}
+
+func RunNpm(
+	args []string,
+	dir string,
+) error {
+	return RunNodeCmd("npm", args, dir)
+}
+
 func RunNodeCmd(
 	nodeExe string,
 	args []string,
