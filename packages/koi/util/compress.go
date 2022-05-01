@@ -10,7 +10,7 @@ import (
 	"strings"
 )
 
-func UnzipFile(src string, dest string, clean bool) error {
+func UnzipFile(src string, dest string, clean bool, strip bool) error {
 	l.Debugf("Unzip: %s", src)
 
 	srcFile, err := os.Open(src)
@@ -22,10 +22,10 @@ func UnzipFile(src string, dest string, clean bool) error {
 		_ = srcFile.Close()
 	}()
 
-	return Unzip(srcFile, dest, clean)
+	return Unzip(srcFile, dest, clean, strip)
 }
 
-func Unzip(src io.Reader, dest string, clean bool) error {
+func Unzip(src io.Reader, dest string, clean bool, strip bool) error {
 	var err error
 
 	l.Debugf("To: %s", dest)
@@ -71,7 +71,18 @@ func Unzip(src io.Reader, dest string, clean bool) error {
 		}
 
 		if f.Typeflag != tar.TypeDir {
-			name := filepath.Join(dest, f.Name)
+			rel := f.Name
+			if strip {
+				var i int
+				for i = 0; i < len(f.Name); i++ {
+					if f.Name[i] == '/' {
+						break
+					}
+				}
+				rel = f.Name[i+1:]
+			}
+
+			name := filepath.Join(dest, rel)
 			dir := filepath.Dir(name)
 			err = os.MkdirAll(dir, os.ModePerm)
 			if err != nil {
