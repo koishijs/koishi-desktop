@@ -151,7 +151,7 @@ func createInstanceAction(c *cli.Context) error {
 		l.Fatal(err)
 	}
 
-	l.Info("Writing .yarnrc.yml.")
+	l.Info("Writing yarn config.")
 	yarnrctmpl, err := os.Open(filepath.Join(config.Config.InternalDataDir, "yarnrc.tmpl.yml"))
 	if err != nil {
 		l.Fatal("Failed to open yarnrc.tmpl.yml.")
@@ -178,8 +178,13 @@ func createInstanceAction(c *cli.Context) error {
 	if err != nil {
 		l.Fatal("Failed to close .yarnrc.yml.")
 	}
+	yarnlock, err := os.Create(filepath.Join(dir, "yarn.lock"))
+	if err != nil {
+		l.Fatal("Failed to create yarn.lock.")
+	}
+	_ = yarnlock.Close()
 
-	l.Info("Install packages.")
+	l.Info("Installing packages.")
 	var args []string
 	if len(packages) > 0 {
 		args = append([]string{"add"}, packages...)
