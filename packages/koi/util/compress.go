@@ -74,12 +74,15 @@ func Unzip(src io.Reader, dest string, clean bool, strip bool) error {
 			rel := f.Name
 			if strip {
 				var i int
-				for i = 0; i < len(f.Name); i++ {
+				le := len(f.Name)
+				for i = 0; i < le; i++ {
 					if f.Name[i] == '/' {
 						break
 					}
 				}
-				rel = f.Name[i+1:]
+				if i < le-1 {
+					rel = f.Name[i+1:]
+				}
 			}
 
 			name := filepath.Join(dest, rel)
