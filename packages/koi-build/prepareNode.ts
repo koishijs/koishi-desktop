@@ -1,4 +1,5 @@
 import axios from 'axios'
+import del from 'del'
 import * as fs from 'fs'
 import { error, info } from 'gulplog'
 import * as lzma from 'lzma-native'
@@ -55,7 +56,7 @@ async function extractNode(destPath: string) {
   switch (process.platform) {
     case 'win32': {
       const zip = new StreamZip.async({ file: destPath })
-      await zip.extract(nodeFolderWin, resolve('data/node', 'dist'))
+      await zip.extract(nodeFolderWin, resolve('node', 'distData'))
       await zip.close()
       break
     }
@@ -63,7 +64,7 @@ async function extractNode(destPath: string) {
       await promisify(stream.finished)(
         fs
           .createReadStream(destPath)
-          .pipe(tar.extract({ cwd: resolve('data/node', 'dist'), strip: 1 }))
+          .pipe(tar.extract({ cwd: resolve('node', 'distData'), strip: 1 }))
       )
       break
     case 'linux':
@@ -71,7 +72,7 @@ async function extractNode(destPath: string) {
         fs
           .createReadStream(destPath)
           .pipe(lzma.createDecompressor())
-          .pipe(tar.extract({ cwd: resolve('data/node', 'dist'), strip: 1 }))
+          .pipe(tar.extract({ cwd: resolve('node', 'distData'), strip: 1 }))
       )
       break
     default: {
@@ -82,6 +83,32 @@ async function extractNode(destPath: string) {
   }
 }
 
+async function removeNpmWindows() {
+  await del(resolve('node/CHANGELOG.md', 'distData'))
+  await del(resolve('node/README.md', 'distData'))
+  await del(resolve('node/node_modules', 'distData'))
+  await del(resolve('node/node_etw_provider.man', 'distData'))
+  await del(resolve('node/install_tools.bat', 'distData'))
+  await del(resolve('node/nodevars.bat', 'distData'))
+  await del(resolve('node/corepack', 'distData'))
+  await del(resolve('node/corepack.cmd', 'distData'))
+  await del(resolve('node/npm', 'distData'))
+  await del(resolve('node/npm.cmd', 'distData'))
+  await del(resolve('node/npx', 'distData'))
+  await del(resolve('node/npx.cmd', 'distData'))
+}
+
+async function removeNpmUnix() {
+  await del(resolve('node/CHANGELOG.md', 'distData'))
+  await del(resolve('node/README.md', 'distData'))
+  await del(resolve('node/bin/corepack', 'distData'))
+  await del(resolve('node/bin/npm', 'distData'))
+  await del(resolve('node/bin/npx', 'distData'))
+  await del(resolve('node/include', 'distData'))
+  await del(resolve('node/lib', 'distData'))
+  await del(resolve('node/share', 'distData'))
+}
+
 export async function prepareNode(): Promise<void> {
   info(`Downloading Node.js for ${process.platform} on ${process.arch}.`)
 
@@ -89,14 +116,17 @@ export async function prepareNode(): Promise<void> {
     case 'win32':
       await buildDownloadNode(srcPathWin, destPathWin)()
       await extractNode(destPathWin)
+      await removeNpmWindows()
       break
     case 'darwin':
       await buildDownloadNode(srcPathMac, destPathMac)()
       await extractNode(destPathMac)
+      await removeNpmUnix()
       break
     case 'linux':
       await buildDownloadNode(srcPathLinux, destPathLinux)()
       await extractNode(destPathLinux)
+      await removeNpmUnix()
       break
     default: {
       const err = `Platform ${process.platform} not supported yet`
