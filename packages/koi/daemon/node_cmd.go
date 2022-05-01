@@ -19,6 +19,8 @@ var (
 
 type NodeCmd struct {
 	Cmd       exec.Cmd
+	outReader *io.PipeReader
+	outWriter *io.PipeWriter
 	errReader *io.PipeReader
 	errWriter *io.PipeWriter
 }
@@ -140,6 +142,7 @@ func CreateNodeCmd(
 	l.Debugf("PWD=%s", dir)
 
 	l.Debug("Now constructing NodeCmd.")
+	outReader, outWriter := io.Pipe()
 	errReader, errWriter := io.Pipe()
 	cmdPath := filepath.Join(config.Config.InternalNodeExeDir, nodeExe)
 	cmdArgs := []string{cmdPath}
@@ -150,7 +153,7 @@ func CreateNodeCmd(
 		Env:          env,
 		Dir:          dir,
 		Stdin:        nil,
-		Stdout:       os.Stdout,
+		Stdout:       outWriter,
 		Stderr:       errWriter,
 		ExtraFiles:   nil,
 		SysProcAttr:  nil,
@@ -160,6 +163,8 @@ func CreateNodeCmd(
 
 	return NodeCmd{
 		Cmd:       cmd,
+		outReader: outReader,
+		outWriter: outWriter,
 		errReader: errReader,
 		errWriter: errWriter,
 	}
@@ -173,24 +178,27 @@ func (c *NodeCmd) Run() error {
 	return c.Wait()
 }
 
+func logKoishi(r *io.PipeReader) {
+	p := make([]byte, 1024)
+	for {
+		n, err := r.Read(p)
+		if err == io.EOF {
+			break
+		}
+		if err != nil {
+			l.Debugf("stderr.Read() err: %s", err)
+		}
+		s := util.Trim(string(p[:n]))
+		if len(s) > 0 {
+			lKoishi.Info(s + util.ResetCtrlStr)
+		}
+	}
+}
+
 func (c *NodeCmd) Start() error {
 	l.Debug("Now start stderr reader.")
-	go func() {
-		p := make([]byte, 1024)
-		for {
-			n, err := c.errReader.Read(p)
-			if err == io.EOF {
-				break
-			}
-			if err != nil {
-				l.Debugf("stderr.Read() err: %s", err)
-			}
-			s := util.Trim(string(p[:n]))
-			if len(s) > 0 {
-				lKoishi.Info(s + util.ResetCtrlStr)
-			}
-		}
-	}()
+	go logKoishi(c.outReader)
+	go logKoishi(c.errReader)
 
 	l.Debug("Now start NodeCmd.")
 	return c.Cmd.Start()
@@ -200,7 +208,12 @@ func (c *NodeCmd) Wait() error {
 	l.Debug("Now wait NodeCmd.")
 
 	defer func() {
-		err := c.errWriter.Close()
+		err := c.outWriter.Close()
+		if err != nil {
+			l.Debug("Stdout closed with err.")
+			l.Debug(err)
+		}
+		err = c.errWriter.Close()
 		if err != nil {
 			l.Debug("Stderr closed with err.")
 			l.Debug(err)
