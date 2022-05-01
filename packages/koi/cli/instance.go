@@ -185,9 +185,9 @@ func createInstanceAction(c *cli.Context) error {
 	_ = yarnlock.Close()
 
 	l.Info("Installing packages.")
-	var args []string
+	args := []string{"install", "--production"}
 	if len(packages) > 0 {
-		args = append([]string{"add"}, packages...)
+		args = append([]string{"add", "--production"}, packages...)
 	}
 	err = daemon.RunYarn(args, dir)
 	if err != nil {
