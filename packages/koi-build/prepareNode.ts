@@ -7,7 +7,7 @@ import StreamZip from 'node-stream-zip'
 import stream from 'stream'
 import * as tar from 'tar'
 import { promisify } from 'util'
-import { nodeVersion } from './config'
+import { nodeVersion, yarnVersion } from './config'
 import { resolve } from './path'
 import { exists, notEmpty } from './utils'
 
@@ -20,6 +20,7 @@ const destPathMac = resolve('node.tar.gz', 'buildTemp')
 const nodeFolderLinux = `node-v${nodeVersion}-linux-${process.arch}`
 const srcPathLinux = `https://nodejs.org/dist/v${nodeVersion}/${nodeFolderLinux}.tar.xz`
 const destPathLinux = resolve('node.tar.xz', 'buildTemp')
+const srcPathYarn = `https://repo.yarnpkg.com/${yarnVersion}/packages/yarnpkg-cli/bin/yarn.js`
 
 const buildDownloadNode =
   (srcPath: string, destPath: string): (() => Promise<void>) =>
@@ -109,6 +110,19 @@ async function removeNpmUnix() {
   await del(resolve('node/share', 'distData'))
 }
 
+async function downloadYarn() {
+  const res = await axios.get(srcPathYarn, { responseType: 'stream' })
+  const writeStream = fs.createWriteStream(
+    resolve(
+      process.platform === 'win32' ? 'node/yarn.cjs' : 'node/bin/yarn.cjs',
+      'distData'
+    )
+  )
+  await promisify(stream.finished)(
+    (res.data as stream.Readable).pipe(writeStream)
+  )
+}
+
 export async function prepareNode(): Promise<void> {
   info(`Downloading Node.js for ${process.platform} on ${process.arch}.`)
 
@@ -117,16 +131,19 @@ export async function prepareNode(): Promise<void> {
       await buildDownloadNode(srcPathWin, destPathWin)()
       await extractNode(destPathWin)
       await removeNpmWindows()
+      await downloadYarn()
       break
     case 'darwin':
       await buildDownloadNode(srcPathMac, destPathMac)()
       await extractNode(destPathMac)
       await removeNpmUnix()
+      await downloadYarn()
       break
     case 'linux':
       await buildDownloadNode(srcPathLinux, destPathLinux)()
       await extractNode(destPathLinux)
       await removeNpmUnix()
+      await downloadYarn()
       break
     default: {
       const err = `Platform ${process.platform} not supported yet`
