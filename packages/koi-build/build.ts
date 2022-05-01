@@ -99,9 +99,8 @@ export async function run() {
 }
 
 export const build = series(
-  buildExe,
   writeConfig,
+  buildExe,
   createDefaultInstance,
-  cleanupDefaultInstance,
-  writeConfig
+  cleanupDefaultInstance
 )
