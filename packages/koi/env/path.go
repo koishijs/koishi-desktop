@@ -19,7 +19,7 @@ func dirName() string {
 	if err != nil {
 		l.Fatal("Cannot get executable.")
 	}
-	path, err = util.Resolve("", filepath.Dir(path), true)
+	path, err = util.Resolve("", filepath.Dir(path))
 	if err != nil {
 		l.Fatal("Cannot get executable dir.")
 	}

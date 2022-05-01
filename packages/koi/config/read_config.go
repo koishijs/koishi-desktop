@@ -41,7 +41,7 @@ func readConfigIntl(path string, recur int) (*KoiConfig, error) {
 
 	absPath := path
 	if !filepath.IsAbs(absPath) {
-		newAbsPath, err := util.Resolve(env.DirName, absPath, true)
+		newAbsPath, err := util.Resolve(env.DirName, absPath)
 		if err != nil {
 			l.Error("Failed to resolve config path:")
 			l.Fatal(absPath)
@@ -83,7 +83,7 @@ func readConfigIntl(path string, recur int) (*KoiConfig, error) {
 }
 
 func postConfig(c *KoiConfig) {
-	dir, err := util.Resolve(c.InternalConfigDir, "data", true)
+	dir, err := util.Resolve(c.InternalConfigDir, "data")
 	if err != nil {
 		l.Error("Failed to resolve data dir. Config dir:")
 		l.Fatal(c.InternalConfigDir)
@@ -91,7 +91,7 @@ func postConfig(c *KoiConfig) {
 	c.InternalDataDir = dir
 
 	if c.UseDataHome {
-		dir, err = util.Resolve(c.InternalDataDir, "home", true)
+		dir, err = util.Resolve(c.InternalDataDir, "home")
 		if err != nil {
 			l.Error("Failed to resolve home dir. Data dir:")
 			l.Fatal(c.InternalDataDir)
@@ -99,7 +99,7 @@ func postConfig(c *KoiConfig) {
 		c.InternalHomeDir = dir
 	}
 
-	dir, err = util.Resolve(c.InternalDataDir, "node", true)
+	dir, err = util.Resolve(c.InternalDataDir, "node")
 	if err != nil {
 		l.Error("Failed to resolve node dir. Data dir:")
 		l.Fatal(c.InternalDataDir)
@@ -108,7 +108,7 @@ func postConfig(c *KoiConfig) {
 	if runtime.GOOS == "windows" {
 		c.InternalNodeExeDir = c.InternalNodeDir
 	} else {
-		dir, err = util.Resolve(c.InternalNodeDir, "bin", true)
+		dir, err = util.Resolve(c.InternalNodeDir, "bin")
 		if err != nil {
 			l.Error("Failed to resolve node binary dir. Node dir:")
 			l.Fatal(c.InternalNodeDir)
@@ -117,7 +117,7 @@ func postConfig(c *KoiConfig) {
 	}
 
 	if c.UseDataTemp {
-		dir, err = util.Resolve(c.InternalDataDir, "tmp", true)
+		dir, err = util.Resolve(c.InternalDataDir, "tmp")
 		if err != nil {
 			l.Error("Failed to resolve temp dir. Data dir:")
 			l.Fatal(c.InternalDataDir)
@@ -125,7 +125,7 @@ func postConfig(c *KoiConfig) {
 		c.InternalTempDir = dir
 	}
 
-	dir, err = util.Resolve(c.InternalDataDir, "instances", true)
+	dir, err = util.Resolve(c.InternalDataDir, "instances")
 	if err != nil {
 		l.Error("Failed to resolve instance dir. Data dir:")
 		l.Fatal(c.InternalDataDir)

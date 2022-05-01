@@ -46,7 +46,7 @@ const (
 func Daemon() error {
 	l.Debug("Starting daemon.")
 
-	dir, err := util.Resolve(config.Config.InternalInstanceDir, config.Config.Target, true)
+	dir, err := util.Resolve(config.Config.InternalInstanceDir, config.Config.Target)
 	if err != nil {
 		l.Fatalf("Failed to resolve target: %s", config.Config.Target)
 	}

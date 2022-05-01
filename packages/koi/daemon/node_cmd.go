@@ -35,7 +35,7 @@ func RunYarn(
 	args []string,
 	dir string,
 ) error {
-	yarnPath, err := util.Resolve(config.Config.InternalNodeExeDir, "yarn.cjs", true)
+	yarnPath, err := util.Resolve(config.Config.InternalNodeExeDir, "yarn.cjs")
 	if err != nil {
 		l.Error("Cannot resolve yarn.")
 		return err
@@ -140,7 +140,7 @@ func CreateNodeCmd(
 
 	l.Debug("Now constructing NodeCmd.")
 	errReader, errWriter := io.Pipe()
-	cmdPath, err := util.Resolve(config.Config.InternalNodeExeDir, nodeExe, true)
+	cmdPath, err := util.Resolve(config.Config.InternalNodeExeDir, nodeExe)
 	if err != nil {
 		l.Fatalf("Failed to resolve node executable: %s", nodeExe)
 	}
