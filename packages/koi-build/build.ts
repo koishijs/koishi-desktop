@@ -79,7 +79,7 @@ export async function createDefaultInstance() {
   }
 }
 
-const cleanupDefaultInstance = series(async () => {
+export const cleanupDefaultInstance = series(async () => {
   await del(resolve('home', 'distData'))
   await del(resolve('tmp', 'distData'))
 }, mkdir)
