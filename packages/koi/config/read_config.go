@@ -131,4 +131,10 @@ func postConfig(c *KoiConfig) {
 		l.Fatal(c.InternalDataDir)
 	}
 	c.InternalInstanceDir = dir
+
+	// https://github.com/koishijs/koi/issues/19
+	if c.Strict {
+		c.UseDataHome = true
+		c.UseDataTemp = true
+	}
 }
