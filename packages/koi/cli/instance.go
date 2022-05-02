@@ -144,14 +144,14 @@ func createInstanceAction(c *cli.Context) error {
 		_ = boilerRes.Body.Close()
 	}()
 
-	l.Info("[1/8] Downloading and scaffolding project.")
+	l.Info("[1/7] Downloading and scaffolding project.")
 	err = util.Unzip(boilerRes.Body, dir, false, true)
 	if err != nil {
 		l.Error("Failed to unzip boilerplate.")
 		l.Fatal(err)
 	}
 
-	l.Info("[2/8] Writing yarn config.")
+	l.Info("[2/7] Writing yarn config.")
 	yarnrctmpl, err := os.Open(filepath.Join(config.Config.InternalDataDir, "yarnrc.tmpl.yml"))
 	if err != nil {
 		l.Fatal("Failed to open yarnrc.tmpl.yml.")
@@ -184,17 +184,7 @@ func createInstanceAction(c *cli.Context) error {
 	}
 	_ = yarnlock.Close()
 
-	l.Info("[3/8] Installing workspace-tools.")
-	err = daemon.RunYarn(
-		[]string{"plugin", "import", "workspace-tools"},
-		dir,
-	)
-	if err != nil {
-		l.Error("Err when installing workspace-tools.")
-		l.Fatal(err)
-	}
-
-	l.Info("[4/8] Installing initial packages (phase 1).")
+	l.Info("[3/7] Installing initial packages (phase 1).")
 	err = daemon.RunYarn(
 		[]string{"workspaces", "focus", "--production", "--all"},
 		dir,
@@ -204,7 +194,7 @@ func createInstanceAction(c *cli.Context) error {
 		l.Fatal(err)
 	}
 
-	l.Info("[5/8] Installing additional packages (phase 2).")
+	l.Info("[4/7] Installing additional packages (phase 2).")
 	if len(packages) > 0 {
 		err = daemon.RunYarn(
 			append([]string{"add"}, packages...),
@@ -215,14 +205,14 @@ func createInstanceAction(c *cli.Context) error {
 			l.Fatal(err)
 		}
 
-		l.Info("[6/8] Deleting node_modules.")
+		l.Info("[5/7] Deleting node_modules.")
 		err = os.RemoveAll(filepath.Join(dir, "node_modules"))
 		if err != nil {
 			l.Error("Err when deleting node_modules.")
 			l.Fatal(err)
 		}
 
-		l.Info("[7/8] Installing all packages (phase 3).")
+		l.Info("[6/7] Installing all packages (phase 3).")
 		err = daemon.RunYarn(
 			[]string{"workspaces", "focus", "--production", "--all"},
 			dir,
@@ -233,7 +223,7 @@ func createInstanceAction(c *cli.Context) error {
 		}
 	}
 
-	l.Info("[8/8] Deleting yarn cache.")
+	l.Info("[7/7] Deleting yarn cache.")
 	err = os.RemoveAll(filepath.Join(dir, ".yarn"))
 	if err != nil {
 		l.Fatal("Failed to delete yarn cache.")
