@@ -91,6 +91,48 @@ func CreateNodeCmd(
 		env = append(env, "HOME="+config.Config.InternalHomeDir)
 		env = append(env, "USERPROFILE="+config.Config.InternalHomeDir)
 		l.Debugf("HOME=%s", config.Config.InternalHomeDir)
+
+		if runtime.GOOS == "windows" {
+			l.Debug("Now replace APPDATA.")
+			for {
+				notFound := true
+				for i, e := range env {
+					if strings.HasPrefix(e, "APPDATA=") {
+						env = append(env[:i], env[i+1:]...)
+						notFound = false
+						break
+					}
+				}
+
+				if notFound {
+					break
+				}
+			}
+
+			roamingPath := filepath.Join(config.Config.InternalHomeDir, "AppData", "Roaming")
+			env = append(env, "APPDATA="+roamingPath)
+			l.Debugf("APPDATA=%s", roamingPath)
+
+			l.Debug("Now replace LOCALAPPDATA.")
+			for {
+				notFound := true
+				for i, e := range env {
+					if strings.HasPrefix(e, "LOCALAPPDATA=") {
+						env = append(env[:i], env[i+1:]...)
+						notFound = false
+						break
+					}
+				}
+
+				if notFound {
+					break
+				}
+			}
+
+			localPath := filepath.Join(config.Config.InternalHomeDir, "AppData", "Local")
+			env = append(env, "LOCALAPPDATA="+localPath)
+			l.Debugf("LOCALAPPDATA=%s", localPath)
+		}
 	}
 
 	if config.Config.UseDataTemp {

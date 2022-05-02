@@ -3,6 +3,7 @@ import * as fs from 'fs'
 import { series } from 'gulp'
 import { error } from 'gulplog'
 import mkdirp from 'mkdirp'
+import { mkdir } from './common'
 import {
   boilerplateVersion,
   defaultInstance,
@@ -78,12 +79,10 @@ export async function createDefaultInstance() {
   }
 }
 
-export async function cleanupDefaultInstance(): Promise<void> {
+const cleanupDefaultInstance = series(async () => {
   await del(resolve('home', 'distData'))
   await del(resolve('tmp', 'distData'))
-  await mkdirp(resolve('home', 'distData'))
-  await mkdirp(resolve('tmp', 'distData'))
-}
+}, mkdir)
 
 export async function run() {
   const result = await spawnAsync(

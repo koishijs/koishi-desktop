@@ -13,6 +13,10 @@ export function cleanDist(): Promise<string[]> {
 export async function mkdir(): Promise<void> {
   await mkdirp(resolve('.', 'buildTemp'))
   await mkdirp(resolve('home', 'distData'))
+  if (process.platform === 'win32') {
+    await mkdirp(resolve('home/AppData/Local', 'distData'))
+    await mkdirp(resolve('home/AppData/Roaming', 'distData'))
+  }
   await mkdirp(resolve('instances', 'distData'))
   await mkdirp(resolve('node', 'distData'))
   await mkdirp(resolve('tmp', 'distData'))
