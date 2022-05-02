@@ -20,6 +20,7 @@ const nodeFolderLinux = `node-v${nodeVersion}-linux-${process.arch}`
 const srcPathLinux = `https://nodejs.org/dist/v${nodeVersion}/${nodeFolderLinux}.tar.xz`
 const destPathLinux = resolve('node.tar.xz', 'buildTemp')
 const srcPathYarn = `https://repo.yarnpkg.com/${yarnVersion}/packages/yarnpkg-cli/bin/yarn.js`
+const srcPathYarnWorkspace = `https://github.com/yarnpkg/berry/raw/@yarnpkg/cli/${yarnVersion}/packages/plugin-workspace-tools/bin/%40yarnpkg/plugin-workspace-tools.js`
 
 const buildDownloadNode =
   (srcPath: string, destPath: string): (() => Promise<void>) =>
@@ -31,7 +32,7 @@ const buildDownloadNode =
       return
     }
 
-    info('Now downloading.')
+    info('Now downloading Node.js.')
     await downloadFile(srcPath, destPath)
   }
 
@@ -110,6 +111,12 @@ async function downloadYarn() {
     process.platform === 'win32' ? 'node/yarn.cjs' : 'node/bin/yarn.cjs',
     'distData'
   )
+  const destYarnWorkspace = resolve(
+    process.platform === 'win32'
+      ? 'node/yarn-workspace-tools.cjs'
+      : 'node/bin/yarn-workspace-tools.cjs',
+    'distData'
+  )
 
   if (await exists(destYarn)) {
     info('Yarn exists. Skipping download.')
@@ -117,6 +124,13 @@ async function downloadYarn() {
   } else {
     info('Now downloading Yarn.')
     await downloadFile(srcPathYarn, destYarn)
+  }
+  if (await exists(destYarnWorkspace)) {
+    info('Yarn workspace plugin exists. Skipping download.')
+    info("If you want to re-download Yarn workspace plugin, use 'gulp clean'.")
+  } else {
+    info('Now downloading Yarn workspace plugin.')
+    await downloadFile(srcPathYarnWorkspace, destYarnWorkspace)
   }
 }
 
