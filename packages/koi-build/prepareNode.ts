@@ -106,13 +106,18 @@ async function removeNpmUnix() {
 }
 
 async function downloadYarn() {
-  await downloadFile(
-    srcPathYarn,
-    resolve(
-      process.platform === 'win32' ? 'node/yarn.cjs' : 'node/bin/yarn.cjs',
-      'distData'
-    )
+  const destYarn = resolve(
+    process.platform === 'win32' ? 'node/yarn.cjs' : 'node/bin/yarn.cjs',
+    'distData'
   )
+
+  if (await exists(destYarn)) {
+    info('Yarn exists. Skipping download.')
+    info("If you want to re-download Yarn, use 'gulp clean'.")
+  } else {
+    info('Now downloading Yarn.')
+    await downloadFile(srcPathYarn, destYarn)
+  }
 }
 
 export async function prepareNode(): Promise<void> {
