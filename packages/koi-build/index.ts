@@ -21,6 +21,7 @@ export function cleanDist(): Promise<string[]> {
 export async function mkdir(): Promise<void> {
   await mkdirp(resolve('.', 'buildTemp'))
   await mkdirp(resolve('home', 'distData'))
+  await mkdirp(resolve('instances', 'distData'))
   await mkdirp(resolve('node', 'distData'))
   await mkdirp(resolve('tmp', 'distData'))
 }
