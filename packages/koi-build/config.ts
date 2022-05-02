@@ -4,7 +4,7 @@ import { spawnOut } from './utils'
 export const nodeVersion = '14.19.1'
 export const yarnVersion = '3.2.0'
 
-export const defaultInstance = 'a48d1e81653656509a6364ba50959398b86eb5e8'
+export const defaultInstance = 'adace8ea4130c619a7376e8e117780102e67dca7'
 
 export const defaultYarnrc = `
 npmRegistryServer: https://registry.npmmirror.com/
@@ -19,7 +19,7 @@ mode: portable
 target: ${defaultInstance}
 `.trim()
 
-export const boilerplateVersion = '1a18326a130c33996191a300278bd288f05b24ca'
+export const boilerplateVersion = 'a48d1e81653656509a6364ba50959398b86eb5e8'
 
 let koiVersionTemp = ''
 
