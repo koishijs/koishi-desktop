@@ -18,7 +18,7 @@ var (
 )
 
 type NodeCmd struct {
-	Cmd       exec.Cmd
+	Cmd       *exec.Cmd
 	outReader *io.PipeReader
 	outWriter *io.PipeWriter
 	errReader *io.PipeReader
@@ -59,7 +59,7 @@ func CreateNodeCmd(
 	nodeExe string,
 	args []string,
 	dir string,
-) NodeCmd {
+) *NodeCmd {
 	l.Debug("Getting env.")
 	env := os.Environ()
 
@@ -161,8 +161,8 @@ func CreateNodeCmd(
 		ProcessState: nil,
 	}
 
-	return NodeCmd{
-		Cmd:       cmd,
+	return &NodeCmd{
+		Cmd:       &cmd,
 		outReader: outReader,
 		outWriter: outWriter,
 		errReader: errReader,
