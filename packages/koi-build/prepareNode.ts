@@ -112,9 +112,7 @@ async function downloadYarn() {
     'distData'
   )
   const destYarnWorkspace = resolve(
-    process.platform === 'win32'
-      ? 'node/plugin-workspace-tools.cjs'
-      : 'node/bin/plugin-workspace-tools.cjs',
+    'node/plugin-workspace-tools.cjs',
     'distData'
   )
 
