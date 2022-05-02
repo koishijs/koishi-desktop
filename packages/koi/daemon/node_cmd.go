@@ -34,13 +34,21 @@ func RunNode(
 	return RunNodeCmd("node", args, dir)
 }
 
+func ResolveYarn() (string, error) {
+	yarnPath, err := util.Resolve(config.Config.InternalNodeExeDir, "yarn.cjs")
+	if err != nil {
+		l.Error("Cannot resolve yarn.")
+		return "", err
+	}
+	return yarnPath, nil
+}
+
 func RunYarn(
 	args []string,
 	dir string,
 ) error {
-	yarnPath, err := util.Resolve(config.Config.InternalNodeExeDir, "yarn.cjs")
+	yarnPath, err := ResolveYarn()
 	if err != nil {
-		l.Error("Cannot resolve yarn.")
 		return err
 	}
 	return RunNode(yarnPath, args, dir)
