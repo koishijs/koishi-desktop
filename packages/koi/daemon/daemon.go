@@ -93,7 +93,7 @@ func Daemon() error {
 			}
 		}
 
-		l.Debugf("Wait for %s.", currentInterval.String())
+		l.Infof("Wait for %s.", currentInterval.String())
 		if t == nil {
 			t = time.NewTimer(currentInterval)
 		} else {
