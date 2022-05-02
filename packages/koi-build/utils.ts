@@ -1,6 +1,9 @@
+import axios from 'axios'
 import { SpawnOptions } from 'child_process'
 import { spawn } from 'cross-spawn'
 import * as fs from 'fs'
+import stream from 'stream'
+import { promisify } from 'util'
 
 export async function exists(path: fs.PathLike): Promise<boolean> {
   try {
@@ -52,4 +55,12 @@ export async function spawnAsync(
   return new Promise<number>((resolve) => {
     child.on('close', resolve)
   })
+}
+
+export async function downloadFile(src: string, dest: string) {
+  const res = await axios.get(src, { responseType: 'stream' })
+  const writeStream = fs.createWriteStream(dest)
+  await promisify(stream.finished)(
+    (res.data as stream.Readable).pipe(writeStream)
+  )
 }

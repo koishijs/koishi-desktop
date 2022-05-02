@@ -1,4 +1,3 @@
-import axios from 'axios'
 import del from 'del'
 import * as fs from 'fs'
 import { error, info } from 'gulplog'
@@ -9,7 +8,7 @@ import * as tar from 'tar'
 import { promisify } from 'util'
 import { nodeVersion, yarnVersion } from './config'
 import { resolve } from './path'
-import { exists, notEmpty } from './utils'
+import { downloadFile, exists, notEmpty } from './utils'
 
 const nodeFolderWin = `node-v${nodeVersion}-win-${process.arch}`
 const srcPathWin = `https://nodejs.org/dist/v${nodeVersion}/${nodeFolderWin}.zip`
@@ -33,11 +32,7 @@ const buildDownloadNode =
     }
 
     info('Now downloading.')
-    const res = await axios.get(srcPath, { responseType: 'stream' })
-    const writeStream = fs.createWriteStream(destPath)
-    await promisify(stream.finished)(
-      (res.data as stream.Readable).pipe(writeStream)
-    )
+    await downloadFile(srcPath, destPath)
   }
 
 async function extractNode(destPath: string) {
@@ -111,15 +106,12 @@ async function removeNpmUnix() {
 }
 
 async function downloadYarn() {
-  const res = await axios.get(srcPathYarn, { responseType: 'stream' })
-  const writeStream = fs.createWriteStream(
+  await downloadFile(
+    srcPathYarn,
     resolve(
       process.platform === 'win32' ? 'node/yarn.cjs' : 'node/bin/yarn.cjs',
       'distData'
     )
-  )
-  await promisify(stream.finished)(
-    (res.data as stream.Readable).pipe(writeStream)
   )
 }
 
