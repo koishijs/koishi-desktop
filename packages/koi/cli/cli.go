@@ -52,6 +52,7 @@ var (
 			},
 
 			instanceCommand,
+			yarnCommand,
 		},
 
 		Before: preAction,
