@@ -33,3 +33,36 @@ export async function getKoiVersion(): Promise<string> {
   info(`Use koi version ${koiVersionTemp}`)
   return koiVersionTemp
 }
+
+export interface KoiSemVer {
+  major: number
+  minor: number
+  patch: number
+  build: number
+}
+
+let koiSemverTemp: KoiSemVer | null = null
+
+export async function getKoiSemVer(): Promise<KoiSemVer> {
+  if (koiSemverTemp) return koiSemverTemp
+
+  const raw = await getKoiVersion()
+  const spl = raw.split('-')
+  let build = 0
+
+  if (spl.length > 1) {
+    // Parse build number
+    build = Number(spl[1])
+  }
+
+  const majorMinorPatch = spl[0].slice(1).split('.')
+
+  koiSemverTemp = {
+    major: Number(majorMinorPatch[0]),
+    minor: Number(majorMinorPatch[1]),
+    patch: Number(majorMinorPatch[2]),
+    build,
+  }
+
+  return koiSemverTemp
+}

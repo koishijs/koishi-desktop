@@ -2,7 +2,6 @@ import del from 'del'
 import * as fs from 'fs'
 import { series } from 'gulp'
 import { error } from 'gulplog'
-import mkdirp from 'mkdirp'
 import { mkdir } from './common'
 import {
   boilerplateVersion,
@@ -11,6 +10,7 @@ import {
   defaultYarnrc,
   getKoiVersion,
 } from './config'
+import { genManifest } from './menifest'
 import { resolve } from './path'
 import { spawnAsync } from './utils'
 
@@ -20,6 +20,17 @@ export async function goModDownload() {
   })
   if (result) {
     const err = `'go mod download' exited with error code: ${result}`
+    error(err)
+    throw new Error(err)
+  }
+}
+
+export async function goGenerate() {
+  const result = await spawnAsync('go', ['generate'], {
+    cwd: resolve('.', 'koi'),
+  })
+  if (result) {
+    const err = `'go generate' exited with error code: ${result}`
     error(err)
     throw new Error(err)
   }
@@ -47,7 +58,7 @@ export async function goBuild() {
   }
 }
 
-export const buildExe = series(goModDownload, goBuild)
+export const buildExe = series(goModDownload, goGenerate, goBuild)
 
 export async function writeConfig() {
   await fs.promises.writeFile(
@@ -99,6 +110,7 @@ export async function run() {
 
 export const build = series(
   writeConfig,
+  genManifest,
   buildExe,
   createDefaultInstance,
   cleanupDefaultInstance

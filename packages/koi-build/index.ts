@@ -2,6 +2,7 @@ export * from './build'
 export * from './common'
 export * from './pack'
 export * from './prepareNode'
+export * from './menifest'
 
 import { series } from 'gulp'
 import { build, buildExe, run } from './build'

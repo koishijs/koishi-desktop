@@ -252,3 +252,8 @@ Temporary Items
 
 # Temp files
 t[e]mp/
+
+# Generated manifest
+packages/koi/versioninfo.json
+packages/koi/resource.syso
+packages/koi/resources/koi.exe.manifest
