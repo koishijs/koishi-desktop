@@ -26,6 +26,7 @@ export async function goModDownload() {
 }
 
 export async function goGenerate() {
+  if (process.platform !== 'win32') return
   const result = await spawnAsync('go', ['generate'], {
     cwd: resolve('.', 'koi'),
   })
