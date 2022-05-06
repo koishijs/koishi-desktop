@@ -45,7 +45,7 @@ jobs:
       - name: Run go get
         if: ${{ fromJson(matrix.target).goos == 'windows' }}
         run: |
-          go install github.com/josephspurrier/goversioninfo/cmd/goversioninfo
+          go install github.com/josephspurrier/goversioninfo/cmd/goversioninfo@1.4.0
         shell: bash
 
       - name: Build Koi
