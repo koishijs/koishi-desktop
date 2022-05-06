@@ -25,21 +25,6 @@ export async function goModDownload() {
   }
 }
 
-export async function goGetVersionInfo() {
-  const result = await spawnAsync(
-    'go',
-    ['get', 'github.com/josephspurrier/goversioninfo/cmd/goversioninfo'],
-    {
-      cwd: resolve('.', 'koi'),
-    }
-  )
-  if (result) {
-    const err = `'go get' exited with error code: ${result}`
-    error(err)
-    throw new Error(err)
-  }
-}
-
 export async function goGenerate() {
   if (process.platform !== 'win32') return
   const result = await spawnAsync('go', ['generate'], {
