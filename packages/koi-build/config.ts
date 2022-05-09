@@ -19,7 +19,7 @@ mode: portable
 target: ${defaultInstance}
 `.trim()
 
-export const boilerplateVersion = 'a48d1e81653656509a6364ba50959398b86eb5e8'
+export const boilerplateVersion = '5f7f4dfb3c04d97e84f5d6e7034f9d7ab321cafa'
 
 let koiVersionTemp = ''
 
