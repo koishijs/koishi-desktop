@@ -66,7 +66,7 @@ func RunNodeCmd(
 	args []string,
 	dir string,
 ) error {
-	cmd, err := CreateNodeCmd(nodeExe, args, dir)
+	cmd, err := CreateNodeCmd(nodeExe, args, dir, true)
 	if err != nil {
 		return err
 	}
@@ -77,6 +77,7 @@ func CreateNodeCmd(
 	nodeExe string,
 	args []string,
 	dir string,
+	handleStdout bool,
 ) (*NodeCmd, error) {
 	l.Debug("Getting env.")
 	env := os.Environ()
@@ -218,36 +219,41 @@ func CreateNodeCmd(
 	nodeCmd := NodeCmd{Cmd: &cmd}
 
 	l.Debug("Now constructing io.")
-	stdoutPipe, err := cmd.StdoutPipe()
-	if err != nil {
-		l.Error("Err constructing cmd.StdoutPipe():")
-		l.Error(err)
-		return nil, err
+	if handleStdout {
+		stdoutPipe, err := cmd.StdoutPipe()
+		if err != nil {
+			l.Error("Err constructing cmd.StdoutPipe():")
+			l.Error(err)
+			return nil, err
+		}
+		stdoutScanner := bufio.NewScanner(stdoutPipe)
+		go func() {
+			for stdoutScanner.Scan() {
+				s := stdoutScanner.Text() + util.ResetCtrlStr
+				lKoishi.Info(s)
+				if nodeCmd.Out != nil {
+					*nodeCmd.Out <- NodeCmdOut{
+						IsErr: false,
+						Text:  s,
+					}
+				}
+			}
+			if err := stdoutScanner.Err(); err != nil {
+				l.Error("Err reading stdout:")
+				l.Error(err)
+			}
+		}()
+	} else {
+		cmd.Stdout = os.Stdout
 	}
+
 	stderrPipe, err := cmd.StderrPipe()
 	if err != nil {
 		l.Error("Err constructing cmd.StderrPipe():")
 		l.Error(err)
 		return nil, err
 	}
-	stdoutScanner := bufio.NewScanner(stdoutPipe)
 	stderrScanner := bufio.NewScanner(stderrPipe)
-	go func() {
-		for stdoutScanner.Scan() {
-			s := stdoutScanner.Text() + util.ResetCtrlStr
-			lKoishi.Info(s)
-			if nodeCmd.Out != nil {
-				*nodeCmd.Out <- NodeCmdOut{
-					IsErr: false,
-					Text:  s,
-				}
-			}
-		}
-		if err := stdoutScanner.Err(); err != nil {
-			l.Error("Err reading stdout:")
-			l.Error(err)
-		}
-	}()
 	go func() {
 		for stderrScanner.Scan() {
 			s := stderrScanner.Text() + util.ResetCtrlStr

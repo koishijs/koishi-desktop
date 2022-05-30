@@ -38,6 +38,7 @@ func Daemon() error {
 		"node",
 		[]string{yarnPath, "start"},
 		resolvedDir,
+		false,
 	)
 	if err != nil {
 		l.Error("Err constructing NodeCmd:")
