@@ -5,7 +5,7 @@ import (
 	"koi/daemon"
 )
 
-func runAction(c *cli.Context) error {
+func runAction(*cli.Context) error {
 	l.Debug("Trigger action: run")
 	return daemon.Daemon()
 }
