@@ -6,7 +6,7 @@ var (
 	// Log
 	l = log.WithField("package", "config")
 
-	Version = "INTERNAL"
+	Version = "v0.0.0"
 
 	Config *KoiConfig
 

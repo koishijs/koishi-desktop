@@ -189,6 +189,10 @@ func CreateNodeCmd(
 	env = append(env, "PATH="+pathEnv)
 	l.Debugf("PATH=%s", pathEnv)
 
+	koiEnv := "KOI=" + config.Version
+	env = append(env, koiEnv)
+	l.Debug(koiEnv)
+
 	l.Debugf("PWD=%s", dir)
 
 	l.Debug("Now constructing NodeCmd.")
