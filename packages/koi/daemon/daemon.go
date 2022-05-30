@@ -33,11 +33,16 @@ func Daemon() error {
 	if err != nil {
 		l.Fatal(err)
 	}
-	cmd := CreateNodeCmd(
+
+	cmd, err := CreateNodeCmd(
 		"node",
 		[]string{yarnPath, "start"},
 		resolvedDir,
 	)
+	if err != nil {
+		l.Error("Err constructing NodeCmd:")
+		l.Fatal(err)
+	}
 
 	l.Debug("Now start Koishi process.")
 	err = cmd.Start()

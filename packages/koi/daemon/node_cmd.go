@@ -1,8 +1,8 @@
 package daemon
 
 import (
+	"bufio"
 	log "github.com/sirupsen/logrus"
-	"io"
 	"koi/config"
 	"koi/util"
 	"os"
@@ -17,12 +17,14 @@ var (
 	lKoishi = log.WithField("package", "koishi")
 )
 
+type NodeCmdOut struct {
+	IsErr bool
+	Text  string
+}
+
 type NodeCmd struct {
-	Cmd       *exec.Cmd
-	outReader *io.PipeReader
-	outWriter *io.PipeWriter
-	errReader *io.PipeReader
-	errWriter *io.PipeWriter
+	Cmd *exec.Cmd
+	Out *chan NodeCmdOut
 }
 
 func RunNode(
@@ -59,7 +61,10 @@ func RunNodeCmd(
 	args []string,
 	dir string,
 ) error {
-	cmd := CreateNodeCmd(nodeExe, args, dir)
+	cmd, err := CreateNodeCmd(nodeExe, args, dir)
+	if err != nil {
+		return err
+	}
 	return cmd.Run()
 }
 
@@ -67,7 +72,7 @@ func CreateNodeCmd(
 	nodeExe string,
 	args []string,
 	dir string,
-) *NodeCmd {
+) (*NodeCmd, error) {
 	l.Debug("Getting env.")
 	env := os.Environ()
 
@@ -196,83 +201,94 @@ func CreateNodeCmd(
 	l.Debugf("PWD=%s", dir)
 
 	l.Debug("Now constructing NodeCmd.")
-	outReader, outWriter := io.Pipe()
-	errReader, errWriter := io.Pipe()
 	cmdPath := filepath.Join(config.Config.InternalNodeExeDir, nodeExe)
 	cmdArgs := []string{cmdPath}
 	cmdArgs = append(cmdArgs, args...)
 	cmd := exec.Cmd{
-		Path:         cmdPath,
-		Args:         cmdArgs,
-		Env:          env,
-		Dir:          dir,
-		Stdin:        nil,
-		Stdout:       outWriter,
-		Stderr:       errWriter,
-		ExtraFiles:   nil,
-		SysProcAttr:  nil,
-		Process:      nil,
-		ProcessState: nil,
+		Path: cmdPath,
+		Args: cmdArgs,
+		Env:  env,
+		Dir:  dir,
 	}
 
-	return &NodeCmd{
-		Cmd:       &cmd,
-		outReader: outReader,
-		outWriter: outWriter,
-		errReader: errReader,
-		errWriter: errWriter,
+	l.Debug("Now constructing io.")
+	ch := make(chan NodeCmdOut)
+	// No need to close chan.
+	// https://stackoverflow.com/questions/8593645/is-it-ok-to-leave-a-channel-open
+
+	stdoutPipe, err := cmd.StdoutPipe()
+	if err != nil {
+		l.Error("Err constructing cmd.StdoutPipe():")
+		l.Error(err)
+		return nil, err
 	}
+	stderrPipe, err := cmd.StderrPipe()
+	if err != nil {
+		l.Error("Err constructing cmd.StderrPipe():")
+		l.Error(err)
+		return nil, err
+	}
+	stdoutScanner := bufio.NewScanner(stdoutPipe)
+	stderrScanner := bufio.NewScanner(stderrPipe)
+	go func() {
+		for stdoutScanner.Scan() {
+			s := stdoutScanner.Text() + util.ResetCtrlStr
+			lKoishi.Info(s)
+			// Non-blocking sender with empty statement.
+			// https://dev.to/calj/channel-push-non-blocking-in-golang-1p8g
+			select {
+			case ch <- NodeCmdOut{
+				IsErr: false,
+				Text:  s,
+			}:
+			default:
+			}
+		}
+		if err := stdoutScanner.Err(); err != nil {
+			l.Error("Err reading stdout:")
+			l.Error(err)
+		}
+	}()
+	go func() {
+		for stderrScanner.Scan() {
+			s := stderrScanner.Text() + util.ResetCtrlStr
+			lKoishi.Info(s)
+			select {
+			case ch <- NodeCmdOut{
+				IsErr: false,
+				Text:  s,
+			}:
+			default:
+			}
+		}
+		if err := stderrScanner.Err(); err != nil {
+			l.Error("Err reading stdout:")
+			l.Error(err)
+		}
+	}()
+
+	return &NodeCmd{
+		Cmd: &cmd,
+		Out: &ch,
+	}, nil
 }
 
 func (c *NodeCmd) Run() error {
 	l.Debug("Now run NodeCmd.")
+	// Can use c.Cmd.Run() instead,
+	// but remain NodeCmd method call for future refactoring.
 	if err := c.Start(); err != nil {
 		return err
 	}
 	return c.Wait()
 }
 
-func logKoishi(r *io.PipeReader) {
-	p := make([]byte, 1024)
-	for {
-		n, err := r.Read(p)
-		if err == io.EOF {
-			break
-		}
-		if err != nil {
-			l.Debugf("stderr.Read() err: %s", err)
-		}
-		s := util.Trim(string(p[:n]))
-		if len(s) > 0 {
-			lKoishi.Info(s + util.ResetCtrlStr)
-		}
-	}
-}
-
 func (c *NodeCmd) Start() error {
-	l.Debug("Now start stderr reader.")
-	go logKoishi(c.outReader)
-	go logKoishi(c.errReader)
-
 	l.Debug("Now start NodeCmd.")
 	return c.Cmd.Start()
 }
 
 func (c *NodeCmd) Wait() error {
 	l.Debug("Now wait NodeCmd.")
-
-	defer func() {
-		err := c.outWriter.Close()
-		if err != nil {
-			l.Debug("Stdout closed with err.")
-			l.Debug(err)
-		}
-		err = c.errWriter.Close()
-		if err != nil {
-			l.Debug("Stderr closed with err.")
-			l.Debug(err)
-		}
-	}()
-
 	return c.Cmd.Wait()
 }
