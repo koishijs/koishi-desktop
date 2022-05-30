@@ -24,6 +24,11 @@ type NodeCmdOut struct {
 
 type NodeCmd struct {
 	Cmd *exec.Cmd
+
+	// The output of NodeCmd process.
+	//
+	// If you set Out to nil, you need to process received NodeCmdOut
+	// on a new goroutine. Otherwise, Stdout/Stderr will block.
 	Out *chan NodeCmdOut
 }
 
@@ -210,12 +215,9 @@ func CreateNodeCmd(
 		Env:  env,
 		Dir:  dir,
 	}
+	nodeCmd := NodeCmd{Cmd: &cmd}
 
 	l.Debug("Now constructing io.")
-	ch := make(chan NodeCmdOut)
-	// No need to close chan.
-	// https://stackoverflow.com/questions/8593645/is-it-ok-to-leave-a-channel-open
-
 	stdoutPipe, err := cmd.StdoutPipe()
 	if err != nil {
 		l.Error("Err constructing cmd.StdoutPipe():")
@@ -234,14 +236,11 @@ func CreateNodeCmd(
 		for stdoutScanner.Scan() {
 			s := stdoutScanner.Text() + util.ResetCtrlStr
 			lKoishi.Info(s)
-			// Non-blocking sender with empty statement.
-			// https://dev.to/calj/channel-push-non-blocking-in-golang-1p8g
-			select {
-			case ch <- NodeCmdOut{
-				IsErr: false,
-				Text:  s,
-			}:
-			default:
+			if nodeCmd.Out != nil {
+				*nodeCmd.Out <- NodeCmdOut{
+					IsErr: false,
+					Text:  s,
+				}
 			}
 		}
 		if err := stdoutScanner.Err(); err != nil {
@@ -253,12 +252,11 @@ func CreateNodeCmd(
 		for stderrScanner.Scan() {
 			s := stderrScanner.Text() + util.ResetCtrlStr
 			lKoishi.Info(s)
-			select {
-			case ch <- NodeCmdOut{
-				IsErr: false,
-				Text:  s,
-			}:
-			default:
+			if nodeCmd.Out != nil {
+				*nodeCmd.Out <- NodeCmdOut{
+					IsErr: true,
+					Text:  s,
+				}
 			}
 		}
 		if err := stderrScanner.Err(); err != nil {
@@ -267,10 +265,7 @@ func CreateNodeCmd(
 		}
 	}()
 
-	return &NodeCmd{
-		Cmd: &cmd,
-		Out: &ch,
-	}, nil
+	return &nodeCmd, nil
 }
 
 func (c *NodeCmd) Run() error {
