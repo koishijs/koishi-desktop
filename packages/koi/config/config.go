@@ -13,6 +13,8 @@ var (
 	defaultConfig = KoiConfig{
 		Mode: "portable",
 
+		Open: false,
+
 		Strict: false,
 
 		UseDataHome: true,
@@ -23,6 +25,8 @@ var (
 type KoiConfig struct {
 	Mode   string `yaml:"mode"`
 	Target string `yaml:"target"`
+
+	Open bool `yaml:"open"`
 
 	Strict bool `yaml:"strict"`
 

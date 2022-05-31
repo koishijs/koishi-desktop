@@ -1,11 +1,13 @@
 package daemon
 
 import (
+	"github.com/ifrstr/browser"
 	log "github.com/sirupsen/logrus"
 	"koi/config"
 	"koi/util"
 	"os"
 	"os/signal"
+	"strings"
 	"syscall"
 )
 
@@ -43,6 +45,30 @@ func Daemon() error {
 	if err != nil {
 		l.Error("Err constructing NodeCmd:")
 		l.Fatal(err)
+	}
+
+	if config.Config.Open {
+		out := make(chan NodeCmdOut)
+		cmd.Out = &out
+		go func(out chan NodeCmdOut) {
+			for {
+				msg := <-out
+				go func(msg NodeCmdOut) {
+					if msg.IsErr && strings.Contains(msg.Text, " server listening at ") {
+						l.Debug("Try opening browser. Parsing")
+						l.Debug(msg.Text)
+						s := msg.Text[strings.Index(msg.Text, "http"):]
+						s = s[:strings.Index(s, "\u001b\u005b")]
+						l.Debugf("Parsed %s", s)
+						err := browser.OpenURL(s)
+						if err != nil {
+							l.Warn("Cannot open browser:")
+							l.Warn(err)
+						}
+					}
+				}(msg)
+			}
+		}(out)
 	}
 
 	l.Debug("Now start Koishi process.")

@@ -17,6 +17,7 @@ plugins:
 export const defaultKoiConfig = `
 mode: portable
 target: ${defaultInstance}
+open: true
 `.trim()
 
 export const boilerplateVersion = '6458dd6eeb26d9a944456c85e2f5db589cbf828f'
