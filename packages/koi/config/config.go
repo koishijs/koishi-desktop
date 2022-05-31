@@ -11,7 +11,7 @@ var (
 	Config *KoiConfig
 
 	defaultConfig = KoiConfig{
-		Mode: "portable",
+		Mode: "cli",
 
 		Open: false,
 

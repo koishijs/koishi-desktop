@@ -15,7 +15,7 @@ plugins:
 `.trim()
 
 export const defaultKoiConfig = `
-mode: portable
+mode: cli
 target: ${defaultInstance}
 open: true
 `.trim()
