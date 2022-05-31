@@ -28,12 +28,15 @@ func Daemon() error {
 
 	resolvedDir, err := util.Resolve(config.Config.InternalInstanceDir, config.Config.Target)
 	if err != nil {
-		l.Fatalf("Failed to resolve target: %s", config.Config.Target)
+		l.Errorf("Failed to resolve target: %s", config.Config.Target)
+		l.Error(err)
+		return err
 	}
 
 	yarnPath, err := ResolveYarn()
 	if err != nil {
-		l.Fatal(err)
+		l.Error(err)
+		return err
 	}
 
 	cmd, err := CreateNodeCmd(
@@ -44,7 +47,8 @@ func Daemon() error {
 	)
 	if err != nil {
 		l.Error("Err constructing NodeCmd:")
-		l.Fatal(err)
+		l.Error(err)
+		return err
 	}
 
 	if config.Config.Open {
@@ -76,6 +80,7 @@ func Daemon() error {
 	if err != nil {
 		l.Error("Cannot start Koishi process.")
 		l.Error(err)
+		return err
 	}
 
 	l.Debug("Koishi process started.")
@@ -89,8 +94,10 @@ func Daemon() error {
 	if err != nil {
 		l.Error("Koishi exited with:")
 		l.Error(err)
+		return err
 	}
-	return err
+
+	return nil
 }
 
 func daemonHandleExit(process *NodeCmd) {
