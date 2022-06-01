@@ -6,6 +6,7 @@ import (
 	"koi/util"
 	l "koi/util/logger"
 	"koi/util/strutil"
+	"koi/util/supcolor"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -199,6 +200,8 @@ func CreateNodeCmd(
 	koiEnv := "KOI=" + config.Version
 	env = append(env, koiEnv)
 	l.Debug(koiEnv)
+
+	env = supcolor.UseEnvironColor(env, supcolor.Stderr)
 
 	l.Debugf("PWD=%s", dir)
 
