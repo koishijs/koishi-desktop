@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"koi/config"
 	"koi/util"
+	envUtil "koi/util/env"
 	l "koi/util/logger"
 	"koi/util/strutil"
 	"koi/util/supcolor"
@@ -81,88 +82,23 @@ func CreateNodeCmd(
 
 	if config.Config.UseDataHome {
 		l.Debug("Now replace HOME/USERPROFILE.")
-		for {
-			notFound := true
-			for i, e := range env {
-				if strings.HasPrefix(e, "HOME=") || strings.HasPrefix(e, "USERPROFILE=") {
-					env = append(env[:i], env[i+1:]...)
-					notFound = false
-					break
-				}
-			}
-
-			if notFound {
-				break
-			}
-		}
-
-		env = append(env, "HOME="+config.Config.InternalHomeDir)
-		env = append(env, "USERPROFILE="+config.Config.InternalHomeDir)
+		envUtil.UseEnv(&env, "HOME", config.Config.InternalHomeDir)
+		envUtil.UseEnv(&env, "USERPROFILE", config.Config.InternalHomeDir)
 		l.Debugf("HOME=%s", config.Config.InternalHomeDir)
 
 		if runtime.GOOS == "windows" {
 			l.Debug("Now replace APPDATA.")
-			for {
-				notFound := true
-				for i, e := range env {
-					if strings.HasPrefix(e, "APPDATA=") {
-						env = append(env[:i], env[i+1:]...)
-						notFound = false
-						break
-					}
-				}
-
-				if notFound {
-					break
-				}
-			}
-
-			roamingPath := filepath.Join(config.Config.InternalHomeDir, "AppData", "Roaming")
-			env = append(env, "APPDATA="+roamingPath)
-			l.Debugf("APPDATA=%s", roamingPath)
-
-			l.Debug("Now replace LOCALAPPDATA.")
-			for {
-				notFound := true
-				for i, e := range env {
-					if strings.HasPrefix(e, "LOCALAPPDATA=") {
-						env = append(env[:i], env[i+1:]...)
-						notFound = false
-						break
-					}
-				}
-
-				if notFound {
-					break
-				}
-			}
-
 			localPath := filepath.Join(config.Config.InternalHomeDir, "AppData", "Local")
-			env = append(env, "LOCALAPPDATA="+localPath)
+			envUtil.UseEnv(&env, "LOCALAPPDATA", localPath)
 			l.Debugf("LOCALAPPDATA=%s", localPath)
 		}
 	}
 
 	if config.Config.UseDataTemp {
 		l.Debug("Now replace TMPDIR/TEMP/TMP.")
-		for {
-			notFound := true
-			for i, e := range env {
-				if strings.HasPrefix(e, "TMPDIR=") || strings.HasPrefix(e, "TEMP=") || strings.HasPrefix(e, "TMP=") {
-					env = append(env[:i], env[i+1:]...)
-					notFound = false
-					break
-				}
-			}
-
-			if notFound {
-				break
-			}
-		}
-
-		env = append(env, "TMPDIR="+config.Config.InternalTempDir)
-		env = append(env, "TEMP="+config.Config.InternalTempDir)
-		env = append(env, "TMP="+config.Config.InternalTempDir)
+		envUtil.UseEnv(&env, "TMPDIR", config.Config.InternalTempDir)
+		envUtil.UseEnv(&env, "TEMP", config.Config.InternalTempDir)
+		envUtil.UseEnv(&env, "TMP", config.Config.InternalTempDir)
 		l.Debugf("TEMP=%s", config.Config.InternalTempDir)
 	}
 
@@ -201,8 +137,8 @@ func CreateNodeCmd(
 	env = append(env, koiEnv)
 	l.Debug(koiEnv)
 
-	env = supcolor.UseEnvironColor(env, supcolor.Stderr)
-	env = config.UseConfigEnv(env)
+	supcolor.UseColorEnv(&env, supcolor.Stderr)
+	config.UseConfigEnv(&env)
 
 	l.Debugf("PWD=%s", dir)
 
