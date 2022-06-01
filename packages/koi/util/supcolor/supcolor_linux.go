@@ -52,6 +52,10 @@ func SupColor(stream *os.File) int8 {
 	}
 
 	for _, e := range env {
+		if e == "TERM=dumb" {
+			return 0
+		}
+
 		if strings.HasPrefix(e, "CI=") {
 			if strings.HasPrefix(e, "TRAVIS=") ||
 				strings.HasPrefix(e, "CIRCLECI=") ||
@@ -75,16 +79,6 @@ func SupColor(stream *os.File) int8 {
 		if strings.HasPrefix(e, "TF_BUILD=") &&
 			strings.HasPrefix(e, "AGENT_NAME=") {
 			return 1
-		}
-
-		if strings.HasPrefix(e, "TERM_PROGRAM=") {
-			s := e[13:]
-			if s == "iTerm.app" {
-				return 3
-			}
-			if s == "Apple_Terminal" {
-				return 2
-			}
 		}
 
 		if strings.HasPrefix(e, "COLORTERM=") {
