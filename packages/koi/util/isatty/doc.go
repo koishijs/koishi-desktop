@@ -1,2 +1,2 @@
-// Package isatty Determine whether the stream is a tty.
+// Package isatty determine whether the stream is a tty.
 package isatty
