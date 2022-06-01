@@ -5,6 +5,8 @@ import (
 	"koi/config"
 	"koi/daemon"
 	"koi/util"
+	l "koi/util/logger"
+	"koi/util/strutil"
 )
 
 var (
@@ -29,7 +31,7 @@ func yarnAction(c *cli.Context) error {
 	args := c.Args().Slice()
 	l.Info(args)
 
-	target := util.Trim(c.String("target"))
+	target := strutil.Trim(c.String("target"))
 	if target == "" {
 		target = config.Config.Target
 	}

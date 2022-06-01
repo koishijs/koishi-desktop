@@ -1,9 +1,9 @@
 package cli
 
 import (
-	log "github.com/sirupsen/logrus"
 	"github.com/urfave/cli/v2"
 	"koi/config"
+	l "koi/util/logger"
 )
 
 func preAction(c *cli.Context) error {
@@ -11,7 +11,7 @@ func preAction(c *cli.Context) error {
 
 	l.Debug("Checking flag debug...")
 	if c.Bool("debug") {
-		log.SetLevel(log.TraceLevel)
+		l.Level = l.DebugLevel
 	}
 
 	l.Debug("Checking config file...")

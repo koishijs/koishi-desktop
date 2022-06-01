@@ -7,6 +7,8 @@ import (
 	"koi/config"
 	"koi/daemon"
 	"koi/util"
+	l "koi/util/logger"
+	"koi/util/strutil"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -74,12 +76,12 @@ var (
 func createInstanceAction(c *cli.Context) error {
 	var err error
 
-	name := util.Trim(c.String("name"))
+	name := strutil.Trim(c.String("name"))
 	l.Infof("Creating new instance: %s", name)
 
 	var packages []string
-	for _, p := range strings.Split(util.Trim(c.String("with-packages")), ",") {
-		pp := util.Trim(p)
+	for _, p := range strings.Split(strutil.Trim(c.String("with-packages")), ",") {
+		pp := strutil.Trim(p)
 		if len(pp) > 0 {
 			packages = append(packages, pp)
 		}
@@ -116,15 +118,15 @@ func createInstanceAction(c *cli.Context) error {
 	}
 
 	l.Debug("Constructing boilerplate url.")
-	mirror := util.Trim(c.String("mirror"))
+	mirror := strutil.Trim(c.String("mirror"))
 	if mirror == "" {
 		mirror = "https://github.com"
 	}
-	template := util.Trim(c.String("template"))
+	template := strutil.Trim(c.String("template"))
 	if template == "" {
 		template = "koishijs/boilerplate"
 	}
-	ref := util.Trim(c.String("ref"))
+	ref := strutil.Trim(c.String("ref"))
 	if ref == "" {
 		ref = "refs/heads/master"
 	}

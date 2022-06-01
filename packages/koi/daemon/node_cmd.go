@@ -2,19 +2,15 @@ package daemon
 
 import (
 	"bufio"
-	log "github.com/sirupsen/logrus"
 	"koi/config"
 	"koi/util"
+	l "koi/util/logger"
+	"koi/util/strutil"
 	"os"
 	"os/exec"
 	"path/filepath"
 	"runtime"
 	"strings"
-)
-
-var (
-	// Log
-	lKoishi = log.WithField("package", "koishi")
 )
 
 type NodeCmdOut struct {
@@ -229,8 +225,8 @@ func CreateNodeCmd(
 		stdoutScanner := bufio.NewScanner(stdoutPipe)
 		go func() {
 			for stdoutScanner.Scan() {
-				s := stdoutScanner.Text() + util.ResetCtrlStr
-				lKoishi.Info(s)
+				s := stdoutScanner.Text() + strutil.ResetCtrlStr
+				_, _ = os.Stderr.WriteString(s + "\n")
 				if nodeCmd.Out != nil {
 					*nodeCmd.Out <- NodeCmdOut{
 						IsErr: false,
@@ -256,8 +252,8 @@ func CreateNodeCmd(
 	stderrScanner := bufio.NewScanner(stderrPipe)
 	go func() {
 		for stderrScanner.Scan() {
-			s := stderrScanner.Text() + util.ResetCtrlStr
-			lKoishi.Info(s)
+			s := stderrScanner.Text() + strutil.ResetCtrlStr
+			_, _ = os.Stderr.WriteString(s + "\n")
 			if nodeCmd.Out != nil {
 				*nodeCmd.Out <- NodeCmdOut{
 					IsErr: true,

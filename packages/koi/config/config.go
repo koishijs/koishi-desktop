@@ -1,11 +1,10 @@
 package config
 
-import log "github.com/sirupsen/logrus"
+import (
+	l "koi/util/logger"
+)
 
 var (
-	// Log
-	l = log.WithField("package", "config")
-
 	Version = "v0.0.0"
 
 	Config *KoiConfig

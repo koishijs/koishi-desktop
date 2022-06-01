@@ -4,14 +4,10 @@ import (
 	"github.com/urfave/cli/v2"
 	"koi/config"
 	"koi/env"
-
-	log "github.com/sirupsen/logrus"
+	l "koi/util/logger"
 )
 
 var (
-	// Log
-	l = log.WithField("package", "cli")
-
 	app = &cli.App{
 		Name:    "Koi",
 		Usage:   "The Koishi Launcher.",

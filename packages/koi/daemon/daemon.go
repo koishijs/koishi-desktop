@@ -2,18 +2,13 @@ package daemon
 
 import (
 	"github.com/ifrstr/browser"
-	log "github.com/sirupsen/logrus"
 	"koi/config"
 	"koi/util"
+	l "koi/util/logger"
 	"os"
 	"os/signal"
 	"strings"
 	"syscall"
-)
-
-var (
-	// Log
-	l = log.WithField("package", "daemon")
 )
 
 // Daemon is to start and daemon the Koishi process.

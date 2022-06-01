@@ -1,16 +1,13 @@
 package env
 
 import (
-	log "github.com/sirupsen/logrus"
 	"koi/util"
+	l "koi/util/logger"
 	"os"
 	"path/filepath"
 )
 
 var (
-	// Log
-	l = log.WithField("package", "env")
-
 	DirName = dirName()
 )
 
