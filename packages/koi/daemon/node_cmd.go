@@ -202,6 +202,7 @@ func CreateNodeCmd(
 	l.Debug(koiEnv)
 
 	env = supcolor.UseEnvironColor(env, supcolor.Stderr)
+	env = config.UseConfigEnv(env)
 
 	l.Debugf("PWD=%s", dir)
 

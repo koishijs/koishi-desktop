@@ -16,6 +16,8 @@ var (
 
 		Strict: false,
 
+		Env: nil,
+
 		UseDataHome: true,
 		UseDataTemp: true,
 	}
@@ -28,6 +30,8 @@ type KoiConfig struct {
 	Open bool `yaml:"open"`
 
 	Strict bool `yaml:"strict"`
+
+	Env []string `yaml:"env"`
 
 	// Env override
 	UseDataHome bool `yaml:"useDataHome"`
