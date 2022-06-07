@@ -187,7 +187,7 @@ func createInstanceAction(c *cli.Context) error {
 	_ = yarnlock.Close()
 
 	l.Info("[3/7] Installing initial packages (phase 1).")
-	err = daemon.RunYarn(
+	err = daemon.RunYarnCmd(
 		[]string{"workspaces", "focus", "--production", "--all"},
 		dir,
 	)
@@ -198,7 +198,7 @@ func createInstanceAction(c *cli.Context) error {
 
 	l.Info("[4/7] Installing additional packages (phase 2).")
 	if len(packages) > 0 {
-		err = daemon.RunYarn(
+		err = daemon.RunYarnCmd(
 			append([]string{"add"}, packages...),
 			dir,
 		)
@@ -215,7 +215,7 @@ func createInstanceAction(c *cli.Context) error {
 		}
 
 		l.Info("[6/7] Installing all packages (phase 3).")
-		err = daemon.RunYarn(
+		err = daemon.RunYarnCmd(
 			[]string{"workspaces", "focus", "--production", "--all"},
 			dir,
 		)

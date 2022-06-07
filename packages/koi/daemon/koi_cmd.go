@@ -15,28 +15,19 @@ import (
 	"strings"
 )
 
-type NodeCmdOut struct {
+type KoiCmdOut struct {
 	IsErr bool
 	Text  string
 }
 
-type NodeCmd struct {
+type KoiCmd struct {
 	Cmd *exec.Cmd
 
-	// The output of NodeCmd process.
+	// The output of KoiCmd process.
 	//
-	// If you set Out to nil, you need to process received NodeCmdOut
+	// If you set Out to nil, you need to process received KoiCmdOut
 	// on a new goroutine. Otherwise, Stdout/Stderr will block.
-	Out *chan NodeCmdOut
-}
-
-func RunNode(
-	entry string,
-	args []string,
-	dir string,
-) error {
-	args = append([]string{entry}, args...)
-	return RunNodeCmd("node", args, dir)
+	Out *chan KoiCmdOut
 }
 
 func ResolveYarn() (string, error) {
@@ -48,23 +39,34 @@ func ResolveYarn() (string, error) {
 	return yarnPath, nil
 }
 
-func RunYarn(
+func RunYarnCmd(
 	args []string,
 	dir string,
 ) error {
-	yarnPath, err := ResolveYarn()
+	cmd, err := CreateYarnCmd(args, dir)
 	if err != nil {
 		return err
 	}
-	return RunNode(yarnPath, args, dir)
+	return cmd.Run()
+}
+
+func CreateYarnCmd(
+	args []string,
+	dir string,
+) (*KoiCmd, error) {
+	yarnPath, err := ResolveYarn()
+	if err != nil {
+		return nil, err
+	}
+	args = append([]string{yarnPath}, args...)
+	return CreateNodeCmd(args, dir, true)
 }
 
 func RunNodeCmd(
-	nodeExe string,
 	args []string,
 	dir string,
 ) error {
-	cmd, err := CreateNodeCmd(nodeExe, args, dir, true)
+	cmd, err := CreateNodeCmd(args, dir, true)
 	if err != nil {
 		return err
 	}
@@ -72,11 +74,26 @@ func RunNodeCmd(
 }
 
 func CreateNodeCmd(
-	nodeExe string,
 	args []string,
 	dir string,
 	handleStdout bool,
-) (*NodeCmd, error) {
+) (*KoiCmd, error) {
+	return CreateKoiCmd(
+		config.Config.InternalNodeExeDir,
+		"node",
+		args,
+		dir,
+		handleStdout,
+	)
+}
+
+func CreateKoiCmd(
+	path string,
+	exe string,
+	args []string,
+	dir string,
+	handleStdout bool,
+) (*KoiCmd, error) {
 	l.Debug("Getting env.")
 	env := os.Environ()
 
@@ -126,9 +143,9 @@ func CreateNodeCmd(
 		pathSepr = ":"
 	}
 	if pathEnv != "" && !config.Config.Strict {
-		pathEnv = config.Config.InternalNodeExeDir + pathSepr + pathEnv
+		pathEnv = path + pathSepr + pathEnv
 	} else {
-		pathEnv = config.Config.InternalNodeExeDir
+		pathEnv = path
 	}
 	env = append(env, "PATH="+pathEnv)
 	l.Debugf("PATH=%s", pathEnv)
@@ -142,8 +159,8 @@ func CreateNodeCmd(
 
 	l.Debugf("PWD=%s", dir)
 
-	l.Debug("Now constructing NodeCmd.")
-	cmdPath := filepath.Join(config.Config.InternalNodeExeDir, nodeExe)
+	l.Debug("Now constructing KoiCmd.")
+	cmdPath := filepath.Join(path, exe)
 	cmdArgs := []string{cmdPath}
 	cmdArgs = append(cmdArgs, args...)
 	cmd := exec.Cmd{
@@ -152,7 +169,7 @@ func CreateNodeCmd(
 		Env:  env,
 		Dir:  dir,
 	}
-	nodeCmd := NodeCmd{Cmd: &cmd}
+	koiCmd := KoiCmd{Cmd: &cmd}
 
 	l.Debug("Now constructing io.")
 	if handleStdout {
@@ -167,8 +184,8 @@ func CreateNodeCmd(
 			for stdoutScanner.Scan() {
 				s := stdoutScanner.Text() + strutil.ResetCtrlStr
 				_, _ = os.Stderr.WriteString(s + "\n")
-				if nodeCmd.Out != nil {
-					*nodeCmd.Out <- NodeCmdOut{
+				if koiCmd.Out != nil {
+					*koiCmd.Out <- KoiCmdOut{
 						IsErr: false,
 						Text:  s,
 					}
@@ -194,8 +211,8 @@ func CreateNodeCmd(
 		for stderrScanner.Scan() {
 			s := stderrScanner.Text() + strutil.ResetCtrlStr
 			_, _ = os.Stderr.WriteString(s + "\n")
-			if nodeCmd.Out != nil {
-				*nodeCmd.Out <- NodeCmdOut{
+			if koiCmd.Out != nil {
+				*koiCmd.Out <- KoiCmdOut{
 					IsErr: true,
 					Text:  s,
 				}
@@ -207,25 +224,25 @@ func CreateNodeCmd(
 		}
 	}()
 
-	return &nodeCmd, nil
+	return &koiCmd, nil
 }
 
-func (c *NodeCmd) Run() error {
-	l.Debug("Now run NodeCmd.")
+func (c *KoiCmd) Run() error {
+	l.Debug("Now run KoiCmd.")
 	// Can use c.Cmd.Run() instead,
-	// but remain NodeCmd method call for future refactoring.
+	// but remain KoiCmd method call for future refactoring.
 	if err := c.Start(); err != nil {
 		return err
 	}
 	return c.Wait()
 }
 
-func (c *NodeCmd) Start() error {
-	l.Debug("Now start NodeCmd.")
+func (c *KoiCmd) Start() error {
+	l.Debug("Now start KoiCmd.")
 	return c.Cmd.Start()
 }
 
-func (c *NodeCmd) Wait() error {
-	l.Debug("Now wait NodeCmd.")
+func (c *KoiCmd) Wait() error {
+	l.Debug("Now wait KoiCmd.")
 	return c.Cmd.Wait()
 }

@@ -28,31 +28,23 @@ func Daemon() error {
 		return err
 	}
 
-	yarnPath, err := ResolveYarn()
-	if err != nil {
-		l.Error(err)
-		return err
-	}
-
-	cmd, err := CreateNodeCmd(
-		"node",
-		[]string{yarnPath, "start"},
+	cmd, err := CreateYarnCmd(
+		[]string{"start"},
 		resolvedDir,
-		false,
 	)
 	if err != nil {
-		l.Error("Err constructing NodeCmd:")
+		l.Error("Err constructing KoiCmd:")
 		l.Error(err)
 		return err
 	}
 
 	if config.Config.Open {
-		out := make(chan NodeCmdOut)
+		out := make(chan KoiCmdOut)
 		cmd.Out = &out
-		go func(out chan NodeCmdOut) {
+		go func(out chan KoiCmdOut) {
 			for {
 				msg := <-out
-				go func(msg NodeCmdOut) {
+				go func(msg KoiCmdOut) {
 					if msg.IsErr && strings.Contains(msg.Text, " server listening at ") {
 						l.Debug("Try opening browser. Parsing")
 						l.Debug(msg.Text)
@@ -95,7 +87,7 @@ func Daemon() error {
 	return nil
 }
 
-func daemonHandleExit(process *NodeCmd) {
+func daemonHandleExit(process *KoiCmd) {
 	c := make(chan os.Signal)
 	l.Debug("Setting up signal.Notify.")
 	signal.Notify(

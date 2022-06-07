@@ -42,7 +42,7 @@ func yarnAction(c *cli.Context) error {
 
 	l.Infof("In instance %s", target)
 
-	err = daemon.RunYarn(args, dir)
+	err = daemon.RunYarnCmd(args, dir)
 	if err != nil {
 		l.Error("Yarn exited with error.")
 		l.Fatal(err)
