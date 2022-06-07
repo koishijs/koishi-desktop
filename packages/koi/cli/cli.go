@@ -3,7 +3,6 @@ package cli
 import (
 	"github.com/urfave/cli/v2"
 	"koi/config"
-	"koi/env"
 	l "koi/util/logger"
 )
 
@@ -99,8 +98,8 @@ func runIntl(args []string) error {
 
 	l.Debug("Running cli app")
 	err := app.Run(args)
-	if err != nil && err != env.KoiErrSpin {
-		l.Fatal(err)
+	if err != nil {
+		return err
 	}
-	return err
+	return nil
 }

@@ -15,14 +15,8 @@ func main() {
 	l.Infof("Koi %s", config.Version)
 	l.Infof("Go: %s", runtime.Version())
 
-	for true {
-		l.Debug("Start spin")
-		err := cli.Run(os.Args)
-		if err == nil {
-			l.Debug("err == nil. Breaking.")
-			break
-		}
-		l.Debug("Err: ", err)
-		l.Debug("Spin")
+	err := cli.Run(os.Args)
+	if err != nil {
+		l.Fatal(err)
 	}
 }
