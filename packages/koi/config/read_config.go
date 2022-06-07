@@ -12,7 +12,13 @@ import (
 )
 
 var (
-	redirectPath = createRedirectPath()
+	redirectPath = (func() *yaml.Path {
+		r, err := yaml.PathString("$.redirect")
+		if err != nil {
+			l.Fatal("Err create redirect yaml path.")
+		}
+		return r
+	})()
 )
 
 func ReadConfig(path string) (*KoiConfig, error) {
@@ -22,14 +28,6 @@ func ReadConfig(path string) (*KoiConfig, error) {
 		return nil, err
 	}
 	return config, nil
-}
-
-func createRedirectPath() *yaml.Path {
-	r, err := yaml.PathString("$.redirect")
-	if err != nil {
-		l.Fatal("Err create redirect yaml path.")
-	}
-	return r
 }
 
 func readConfigIntl(path string, recur int) (*KoiConfig, error) {

@@ -7,20 +7,18 @@ import (
 )
 
 var (
-	DirName = getDirName()
+	DirName = (func() string {
+		path, err := os.Executable()
+		if err != nil {
+			logger.Fatal("Cannot get executable.")
+		}
+		path, err = Resolve("", filepath.Dir(path))
+		if err != nil {
+			logger.Fatal("Cannot get executable dir.")
+		}
+		return path
+	})()
 )
-
-func getDirName() string {
-	path, err := os.Executable()
-	if err != nil {
-		logger.Fatal("Cannot get executable.")
-	}
-	path, err = Resolve("", filepath.Dir(path))
-	if err != nil {
-		logger.Fatal("Cannot get executable dir.")
-	}
-	return path
-}
 
 // Resolve the existing file or dir.
 // This will filepath.Join base and path (if has base),
