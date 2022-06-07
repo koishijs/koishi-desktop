@@ -89,7 +89,7 @@ func log(level int8, prefix rune, args ...interface{}) {
 }
 
 func logf(level int8, prefix rune, format string, args ...interface{}) {
-	if level < Level {
+	if Level < level {
 		return
 	}
 	log(level, prefix, fmt.Sprintf(format, args...))
