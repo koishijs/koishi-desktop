@@ -3,7 +3,6 @@ package config
 import (
 	"errors"
 	"github.com/goccy/go-yaml"
-	"koi/env"
 	"koi/util"
 	l "koi/util/logger"
 	"os"
@@ -42,7 +41,7 @@ func readConfigIntl(path string, recur int) (*KoiConfig, error) {
 
 	absPath := path
 	if !filepath.IsAbs(absPath) {
-		newAbsPath, err := util.Resolve(env.DirName, absPath)
+		newAbsPath, err := util.Resolve(util.DirName, absPath)
 		if err != nil {
 			l.Error("Failed to resolve config path:")
 			l.Fatal(absPath)
