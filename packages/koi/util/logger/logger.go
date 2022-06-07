@@ -61,7 +61,12 @@ func color(target *Target, code string, value string, decor string) string {
 }
 
 func log(level int8, prefix rune, args ...interface{}) {
-	if Level < level {
+	//   ----------- Level of this message
+	//   |       --- The max level to print
+	//   |       |
+	//   |       |   This message is not that important as its level's bigger than config,
+	//   |       |   which means it provides much more detailed information
+	if level > Level {
 		return
 	}
 
@@ -89,7 +94,12 @@ func log(level int8, prefix rune, args ...interface{}) {
 }
 
 func logf(level int8, prefix rune, format string, args ...interface{}) {
-	if Level < level {
+	//   ----------- Level of this message
+	//   |       --- The max level to print
+	//   |       |
+	//   |       |   This message is not that important as its level's bigger than config,
+	//   |       |   which means it provides much more detailed information
+	if level > Level {
 		return
 	}
 	log(level, prefix, fmt.Sprintf(format, args...))
