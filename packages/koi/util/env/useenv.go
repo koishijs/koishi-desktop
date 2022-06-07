@@ -12,6 +12,7 @@ func UseEnv(env *[]string, key string, value string) {
 
 func RemoveEnv(env *[]string, key string) {
 	removeEnvIntl(env, key)
+	removeEnvIntl(env, strings.Title(strings.ToLower(key))) // hElLo => Hello
 	removeEnvIntl(env, strings.ToUpper(key))
 	removeEnvIntl(env, strings.ToLower(key))
 }

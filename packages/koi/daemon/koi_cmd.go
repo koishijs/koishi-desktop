@@ -124,7 +124,9 @@ func CreateKoiCmd(
 	for {
 		notFound := true
 		for i, e := range env {
-			if strings.HasPrefix(e, "PATH=") {
+			if strings.HasPrefix(e, "PATH=") ||
+				strings.HasPrefix(e, "Path=") ||
+				strings.HasPrefix(e, "path=") {
 				pathEnv = e[5:]
 				env = append(env[:i], env[i+1:]...)
 				notFound = false
