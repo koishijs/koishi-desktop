@@ -196,8 +196,8 @@ func createInstanceAction(c *cli.Context) error {
 		l.Fatal(err)
 	}
 
-	l.Info("[4/7] Installing additional packages (phase 2).")
 	if len(packages) > 0 {
+		l.Info("[4/7] Installing additional packages (phase 2).")
 		err = daemon.RunYarnCmd(
 			append([]string{"add"}, packages...),
 			dir,
