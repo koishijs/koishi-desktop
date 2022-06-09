@@ -96,19 +96,6 @@ export const cleanupDefaultInstance = series(async () => {
   await del(resolve('tmp', 'distData'))
 }, mkdir)
 
-export async function run() {
-  const result = await spawnAsync(
-    process.platform === 'win32' ? 'koi' : './koi',
-    [],
-    { cwd: resolve('.', 'dist') }
-  )
-  if (result) {
-    const err = `'koi' exited with error code: ${result}`
-    error(err)
-    throw new Error(err)
-  }
-}
-
 export const build = series(
   writeConfig,
   genManifest,
