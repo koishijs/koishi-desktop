@@ -54,6 +54,7 @@ var (
 		CommandNotFound: func(context *cli.Context, s string) {
 			l.Fatalf("Command not found: %s", s)
 		},
+		ExitErrHandler: func(context *cli.Context, err error) {},
 	}
 
 	defaultCommand = "run"
