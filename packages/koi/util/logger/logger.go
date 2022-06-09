@@ -32,7 +32,15 @@ const (
 var (
 	Level    = InfoLevel
 	ExitFunc func(int)
-	Targets  [MaxTargets]*Target
+	Targets  = [MaxTargets]*Target{
+		{
+			Colors: supcolor.Stderr,
+			Print: func(s string) {
+				// There's nothing we can do if Stderr err
+				_, _ = os.Stderr.WriteString(s + "\n")
+			},
+		},
+	}
 )
 
 type Target struct {
@@ -110,16 +118,6 @@ func Exit(code int) {
 		ExitFunc = os.Exit
 	}
 	ExitFunc(1)
-}
-
-func init() {
-	Targets[0] = &Target{
-		Colors: supcolor.Stderr,
-		Print: func(s string) {
-			// There's nothing we can do if Stderr err
-			_, _ = os.Stderr.WriteString(s + "\n")
-		},
-	}
 }
 
 //endregion
