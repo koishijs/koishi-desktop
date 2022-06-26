@@ -78,7 +78,7 @@ export async function createDefaultInstance() {
       '-n',
       defaultInstance,
       '-p',
-      '@koishijs/plugin-database-sqlite',
+      '@koishijs/plugin-database-sqlite,koishi-plugin-gocqhttp',
       '-r',
       boilerplateVersion,
     ],
