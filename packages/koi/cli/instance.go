@@ -3,7 +3,9 @@ package cli
 import (
 	"fmt"
 	"github.com/urfave/cli/v2"
+	"github.com/virtuald/go-ordered-json"
 	"io"
+	"io/ioutil"
 	"koi/config"
 	"koi/daemon"
 	"koi/util"
@@ -146,14 +148,14 @@ func createInstanceAction(c *cli.Context) error {
 		_ = boilerRes.Body.Close()
 	}()
 
-	l.Info("[1/7] Downloading and scaffolding project.")
+	l.Info("[1/8] Downloading and scaffolding project.")
 	err = util.Unzip(boilerRes.Body, dir, false, true)
 	if err != nil {
 		l.Error("Failed to unzip boilerplate.")
 		l.Fatal(err)
 	}
 
-	l.Info("[2/7] Writing yarn config.")
+	l.Info("[2/8] Writing yarn config.")
 	yarnrctmpl, err := os.Open(filepath.Join(config.Config.InternalDataDir, "yarnrc.tmpl.yml"))
 	if err != nil {
 		l.Fatal("Failed to open yarnrc.tmpl.yml.")
@@ -186,46 +188,85 @@ func createInstanceAction(c *cli.Context) error {
 	}
 	_ = yarnlock.Close()
 
-	l.Info("[3/7] Installing initial packages (phase 1).")
+	l.Info("[3/8] Installing initial packages (phase 1).")
+	// Phase 1:
+	// And here we've got a fresh Koishi project, with correct .yarnrc.yml inside.
+	// Now, we need to manually delete devDeps from package.json
+	// as `yarn workspaces focus --production --all` won't create yarn.lock.
+	pkgjson, err := ioutil.ReadFile(filepath.Join(dir, "package.json"))
+	if err != nil {
+		l.Fatal("Failed to read package.json. Invalid Koishi project?")
+	}
+	var pkgObj json.OrderedObject
+	err = json.Unmarshal(pkgjson, &pkgObj)
+	if err != nil {
+		l.Fatal("Failed to parse package.json. Invalid Koishi project?")
+	}
+	for i, m := range pkgObj {
+		if m.Key == "devDependencies" {
+			pkgObj = append(pkgObj[:i], pkgObj[i+1:]...)
+			break
+		}
+	}
+	pkgResult, err := json.MarshalIndent(pkgObj, "", "  ")
+	if err != nil {
+		l.Fatal("Failed to generate package.json.")
+	}
+	err = os.WriteFile(filepath.Join(dir, "package.json"), pkgResult, 0666) // rw-rw-rw-
+	if err != nil {
+		l.Fatal("Failed to write package.json.")
+	}
+
+	l.Info("[4/8] Installing initial packages (phase 2).")
+	// Phase 2:
+	// Then `yarn`.
 	err = daemon.RunYarnCmd(
-		[]string{"workspaces", "focus", "--production", "--all"},
+		[]string{},
 		dir,
 	)
 	if err != nil {
-		l.Error("Err when installing packages.")
+		l.Error("Err when installing initial packages.")
 		l.Fatal(err)
 	}
 
 	if len(packages) > 0 {
-		l.Info("[4/7] Installing additional packages (phase 2).")
+		l.Info("[5/8] Installing additional packages (phase 3).")
+		// Phase 3:
+		// Then `yarn add` our additional packages.
+		// Here yarn will generate an unreliable dep tree. We'll deal with it later.
 		err = daemon.RunYarnCmd(
 			append([]string{"add"}, packages...),
 			dir,
 		)
 		if err != nil {
-			l.Error("Err when installing packages.")
+			l.Error("Err when installing additional packages.")
 			l.Fatal(err)
 		}
 
-		l.Info("[5/7] Deleting node_modules.")
+		l.Info("[6/8] Deleting node_modules (phase 4).")
+		// Phase 4:
+		// Now delete node_modules and yarn.lock.
 		err = os.RemoveAll(filepath.Join(dir, "node_modules"))
 		if err != nil {
 			l.Error("Err when deleting node_modules.")
 			l.Fatal(err)
 		}
 
-		l.Info("[6/7] Installing all packages (phase 3).")
+		l.Info("[7/8] Installing all packages (phase 5).")
+		// Phase 5:
+		// Finally, `yarn`.
+		// This will generate the final deps we want.
 		err = daemon.RunYarnCmd(
-			[]string{"workspaces", "focus", "--production", "--all"},
+			[]string{},
 			dir,
 		)
 		if err != nil {
-			l.Error("Err when installing packages.")
+			l.Error("Err when installing all packages.")
 			l.Fatal(err)
 		}
 	}
 
-	l.Info("[7/7] Deleting yarn cache.")
+	l.Info("[8/8] Deleting yarn cache.")
 	err = os.RemoveAll(filepath.Join(dir, ".yarn"))
 	if err != nil {
 		l.Fatal("Failed to delete yarn cache.")
