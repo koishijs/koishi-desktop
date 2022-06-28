@@ -191,8 +191,9 @@ func createInstanceAction(c *cli.Context) error {
 	l.Info("[3/8] Installing initial packages (phase 1).")
 	// Phase 1:
 	// And here we've got a fresh Koishi project, with correct .yarnrc.yml inside.
-	// Now, we need to manually delete devDeps from package.json
-	// as `yarn workspaces focus --production --all` won't create yarn.lock.
+	// Now, we need to manually delete devDeps from package.json.
+	// The alternative `yarn workspaces focus --production --all` has been deprecated.
+	// It won't create yarn.lock.
 	pkgjson, err := ioutil.ReadFile(filepath.Join(dir, "package.json"))
 	if err != nil {
 		l.Fatal("Failed to read package.json. Invalid Koishi project?")
@@ -203,6 +204,7 @@ func createInstanceAction(c *cli.Context) error {
 		l.Fatal("Failed to parse package.json. Invalid Koishi project?")
 	}
 	for i, m := range pkgObj {
+		// Remove `devDependencies` field
 		if m.Key == "devDependencies" {
 			pkgObj = append(pkgObj[:i], pkgObj[i+1:]...)
 			break
@@ -221,7 +223,7 @@ func createInstanceAction(c *cli.Context) error {
 	// Phase 2:
 	// Then `yarn`.
 	err = daemon.RunYarnCmd(
-		[]string{},
+		[]string{"--no-immutable"},
 		dir,
 	)
 	if err != nil {
@@ -257,7 +259,7 @@ func createInstanceAction(c *cli.Context) error {
 		// Finally, `yarn`.
 		// This will generate the final deps we want.
 		err = daemon.RunYarnCmd(
-			[]string{},
+			[]string{"--no-immutable"},
 			dir,
 		)
 		if err != nil {
