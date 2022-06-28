@@ -251,7 +251,7 @@ Temporary Items
 .apdisk
 
 # Temp files
-t[e]mp/
+tmp/
 
 # Generated manifest
 packages/koi/versioninfo.json
