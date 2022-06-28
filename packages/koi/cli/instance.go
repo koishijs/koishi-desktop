@@ -182,6 +182,11 @@ func createInstanceAction(c *cli.Context) error {
 	if err != nil {
 		l.Fatal("Failed to close .yarnrc.yml.")
 	}
+	yarnlock, err := os.Create(filepath.Join(dir, "yarn.lock"))
+	if err != nil {
+		l.Fatal("Failed to create yarn.lock.")
+	}
+	_ = yarnlock.Close()
 
 	l.Info("[3/8] Installing initial packages (phase 1).")
 	// Phase 1:
@@ -244,11 +249,6 @@ func createInstanceAction(c *cli.Context) error {
 		err = os.RemoveAll(filepath.Join(dir, "node_modules"))
 		if err != nil {
 			l.Error("Err when deleting node_modules.")
-			l.Fatal(err)
-		}
-		err = os.Remove(filepath.Join(dir, "yarn.lock"))
-		if err != nil {
-			l.Error("Err when deleting yarn.lock.")
 			l.Fatal(err)
 		}
 
