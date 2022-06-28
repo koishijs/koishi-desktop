@@ -198,6 +198,8 @@ func createInstanceAction(c *cli.Context) error {
 	if err != nil {
 		l.Fatal("Failed to read package.json. Invalid Koishi project?")
 	}
+	// Lock dep version
+	pkgjson = []byte(strings.ReplaceAll(string(pkgjson), "^", ""))
 	var pkgObj json.OrderedObject
 	err = json.Unmarshal(pkgjson, &pkgObj)
 	if err != nil {
