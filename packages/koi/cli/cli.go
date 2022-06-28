@@ -83,9 +83,7 @@ func Run(args []string) error {
 	 * Kinda hAcK for now !cuz "run" don't have options
 	 */
 	// newArgs := []string{args[0], defaultCommand}
-	newArgs := []string{args[0]}
-	newArgs = append(newArgs, args[1:]...)
-	newArgs = append(newArgs, defaultCommand)
+	newArgs := append(args, defaultCommand)
 
 	return runIntl(newArgs)
 }
