@@ -44,8 +44,6 @@ export async function goBuild() {
       'build',
       '-o',
       resolve(process.platform === 'win32' ? 'koi.exe' : '', 'dist'),
-      '-x',
-      '-v',
       '-trimpath',
       '-ldflags',
       `-w -s -X koi/config.Version=${await getKoiVersion()}`,
