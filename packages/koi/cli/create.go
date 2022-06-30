@@ -19,57 +19,50 @@ import (
 )
 
 var (
-	instanceCommand = &cli.Command{
-		Name:  "instance",
-		Usage: "Manage instances",
+	createCommand = &cli.Command{
+		Name:  "create",
+		Usage: "Create new instance",
 
-		Subcommands: []*cli.Command{
-			{
-				Name:  "create",
-				Usage: "Create new instance",
+		Flags: []cli.Flag{
+			&cli.StringFlag{
+				Name:     "name",
+				Aliases:  []string{"n"},
+				Usage:    "Name of the new instance",
+				Required: true,
+			},
 
-				Flags: []cli.Flag{
-					&cli.StringFlag{
-						Name:     "name",
-						Aliases:  []string{"n"},
-						Usage:    "Name of the new instance",
-						Required: true,
-					},
+			&cli.BoolFlag{
+				Name:    "force",
+				Aliases: []string{"f"},
+				Usage:   "Empty target dir before creating.",
+			},
 
-					&cli.BoolFlag{
-						Name:    "force",
-						Aliases: []string{"f"},
-						Usage:   "Empty target dir before creating.",
-					},
+			&cli.StringFlag{
+				Name:    "with-packages",
+				Aliases: []string{"p"},
+				Usage:   "Install additional packages in instance",
+			},
 
-					&cli.StringFlag{
-						Name:    "with-packages",
-						Aliases: []string{"p"},
-						Usage:   "Install additional packages in instance",
-					},
+			&cli.StringFlag{
+				Name:    "ref",
+				Aliases: []string{"r"},
+				Usage:   "The ref of the boilerplate to use",
+			},
 
-					&cli.StringFlag{
-						Name:    "ref",
-						Aliases: []string{"r"},
-						Usage:   "The ref of the boilerplate to use",
-					},
+			&cli.StringFlag{
+				Name:    "mirror",
+				Aliases: []string{"m"},
+				Usage:   "The GitHub mirror to use",
+			},
 
-					&cli.StringFlag{
-						Name:    "mirror",
-						Aliases: []string{"m"},
-						Usage:   "The GitHub mirror to use",
-					},
-
-					&cli.StringFlag{
-						Name:    "template",
-						Aliases: []string{"t"},
-						Usage:   "The template repo to use",
-					},
-				},
-
-				Action: createInstanceAction,
+			&cli.StringFlag{
+				Name:    "template",
+				Aliases: []string{"t"},
+				Usage:   "The template repo to use",
 			},
 		},
+
+		Action: createInstanceAction,
 	}
 
 	refRegexp = regexp.MustCompile("^[\\da-f]{40}$")

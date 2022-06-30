@@ -46,7 +46,7 @@ var (
 				Action: runAction,
 			},
 
-			instanceCommand,
+			createCommand,
 			yarnCommand,
 		},
 
