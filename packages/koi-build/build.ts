@@ -71,7 +71,6 @@ export async function createDefaultInstance() {
   const result = await spawnAsync(
     process.platform === 'win32' ? 'koi' : './koi',
     [
-      'instance',
       'create',
       '-n',
       defaultInstance,
