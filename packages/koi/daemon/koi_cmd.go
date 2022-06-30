@@ -2,6 +2,7 @@ package daemon
 
 import (
 	"bufio"
+	"fmt"
 	"koi/config"
 	"koi/util"
 	envUtil "koi/util/env"
@@ -13,6 +14,42 @@ import (
 	"path/filepath"
 	"runtime"
 	"strings"
+)
+
+var (
+	nodeOsMap = map[string]string{
+		"aix":       "aix",
+		"android":   "android",
+		"darwin":    "darwin",
+		"dragonfly": "dragonfly",
+		"freebsd":   "freebsd",
+		"illumos":   "illumos",
+		"ios":       "ios",
+		"js":        "js",
+		"linux":     "linux",
+		"netbsd":    "netbsd",
+		"openbsd":   "openbsd",
+		"plan9":     "plan9",
+		"solaris":   "solaris",
+		"windows":   "win32",
+	}
+	nodeArchMap = map[string]string{
+		"386":      "ia32",
+		"amd64":    "x64",
+		"arm":      "arm",
+		"arm64":    "arm64",
+		"wasm":     "wasm",
+		"mips":     "mips",
+		"mipsle":   "mipsel",
+		"mips64":   "mips64",
+		"mips64le": "mips64el",
+		"ppc":      "ppc",
+		"ppc64":    "ppc64",
+		"ppc64le":  "ppc64el",
+		"riscv64":  "riscv64",
+		"s390":     "s390",
+		"s390x":    "s390x",
+	}
 )
 
 type KoiCmdOut struct {
@@ -152,9 +189,7 @@ func CreateKoiCmd(
 	env = append(env, "PATH="+pathEnv)
 	l.Debugf("PATH=%s", pathEnv)
 
-	koiEnv := "KOI=" + config.Version
-	env = append(env, koiEnv)
-	l.Debug(koiEnv)
+	envUtil.UseEnv(&env, "KOI", fmt.Sprintf("%s-%s-%s", nodeOsMap[runtime.GOOS], nodeArchMap[runtime.GOARCH], config.Version))
 
 	supcolor.UseColorEnv(&env, supcolor.Stderr)
 	config.UseConfigEnv(&env)
