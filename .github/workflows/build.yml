@@ -7,6 +7,8 @@ jobs:
     name: Build
 
     strategy:
+      fail-fast: false
+
       matrix:
         target:
           - '{"goos":"windows","rid":"win-x64","os":"windows-latest"}'
