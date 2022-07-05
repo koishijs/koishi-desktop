@@ -11,9 +11,6 @@
   "resolutions": {
     "graceful-fs": "^4"
   },
-  "dependencies": {
-    "mkdirp": "^1"
-  },
   "devDependencies": {
     "@types/gulp": "^4",
     "@types/mkdirp": "^1",
@@ -25,6 +22,7 @@
     "eslint-plugin-import": "*",
     "eslint-plugin-prettier": "*",
     "gulp": "^4",
+    "mkdirp": "^1",
     "prettier": "*",
     "ts-node": "^10",
     "typescript": "*"
