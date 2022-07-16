@@ -4,7 +4,7 @@
   "version": "0.1.0",
   "packageManager": "yarn@1.22.19",
   "workspaces": [
-    "packages/koi-build"
+    "packages/*"
   ],
   "scripts": {
     "lint": "eslint --ext .ts --ignore-path .gitignore . --fix"
