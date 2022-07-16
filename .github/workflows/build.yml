@@ -44,12 +44,6 @@ jobs:
           yarn
         shell: bash
 
-      - name: Run go get
-        if: ${{ fromJson(matrix.target).goos == 'windows' }}
-        run: |
-          go install github.com/josephspurrier/goversioninfo/cmd/goversioninfo@v1.4.0
-        shell: bash
-
       - name: Build Koi
         run: |
           gulp all
