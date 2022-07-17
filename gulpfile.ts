@@ -1,5 +1,4 @@
-import defaultTask from './packages/koi-build'
-
-export * from './packages/koi-build'
+export * from './packages/buildsrc'
+import { defaultTask } from './packages/buildsrc'
 
 export default defaultTask
