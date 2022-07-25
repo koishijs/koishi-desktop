@@ -50,7 +50,7 @@ const buildPrepareNodeDownload = (): (() => Promise<void>) => {
     case 'linux':
       return prepareNodeDownloadLinux
     default:
-      throw Exceptions.platformNotSupportedException
+      throw Exceptions.platformNotSupported()
   }
 }
 

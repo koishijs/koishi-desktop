@@ -1,3 +1,3 @@
 export const Exceptions = {
-  platformNotSupportedException: 'Platform not supported.',
+  platformNotSupported: () => new Error('Platform not supported.'),
 }
