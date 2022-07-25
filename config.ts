@@ -4,6 +4,20 @@
 // freely change configs like mirror and build paths,
 // but do not commit/push them.
 
+//#region Sources
+
+export const sourceNode = 'https://nodejs.org/dist'
+export const sourceYarn = 'https://repo.yarnpkg.com'
+
+//#endregion
+
+//#region Toolchain
+
+export const versionNode = '14.19.1'
+export const versionYarn = '3.2.0'
+
+//#endregion
+
 //#region Defaults
 
 /**
