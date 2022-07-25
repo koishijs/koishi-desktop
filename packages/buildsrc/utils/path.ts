@@ -1,5 +1,12 @@
 import { resolve } from 'path'
 
+/**
+ * Paths used in building.
+ *
+ * Please check tasks/prepare/folder.ts after
+ * modification to ensure all folder created
+ * during prepareFolder task.
+ */
 const buildPaths = {
   src: 'packages/cli',
   srcBuild: 'packages/buildsrc',
