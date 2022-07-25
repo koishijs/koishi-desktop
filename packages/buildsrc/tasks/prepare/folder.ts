@@ -1,9 +1,12 @@
 import { parallel } from 'gulp'
 import mkdirp from 'mkdirp'
-import { BuildPaths, dir } from '../../utils/path'
+import { dir } from '../../utils/path'
 
-const prepareFolderTasks = (
-  ['buildCache', 'buildPortableData', 'dist'] as BuildPaths[]
-).map((x) => () => mkdirp(dir(x)) as Promise<void>)
+const prepareFolderTasks = [
+  dir('buildCache'),
+  dir('buildPortableData'),
+  dir('dist'),
+  dir('buildPortableData', 'node'),
+].map((x) => () => mkdirp(x) as Promise<void>)
 
 export const prepareFolder = parallel(...prepareFolderTasks)
