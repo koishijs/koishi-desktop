@@ -3,13 +3,14 @@
   "private": true,
   "version": "0.1.0",
   "devDependencies": {
+    "7zip-bin": "^5.1.1",
     "@types/cross-spawn": "^6",
     "@types/lzma-native": "^4",
     "@types/tar": "^6",
-    "7zip-bin": "^5.1.1",
     "axios": "1.0.0-alpha.1",
     "cross-spawn": "^7",
     "del": "^6",
+    "handlebars": "^4.7.7",
     "lzma-native": "^8",
     "node-stream-zip": "^1.15.0",
     "tar": "^6"
