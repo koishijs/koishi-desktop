@@ -1,6 +1,21 @@
 import { SpawnOptions } from 'child_process'
-import { spawn } from 'cross-spawn'
+import { spawn, sync as spawnSync } from 'cross-spawn'
 import { Exceptions } from './exceptions'
+
+export function spawnSyncOutput(
+  command: string,
+  args?: ReadonlyArray<string>,
+  options?: SpawnOptions
+): string {
+  const parsedArgs = args ?? []
+  const parsedOptions: SpawnOptions = Object.assign<
+    SpawnOptions,
+    SpawnOptions,
+    SpawnOptions | undefined
+  >({}, { stdio: 'pipe', shell: true }, options)
+  const child = spawnSync(command, parsedArgs, parsedOptions)
+  return child.stdout.toString('utf-8')
+}
 
 export async function spawnOutput(
   command: string,
