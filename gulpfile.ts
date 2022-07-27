@@ -1,4 +1,4 @@
-export * from './packages/buildsrc'
-import { defaultTask } from './packages/buildsrc'
+export * from './packages/build'
+import { defaultTask } from './packages/build'
 
 export default defaultTask

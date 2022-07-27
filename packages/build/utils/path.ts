@@ -9,7 +9,7 @@ import { resolve } from 'path'
  */
 const buildPaths = {
   src: 'packages/cli',
-  srcBuild: 'packages/buildsrc',
+  srcBuild: 'packages/build',
 
   build: 'build/',
   buildCache: 'build/caches',
