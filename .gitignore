@@ -82,8 +82,7 @@ sw.*
 *.swp
 
 # Build output
-build/
-dist/
+/build/
 
 # local env files
 .env
