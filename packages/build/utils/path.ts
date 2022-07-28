@@ -8,6 +8,8 @@ import { resolve } from 'path'
  * during prepareFolder task.
  */
 const buildPaths = {
+  root: '.',
+
   src: 'packages/cli',
   srcBuild: 'packages/build',
   templates: 'packages/build/templates',

@@ -1,6 +1,7 @@
 import { SpawnOptions } from 'child_process'
 import { spawn, sync as spawnSync } from 'cross-spawn'
 import { Exceptions } from './exceptions'
+import { dir } from './path'
 
 export function spawnSyncOutput(
   command: string,
@@ -63,14 +64,16 @@ export async function spawnAsync(
 export async function exec(
   command: string,
   args?: ReadonlyArray<string>,
+  cwd?: string,
   options?: SpawnOptions
 ): Promise<void> {
   const parsedArgs = args ?? []
+  const parsedCwd = cwd ?? dir('root')
   const parsedOptions: SpawnOptions = Object.assign<
     SpawnOptions,
     SpawnOptions,
     SpawnOptions | undefined
-  >({}, { stdio: 'inherit', shell: true }, options)
+  >({}, { stdio: 'inherit', shell: true, cwd: parsedCwd }, options)
   const child = spawn(command, parsedArgs, parsedOptions)
   const result = await new Promise<number>((resolve) => {
     child.on('close', resolve)
