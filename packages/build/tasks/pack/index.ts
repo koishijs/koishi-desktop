@@ -1,3 +1,6 @@
 import { series } from 'gulp'
+import { packPortable } from './portable'
 
-export const pack = series()
+export * from './portable'
+
+export const pack = series(packPortable)
