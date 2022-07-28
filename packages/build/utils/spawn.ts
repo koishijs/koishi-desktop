@@ -59,3 +59,25 @@ export async function spawnAsync(
     child.on('close', resolve)
   })
 }
+
+export async function exec(
+  command: string,
+  args?: ReadonlyArray<string>,
+  options?: SpawnOptions
+): Promise<void> {
+  const parsedArgs = args ?? []
+  const parsedOptions: SpawnOptions = Object.assign<
+    SpawnOptions,
+    SpawnOptions,
+    SpawnOptions | undefined
+  >({}, { stdio: 'inherit', shell: true }, options)
+  const child = spawn(command, parsedArgs, parsedOptions)
+  const result = await new Promise<number>((resolve) => {
+    child.on('close', resolve)
+  })
+  if (result) {
+    throw new Error(
+      `'${child.spawnargs.join(' ')}' exited with error code: ${result}`
+    )
+  }
+}
