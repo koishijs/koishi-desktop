@@ -48,15 +48,15 @@ export const koiSemver = buildKoiSemver()
 //#region Templates
 
 export const koiConfig = Handlebars.compile(
-  fs.readFileSync(dir('templates', 'koi-config.yml.hbs'))
+  fs.readFileSync(dir('templates', 'koi-config.yml.hbs')).toString('utf-8')
 )({ defaultInstance })
 
 export const koiVersionInfo = Handlebars.compile(
-  fs.readFileSync(dir('templates', 'versioninfo.json.hbs'))
+  fs.readFileSync(dir('templates', 'versioninfo.json.hbs')).toString('utf-8')
 )({ koiVersion, koiSemver })
 
 export const koiManifest = Handlebars.compile(
-  fs.readFileSync(dir('templates', 'koi.exe.manifest.hbs'))
+  fs.readFileSync(dir('templates', 'koi.exe.manifest.hbs')).toString('utf-8')
 )({ koiSemver })
 
 //#endregion
