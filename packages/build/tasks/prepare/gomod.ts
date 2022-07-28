@@ -1,4 +1,4 @@
-import { series } from 'gulp'
+import { eachModule } from '../../utils/module'
 import { dir } from '../../utils/path'
 import { exec } from '../../utils/spawn'
 
@@ -11,8 +11,4 @@ export const buildPrepareGoMod = (pkg: string) => async () => {
  *
  * Use series instead of parallel to maximize caches.
  */
-export const prepareGoMod = series(
-  buildPrepareGoMod('app'),
-  buildPrepareGoMod('core'),
-  buildPrepareGoMod('sdk')
-)
+export const prepareGoMod = () => eachModule(buildPrepareGoMod)
