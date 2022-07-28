@@ -26,4 +26,4 @@ const buildPaths = {
 export type BuildPaths = keyof typeof buildPaths
 
 export const dir = (base: BuildPaths, path = ''): string =>
-  resolve(__dirname, '../../../', base, path)
+  resolve(__dirname, '../../../', buildPaths[base], path)
