@@ -248,6 +248,6 @@ Temporary Items
 tmp/
 
 # Generated manifest
-packages/koi/versioninfo.json
-packages/koi/resource.syso
-packages/koi/resources/koi.exe.manifest
+packages/app/versioninfo.json
+packages/app/resource.syso
+packages/app/resources/koi.exe.manifest
