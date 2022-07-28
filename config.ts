@@ -22,6 +22,9 @@ export const sourceYarn = 'https://repo.yarnpkg.com'
 export const versionNode = '14.19.1'
 export const versionYarn = '3.2.0'
 
+export const versionToolsVersioninfo = 'v1.4.0'
+export const versionToolsWire = 'v0.5.0'
+
 //#endregion
 
 //#region Defaults
