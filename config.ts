@@ -11,6 +11,7 @@
 
 export const sourceNode = 'https://nodejs.org/dist'
 export const sourceYarn = 'https://repo.yarnpkg.com'
+export const sourceGitHub = 'https://github.com'
 
 //#endregion
 
@@ -30,6 +31,7 @@ export const versionToolsWire = 'v0.5.0'
 //#region Defaults
 // These are defaults for koishi-desktop.
 
+export const repoBoilerplate = 'koishijs/boilerplate'
 export const versionBoilerplate = 'v1.0.1'
 
 /**
