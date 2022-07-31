@@ -37,7 +37,7 @@ jobs:
       - name: Deploy gopkg
         uses: peaceiris/actions-gh-pages@v3
         with:
-          github_token: ${{ secrets.ACTIONS_DEPLOY_MODULE_KEY }}
+          personal_token: ${{ secrets.ACTIONS_DEPLOY_MODULE_KEY }}
           user_name: 'Il Harper'
           user_email: 'hi@ilharper.com'
           external_repository: koishi-desktop/${{ matrix.pkg }}
