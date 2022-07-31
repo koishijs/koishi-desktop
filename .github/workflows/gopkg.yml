@@ -1,0 +1,48 @@
+name: Deploy gopkg
+
+on:
+  push:
+    branches:
+      - master
+    tags:
+      - 'v*.*.*'
+
+jobs:
+  gopkg:
+    name: Deploy gopkg
+
+    strategy:
+      fail-fast: false
+
+      matrix:
+        pkg:
+          - core
+          - sdk
+          - app
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Prepare tag
+        id: tag
+        if: ${{ startsWith(github.ref, 'refs/tags/') }}
+        run: |
+          VERSION="${GITHUB_REF##refs/tags/source/}"
+          echo "Found Tag: ${VERSION}"
+          echo "::set-output name=version::${VERSION}"
+
+      - name: Deploy gopkg
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.ACTIONS_DEPLOY_MODULE_KEY }}
+          user_name: 'Il Harper'
+          user_email: 'hi@ilharper.com'
+          publish_branch: master
+          publish_dir: packages/${{ matrix.pkg }}
+          enable_jekyll: true # Not to create .nojekyll since this is not a gh page
+          commit_message: 'chore: publish ${{ steps.tag.outputs.version }}'
+          tag_name: ${{ steps.tag.outputs.version }} # Wouldn't create if empty
+          tag_message: Publish ${{ steps.tag.outputs.version }}
