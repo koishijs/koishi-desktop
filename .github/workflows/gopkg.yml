@@ -40,6 +40,7 @@ jobs:
           github_token: ${{ secrets.ACTIONS_DEPLOY_MODULE_KEY }}
           user_name: 'Il Harper'
           user_email: 'hi@ilharper.com'
+          external_repository: koishi-desktop/${{ matrix.pkg }}
           publish_branch: master
           publish_dir: packages/${{ matrix.pkg }}
           enable_jekyll: true # Not to create .nojekyll since this is not a gh page
