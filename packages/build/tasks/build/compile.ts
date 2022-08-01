@@ -16,7 +16,7 @@ export const compileApp = () =>
       dir('buildPortable', process.platform === 'win32' ? 'koi.exe' : 'koi'),
       '-trimpath',
       '-ldflags',
-      `-w -s -X gopkg.ilharper.com/koi/app/util/const.AppVersion=${koiVersion}`,
+      `-w -s -X gopkg.ilharper.com/koi/app/util.AppVersion=${koiVersion}`,
     ],
     dir('src')
   )
