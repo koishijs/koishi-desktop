@@ -21,8 +21,10 @@ type Logger struct {
 	rpLogger rpl.Logger
 }
 
-func NewLogger() Logger {
-	return Logger{}
+func NewLogger(ch uint16) Logger {
+	return Logger{
+		rpLogger: rpl.NewLogger(ch),
+	}
 }
 
 func (logger Logger) Register(target rpl.Target) {
