@@ -46,14 +46,14 @@ func (logger *Logger) Log(level int8, prefix byte, args ...interface{}) {
 	if timeLen > 0 {
 		indent += timeLen + 1
 		output += fmt.Sprintf(
-			"%s38;5;8m%s ",
+			"%s90m%s ",
 			strutil.ColorStartCtr,
 			now.Format(DefaultTimeFormat),
 		)
 	}
 
 	output += fmt.Sprintf(
-		"[%c] %s32;1mlauncher%s %s",
+		"[%c] %s92mlauncher%s %s",
 		prefix,
 		strutil.ColorStartCtr,
 		strutil.ResetCtrlStr,
