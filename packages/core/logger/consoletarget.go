@@ -8,18 +8,18 @@ import (
 
 type ConsoleTarget struct {
 	c     chan rpl.Log
-	level int8
+	Level int8
 }
 
-func NewConsoleTarget(level int8) *ConsoleTarget {
+func NewConsoleTarget() *ConsoleTarget {
 	consoleTarget := &ConsoleTarget{
-		level: level,
+		Level: rpl.LevelInfo,
 	}
 
 	go func(ct *ConsoleTarget) {
 		for {
 			log := <-ct.c
-			if log.Level > level {
+			if log.Level > ct.Level {
 				continue
 			}
 
