@@ -1,7 +1,7 @@
 package koicli
 
 import (
-	"errors"
+	"fmt"
 	"github.com/urfave/cli/v2"
 	"gopkg.ilharper.com/koi/app/config"
 	"gopkg.ilharper.com/x/rpl"
@@ -28,8 +28,7 @@ func buildPreAction(kcli *KoiCli) func(c *cli.Context) error {
 		kcli.l.Infof("Using config file: %s", configPath)
 		kcli.config, err = config.LoadConfig(kcli.l, configPath)
 		if err != nil {
-			kcli.l.Error(err)
-			return errors.New("failed to load config")
+			return fmt.Errorf("failed to load config: %w", err)
 		}
 
 		return nil
