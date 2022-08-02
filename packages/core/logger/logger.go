@@ -27,7 +27,7 @@ func NewLogger(ch uint16) *Logger {
 	}
 }
 
-func (logger *Logger) Register(target *rpl.Target) {
+func (logger *Logger) Register(target rpl.Target) {
 	logger.rpLogger.Register(target)
 }
 
