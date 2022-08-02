@@ -4,12 +4,13 @@ import (
 	"gopkg.ilharper.com/koi/app/koicli"
 	"gopkg.ilharper.com/koi/app/util"
 	"gopkg.ilharper.com/koi/core/logger"
+	"gopkg.ilharper.com/x/rpl"
 	"os"
 )
 
 func main() {
 	l := logger.NewLogger(0)
-	consoleTarget := logger.NewConsoleTarget()
+	consoleTarget := logger.NewConsoleTarget(rpl.LevelInfo)
 	l.Register(consoleTarget)
 
 	l.Infof("Koishi Desktop v%s", util.AppVersion)
