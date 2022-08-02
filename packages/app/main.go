@@ -9,9 +9,14 @@ import (
 
 func main() {
 	l := logger.NewLogger(0)
-	l.Register(logger.NewConsoleTarget())
+	consoleTarget := logger.NewConsoleTarget()
+	l.Register(consoleTarget)
 
 	l.Infof("Koishi Desktop v%s", util.AppVersion)
 
-	koicli.Run(os.Args, l)
+	err := koicli.Run(os.Args, l, consoleTarget)
+	if err != nil {
+		l.Error(err)
+		os.Exit(1)
+	}
 }
