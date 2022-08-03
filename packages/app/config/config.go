@@ -156,8 +156,14 @@ func postConfig(c *Config) error {
 }
 
 func joinAndCreate(base, path string) (string, error) {
+	var err error
 	joinedPath := filepath.Join(base, path)
-	err := os.MkdirAll(joinedPath, fs.ModePerm)
+	err = os.MkdirAll(joinedPath, fs.ModePerm) // -rwxrwxrwx
+	if err != nil {
+		return "", err
+	}
+	// Set perm for directory that already exists
+	err = os.Chmod(joinedPath, fs.ModePerm) // -rwxrwxrwx
 	if err != nil {
 		return "", err
 	}
