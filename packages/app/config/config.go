@@ -69,12 +69,10 @@ func LoadConfig(l *logger.Logger, path string) (*Config, error) {
 	return config, loadConfigIntl(config, l, path, 1)
 }
 
-func loadConfigIntl(c *Config, l *logger.Logger, path string, recur uint8) error {
+func loadConfigIntl(c *Config, l *logger.Logger, path string, recur uint8) (err error) {
 	if recur >= 64 {
 		return fmt.Errorf("infinite redirection detected. Check your koi.config file")
 	}
-
-	var err error
 
 	l.Debugf("Loading config: %s", path)
 
@@ -112,12 +110,10 @@ func loadConfigIntl(c *Config, l *logger.Logger, path string, recur uint8) error
 		return fmt.Errorf("failed to process postconfig: %w", err)
 	}
 
-	return nil
+	return
 }
 
-func postConfig(c *Config) error {
-	var err error
-
+func postConfig(c *Config) (err error) {
 	c.Computed.DirData, err = joinAndCreate(c.Computed.DirConfig, "data")
 	if err != nil {
 		return fmt.Errorf("failed to process dir data: %w", err)
@@ -133,7 +129,6 @@ func postConfig(c *Config) error {
 	if runtime.GOOS == "windows" {
 		c.Computed.DirNodeExe = c.Computed.DirNode
 	} else {
-		var err error
 		c.Computed.DirNodeExe, err = joinAndCreate(c.Computed.DirNode, "bin")
 		if err != nil {
 			return fmt.Errorf("failed to process dir node/bin: %w", err)
@@ -152,12 +147,11 @@ func postConfig(c *Config) error {
 		return fmt.Errorf("failed to process dir data/instances: %w", err)
 	}
 
-	return nil
+	return
 }
 
-func joinAndCreate(base, path string) (string, error) {
-	var err error
-	joinedPath := filepath.Join(base, path)
+func joinAndCreate(base, path string) (joinedPath string, err error) {
+	joinedPath = filepath.Join(base, path)
 	err = os.MkdirAll(joinedPath, fs.ModePerm) // -rwxrwxrwx
 	if err != nil {
 		return "", err

@@ -8,9 +8,7 @@ import (
 )
 
 func buildPreAction(kcli *KoiCli) func(c *cli.Context) error {
-	return func(c *cli.Context) error {
-		var err error
-
+	return func(c *cli.Context) (err error) {
 		kcli.l.Debug("Trigger pseudo action: pre")
 
 		kcli.l.Debug("Checking flag debug...")
@@ -31,6 +29,6 @@ func buildPreAction(kcli *KoiCli) func(c *cli.Context) error {
 			return fmt.Errorf("failed to load config: %w", err)
 		}
 
-		return nil
+		return
 	}
 }
