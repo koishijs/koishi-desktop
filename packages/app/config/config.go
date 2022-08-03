@@ -117,6 +117,7 @@ func loadConfigIntl(c *Config, l *logger.Logger, path string, recur uint8) error
 
 func postConfig(c *Config) error {
 	var err error
+
 	c.Computed.DirData, err = joinAndCreate(c.Computed.DirConfig, "data")
 	if err != nil {
 		return fmt.Errorf("failed to process dir data: %w", err)
@@ -150,6 +151,8 @@ func postConfig(c *Config) error {
 	if err != nil {
 		return fmt.Errorf("failed to process dir data/instances: %w", err)
 	}
+
+	return nil
 }
 
 func joinAndCreate(base, path string) (string, error) {
