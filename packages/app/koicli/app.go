@@ -6,8 +6,14 @@ import (
 	"gopkg.ilharper.com/koi/app/util"
 )
 
-func newApp(kcli *KoiCli) *cli.App {
-	return &cli.App{
+type KoiApp struct {
+	cliApp *cli.App
+}
+
+func newApp(kcli *KoiCli) *KoiApp {
+	app := &KoiApp{}
+
+	app.cliApp = &cli.App{
 		Name:    "Koishi Desktop",
 		Usage:   "Launch Koishi from your desktop.",
 		Version: fmt.Sprintf("v%s", util.AppVersion),
@@ -49,4 +55,6 @@ func newApp(kcli *KoiCli) *cli.App {
 			kcli.l.Error(err)
 		},
 	}
+
+	return app
 }

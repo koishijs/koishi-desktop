@@ -1,7 +1,6 @@
 package koicli
 
 import (
-	"github.com/urfave/cli/v2"
 	"gopkg.ilharper.com/koi/app/config"
 	"gopkg.ilharper.com/koi/core/logger"
 )
@@ -14,7 +13,7 @@ type KoiCli struct {
 	l             *logger.Logger
 	consoleTarget *logger.ConsoleTarget
 
-	app    *cli.App
+	app    *KoiApp
 	config *config.Config
 }
 
@@ -32,7 +31,7 @@ func NewCli(
 }
 
 func (kcli *KoiCli) Run(args []string) error {
-	return kcli.app.Run(args)
+	return kcli.app.cliApp.Run(args)
 }
 
 func Run(
