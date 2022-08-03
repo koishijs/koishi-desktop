@@ -7,11 +7,22 @@ import (
 )
 
 type KoiApp struct {
-	cliApp *cli.App
+	cliApp  *cli.App
+	actions map[string]func(c *cli.Context) error
 }
 
 func newApp(kcli *KoiCli) *KoiApp {
 	app := &KoiApp{}
+
+	builders := []func(kcli *KoiCli) (map[string]func(c *cli.Context) error, *cli.Command){}
+	var commands []*cli.Command
+	for _, builder := range builders {
+		commandActions, c := builder(kcli)
+		for actionName, action := range commandActions {
+			app.actions[actionName] = action
+		}
+		commands = append(commands, c)
+	}
 
 	app.cliApp = &cli.App{
 		Name:    "Koishi Desktop",
@@ -45,7 +56,7 @@ func newApp(kcli *KoiCli) *KoiApp {
 			cli.BashCompletionFlag,
 		},
 
-		Commands: []*cli.Command{},
+		Commands: commands,
 
 		Before: buildPreAction(kcli),
 		CommandNotFound: func(context *cli.Context, s string) {
