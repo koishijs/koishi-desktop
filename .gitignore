@@ -72,9 +72,6 @@ out/
 # Serverless directories
 .serverless
 
-# IDE / Editor
-.idea
-
 # Service worker
 sw.*
 
@@ -178,7 +175,8 @@ cmake-build-*/
 
 # IDEs
 .vscode/
-.idea/
+.idea/*
+!.idea/runConfigurations
 
 # Windows thumbnail cache files
 Thumbs.db

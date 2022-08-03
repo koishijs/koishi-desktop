@@ -1,0 +1,11 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="app" type="GoApplicationRunConfiguration" factoryName="Go Application">
+    <module name="koi" />
+    <working_directory value="$PROJECT_DIR$/packages/app" />
+    <kind value="PACKAGE" />
+    <package value="gopkg.ilharper.com/koi/app" />
+    <directory value="$PROJECT_DIR$" />
+    <filePath value="$PROJECT_DIR$/packages/app/main.go" />
+    <method v="2" />
+  </configuration>
+</component>
