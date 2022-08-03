@@ -14,7 +14,9 @@ type KoiApp struct {
 func newApp(kcli *KoiCli) *KoiApp {
 	app := &KoiApp{}
 
-	builders := []func(kcli *KoiCli) (map[string]func(c *cli.Context) error, *cli.Command){}
+	builders := []func(kcli *KoiCli) (map[string]func(c *cli.Context) error, *cli.Command){
+		buildDaemonCommand,
+	}
 	var commands []*cli.Command
 	for _, builder := range builders {
 		commandActions, c := builder(kcli)
