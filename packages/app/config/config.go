@@ -3,6 +3,7 @@ package config
 import (
 	"fmt"
 	"github.com/goccy/go-yaml"
+	"github.com/samber/do"
 	"gopkg.ilharper.com/koi/core/logger"
 	"io/fs"
 	"os"
@@ -53,23 +54,27 @@ var (
 	})()
 )
 
-func LoadConfig(l *logger.Logger, path string) (*Config, error) {
-	exePath, err := os.Executable()
-	if err != nil {
-		return nil, fmt.Errorf("cannot get executable: %w", err)
-	}
-	dirExe := filepath.Dir(exePath)
+func BuildLoadConfig(path string) func(i *do.Injector) (*Config, error) {
+	return func(i *do.Injector) (*Config, error) {
+		exePath, err := os.Executable()
+		if err != nil {
+			return nil, fmt.Errorf("cannot get executable: %w", err)
+		}
+		dirExe := filepath.Dir(exePath)
 
-	config := &Config{
-		Data: defaultConfigData,
-		Computed: ConfigComputed{
-			DirExe: dirExe,
-		},
+		config := &Config{
+			Data: defaultConfigData,
+			Computed: ConfigComputed{
+				DirExe: dirExe,
+			},
+		}
+		return config, loadConfigIntl(i, config, path, 1)
 	}
-	return config, loadConfigIntl(config, l, path, 1)
 }
 
-func loadConfigIntl(c *Config, l *logger.Logger, path string, recur uint8) (err error) {
+func loadConfigIntl(i *do.Injector, c *Config, path string, recur uint8) (err error) {
+	l := do.MustInvoke[*logger.Logger](i)
+
 	if recur >= 64 {
 		return fmt.Errorf("infinite redirection detected. Check your koi.config file")
 	}
@@ -94,7 +99,7 @@ func loadConfigIntl(c *Config, l *logger.Logger, path string, recur uint8) (err 
 	err = redirectPath.Read(strings.NewReader(string(file)), &redirect)
 	if err == nil {
 		l.Debugf("'redirect' field detected: %s", redirect)
-		return loadConfigIntl(c, l, filepath.Join(c.Computed.DirConfig, redirect), recur+1)
+		return loadConfigIntl(i, c, filepath.Join(c.Computed.DirConfig, redirect), recur+1)
 	}
 
 	l.Debug("Parsing config.")

@@ -3,35 +3,37 @@ package koicli
 import (
 	"fmt"
 	"github.com/goccy/go-json"
+	"github.com/samber/do"
 	"github.com/urfave/cli/v2"
+	"gopkg.ilharper.com/koi/app/config"
 	"gopkg.ilharper.com/koi/core/god"
+	"gopkg.ilharper.com/koi/core/logger"
 	"net"
 	"net/http"
 	"os"
 	"path/filepath"
 )
 
-func buildDaemonCommand(kcli *KoiCli) (map[string]func(c *cli.Context) error, *cli.Command) {
-	actions := map[string]func(c *cli.Context) error{
-		"daemon run": buildDaemonRunAction(kcli),
-	}
+func newDaemonCommand(i *do.Injector) (*cli.Command, error) {
+	do.ProvideNamed(i, "gopkg.ilharper.com/koi/app/koicli/action.DaemonRun", newDaemonRunAction)
 
-	cmd := &cli.Command{
+	return &cli.Command{
 		Name:  "daemon",
 		Usage: "Manage daemon",
 		Subcommands: []*cli.Command{
 			{
 				Name:   "run",
 				Usage:  "Run daemon",
-				Action: actions["daemon run"],
+				Action: do.MustInvokeNamed[cli.ActionFunc](i, "gopkg.ilharper.com/koi/app/koicli/action.DaemonRun"),
 			},
 		},
-	}
-
-	return actions, cmd
+	}, nil
 }
 
-func buildDaemonRunAction(kcli *KoiCli) func(c *cli.Context) error {
+func newDaemonRunAction(i *do.Injector) (cli.ActionFunc, error) {
+	l := do.MustInvoke[*logger.Logger](i)
+	cfg := do.MustInvoke[*config.Config](i)
+
 	return func(c *cli.Context) (err error) {
 		// Construct TCP listener
 		listener, err := net.Listen("tcp4", "localhost:")
@@ -40,9 +42,9 @@ func buildDaemonRunAction(kcli *KoiCli) func(c *cli.Context) error {
 		}
 		addr := listener.Addr().String()
 
-		kcli.l.Debug("Writing daemon.lock...")
+		l.Debug("Writing daemon.lock...")
 		lock, err := os.OpenFile(
-			filepath.Join(kcli.config.Computed.DirLock, "daemon.lock"),
+			filepath.Join(cfg.Computed.DirLock, "daemon.lock"),
 			os.O_WRONLY|os.O_CREATE|os.O_EXCL, // Must create new file and write only
 			0444,                              // -r--r--r--
 		)
@@ -63,18 +65,18 @@ func buildDaemonRunAction(kcli *KoiCli) func(c *cli.Context) error {
 		}
 
 		// Construct Daemon
-		daemon := god.NewDaemon(kcli.l)
+		daemon := god.NewDaemon(i)
 
 		mux := http.NewServeMux()
 		mux.Handle("/api", daemon.Handler)
 
 		server := &http.Server{Addr: addr, Handler: mux}
-		kcli.l.Debug("Serving daemon...")
+		l.Debug("Serving daemon...")
 		err = server.Serve(listener)
 		if err != nil {
 			return fmt.Errorf("daemon closed: %w", err)
 		}
 
 		return
-	}
+	}, nil
 }

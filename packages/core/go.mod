@@ -4,6 +4,7 @@ go 1.18
 
 require (
 	github.com/goccy/go-json v0.9.10
+	github.com/samber/do v1.2.0
 	golang.org/x/net v0.0.0-20220728211354-c7608f3a8462
 	gopkg.ilharper.com/x/colette v0.1.0
 	gopkg.ilharper.com/x/rpl v0.1.0

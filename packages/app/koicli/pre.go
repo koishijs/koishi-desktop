@@ -1,33 +1,34 @@
 package koicli
 
 import (
-	"fmt"
+	"github.com/samber/do"
 	"github.com/urfave/cli/v2"
 	"gopkg.ilharper.com/koi/app/config"
+	"gopkg.ilharper.com/koi/core/logger"
 	"gopkg.ilharper.com/x/rpl"
 )
 
-func buildPreAction(kcli *KoiCli) func(c *cli.Context) error {
-	return func(c *cli.Context) (err error) {
-		kcli.l.Debug("Trigger pseudo action: pre")
+func buildPreAction(i *do.Injector) func(c *cli.Context) error {
+	l := do.MustInvoke[*logger.Logger](i)
+	consoleTarget := do.MustInvoke[*logger.ConsoleTarget](i)
 
-		kcli.l.Debug("Checking flag debug...")
+	return func(c *cli.Context) (err error) {
+		l.Debug("Trigger pseudo action: pre")
+
+		l.Debug("Checking flag debug...")
 		if c.Bool("debug") {
-			kcli.consoleTarget.Level = rpl.LevelDebug
+			consoleTarget.Level = rpl.LevelDebug
 		}
 
-		kcli.l.Debug("Checking config file...")
+		l.Debug("Checking config file...")
 		configPath := c.String("config")
 		if configPath != "" {
-			kcli.l.Debugf("Using flag provided config path: %s", configPath)
+			l.Debugf("Using flag provided config path: %s", configPath)
 		} else {
 			configPath = "koi.yml"
 		}
-		kcli.l.Infof("Using config file: %s", configPath)
-		kcli.config, err = config.LoadConfig(kcli.l, configPath)
-		if err != nil {
-			return fmt.Errorf("failed to load config: %w", err)
-		}
+		l.Infof("Using config file: %s", configPath)
+		do.Provide(i, config.BuildLoadConfig(configPath))
 
 		return
 	}

@@ -2,6 +2,7 @@ package logger
 
 import (
 	"fmt"
+	"github.com/samber/do"
 	"gopkg.ilharper.com/koi/core/util/strutil"
 	"gopkg.ilharper.com/x/rpl"
 	"strings"
@@ -24,6 +25,14 @@ type Logger struct {
 func NewLogger(ch uint16) *Logger {
 	return &Logger{
 		rpLogger: rpl.NewLogger(ch),
+	}
+}
+
+func BuildNewLogger(ch uint16) do.Provider[*Logger] {
+	return func(i *do.Injector) (*Logger, error) {
+		return &Logger{
+			rpLogger: rpl.NewLogger(ch),
+		}, nil
 	}
 }
 

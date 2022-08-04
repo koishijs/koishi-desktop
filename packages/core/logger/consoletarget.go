@@ -2,6 +2,7 @@ package logger
 
 import (
 	"fmt"
+	"github.com/samber/do"
 	"gopkg.ilharper.com/x/rpl"
 	"strings"
 )
@@ -11,7 +12,7 @@ type ConsoleTarget struct {
 	Level int8
 }
 
-func NewConsoleTarget() *ConsoleTarget {
+func NewConsoleTarget(i *do.Injector) (*ConsoleTarget, error) {
 	consoleTarget := &ConsoleTarget{
 		Level: rpl.LevelInfo,
 	}
@@ -30,7 +31,7 @@ func NewConsoleTarget() *ConsoleTarget {
 		}
 	}(consoleTarget)
 
-	return consoleTarget
+	return consoleTarget, nil
 }
 
 func (consoleTarget *ConsoleTarget) Writer() chan<- rpl.Log {
