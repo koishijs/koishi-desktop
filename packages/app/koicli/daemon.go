@@ -31,6 +31,7 @@ func newDaemonCommand(i *do.Injector) (*cli.Command, error) {
 }
 
 func newDaemonRunAction(i *do.Injector) (cli.ActionFunc, error) {
+	do.Provide(i, newDaemonUnlocker)
 	l := do.MustInvoke[*logger.Logger](i)
 	cfg := do.MustInvoke[*config.Config](i)
 
@@ -48,8 +49,6 @@ func newDaemonRunAction(i *do.Injector) (cli.ActionFunc, error) {
 			os.O_WRONLY|os.O_CREATE|os.O_EXCL, // Must create new file and write only
 			0444,                              // -r--r--r--
 		)
-		// 【管理员】昵称什么的能吃吗 22:39:06
-		// 死了也无所谓了 下次启动 check 一下
 
 		daemonLock := &god.DaemonLock{
 			Pid:  os.Getpid(),
@@ -62,6 +61,10 @@ func newDaemonRunAction(i *do.Injector) (cli.ActionFunc, error) {
 		_, err = lock.Write(daemonLockJson)
 		if err != nil {
 			return fmt.Errorf("failed to write daemon lock data: %w", err)
+		}
+		err = lock.Close()
+		if err != nil {
+			return fmt.Errorf("failed to close daemon lock: %w", err)
 		}
 
 		// Construct Daemon
@@ -79,4 +82,23 @@ func newDaemonRunAction(i *do.Injector) (cli.ActionFunc, error) {
 
 		return
 	}, nil
+}
+
+type daemonUnlocker struct {
+	l      *logger.Logger
+	config *config.Config
+}
+
+func newDaemonUnlocker(i *do.Injector) (*daemonUnlocker, error) {
+	return &daemonUnlocker{
+		l:      do.MustInvoke[*logger.Logger](i),
+		config: do.MustInvoke[*config.Config](i),
+	}, nil
+}
+
+func (unlocker *daemonUnlocker) Shutdown() error {
+	err := os.Remove(filepath.Join(unlocker.config.Computed.DirLock, "daemon.lock"))
+	if err != nil {
+		unlocker.l.Errorf("failed to delete daemon lock: %w", err)
+	}
 }

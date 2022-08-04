@@ -7,6 +7,9 @@ import (
 	"gopkg.ilharper.com/koi/app/util"
 	"gopkg.ilharper.com/koi/core/logger"
 	"os"
+	"os/signal"
+	"sync"
+	"syscall"
 )
 
 const (
@@ -28,6 +31,38 @@ func main() {
 	if len(args) <= 1 {
 		args = append(args, defaultCommand)
 	}
+
+	var c chan os.Signal
+	signal.Notify(
+		c,
+		syscall.SIGTERM, // "the normal way to politely ask a program to terminate"
+		syscall.SIGINT,  // Ctrl-C
+		syscall.SIGQUIT, // Ctrl-\
+		syscall.SIGKILL, // May not be caught
+		syscall.SIGHUP,  // Terminal disconnected. SIGHUP also needs gracefully terminating
+	)
+	go func() {
+		once := sync.Once{}
+		for {
+			s := <-c
+
+			// Once received signal,
+			// start another goroutine immediately and restore signal watching.
+			// This can prevent the second signal terminating.
+			go func(s1 os.Signal) {
+				once.Do(func() {
+					sig := s1
+					l.Debugf("Received signal %s. Gracefully shutting down", sig)
+					err := i.Shutdown()
+					if err != nil {
+						l.Errorf("failed to gracefully shutdown: %w", err)
+					}
+					os.Exit(0)
+				})
+			}(s)
+		}
+	}()
+
 	err := do.MustInvoke[*cli.App](i).Run(args)
 	if err != nil {
 		l.Error(err)
