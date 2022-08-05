@@ -101,4 +101,6 @@ func (unlocker *daemonUnlocker) Shutdown() error {
 	if err != nil {
 		unlocker.l.Errorf("failed to delete daemon lock: %w", err)
 	}
+	// Do not short other do.Shutdownable
+	return nil
 }
