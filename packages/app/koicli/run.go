@@ -41,7 +41,7 @@ func newRunAction(i *do.Injector) (cli.ActionFunc, error) {
 			err = do.MustInvokeNamed[cli.ActionFunc](i, "gopkg.ilharper.com/koi/app/koicli/action.RunDaemon")(c)
 			return
 		default:
-			err = fmt.Errorf("mode %s not supported", cfg.Data.Mode)
+			err = fmt.Errorf("unknown mode: %s", cfg.Data.Mode)
 			return
 		}
 	}, nil
