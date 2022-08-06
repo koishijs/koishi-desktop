@@ -15,11 +15,13 @@ import (
 )
 
 func newRunCommand(i *do.Injector) (*cli.Command, error) {
+	do.ProvideNamed(i, "gopkg.ilharper.com/koi/app/koicli/action.Run", newRunAction)
 	do.ProvideNamed(i, "gopkg.ilharper.com/koi/app/koicli/action.RunDaemon", newRunDaemonAction)
 
 	return &cli.Command{
-		Name:  "run",
-		Usage: "Run Koishi Desktop",
+		Name:   "run",
+		Usage:  "Run Koishi Desktop",
+		Action: do.MustInvokeNamed[cli.ActionFunc](i, "gopkg.ilharper.com/koi/app/koicli/action.Run"),
 		Subcommands: []*cli.Command{
 			{
 				Name:   "daemon",
@@ -27,6 +29,21 @@ func newRunCommand(i *do.Injector) (*cli.Command, error) {
 				Action: do.MustInvokeNamed[cli.ActionFunc](i, "gopkg.ilharper.com/koi/app/koicli/action.RunDaemon"),
 			},
 		},
+	}, nil
+}
+
+func newRunAction(i *do.Injector) (cli.ActionFunc, error) {
+	return func(c *cli.Context) (err error) {
+		cfg := do.MustInvoke[*config.Config](i)
+
+		switch cfg.Data.Mode {
+		case "cli":
+			err = do.MustInvokeNamed[cli.ActionFunc](i, "gopkg.ilharper.com/koi/app/koicli/action.RunDaemon")(c)
+			return
+		default:
+			err = fmt.Errorf("mode %s not supported", cfg.Data.Mode)
+			return
+		}
 	}, nil
 }
 
