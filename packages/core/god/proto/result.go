@@ -1,5 +1,9 @@
 package proto
 
+const (
+	TypeResponseResult = "result"
+)
+
 type Result struct {
 	// Code is the status of [proto.Result].
 	// 0 represents success and any other code represents an error.
@@ -10,7 +14,7 @@ type Result struct {
 }
 
 func NewResult(code uint16, data any) *Response {
-	return NewResponse("result", &Result{
+	return NewResponse(TypeResponseResult, &Result{
 		Code: code,
 		Data: data,
 	})

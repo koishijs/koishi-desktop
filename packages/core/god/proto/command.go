@@ -1,5 +1,9 @@
 package proto
 
+const (
+	TypeRequestCommand = "cmd"
+)
+
 // CommandRequest is a request of command.
 // Use kebab-case for command name and flags.
 type CommandRequest struct {
@@ -14,7 +18,7 @@ type CommandRequest struct {
 
 func NewCommandRequest(name string, flags map[string]any) *Request {
 	return &Request{
-		Type: "cmd",
+		Type: TypeRequestCommand,
 		Data: &CommandRequest{
 			Name:  name,
 			Flags: flags,
