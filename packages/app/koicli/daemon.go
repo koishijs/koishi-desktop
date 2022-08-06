@@ -33,9 +33,10 @@ func newDaemonCommand(i *do.Injector) (*cli.Command, error) {
 func newDaemonRunAction(i *do.Injector) (cli.ActionFunc, error) {
 	do.Provide(i, newDaemonUnlocker)
 	l := do.MustInvoke[*logger.Logger](i)
-	cfg := do.MustInvoke[*config.Config](i)
 
 	return func(c *cli.Context) (err error) {
+		cfg := do.MustInvoke[*config.Config](i)
+
 		// Construct TCP listener
 		listener, err := net.Listen("tcp4", "localhost:")
 		if err != nil {
