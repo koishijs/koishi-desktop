@@ -14,23 +14,23 @@ import (
 	"path/filepath"
 )
 
-func newDaemonCommand(i *do.Injector) (*cli.Command, error) {
-	do.ProvideNamed(i, "gopkg.ilharper.com/koi/app/koicli/action.DaemonRun", newDaemonRunAction)
+func newRunCommand(i *do.Injector) (*cli.Command, error) {
+	do.ProvideNamed(i, "gopkg.ilharper.com/koi/app/koicli/action.RunDaemon", newRunDaemonAction)
 
 	return &cli.Command{
-		Name:  "daemon",
-		Usage: "Manage daemon",
+		Name:  "run",
+		Usage: "Run Koishi Desktop",
 		Subcommands: []*cli.Command{
 			{
-				Name:   "run",
+				Name:   "daemon",
 				Usage:  "Run daemon",
-				Action: do.MustInvokeNamed[cli.ActionFunc](i, "gopkg.ilharper.com/koi/app/koicli/action.DaemonRun"),
+				Action: do.MustInvokeNamed[cli.ActionFunc](i, "gopkg.ilharper.com/koi/app/koicli/action.RunDaemon"),
 			},
 		},
 	}, nil
 }
 
-func newDaemonRunAction(i *do.Injector) (cli.ActionFunc, error) {
+func newRunDaemonAction(i *do.Injector) (cli.ActionFunc, error) {
 	do.Provide(i, newDaemonUnlocker)
 	l := do.MustInvoke[*logger.Logger](i)
 

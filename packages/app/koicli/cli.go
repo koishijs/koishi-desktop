@@ -11,7 +11,7 @@ import (
 func NewCli(i *do.Injector) (*cli.App, error) {
 	l := do.MustInvoke[*logger.Logger](i)
 
-	do.ProvideNamed(i, "gopkg.ilharper.com/koi/app/koicli/command.Daemon", newDaemonCommand)
+	do.ProvideNamed(i, "gopkg.ilharper.com/koi/app/koicli/command.Run", newRunCommand)
 
 	return &cli.App{
 		Name:    "Koishi Desktop",
@@ -46,7 +46,7 @@ func NewCli(i *do.Injector) (*cli.App, error) {
 		},
 
 		Commands: []*cli.Command{
-			do.MustInvokeNamed[*cli.Command](i, "gopkg.ilharper.com/koi/app/koicli/command.Daemon"),
+			do.MustInvokeNamed[*cli.Command](i, "gopkg.ilharper.com/koi/app/koicli/command.Run"),
 		},
 
 		Before: buildPreAction(i),
