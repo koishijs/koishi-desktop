@@ -31,10 +31,11 @@ func newRunCommand(i *do.Injector) (*cli.Command, error) {
 }
 
 func newRunDaemonAction(i *do.Injector) (cli.ActionFunc, error) {
-	do.Provide(i, newDaemonUnlocker)
 	l := do.MustInvoke[*logger.Logger](i)
 
 	return func(c *cli.Context) (err error) {
+		do.Provide(i, newDaemonUnlocker)
+
 		cfg := do.MustInvoke[*config.Config](i)
 
 		// Construct TCP listener
