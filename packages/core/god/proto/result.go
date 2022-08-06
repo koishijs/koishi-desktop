@@ -1,5 +1,7 @@
 package proto
 
+import "fmt"
+
 const (
 	TypeResponseResult = "result"
 )
@@ -18,4 +20,12 @@ func NewResult(code uint16, data any) *Response {
 		Code: code,
 		Data: data,
 	})
+}
+
+func NewSuccessResult(data any) *Response {
+	return NewResult(0, data)
+}
+
+func NewFailedResult(code uint16, format string, a ...any) *Response {
+	return NewResult(code, fmt.Sprint(fmt.Errorf(format, a...)))
 }
