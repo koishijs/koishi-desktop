@@ -17,11 +17,8 @@ type CommandRequest struct {
 }
 
 func NewCommandRequest(name string, flags map[string]any) *Request {
-	return &Request{
-		Type: TypeRequestCommand,
-		Data: &CommandRequest{
-			Name:  name,
-			Flags: flags,
-		},
-	}
+	return NewRequest(TypeRequestCommand, &CommandRequest{
+		Name:  name,
+		Flags: flags,
+	})
 }
