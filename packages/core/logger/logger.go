@@ -45,7 +45,7 @@ func (logger *Logger) Logs(level int8, value string) {
 	logger.rpLogger.Logs(level, value)
 }
 
-func (logger *Logger) Log(level int8, prefix byte, args ...interface{}) {
+func (logger *Logger) Log(level int8, prefix byte, args ...any) {
 	now := time.Now()
 
 	indent := 4
@@ -72,46 +72,46 @@ func (logger *Logger) Log(level int8, prefix byte, args ...interface{}) {
 	logger.Logs(level, output)
 }
 
-func (logger *Logger) Logf(level int8, prefix byte, format string, args ...interface{}) {
+func (logger *Logger) Logf(level int8, prefix byte, format string, args ...any) {
 	logger.Log(level, prefix, fmt.Sprintf(format, args...))
 }
 
-func (logger *Logger) Success(args ...interface{}) {
+func (logger *Logger) Success(args ...any) {
 	logger.Log(rpl.LevelSuccess, 'S', args...)
 }
 
-func (logger *Logger) Error(args ...interface{}) {
+func (logger *Logger) Error(args ...any) {
 	logger.Log(rpl.LevelError, 'E', args...)
 }
 
-func (logger *Logger) Info(args ...interface{}) {
+func (logger *Logger) Info(args ...any) {
 	logger.Log(rpl.LevelInfo, 'I', args...)
 }
 
-func (logger *Logger) Warn(args ...interface{}) {
+func (logger *Logger) Warn(args ...any) {
 	logger.Log(rpl.LevelWarn, 'W', args...)
 }
 
-func (logger *Logger) Debug(args ...interface{}) {
+func (logger *Logger) Debug(args ...any) {
 	logger.Log(rpl.LevelDebug, 'D', args...)
 }
 
-func (logger *Logger) Successf(format string, args ...interface{}) {
+func (logger *Logger) Successf(format string, args ...any) {
 	logger.Logf(rpl.LevelSuccess, 'S', format, args...)
 }
 
-func (logger *Logger) Errorf(format string, args ...interface{}) {
+func (logger *Logger) Errorf(format string, args ...any) {
 	logger.Logf(rpl.LevelError, 'E', format, args...)
 }
 
-func (logger *Logger) Infof(format string, args ...interface{}) {
+func (logger *Logger) Infof(format string, args ...any) {
 	logger.Logf(rpl.LevelInfo, 'I', format, args...)
 }
 
-func (logger *Logger) Warnf(format string, args ...interface{}) {
+func (logger *Logger) Warnf(format string, args ...any) {
 	logger.Logf(rpl.LevelWarn, 'W', format, args...)
 }
 
-func (logger *Logger) Debugf(format string, args ...interface{}) {
+func (logger *Logger) Debugf(format string, args ...any) {
 	logger.Logf(rpl.LevelDebug, 'D', format, args...)
 }

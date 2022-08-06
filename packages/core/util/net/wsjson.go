@@ -5,12 +5,12 @@ import (
 	"golang.org/x/net/websocket"
 )
 
-func jsonMarshal(v interface{}) (msg []byte, payloadType byte, err error) {
+func jsonMarshal(v any) (msg []byte, payloadType byte, err error) {
 	msg, err = json.Marshal(v)
 	return msg, 1 /* TextFrame */, err
 }
 
-func jsonUnmarshal(msg []byte, payloadType byte, v interface{}) (err error) {
+func jsonUnmarshal(msg []byte, payloadType byte, v any) (err error) {
 	return json.Unmarshal(msg, v)
 }
 
