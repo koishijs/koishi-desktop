@@ -6,9 +6,9 @@ import (
 )
 
 type Option struct {
-	host string
-	port string
-	path string
+	Host     string
+	Port     string
+	Endpoint string
 }
 
 type KoiConn struct {
@@ -18,9 +18,9 @@ type KoiConn struct {
 
 func Connect(option *Option) (conn *KoiConn, err error) {
 	ws, err := websocket.Dial(
-		fmt.Sprintf("ws://%s:%s%s", option.host, option.port, option.path),
+		fmt.Sprintf("ws://%s:%s%s", option.Host, option.Port, option.Endpoint),
 		"",
-		fmt.Sprintf("http://%s:%s/", option.host, option.port),
+		fmt.Sprintf("http://%s:%s/", option.Host, option.Port),
 	)
 	if err != nil {
 		return
