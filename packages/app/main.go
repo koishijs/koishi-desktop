@@ -18,6 +18,10 @@ const (
 
 func main() {
 	i := do.New()
+
+	wg := &sync.WaitGroup{}
+	do.ProvideValue(i, wg)
+
 	do.Provide(i, logger.NewConsoleTarget)
 	do.Provide(i, logger.BuildNewLogger(0))
 	do.Provide(i, koicli.NewCli)
@@ -57,6 +61,7 @@ func main() {
 					if err != nil {
 						l.Errorf("failed to gracefully shutdown: %w", err)
 					}
+					wg.Wait()
 					os.Exit(0)
 				})
 			}(s)
@@ -66,6 +71,9 @@ func main() {
 	err := do.MustInvoke[*cli.App](i).Run(args)
 	if err != nil {
 		l.Error(err)
+		wg.Wait()
 		os.Exit(1)
 	}
+
+	wg.Wait()
 }

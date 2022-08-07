@@ -5,6 +5,7 @@ import (
 	"github.com/samber/do"
 	"gopkg.ilharper.com/x/rpl"
 	"strings"
+	"sync"
 )
 
 type ConsoleTarget struct {
@@ -13,6 +14,8 @@ type ConsoleTarget struct {
 }
 
 func NewConsoleTarget(i *do.Injector) (*ConsoleTarget, error) {
+	wg := do.MustInvoke[*sync.WaitGroup](i)
+
 	consoleTarget := &ConsoleTarget{
 		c:     make(chan rpl.Log),
 		Level: rpl.LevelInfo,
@@ -21,6 +24,9 @@ func NewConsoleTarget(i *do.Injector) (*ConsoleTarget, error) {
 	go func(ct *ConsoleTarget) {
 		for {
 			log := <-ct.c
+
+			wg.Add(1)
+
 			if log.Level > ct.Level {
 				continue
 			}
@@ -29,6 +35,8 @@ func NewConsoleTarget(i *do.Injector) (*ConsoleTarget, error) {
 			for _, line := range lines {
 				fmt.Printf("%04d|%s\n", log.Ch, line)
 			}
+
+			wg.Done()
 		}
 	}(consoleTarget)
 
