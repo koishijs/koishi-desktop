@@ -6,6 +6,7 @@ import (
 	"gopkg.ilharper.com/koi/app/koicli"
 	"gopkg.ilharper.com/koi/app/util"
 	"gopkg.ilharper.com/koi/core/logger"
+	coreUtil "gopkg.ilharper.com/koi/core/util"
 	"os"
 	"os/signal"
 	"sync"
@@ -18,6 +19,8 @@ const (
 
 func main() {
 	i := do.New()
+
+	do.ProvideNamedValue(i, coreUtil.ServiceAppVersion, util.AppVersion)
 
 	wg := &sync.WaitGroup{}
 	do.ProvideValue(i, wg)
