@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/goccy/go-yaml"
 	"github.com/samber/do"
+	"gopkg.ilharper.com/koi/core/koiconfig"
 	"gopkg.ilharper.com/koi/core/logger"
 	"io/fs"
 	"os"
@@ -12,39 +13,12 @@ import (
 	"strings"
 )
 
-type Config struct {
-	Data     ConfigData
-	Computed ConfigComputed
-}
-
-//goland:noinspection GoNameStartsWithPackageName
-type ConfigData struct {
-	Mode    string `yaml:"mode"`
-	Open    bool   `yaml:"open"`
-	Isolate string `yaml:"isolate"`
-	Start   []string
-	Env     []string `yaml:"env"`
-}
-
-var defaultConfigData = ConfigData{
+var defaultConfigData = koiconfig.ConfigData{
 	Mode:    "cli",
 	Open:    true,
 	Isolate: "normal",
 	Start:   nil,
 	Env:     nil,
-}
-
-//goland:noinspection GoNameStartsWithPackageName
-type ConfigComputed struct {
-	DirExe      string
-	DirConfig   string
-	DirData     string
-	DirHome     string
-	DirNode     string
-	DirNodeExe  string
-	DirLock     string
-	DirTemp     string
-	DirInstance string
 }
 
 var (
@@ -54,17 +28,17 @@ var (
 	})()
 )
 
-func BuildLoadConfig(path string) func(i *do.Injector) (*Config, error) {
-	return func(i *do.Injector) (*Config, error) {
+func BuildLoadConfig(path string) func(i *do.Injector) (*koiconfig.Config, error) {
+	return func(i *do.Injector) (*koiconfig.Config, error) {
 		exePath, err := os.Executable()
 		if err != nil {
 			return nil, fmt.Errorf("cannot get executable: %w", err)
 		}
 		dirExe := filepath.Dir(exePath)
 
-		config := &Config{
+		config := &koiconfig.Config{
 			Data: defaultConfigData,
-			Computed: ConfigComputed{
+			Computed: koiconfig.ConfigComputed{
 				DirExe: dirExe,
 			},
 		}
@@ -72,7 +46,7 @@ func BuildLoadConfig(path string) func(i *do.Injector) (*Config, error) {
 	}
 }
 
-func loadConfigIntl(i *do.Injector, c *Config, path string, recur uint8) (err error) {
+func loadConfigIntl(i *do.Injector, c *koiconfig.Config, path string, recur uint8) (err error) {
 	l := do.MustInvoke[*logger.Logger](i)
 
 	if recur >= 64 {
@@ -118,7 +92,7 @@ func loadConfigIntl(i *do.Injector, c *Config, path string, recur uint8) (err er
 	return
 }
 
-func postConfig(c *Config) (err error) {
+func postConfig(c *koiconfig.Config) (err error) {
 	c.Computed.DirData, err = joinAndCreate(c.Computed.DirConfig, "data")
 	if err != nil {
 		return fmt.Errorf("failed to process dir data: %w", err)

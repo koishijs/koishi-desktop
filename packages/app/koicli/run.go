@@ -5,8 +5,8 @@ import (
 	"github.com/goccy/go-json"
 	"github.com/samber/do"
 	"github.com/urfave/cli/v2"
-	"gopkg.ilharper.com/koi/app/config"
 	"gopkg.ilharper.com/koi/core/god"
+	"gopkg.ilharper.com/koi/core/koiconfig"
 	"gopkg.ilharper.com/koi/core/logger"
 	"net"
 	"net/http"
@@ -39,7 +39,7 @@ func newRunCommand(i *do.Injector) (*cli.Command, error) {
 
 func newRunAction(i *do.Injector) (cli.ActionFunc, error) {
 	return func(c *cli.Context) (err error) {
-		cfg, err := do.Invoke[*config.Config](i)
+		cfg, err := do.Invoke[*koiconfig.Config](i)
 		if err != nil {
 			return
 		}
@@ -61,7 +61,7 @@ func newRunDaemonAction(i *do.Injector) (cli.ActionFunc, error) {
 	return func(c *cli.Context) (err error) {
 		do.Provide(i, newDaemonUnlocker)
 
-		cfg, err := do.Invoke[*config.Config](i)
+		cfg, err := do.Invoke[*koiconfig.Config](i)
 		if err != nil {
 			return
 		}
@@ -116,11 +116,11 @@ func newRunDaemonAction(i *do.Injector) (cli.ActionFunc, error) {
 
 type daemonUnlocker struct {
 	l      *logger.Logger
-	config *config.Config
+	config *koiconfig.Config
 }
 
 func newDaemonUnlocker(i *do.Injector) (*daemonUnlocker, error) {
-	cfg, err := do.Invoke[*config.Config](i)
+	cfg, err := do.Invoke[*koiconfig.Config](i)
 	if err != nil {
 		return nil, err
 	}
