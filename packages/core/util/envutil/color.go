@@ -1,6 +1,6 @@
 package envutil
 
-func UseColorEnv(env *[]string, mode int8) {
+func UseColorEnv(env *[]string) {
 	UseEnv(env, "FORCE_COLOR", "3")
 	UseEnv(env, "COLORTERM", "truecolor")
 	UseEnv(env, "TERM", "xterm-truecolor")
