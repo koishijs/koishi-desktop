@@ -21,8 +21,8 @@ type colorAdapter struct {
 	level int8
 }
 
-func newColorAdapter(target *os.File) colorAdapter {
-	return colorAdapter{
+func newColorAdapter(target *os.File) *colorAdapter {
+	return &colorAdapter{
 		level: supcolor.SupColor(target),
 	}
 }
