@@ -85,13 +85,14 @@ func handleCommand(
 
 	// Build Response channel
 	ch := make(chan *proto.Response)
+	defer close(ch)
 	do.ProvideNamedValue(i, koicmd.ServiceKoiCmdResponseChan, ch)
 
 	// Build RPL Response Sender
 	do.Provide(i, logger.NewResponseSender)
-
-	// Register Senders
 	l := do.MustInvoke[*logger.Logger](i)
+	defer l.Close()
+	// Register Senders
 	l.Register(do.MustInvoke[*logger.ConsoleTarget](i))
 	l.Register(do.MustInvoke[*logger.ResponseSender](i))
 
@@ -127,6 +128,5 @@ func handleCommand(
 	if response != nil {
 		ch <- response
 	}
-	close(ch)
 	return nil
 }

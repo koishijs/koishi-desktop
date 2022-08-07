@@ -21,14 +21,15 @@ func NewConsoleTarget(i *do.Injector) (*ConsoleTarget, error) {
 		Level: rpl.LevelInfo,
 	}
 
+	wg.Add(1)
 	go func(ct *ConsoleTarget) {
+		defer wg.Done()
+
 		for {
 			log := <-ct.c
 			if log == nil {
 				break
 			}
-
-			wg.Add(1)
 
 			if log.Level > ct.Level {
 				continue
@@ -38,8 +39,6 @@ func NewConsoleTarget(i *do.Injector) (*ConsoleTarget, error) {
 			for _, line := range lines {
 				fmt.Printf("%04d|%s\n", log.Ch, line)
 			}
-
-			wg.Done()
 		}
 	}(consoleTarget)
 

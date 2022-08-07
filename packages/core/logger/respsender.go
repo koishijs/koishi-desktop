@@ -20,18 +20,16 @@ func NewResponseSender(i *do.Injector) (*ResponseSender, error) {
 	}
 	ch := do.MustInvokeNamed[chan<- *proto.Response](i, koicmd.ServiceKoiCmdResponseChan)
 
+	wg.Add(1)
 	go func(r1 *ResponseSender, ch1 chan<- *proto.Response) {
+		defer wg.Done()
+
 		for {
 			log := <-r1.c
 			if log == nil {
 				break
 			}
-
-			wg.Add(1)
-
 			ch1 <- proto.NewLog(log)
-
-			wg.Wait()
 		}
 	}(r, ch)
 

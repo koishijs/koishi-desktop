@@ -61,6 +61,7 @@ func main() {
 					if err != nil {
 						l.Errorf("failed to gracefully shutdown: %w", err)
 					}
+					l.Close()
 					wg.Wait()
 					os.Exit(0)
 				})
@@ -69,6 +70,7 @@ func main() {
 	}()
 
 	err := do.MustInvoke[*cli.App](i).Run(args)
+	l.Close()
 	wg.Wait()
 	if err != nil {
 		os.Exit(1)
