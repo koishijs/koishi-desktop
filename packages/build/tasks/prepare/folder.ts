@@ -6,7 +6,7 @@ const prepareFolderTasks = [
   dir('buildCache'),
   dir('buildPortableData'),
   dir('dist'),
-  dir('buildPortableData', 'node'),
+  dir('buildPortableData', process.platform === 'win32' ? 'node' : 'node/bin'),
 ].map((x) => () => mkdirp(x) as Promise<void>)
 
 export const prepareFolder = parallel(...prepareFolderTasks)
