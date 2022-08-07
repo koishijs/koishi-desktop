@@ -15,17 +15,15 @@ export const prepareNodeYarnDownload = async () => {
 }
 
 export const prepareNodeYarnCopy = async () => {
-  const destFile = dir('buildCache', destFileYarn)
+  const cachedFile = dir('buildCache', destFileYarn)
+  const destFile = dir(
+    'buildPortableData',
+    (process.platform === 'win32' ? 'node/' : 'node/bin/') + destFileYarn
+  )
   info('Checking destination cache.')
   if (await exists(destFile)) return
 
-  await fs.promises.copyFile(
-    destFile,
-    dir(
-      'buildPortableData',
-      (process.platform === 'win32' ? 'node/' : 'node/bin/') + destFileYarn
-    )
-  )
+  await fs.promises.copyFile(cachedFile, destFile)
 }
 
 export const prepareNodeYarn = series(

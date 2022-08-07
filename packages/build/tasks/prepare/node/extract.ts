@@ -13,16 +13,16 @@ import { destFileLinux, destFileMac, destFileWin, nameWin } from './path'
 
 export const prepareNodeExtractWin = async () => {
   const nodeFolder = dir('buildPortableData', 'node')
-  const destFile = dir('buildCache', destFileWin)
+  const cachedFile = dir('buildCache', destFileWin)
 
   info('Checking destination cache.')
   if (await exists(dir('buildPortableData', 'node/node.exe'))) return
 
-  if (!(await exists(destFile))) {
-    throw Exceptions.fileNotFound(destFile)
+  if (!(await exists(cachedFile))) {
+    throw Exceptions.fileNotFound(cachedFile)
   }
 
-  const zip = new StreamZip.async({ file: destFile })
+  const zip = new StreamZip.async({ file: cachedFile })
   await zip.extract(nameWin, nodeFolder)
   await zip.close()
 
@@ -42,18 +42,18 @@ export const prepareNodeExtractWin = async () => {
 
 export const prepareNodeExtractMac = async () => {
   const nodeFolder = dir('buildPortableData', 'node')
-  const destFile = dir('buildCache', destFileMac)
+  const cachedFile = dir('buildCache', destFileMac)
 
   info('Checking destination cache.')
   if (await exists(dir('buildPortableData', 'node/bin/node'))) return
 
-  if (!(await exists(destFile))) {
-    throw Exceptions.fileNotFound(destFile)
+  if (!(await exists(cachedFile))) {
+    throw Exceptions.fileNotFound(cachedFile)
   }
 
   await promisify(stream.finished)(
     fs
-      .createReadStream(destFile)
+      .createReadStream(cachedFile)
       .pipe(tar.extract({ cwd: nodeFolder, strip: 1 }))
   )
 
