@@ -8,7 +8,7 @@ import (
 	"gopkg.ilharper.com/x/rpl"
 )
 
-func buildPreAction(i *do.Injector) func(c *cli.Context) error {
+func newPreAction(i *do.Injector) (cli.BeforeFunc, error) {
 	l := do.MustInvoke[*logger.Logger](i)
 	consoleTarget := do.MustInvoke[*logger.ConsoleTarget](i)
 
@@ -31,5 +31,5 @@ func buildPreAction(i *do.Injector) func(c *cli.Context) error {
 		do.Provide(i, config.BuildLoadConfig(configPath))
 
 		return
-	}
+	}, nil
 }

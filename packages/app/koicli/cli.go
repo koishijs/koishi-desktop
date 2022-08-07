@@ -11,6 +11,7 @@ import (
 func NewCli(i *do.Injector) (*cli.App, error) {
 	l := do.MustInvoke[*logger.Logger](i)
 
+	do.ProvideNamed(i, "gopkg.ilharper.com/koi/app/koicli/action.Pre", newPreAction)
 	do.ProvideNamed(i, "gopkg.ilharper.com/koi/app/koicli/command.Run", newRunCommand)
 
 	return &cli.App{
@@ -49,7 +50,7 @@ func NewCli(i *do.Injector) (*cli.App, error) {
 			do.MustInvokeNamed[*cli.Command](i, "gopkg.ilharper.com/koi/app/koicli/command.Run"),
 		},
 
-		Before: buildPreAction(i),
+		Before: do.MustInvokeNamed[cli.BeforeFunc](i, "gopkg.ilharper.com/koi/app/koicli/action.Pre"),
 		CommandNotFound: func(context *cli.Context, s string) {
 			l.Errorf("Command not found: %s", s)
 		},
