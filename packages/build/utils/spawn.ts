@@ -67,7 +67,9 @@ export async function exec(
   cwd?: string,
   options?: SpawnOptions
 ): Promise<void> {
-  const parsedArgs = args ?? []
+  const parsedArgs = (args ?? []).map((x) =>
+    process.platform === 'win32' ? `"${x}"` : `'${x}'`
+  )
   const parsedCwd = cwd ?? dir('root')
   const parsedOptions: SpawnOptions = Object.assign<
     SpawnOptions,
