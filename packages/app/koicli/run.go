@@ -39,7 +39,10 @@ func newRunCommand(i *do.Injector) (*cli.Command, error) {
 
 func newRunAction(i *do.Injector) (cli.ActionFunc, error) {
 	return func(c *cli.Context) (err error) {
-		cfg := do.MustInvoke[*config.Config](i)
+		cfg, err := do.Invoke[*config.Config](i)
+		if err != nil {
+			return
+		}
 
 		switch cfg.Data.Mode {
 		case "cli":
@@ -58,7 +61,10 @@ func newRunDaemonAction(i *do.Injector) (cli.ActionFunc, error) {
 	return func(c *cli.Context) (err error) {
 		do.Provide(i, newDaemonUnlocker)
 
-		cfg := do.MustInvoke[*config.Config](i)
+		cfg, err := do.Invoke[*config.Config](i)
+		if err != nil {
+			return
+		}
 
 		// Construct TCP listener
 		listener, err := net.Listen("tcp4", "localhost:")
@@ -114,9 +120,14 @@ type daemonUnlocker struct {
 }
 
 func newDaemonUnlocker(i *do.Injector) (*daemonUnlocker, error) {
+	cfg, err := do.Invoke[*config.Config](i)
+	if err != nil {
+		return nil, err
+	}
+
 	return &daemonUnlocker{
 		l:      do.MustInvoke[*logger.Logger](i),
-		config: do.MustInvoke[*config.Config](i),
+		config: cfg,
 	}, nil
 }
 
