@@ -13,15 +13,16 @@ import { destFileLinux, destFileMac, destFileWin, nameWin } from './path'
 
 export const prepareNodeExtractWin = async () => {
   const nodeFolder = dir('buildPortableData', 'node')
+  const destFile = dir('buildCache', destFileWin)
 
   info('Checking temporary cache.')
   if (await exists(dir('buildPortableData', 'node/node.exe'))) return
 
-  if (!(await exists(dir('buildCache', destFileWin)))) {
-    throw Exceptions.fileNotFound(destFileWin)
+  if (!(await exists(destFile))) {
+    throw Exceptions.fileNotFound(destFile)
   }
 
-  const zip = new StreamZip.async({ file: destFileWin })
+  const zip = new StreamZip.async({ file: destFile })
   await zip.extract(nameWin, nodeFolder)
   await zip.close()
 
@@ -41,17 +42,18 @@ export const prepareNodeExtractWin = async () => {
 
 export const prepareNodeExtractMac = async () => {
   const nodeFolder = dir('buildPortableData', 'node')
+  const destFile = dir('buildCache', destFileMac)
 
   info('Checking temporary cache.')
   if (await exists(dir('buildPortableData', 'node/bin/node'))) return
 
-  if (!(await exists(dir('buildCache', destFileMac)))) {
-    throw Exceptions.fileNotFound(destFileMac)
+  if (!(await exists(destFile))) {
+    throw Exceptions.fileNotFound(destFile)
   }
 
   await promisify(stream.finished)(
     fs
-      .createReadStream(destFileMac)
+      .createReadStream(destFile)
       .pipe(tar.extract({ cwd: nodeFolder, strip: 1 }))
   )
 
