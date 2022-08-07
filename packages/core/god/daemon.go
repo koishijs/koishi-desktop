@@ -110,7 +110,12 @@ func handleCommand(
 		ch1 <-chan *proto.Response,
 	) {
 		for {
-			err := net.JSON.Send(ws1, <-ch1)
+			resp := <-ch1
+			if resp == nil {
+				break
+			}
+
+			err := net.JSON.Send(ws1, resp)
 			if err != nil {
 				localL1.Error(fmt.Errorf("failed to send response: %w", err))
 			}
@@ -122,5 +127,6 @@ func handleCommand(
 	if response != nil {
 		ch <- response
 	}
+	close(ch)
 	return nil
 }
