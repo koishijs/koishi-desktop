@@ -9,7 +9,7 @@ import (
 )
 
 type ConsoleTarget struct {
-	c     chan rpl.Log
+	c     chan *rpl.Log
 	Level int8
 }
 
@@ -17,13 +17,16 @@ func NewConsoleTarget(i *do.Injector) (*ConsoleTarget, error) {
 	wg := do.MustInvoke[*sync.WaitGroup](i)
 
 	consoleTarget := &ConsoleTarget{
-		c:     make(chan rpl.Log),
+		c:     make(chan *rpl.Log),
 		Level: rpl.LevelInfo,
 	}
 
 	go func(ct *ConsoleTarget) {
 		for {
 			log := <-ct.c
+			if log == nil {
+				break
+			}
 
 			wg.Add(1)
 
@@ -43,6 +46,6 @@ func NewConsoleTarget(i *do.Injector) (*ConsoleTarget, error) {
 	return consoleTarget, nil
 }
 
-func (consoleTarget *ConsoleTarget) Writer() chan<- rpl.Log {
+func (consoleTarget *ConsoleTarget) Writer() chan<- *rpl.Log {
 	return consoleTarget.c
 }

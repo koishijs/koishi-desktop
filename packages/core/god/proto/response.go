@@ -18,6 +18,6 @@ func NewResponse(rType string, data any) *Response {
 	}
 }
 
-func NewLog(log rpl.Log) *Response {
+func NewLog(log *rpl.Log) *Response {
 	return NewResponse(TypeResponseLog, log)
 }

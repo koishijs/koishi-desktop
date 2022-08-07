@@ -9,20 +9,23 @@ import (
 )
 
 type ResponseSender struct {
-	c chan rpl.Log
+	c chan *rpl.Log
 }
 
 func NewResponseSender(i *do.Injector) (*ResponseSender, error) {
 	wg := do.MustInvoke[*sync.WaitGroup](i)
 
 	r := &ResponseSender{
-		c: make(chan rpl.Log),
+		c: make(chan *rpl.Log),
 	}
 	ch := do.MustInvokeNamed[chan<- *proto.Response](i, koicmd.ServiceKoiCmdResponseChan)
 
 	go func(r1 *ResponseSender, ch1 chan<- *proto.Response) {
 		for {
 			log := <-r1.c
+			if log == nil {
+				break
+			}
 
 			wg.Add(1)
 
@@ -35,6 +38,6 @@ func NewResponseSender(i *do.Injector) (*ResponseSender, error) {
 	return r, nil
 }
 
-func (responseSender *ResponseSender) Writer() chan<- rpl.Log {
+func (responseSender *ResponseSender) Writer() chan<- *rpl.Log {
 	return responseSender.c
 }
