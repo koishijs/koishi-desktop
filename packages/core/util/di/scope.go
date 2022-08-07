@@ -9,7 +9,7 @@ func Scope(i *do.Injector) (o *do.Injector) {
 		do.ProvideNamedValue(
 			o,
 			service,
-			do.MustInvokeNamed(i, service),
+			do.MustInvokeNamed[any](i, service),
 		)
 	}
 	return
