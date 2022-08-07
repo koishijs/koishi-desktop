@@ -1,6 +1,7 @@
 import { series } from 'gulp'
 import { info } from 'gulplog'
 import * as fs from 'node:fs'
+import { Exceptions } from '../../../utils/exceptions'
 import { exists } from '../../../utils/fs'
 import { download } from '../../../utils/net'
 import { dir } from '../../../utils/path'
@@ -22,6 +23,10 @@ export const prepareNodeYarnCopy = async () => {
   )
   info('Checking destination cache.')
   if (await exists(destFile)) return
+
+  if (!(await exists(cachedFile))) {
+    throw Exceptions.fileNotFound(cachedFile)
+  }
 
   await fs.promises.copyFile(cachedFile, destFile)
 }
