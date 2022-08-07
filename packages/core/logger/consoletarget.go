@@ -3,7 +3,9 @@ package logger
 import (
 	"fmt"
 	"github.com/samber/do"
+	"gopkg.ilharper.com/koi/core/util/strutil"
 	"gopkg.ilharper.com/x/rpl"
+	"os"
 	"strings"
 	"sync"
 )
@@ -16,10 +18,14 @@ type ConsoleTarget struct {
 func NewConsoleTarget(i *do.Injector) (*ConsoleTarget, error) {
 	wg := do.MustInvoke[*sync.WaitGroup](i)
 
+	targetStream := os.Stderr
+
 	consoleTarget := &ConsoleTarget{
 		c:     make(chan *rpl.Log),
 		Level: rpl.LevelInfo,
 	}
+
+	adapter := newColorAdapter(targetStream)
 
 	wg.Add(1)
 	go func(ct *ConsoleTarget) {
@@ -37,7 +43,16 @@ func NewConsoleTarget(i *do.Injector) (*ConsoleTarget, error) {
 
 			lines := strings.Split(log.Value, "\n")
 			for _, line := range lines {
-				fmt.Printf("%04d|%s\n", log.Ch, line)
+				outLine := fmt.Sprintf(
+					"%s90m%04d|%s%s%s\n",
+					strutil.ColorStartCtr,
+					log.Ch,
+					strutil.ResetCtrlStr,
+					line,
+					strutil.ResetCtrlStr,
+				)
+				outLine = adapter.adaptColor(outLine)
+				_, _ = fmt.Fprint(targetStream, outLine)
 			}
 		}
 	}(consoleTarget)
