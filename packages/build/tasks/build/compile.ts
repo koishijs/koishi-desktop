@@ -3,7 +3,8 @@ import { koiVersion } from '../../utils/config'
 import { dir } from '../../utils/path'
 import { exec } from '../../utils/spawn'
 
-export const compileGoGenerate = () => exec('go', ['generate'], dir('src'))
+export const compileVersioninfo = () =>
+  exec('goversioninfo', ['-64'], dir('src'))
 
 export const compileApp = () =>
   exec(
@@ -19,4 +20,4 @@ export const compileApp = () =>
     dir('src')
   )
 
-export const compile = series(compileGoGenerate, compileApp)
+export const compile = series(compileVersioninfo, compileApp)
