@@ -1,8 +1,14 @@
-package env
+package envutil
 
 import (
 	"fmt"
+	"golang.org/x/text/cases"
+	"golang.org/x/text/language"
 	"strings"
+)
+
+var (
+	titleCaser = cases.Title(language.AmericanEnglish)
 )
 
 func UseEnv(env *[]string, key string, value string) {
@@ -12,7 +18,7 @@ func UseEnv(env *[]string, key string, value string) {
 
 func RemoveEnv(env *[]string, key string) {
 	removeEnvIntl(env, key)
-	removeEnvIntl(env, strings.Title(strings.ToLower(key))) // hElLo => Hello
+	removeEnvIntl(env, titleCaser.String(key)) // hElLo => Hello
 	removeEnvIntl(env, strings.ToUpper(key))
 	removeEnvIntl(env, strings.ToLower(key))
 }
