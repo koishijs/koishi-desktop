@@ -69,11 +69,8 @@ func main() {
 	}()
 
 	err := do.MustInvoke[*cli.App](i).Run(args)
+	wg.Wait()
 	if err != nil {
-		l.Error(err)
-		wg.Wait()
 		os.Exit(1)
 	}
-
-	wg.Wait()
 }
