@@ -11,11 +11,11 @@ import (
 
 // Logger defaults
 const (
-	// DefaultTimeFormat known as "yyyy-MM-dd hh:mm:ss".
+	// defaultTimeFormat known as "yyyy-MM-dd hh:mm:ss".
 	// See [package time].
 	//
 	// [package time]: https://pkg.go.dev/time#pkg-constants
-	DefaultTimeFormat = "2006-01-02 15:04:05"
+	defaultTimeFormat = "2006-01-02 15:04:05"
 
 	closeTimeWait = 3 * time.Second
 )
@@ -58,13 +58,13 @@ func (logger *Logger) Log(level int8, prefix byte, args ...any) {
 	indent := 4
 	output := ""
 
-	timeLen := len(DefaultTimeFormat)
+	timeLen := len(defaultTimeFormat)
 	if timeLen > 0 {
 		indent += timeLen + 1
 		output += fmt.Sprintf(
 			"%s90m%s ",
 			strutil.ColorStartCtr,
-			now.Format(DefaultTimeFormat),
+			now.Format(defaultTimeFormat),
 		)
 	}
 
