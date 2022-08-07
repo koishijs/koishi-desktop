@@ -1,3 +1,4 @@
+import { info } from 'gulplog'
 import { join } from 'node:path'
 import { exists } from '../../../utils/fs'
 import { download } from '../../../utils/net'
@@ -10,7 +11,9 @@ export const prepareNodeYarn = async () => {
     process.platform === 'win32' ? 'node' : 'node/bin'
   )
 
+  info('Checking temporary cache.')
   if (await exists(join(destYarn, destFileYarn))) return
 
+  info('Now downloading Yarn.')
   await download(srcYarn, destYarn, destFileYarn)
 }
