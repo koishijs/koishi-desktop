@@ -12,7 +12,9 @@ type ResponseSender struct {
 }
 
 func NewResponseSender(i *do.Injector) (*ResponseSender, error) {
-	r := &ResponseSender{}
+	r := &ResponseSender{
+		c: make(chan rpl.Log),
+	}
 	ch := do.MustInvokeNamed[chan<- *proto.Response](i, koicmd.ServiceKoiCmdResponseChan)
 
 	go func(r1 *ResponseSender, ch1 chan<- *proto.Response) {

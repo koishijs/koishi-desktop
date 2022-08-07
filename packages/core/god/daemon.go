@@ -84,7 +84,7 @@ func handleCommand(
 	do.Override(i, logger.BuildNewLogger(uint16(task.Id)))
 
 	// Build Response channel
-	var ch chan *proto.Response
+	ch := make(chan *proto.Response)
 	do.ProvideNamedValue(i, koicmd.ServiceKoiCmdResponseChan, ch)
 
 	// Build RPL Response Sender

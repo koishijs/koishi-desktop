@@ -14,6 +14,7 @@ type ConsoleTarget struct {
 
 func NewConsoleTarget(i *do.Injector) (*ConsoleTarget, error) {
 	consoleTarget := &ConsoleTarget{
+		c:     make(chan rpl.Log),
 		Level: rpl.LevelInfo,
 	}
 
