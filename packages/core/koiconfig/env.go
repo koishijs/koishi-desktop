@@ -1,16 +1,16 @@
-package config
+package koiconfig
 
 import (
-	envUtil "koi/util/env"
+	"gopkg.ilharper.com/koi/core/util/envutil"
 	"strings"
 )
 
-func UseConfigEnv(env *[]string) {
-	if Config.Env == nil {
+func UseConfigEnv(env *[]string, cfg *Config) {
+	if cfg.Data.Env == nil {
 		return
 	}
 
-	for _, e := range Config.Env {
+	for _, e := range cfg.Data.Env {
 		if len(e) == 0 {
 			continue
 		}
@@ -25,6 +25,6 @@ func UseConfigEnv(env *[]string) {
 			v = ""
 		}
 
-		envUtil.UseEnv(env, k, v)
+		envutil.UseEnv(env, k, v)
 	}
 }
