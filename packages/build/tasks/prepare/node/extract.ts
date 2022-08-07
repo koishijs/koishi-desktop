@@ -15,7 +15,7 @@ export const prepareNodeExtractWin = async () => {
   const nodeFolder = dir('buildPortableData', 'node')
   const destFile = dir('buildCache', destFileWin)
 
-  info('Checking temporary cache.')
+  info('Checking destination cache.')
   if (await exists(dir('buildPortableData', 'node/node.exe'))) return
 
   if (!(await exists(destFile))) {
@@ -44,7 +44,7 @@ export const prepareNodeExtractMac = async () => {
   const nodeFolder = dir('buildPortableData', 'node')
   const destFile = dir('buildCache', destFileMac)
 
-  info('Checking temporary cache.')
+  info('Checking destination cache.')
   if (await exists(dir('buildPortableData', 'node/bin/node'))) return
 
   if (!(await exists(destFile))) {
@@ -70,7 +70,7 @@ export const prepareNodeExtractMac = async () => {
 export const prepareNodeExtractLinux = async () => {
   const nodeFolder = dir('buildPortableData', 'node')
 
-  info('Checking temporary cache.')
+  info('Checking destination cache.')
   if (await exists(nodeFolder)) return
 
   if (!(await exists(dir('buildCache', destFileLinux)))) {
