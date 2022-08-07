@@ -69,17 +69,18 @@ export const prepareNodeExtractMac = async () => {
 
 export const prepareNodeExtractLinux = async () => {
   const nodeFolder = dir('buildPortableData', 'node')
+  const cachedFile = dir('buildCache', destFileLinux)
 
   info('Checking destination cache.')
   if (await exists(nodeFolder)) return
 
-  if (!(await exists(dir('buildCache', destFileLinux)))) {
-    throw Exceptions.fileNotFound(destFileLinux)
+  if (!(await exists(cachedFile))) {
+    throw Exceptions.fileNotFound(cachedFile)
   }
 
   await promisify(stream.finished)(
     fs
-      .createReadStream(destFileLinux)
+      .createReadStream(cachedFile)
       .pipe(lzma.createDecompressor())
       .pipe(tar.extract({ cwd: nodeFolder, strip: 1 }))
   )
