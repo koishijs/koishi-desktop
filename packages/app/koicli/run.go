@@ -14,19 +14,24 @@ import (
 	"path/filepath"
 )
 
+const (
+	serviceActionRun       = "gopkg.ilharper.com/koi/app/koicli/action.Run"
+	serviceActionRunDaemon = "gopkg.ilharper.com/koi/app/koicli/action.RunDaemon"
+)
+
 func newRunCommand(i *do.Injector) (*cli.Command, error) {
-	do.ProvideNamed(i, "gopkg.ilharper.com/koi/app/koicli/action.Run", newRunAction)
-	do.ProvideNamed(i, "gopkg.ilharper.com/koi/app/koicli/action.RunDaemon", newRunDaemonAction)
+	do.ProvideNamed(i, serviceActionRun, newRunAction)
+	do.ProvideNamed(i, serviceActionRunDaemon, newRunDaemonAction)
 
 	return &cli.Command{
 		Name:   "run",
 		Usage:  "Run Koishi Desktop",
-		Action: do.MustInvokeNamed[cli.ActionFunc](i, "gopkg.ilharper.com/koi/app/koicli/action.Run"),
+		Action: do.MustInvokeNamed[cli.ActionFunc](i, serviceActionRun),
 		Subcommands: []*cli.Command{
 			{
 				Name:   "daemon",
 				Usage:  "Run daemon",
-				Action: do.MustInvokeNamed[cli.ActionFunc](i, "gopkg.ilharper.com/koi/app/koicli/action.RunDaemon"),
+				Action: do.MustInvokeNamed[cli.ActionFunc](i, serviceActionRunDaemon),
 			},
 		},
 	}, nil
@@ -38,7 +43,7 @@ func newRunAction(i *do.Injector) (cli.ActionFunc, error) {
 
 		switch cfg.Data.Mode {
 		case "cli":
-			err = do.MustInvokeNamed[cli.ActionFunc](i, "gopkg.ilharper.com/koi/app/koicli/action.RunDaemon")(c)
+			err = do.MustInvokeNamed[cli.ActionFunc](i, serviceActionRunDaemon)(c)
 			return
 		default:
 			err = fmt.Errorf("unknown mode: %s", cfg.Data.Mode)

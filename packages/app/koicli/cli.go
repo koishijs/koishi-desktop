@@ -8,11 +8,16 @@ import (
 	"gopkg.ilharper.com/koi/core/logger"
 )
 
+const (
+	serviceActionPre  = "gopkg.ilharper.com/koi/app/koicli/action.Pre"
+	serviceCommandRun = "gopkg.ilharper.com/koi/app/koicli/command.Run"
+)
+
 func NewCli(i *do.Injector) (*cli.App, error) {
 	l := do.MustInvoke[*logger.Logger](i)
 
-	do.ProvideNamed(i, "gopkg.ilharper.com/koi/app/koicli/action.Pre", newPreAction)
-	do.ProvideNamed(i, "gopkg.ilharper.com/koi/app/koicli/command.Run", newRunCommand)
+	do.ProvideNamed(i, serviceActionPre, newPreAction)
+	do.ProvideNamed(i, serviceCommandRun, newRunCommand)
 
 	return &cli.App{
 		Name:    "Koishi Desktop",
@@ -47,10 +52,10 @@ func NewCli(i *do.Injector) (*cli.App, error) {
 		},
 
 		Commands: []*cli.Command{
-			do.MustInvokeNamed[*cli.Command](i, "gopkg.ilharper.com/koi/app/koicli/command.Run"),
+			do.MustInvokeNamed[*cli.Command](i, serviceCommandRun),
 		},
 
-		Before: do.MustInvokeNamed[cli.BeforeFunc](i, "gopkg.ilharper.com/koi/app/koicli/action.Pre"),
+		Before: do.MustInvokeNamed[cli.BeforeFunc](i, serviceActionPre),
 		CommandNotFound: func(context *cli.Context, s string) {
 			l.Errorf("Command not found: %s", s)
 		},
