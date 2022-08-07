@@ -41,3 +41,7 @@ func NewResponseSender(i *do.Injector) (*ResponseSender, error) {
 func (responseSender *ResponseSender) Writer() chan<- *rpl.Log {
 	return responseSender.c
 }
+
+func (responseSender *ResponseSender) Close() {
+	close(responseSender.c)
+}

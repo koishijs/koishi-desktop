@@ -49,3 +49,7 @@ func NewConsoleTarget(i *do.Injector) (*ConsoleTarget, error) {
 func (consoleTarget *ConsoleTarget) Writer() chan<- *rpl.Log {
 	return consoleTarget.c
 }
+
+func (consoleTarget *ConsoleTarget) Close() {
+	close(consoleTarget.c)
+}

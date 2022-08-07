@@ -40,6 +40,10 @@ func (logger *Logger) Register(target rpl.Target) {
 	logger.rpLogger.Register(target)
 }
 
+func (logger *Logger) Close() {
+	logger.rpLogger.Close()
+}
+
 // Logs logs raw string, without any modification.
 func (logger *Logger) Logs(level int8, value string) {
 	logger.rpLogger.Logs(level, value)
@@ -80,6 +84,11 @@ func (logger *Logger) Success(args ...any) {
 	logger.Log(rpl.LevelSuccess, 'S', args...)
 }
 
+func (logger *Logger) Fatal(args ...any) {
+	logger.Log(rpl.LevelFatal, 'F', args...)
+	logger.Close()
+}
+
 func (logger *Logger) Error(args ...any) {
 	logger.Log(rpl.LevelError, 'E', args...)
 }
@@ -98,6 +107,11 @@ func (logger *Logger) Debug(args ...any) {
 
 func (logger *Logger) Successf(format string, args ...any) {
 	logger.Logf(rpl.LevelSuccess, 'S', format, args...)
+}
+
+func (logger *Logger) Fatalf(format string, args ...any) {
+	logger.Logf(rpl.LevelFatal, 'F', format, args...)
+	logger.Close()
 }
 
 func (logger *Logger) Errorf(format string, args ...any) {
