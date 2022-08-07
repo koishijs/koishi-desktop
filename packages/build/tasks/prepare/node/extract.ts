@@ -15,7 +15,7 @@ export const prepareNodeExtractWin = async () => {
   const nodeFolder = dir('buildPortableData', 'node')
 
   info('Checking temporary cache.')
-  if (await exists(nodeFolder)) return
+  if (await exists(dir('buildPortableData', 'node/node.exe'))) return
 
   if (!(await exists(dir('buildCache', destFileWin)))) {
     throw Exceptions.fileNotFound(destFileWin)
@@ -43,7 +43,7 @@ export const prepareNodeExtractMac = async () => {
   const nodeFolder = dir('buildPortableData', 'node')
 
   info('Checking temporary cache.')
-  if (await exists(nodeFolder)) return
+  if (await exists(dir('buildPortableData', 'node/bin/node'))) return
 
   if (!(await exists(dir('buildCache', destFileMac)))) {
     throw Exceptions.fileNotFound(destFileMac)
