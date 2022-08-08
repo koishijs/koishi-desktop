@@ -114,12 +114,8 @@ func (koiProc *KoiProc) Run() error {
 		}(scanner)
 	}
 
-	// Start and wait process
-	err = koiProc.cmd.Start()
-	if err != nil {
-		return fmt.Errorf("failed to start process: %w", err)
-	}
-	err = koiProc.cmd.Wait()
+	// Run process
+	err = koiProc.cmd.Run()
 	if err != nil {
 		return fmt.Errorf("process failed: %w", err)
 	}
