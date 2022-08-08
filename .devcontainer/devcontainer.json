@@ -1,0 +1,22 @@
+{
+  "name": "Koi",
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "editorconfig.editorconfig",
+        "golang.go",
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode"
+      ]
+    }
+  },
+  "postCreateCommand": "yarn && npx gulp",
+  "features": {
+    "git": "latest",
+    "github-cli": "latest",
+    "golang": "latest"
+  }
+}
