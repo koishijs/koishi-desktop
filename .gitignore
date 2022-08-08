@@ -174,7 +174,8 @@ cmake-build-*/
 # vendor/
 
 # IDEs
-.vscode/
+.vscode/*
+!.vscode/launch.json
 .idea/*
 !.idea/runConfigurations
 
