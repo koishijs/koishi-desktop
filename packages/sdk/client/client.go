@@ -5,30 +5,18 @@ import (
 	"golang.org/x/net/websocket"
 )
 
-type KoiClient struct {
-	conn *websocket.Conn
+type Options struct {
+	Host     string
+	Port     string
+	Endpoint string
 }
 
-func Connect(
-	host string,
-	port string,
-	endpoint string,
-) (client *KoiClient, err error) {
-	ws, err := websocket.Dial(
-		fmt.Sprintf("ws://%s:%s%s", host, port, endpoint),
+// Connect tries to connect to Koi god daemon
+// and returns a bare [websocket.Conn].
+func Connect(options *Options) (client *websocket.Conn, err error) {
+	return websocket.Dial(
+		fmt.Sprintf("ws://%s:%s%s", options.Host, options.Port, options.Endpoint),
 		"",
-		fmt.Sprintf("http://%s:%s/", host, port),
+		fmt.Sprintf("http://%s:%s/", options.Host, options.Port),
 	)
-	if err != nil {
-		return
-	}
-
-	client = &KoiClient{
-		conn: ws,
-	}
-	return
-}
-
-func (client *KoiClient) Close() error {
-	return client.conn.Close()
 }
