@@ -95,6 +95,11 @@ func handleCommand(
 		for {
 			resp := <-ch1
 			if resp == nil {
+				err := ws1.Close()
+				if err != nil {
+					localL1.Error(fmt.Errorf("failed to close ws connection: %w", err))
+				}
+
 				break
 			}
 
