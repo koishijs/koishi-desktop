@@ -63,22 +63,23 @@ func handleCommand(
 
 	// Build remote procedure Logger
 	// Then override Logger
-	do.Override(i, logger.BuildNewLogger(uint16(task.Id)))
+	do.Override(scopedI, logger.BuildNewLogger(uint16(task.Id)))
 
 	// Build Response channel
 	ch := make(chan *proto.Response)
 	defer close(ch)
-	do.ProvideNamedValue(i, koicmd.ServiceKoiCmdResponseChan, ch)
+	do.ProvideNamedValue(scopedI, koicmd.ServiceKoiCmdResponseChan, ch)
 
 	// Build RPL Response Sender
-	do.Provide(i, logger.NewResponseSender)
-	l := do.MustInvoke[*logger.Logger](i)
+	do.Provide(scopedI, logger.NewResponseSender)
+	l := do.MustInvoke[*logger.Logger](scopedI)
 	defer l.Close()
 	// Register Senders
-	l.Register(do.MustInvoke[*logger.ConsoleTarget](i))
-	l.Register(do.MustInvoke[*logger.ResponseSender](i))
+	l.Register(do.MustInvoke[*logger.ConsoleTarget](scopedI))
+	l.Register(do.MustInvoke[*logger.ResponseSender](scopedI))
 
 	// Get command registry
+	// Use i here as registry is global provided
 	reg := do.MustInvoke[*koicmd.Registry](i)
 	// Get command
 	kCmd, ok := (*reg)[command.Name]
