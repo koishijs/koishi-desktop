@@ -9,8 +9,9 @@ import (
 )
 
 const (
-	serviceActionPre  = "gopkg.ilharper.com/koi/app/koicli/action.Pre"
-	serviceCommandRun = "gopkg.ilharper.com/koi/app/koicli/command.Run"
+	serviceActionPre     = "gopkg.ilharper.com/koi/app/koicli/action.Pre"
+	serviceCommandRun    = "gopkg.ilharper.com/koi/app/koicli/command.Run"
+	serviceCommandImport = "gopkg.ilharper.com/koi/app/koicli/command.Import"
 )
 
 func NewCli(i *do.Injector) (*cli.App, error) {
@@ -18,6 +19,7 @@ func NewCli(i *do.Injector) (*cli.App, error) {
 
 	do.ProvideNamed(i, serviceActionPre, newPreAction)
 	do.ProvideNamed(i, serviceCommandRun, newRunCommand)
+	do.ProvideNamed(i, serviceCommandImport, newImportCommand)
 
 	return &cli.App{
 		Name:    "Koishi Desktop",
@@ -53,6 +55,7 @@ func NewCli(i *do.Injector) (*cli.App, error) {
 
 		Commands: []*cli.Command{
 			do.MustInvokeNamed[*cli.Command](i, serviceCommandRun),
+			do.MustInvokeNamed[*cli.Command](i, serviceCommandImport),
 		},
 
 		Before: do.MustInvokeNamed[cli.BeforeFunc](i, serviceActionPre),
