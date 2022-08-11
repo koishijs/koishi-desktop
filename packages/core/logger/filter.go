@@ -3,6 +3,7 @@ package logger
 import (
 	"fmt"
 	"github.com/mitchellh/mapstructure"
+	"github.com/samber/do"
 	"gopkg.ilharper.com/koi/core/god/proto"
 	"gopkg.ilharper.com/x/rpl"
 )
@@ -42,4 +43,22 @@ func FilterLog(resp <-chan *proto.Response) (<-chan *rpl.Log, <-chan *proto.Resp
 	}()
 
 	return log, data
+}
+
+func LogChannel(i *do.Injector, logC <-chan *rpl.Log) {
+	receiver := do.MustInvoke[*rpl.Receiver](i)
+
+	if logC == nil {
+		panic("koi/core/logger/logchannel: log channel is nil")
+	}
+
+	go func() {
+		for {
+			log := <-logC
+			if log == nil {
+				break
+			}
+			receiver.Writer() <- log
+		}
+	}()
 }
