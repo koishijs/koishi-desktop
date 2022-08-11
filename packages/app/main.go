@@ -7,6 +7,7 @@ import (
 	"gopkg.ilharper.com/koi/app/util"
 	"gopkg.ilharper.com/koi/core/logger"
 	coreUtil "gopkg.ilharper.com/koi/core/util"
+	"gopkg.ilharper.com/x/rpl"
 	"os"
 	"os/signal"
 	"sync"
@@ -27,10 +28,16 @@ func main() {
 
 	do.Provide(i, logger.NewConsoleTarget)
 	do.Provide(i, logger.BuildNewLogger(0))
+	receiver := rpl.NewReceiver()
+	receiver.ChOffset = 100
+	// Use ProvideValue() here because x/rpl didn't provide a do ctor
+	do.ProvideValue(i, &receiver)
 	do.Provide(i, koicli.NewCli)
 
 	l := do.MustInvoke[*logger.Logger](i)
-	l.Register(do.MustInvoke[*logger.ConsoleTarget](i))
+	consoleTarget := do.MustInvoke[*logger.ConsoleTarget](i)
+	receiver.Register(consoleTarget)
+	l.Register(consoleTarget)
 
 	l.Infof("Koishi Desktop v%s", util.AppVersion)
 
