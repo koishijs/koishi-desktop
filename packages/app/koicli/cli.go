@@ -34,7 +34,7 @@ func NewCli(i *do.Injector) (*cli.App, error) {
 		EnableBashCompletion:   true,
 
 		Flags: []cli.Flag{
-			&cli.StringFlag{
+			&cli.PathFlag{
 				Name:    "config",
 				Aliases: []string{"c"},
 				Usage:   "Use configuration from `FILE`",

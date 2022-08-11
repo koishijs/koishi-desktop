@@ -21,7 +21,7 @@ func newPreAction(i *do.Injector) (cli.BeforeFunc, error) {
 		}
 
 		l.Debug("Checking config file...")
-		configPath := c.String("config")
+		configPath := c.Path("config")
 		if configPath != "" {
 			l.Debugf("Using flag provided config path: %s", configPath)
 		} else {
