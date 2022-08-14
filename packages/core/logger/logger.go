@@ -16,8 +16,6 @@ const (
 	//
 	// [package time]: https://pkg.go.dev/time#pkg-constants
 	defaultTimeFormat = "2006-01-02 15:04:05"
-
-	closeTimeWait = 3 * time.Second
 )
 
 type Logger struct {
@@ -43,7 +41,6 @@ func (logger *Logger) Register(target rpl.Target) {
 }
 
 func (logger *Logger) Close() {
-	<-time.NewTimer(closeTimeWait).C
 	logger.rpLogger.Close()
 }
 

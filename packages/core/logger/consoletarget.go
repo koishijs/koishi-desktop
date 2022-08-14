@@ -7,7 +7,6 @@ import (
 	"gopkg.ilharper.com/x/rpl"
 	"os"
 	"strings"
-	"sync"
 )
 
 type ConsoleTarget struct {
@@ -16,8 +15,6 @@ type ConsoleTarget struct {
 }
 
 func NewConsoleTarget(i *do.Injector) (*ConsoleTarget, error) {
-	wg := do.MustInvoke[*sync.WaitGroup](i)
-
 	targetStream := os.Stderr
 
 	consoleTarget := &ConsoleTarget{
@@ -27,10 +24,7 @@ func NewConsoleTarget(i *do.Injector) (*ConsoleTarget, error) {
 
 	adapter := newColorAdapter(targetStream)
 
-	wg.Add(1)
 	go func(ct *ConsoleTarget) {
-		defer wg.Done()
-
 		for {
 			log := <-ct.c
 			if log == nil {
@@ -65,5 +59,5 @@ func (consoleTarget *ConsoleTarget) Writer() chan<- *rpl.Log {
 }
 
 func (consoleTarget *ConsoleTarget) Close() {
-	close(consoleTarget.c)
+	consoleTarget.c <- nil
 }
