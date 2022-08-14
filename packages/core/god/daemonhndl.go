@@ -36,6 +36,12 @@ func buildHandle(i *do.Injector, daemon *Daemon) func(ws *websocket.Conn) {
 		}
 
 		switch request.Type {
+		case "ping":
+			err = net.JSON.Send(ws, proto.NewResponse("pong", nil))
+			if err != nil {
+				l.Error(fmt.Errorf("failed to send 'pong': %w", err))
+			}
+			return
 		case proto.TypeRequestCommand:
 			var commandRequest proto.CommandRequest
 			err = mapstructure.Decode(request.Data, &commandRequest)
