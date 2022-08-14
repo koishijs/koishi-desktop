@@ -14,6 +14,7 @@ func NewCli(i *do.Injector) (*cli.App, error) {
 	do.ProvideNamed(i, serviceActionPre, newPreAction)
 	do.ProvideNamed(i, serviceCommandRun, newRunCommand)
 	do.ProvideNamed(i, serviceCommandImport, newImportCommand)
+	do.ProvideNamed(i, serviceCommandDaemon, newDaemonCommand)
 
 	return &cli.App{
 		Name:    "Koishi Desktop",
@@ -50,6 +51,7 @@ func NewCli(i *do.Injector) (*cli.App, error) {
 		Commands: []*cli.Command{
 			do.MustInvokeNamed[*cli.Command](i, serviceCommandRun),
 			do.MustInvokeNamed[*cli.Command](i, serviceCommandImport),
+			do.MustInvokeNamed[*cli.Command](i, serviceCommandDaemon),
 		},
 
 		Before: do.MustInvokeNamed[cli.BeforeFunc](i, serviceActionPre),
