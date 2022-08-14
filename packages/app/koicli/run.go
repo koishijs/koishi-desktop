@@ -74,6 +74,10 @@ func newRunDaemonAction(i *do.Injector) (cli.ActionFunc, error) {
 			return fmt.Errorf("failed to start daemon: %w", err)
 		}
 		addr := listener.Addr().String()
+		host, port, err := net.SplitHostPort(addr)
+		if err != nil {
+			return fmt.Errorf("failed to parse addr %s: %w", addr, err)
+		}
 
 		l.Debug("Writing daemon.lock...")
 		lock, err := os.OpenFile(
@@ -84,7 +88,8 @@ func newRunDaemonAction(i *do.Injector) (cli.ActionFunc, error) {
 
 		daemonLock := &god.DaemonLock{
 			Pid:  os.Getpid(),
-			Addr: addr,
+			Host: host,
+			Port: port,
 		}
 		daemonLockJson, err := json.Marshal(daemonLock)
 		if err != nil {
