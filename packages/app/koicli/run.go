@@ -108,7 +108,7 @@ func newRunDaemonAction(i *do.Injector) (cli.ActionFunc, error) {
 		daemon := god.NewDaemon(i)
 
 		mux := http.NewServeMux()
-		mux.Handle("/api", daemon.Handler)
+		mux.Handle(god.DaemonEndpoint, daemon.Handler)
 
 		server := &http.Server{Addr: addr, Handler: mux}
 		l.Debug("Serving daemon...")
