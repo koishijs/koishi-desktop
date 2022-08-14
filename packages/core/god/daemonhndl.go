@@ -20,6 +20,13 @@ func buildHandle(i *do.Injector, daemon *Daemon) func(ws *websocket.Conn) {
 	return func(ws *websocket.Conn) {
 		var err error
 
+		defer func(ws *websocket.Conn) {
+			closeErr := ws.Close()
+			if closeErr != nil {
+				l.Error(fmt.Errorf("failed to close ws connection: %w", closeErr))
+			}
+		}(ws)
+
 		var request proto.Request
 		err = net.JSON.Receive(ws, &request)
 		if err != nil {
@@ -88,28 +95,19 @@ func handleCommand(
 	}
 
 	// Start sending response
-	go func(
-		localL1 *logger.Logger,
-		ws1 *websocket.Conn,
-		ch1 <-chan *proto.Response,
-	) {
+	go func() {
 		for {
-			resp := <-ch1
+			resp := <-ch
 			if resp == nil {
-				err := ws1.Close()
-				if err != nil {
-					localL1.Error(fmt.Errorf("failed to close ws connection: %w", err))
-				}
-
 				break
 			}
 
-			err := net.JSON.Send(ws1, resp)
+			err := net.JSON.Send(ws, resp)
 			if err != nil {
-				localL1.Error(fmt.Errorf("failed to send response: %w", err))
+				localL.Error(fmt.Errorf("failed to send response: %w", err))
 			}
 		}
-	}(localL, ws, ch)
+	}()
 
 	// Invoke command
 	response := kCmd(scopedI)
