@@ -15,6 +15,8 @@ import (
 )
 
 const (
+	serviceCommandRun = "gopkg.ilharper.com/koi/app/koicli/command.Run"
+
 	serviceActionRun       = "gopkg.ilharper.com/koi/app/koicli/action.Run"
 	serviceActionRunDaemon = "gopkg.ilharper.com/koi/app/koicli/action.RunDaemon"
 )

@@ -14,7 +14,8 @@ import (
 )
 
 const (
-	serviceActionImport = "gopkg.ilharper.com/koi/app/koicli/action.Import"
+	serviceCommandImport = "gopkg.ilharper.com/koi/app/koicli/command.Import"
+	serviceActionImport  = "gopkg.ilharper.com/koi/app/koicli/action.Import"
 )
 
 func newImportCommand(i *do.Injector) (*cli.Command, error) {

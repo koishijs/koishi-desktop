@@ -8,12 +8,6 @@ import (
 	"gopkg.ilharper.com/koi/core/logger"
 )
 
-const (
-	serviceActionPre     = "gopkg.ilharper.com/koi/app/koicli/action.Pre"
-	serviceCommandRun    = "gopkg.ilharper.com/koi/app/koicli/command.Run"
-	serviceCommandImport = "gopkg.ilharper.com/koi/app/koicli/command.Import"
-)
-
 func NewCli(i *do.Injector) (*cli.App, error) {
 	l := do.MustInvoke[*logger.Logger](i)
 

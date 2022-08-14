@@ -8,6 +8,10 @@ import (
 	"gopkg.ilharper.com/x/rpl"
 )
 
+const (
+	serviceActionPre = "gopkg.ilharper.com/koi/app/koicli/action.Pre"
+)
+
 func newPreAction(i *do.Injector) (cli.BeforeFunc, error) {
 	l := do.MustInvoke[*logger.Logger](i)
 	consoleTarget := do.MustInvoke[*logger.ConsoleTarget](i)
