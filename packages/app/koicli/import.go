@@ -50,7 +50,7 @@ func newImportAction(i *do.Injector) (cli.ActionFunc, error) {
 			return
 		}
 
-		manager := manage.Manage(cfg.Computed.DirExe)
+		manager := manage.NewKoiManager(cfg.Computed.DirExe)
 		conn, err := manager.Ensure()
 		if err != nil {
 			return

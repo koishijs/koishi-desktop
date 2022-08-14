@@ -4,7 +4,7 @@ type KoiManager struct {
 	exe string
 }
 
-func Manage(exe string) (manager *KoiManager) {
+func NewKoiManager(exe string) (manager *KoiManager) {
 	manager = &KoiManager{
 		exe: exe,
 	}
