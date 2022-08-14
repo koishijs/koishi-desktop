@@ -10,7 +10,6 @@ import (
 	"gopkg.ilharper.com/koi/core/logger"
 	"gopkg.ilharper.com/koi/core/util/di"
 	"gopkg.ilharper.com/koi/core/util/net"
-	"sync"
 )
 
 // Handle request.
@@ -101,15 +100,14 @@ func handleCommand(
 		return fmt.Errorf("unknown command: %s", command.Name)
 	}
 
-	waitSend := &sync.WaitGroup{}
-	waitSend.Add(1)
+	send := make(chan bool)
 
 	// Start sending response
 	go func() {
 		for {
 			resp := <-ch
 			if resp == nil {
-				waitSend.Done()
+				close(send)
 				break
 			}
 
@@ -128,7 +126,7 @@ func handleCommand(
 	close(ch)
 
 	// Wait the final send finish
-	waitSend.Wait()
+	<-send
 
 	return nil
 }
