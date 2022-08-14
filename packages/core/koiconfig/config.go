@@ -16,6 +16,7 @@ type ConfigData struct {
 
 //goland:noinspection GoNameStartsWithPackageName
 type ConfigComputed struct {
+	Exe         string
 	DirExe      string
 	DirConfig   string
 	DirData     string

@@ -34,11 +34,13 @@ func BuildLoadConfig(path string) func(i *do.Injector) (*koiconfig.Config, error
 		if err != nil {
 			return nil, fmt.Errorf("cannot get executable: %w", err)
 		}
+		exePath = filepath.Clean(exePath)
 		dirExe := filepath.Dir(exePath)
 
 		config := &koiconfig.Config{
 			Data: defaultConfigData,
 			Computed: koiconfig.ConfigComputed{
+				Exe:    exePath,
 				DirExe: dirExe,
 			},
 		}
