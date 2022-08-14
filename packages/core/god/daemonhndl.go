@@ -47,6 +47,7 @@ func buildHandle(i *do.Injector, daemon *Daemon) func(ws *websocket.Conn) {
 			err = mapstructure.Decode(request.Data, &commandRequest)
 			if err != nil {
 				l.Error(fmt.Errorf("failed to parse command: %w", err))
+				return
 			}
 			err = handleCommand(i, daemon, ws, &commandRequest)
 			if err != nil {
