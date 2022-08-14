@@ -10,6 +10,7 @@ import (
 	"gopkg.ilharper.com/koi/core/logger"
 	"gopkg.ilharper.com/koi/core/util/di"
 	"gopkg.ilharper.com/koi/core/util/net"
+	"sync"
 )
 
 // Handle request.
@@ -74,7 +75,6 @@ func handleCommand(
 
 	// Build Response channel
 	ch := make(chan *proto.Response)
-	defer close(ch)
 	do.ProvideNamedValue(scopedI, koicmd.ServiceKoiCmdResponseChan, ch)
 
 	// Build RPL Response Sender
@@ -94,11 +94,15 @@ func handleCommand(
 		return fmt.Errorf("unknown command: %s", command.Name)
 	}
 
+	waitSend := &sync.WaitGroup{}
+	waitSend.Add(1)
+
 	// Start sending response
 	go func() {
 		for {
 			resp := <-ch
 			if resp == nil {
+				waitSend.Done()
 				break
 			}
 
@@ -114,5 +118,10 @@ func handleCommand(
 	if response != nil {
 		ch <- response
 	}
+	close(ch)
+
+	// Wait the final send finish
+	waitSend.Wait()
+
 	return nil
 }
