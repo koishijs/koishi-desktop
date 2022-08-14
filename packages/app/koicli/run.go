@@ -1,6 +1,7 @@
 package koicli
 
 import (
+	"errors"
 	"fmt"
 	"github.com/goccy/go-json"
 	"github.com/samber/do"
@@ -111,10 +112,13 @@ func newRunDaemonAction(i *do.Injector) (cli.ActionFunc, error) {
 		mux.Handle(god.DaemonEndpoint, daemon.Handler)
 
 		server := &http.Server{Addr: addr, Handler: mux}
+		do.ProvideValue(i, server)
 		l.Debug("Serving daemon...")
 		err = server.Serve(listener)
-		if err != nil {
-			return fmt.Errorf("daemon closed: %w", err)
+		if errors.Is(err, http.ErrServerClosed) {
+			err = nil
+		} else {
+			err = fmt.Errorf("daemon closed: %w", err)
 		}
 
 		return

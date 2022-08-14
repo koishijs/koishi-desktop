@@ -1,6 +1,7 @@
 package god
 
 import (
+	"context"
 	"fmt"
 	"github.com/mitchellh/mapstructure"
 	"github.com/samber/do"
@@ -10,6 +11,7 @@ import (
 	"gopkg.ilharper.com/koi/core/logger"
 	"gopkg.ilharper.com/koi/core/util/di"
 	"gopkg.ilharper.com/koi/core/util/net"
+	"net/http"
 )
 
 // Handle request.
@@ -39,6 +41,12 @@ func buildHandle(i *do.Injector, daemon *Daemon) func(ws *websocket.Conn) {
 			err = net.JSON.Send(ws, proto.NewResponse("pong", nil))
 			if err != nil {
 				l.Error(fmt.Errorf("failed to send 'pong': %w", err))
+			}
+			return
+		case "stop":
+			err = do.MustInvoke[*http.Server](i).Shutdown(context.Background())
+			if err != nil {
+				l.Error(fmt.Errorf("failed to close http server: %w", err))
 			}
 			return
 		case proto.TypeRequestCommand:
