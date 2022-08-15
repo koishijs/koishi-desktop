@@ -171,6 +171,8 @@ func (manager *KoiManager) killProcesses() (err error) {
 	for _, p := range processes {
 		_ = p.Kill()
 	}
+
+	return
 }
 
 func (manager *KoiManager) processes() (pss []*process.Process, err error) {
