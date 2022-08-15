@@ -6,7 +6,21 @@ import { exec } from '../../utils/spawn'
 export const compileVersioninfo = () =>
   exec('goversioninfo', ['-64'], dir('src'))
 
-export const compileApp = () =>
+export const compileAppDebug = () =>
+  exec(
+    'go',
+    [
+      'build',
+      '-o',
+      dir('buildPortable', process.platform === 'win32' ? 'koi.exe' : 'koi'),
+      '-trimpath',
+      '-ldflags',
+      `-X gopkg.ilharper.com/koi/app/util.AppVersion=${koiVersion}`,
+    ],
+    dir('src')
+  )
+
+export const compileAppRelease = () =>
   exec(
     'go',
     [
@@ -20,4 +34,9 @@ export const compileApp = () =>
     dir('src')
   )
 
-export const compile = series(compileVersioninfo, compileApp)
+export const compileApp = compileAppRelease
+
+export const compile =
+  process.platform === 'win32'
+    ? series(compileVersioninfo, compileApp)
+    : series(compileApp)
