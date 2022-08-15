@@ -11,4 +11,8 @@ export const prepareToolsVersioninfo = buildPrepareTool(
 )
 
 export const prepareTools =
-  process.platform === 'win32' ? parallel(prepareToolsVersioninfo) : parallel()
+  process.platform === 'win32'
+    ? parallel(prepareToolsVersioninfo)
+    : async () => {
+        /* Ignore */
+      }
