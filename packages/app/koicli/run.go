@@ -41,7 +41,11 @@ func newRunCommand(i *do.Injector) (*cli.Command, error) {
 }
 
 func newRunAction(i *do.Injector) (cli.ActionFunc, error) {
+	l := do.MustInvoke[*logger.Logger](i)
+
 	return func(c *cli.Context) (err error) {
+		l.Debug("Trigger action: run")
+
 		cfg, err := do.Invoke[*koiconfig.Config](i)
 		if err != nil {
 			return
@@ -62,6 +66,8 @@ func newRunDaemonAction(i *do.Injector) (cli.ActionFunc, error) {
 	l := do.MustInvoke[*logger.Logger](i)
 
 	return func(c *cli.Context) (err error) {
+		l.Debug("Trigger action: run daemon")
+
 		do.Provide(i, newDaemonUnlocker)
 
 		cfg, err := do.Invoke[*koiconfig.Config](i)

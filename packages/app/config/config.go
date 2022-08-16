@@ -84,12 +84,12 @@ func loadConfigIntl(i *do.Injector, c *koiconfig.Config, path string, recur uint
 		return fmt.Errorf("failed to parse config %s: %w", absPath, err)
 	}
 
-	l.Debug("Config parsed successfully.")
-	l.Debug("Now processing postConfig.")
 	err = postConfig(c)
 	if err != nil {
 		return fmt.Errorf("failed to process postconfig: %w", err)
 	}
+
+	l.Debug("Config parsed successfully.")
 
 	return
 }

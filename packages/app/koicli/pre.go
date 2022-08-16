@@ -6,6 +6,7 @@ import (
 	"gopkg.ilharper.com/koi/app/config"
 	"gopkg.ilharper.com/koi/core/logger"
 	"gopkg.ilharper.com/x/rpl"
+	"os"
 )
 
 const (
@@ -18,11 +19,14 @@ func newPreAction(i *do.Injector) (cli.BeforeFunc, error) {
 
 	return func(c *cli.Context) (err error) {
 		l.Debug("Trigger pseudo action: pre")
+		l.Debug("You're seeing debug output because you have a RPL target running in debug mode. This will not be controlled by --debug flag.")
 
-		l.Debug("Checking flag debug...")
 		if c.Bool("debug") {
 			consoleTarget.Level = rpl.LevelDebug
+			l.Debug("--debug flag detected - debug mode enabled.")
 		}
+
+		l.Debugf("Command line arguments:\n%#+v", os.Args)
 
 		l.Debug("Checking config file...")
 		configPath := c.Path("config")

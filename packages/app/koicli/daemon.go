@@ -42,6 +42,8 @@ func newDaemonPingAction(i *do.Injector) (cli.ActionFunc, error) {
 	l := do.MustInvoke[*logger.Logger](i)
 
 	return func(c *cli.Context) (err error) {
+		l.Debug("Trigger action: daemon ping")
+
 		cfg, err := do.Invoke[*koiconfig.Config](i)
 		if err != nil {
 			return
@@ -64,6 +66,8 @@ func newDaemonStopAction(i *do.Injector) (cli.ActionFunc, error) {
 
 	return func(c *cli.Context) error {
 		var err error
+
+		l.Debug("Trigger action: daemon stop")
 
 		cfg, err := do.Invoke[*koiconfig.Config](i)
 		if err != nil {

@@ -46,6 +46,8 @@ func newImportAction(i *do.Injector) (cli.ActionFunc, error) {
 	l := do.MustInvoke[*logger.Logger](i)
 
 	return func(c *cli.Context) (err error) {
+		l.Debug("Trigger action: import")
+
 		cfg, err := do.Invoke[*koiconfig.Config](i)
 		if err != nil {
 			return
