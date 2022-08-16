@@ -96,7 +96,7 @@ func handleCommand(
 	l := do.MustInvoke[*logger.Logger](scopedI)
 	defer l.Close()
 	// Register Senders
-	l.Register(do.MustInvoke[*logger.ConsoleTarget](scopedI))
+	l.Register(do.MustInvoke[*logger.KoiFileTarget](scopedI))
 	l.Register(do.MustInvoke[*logger.ResponseSender](scopedI))
 
 	// Get command registry

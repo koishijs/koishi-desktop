@@ -23,7 +23,7 @@ func main() {
 
 	do.ProvideNamedValue(i, coreUtil.ServiceAppVersion, util.AppVersion)
 
-	do.Provide(i, logger.NewConsoleTarget)
+	do.Provide(i, logger.BuildNewKoiFileTarget(os.Stderr))
 	do.Provide(i, logger.BuildNewLogger(0))
 	receiver := rpl.NewReceiver()
 	receiver.ChOffset = 100
@@ -32,7 +32,7 @@ func main() {
 	do.Provide(i, koicli.NewCli)
 
 	l := do.MustInvoke[*logger.Logger](i)
-	consoleTarget := do.MustInvoke[*logger.ConsoleTarget](i)
+	consoleTarget := do.MustInvoke[*logger.KoiFileTarget](i)
 	receiver.Register(consoleTarget)
 	l.Register(consoleTarget)
 

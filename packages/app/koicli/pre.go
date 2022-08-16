@@ -15,7 +15,7 @@ const (
 
 func newPreAction(i *do.Injector) (cli.BeforeFunc, error) {
 	l := do.MustInvoke[*logger.Logger](i)
-	consoleTarget := do.MustInvoke[*logger.ConsoleTarget](i)
+	consoleTarget := do.MustInvoke[*logger.KoiFileTarget](i)
 
 	return func(c *cli.Context) (err error) {
 		l.Debug("Trigger pseudo action: pre")
