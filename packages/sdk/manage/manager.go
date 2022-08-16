@@ -5,7 +5,6 @@ import (
 	"github.com/goccy/go-json"
 	"github.com/shirou/gopsutil/v3/process"
 	"gopkg.ilharper.com/koi/core/god"
-	"gopkg.ilharper.com/koi/core/util"
 	"gopkg.ilharper.com/koi/sdk/client"
 	"os"
 	"os/exec"
@@ -77,7 +76,13 @@ func (manager *KoiManager) Start() error {
 	} else {
 		cmd = exec.Command("sh", manager.exe, "run", "daemon")
 	}
-	return cmd.Run()
+	err := cmd.Run()
+	if err != nil {
+		return err
+	}
+
+	<-time.After(4 * time.Second)
+	return nil
 }
 
 // Stop the running god daemon if exists.
@@ -91,8 +96,8 @@ func (manager *KoiManager) Start() error {
 // and if process still exists Stop will call Kill
 // to ensure daemon dead.
 func (manager *KoiManager) Stop() {
-	defer func ()  {
-		<-time.After(util.TimeWait)
+	defer func() {
+		<-time.After(2 * time.Second)
 	}()
 
 	conn, connErr := manager.Conn()
