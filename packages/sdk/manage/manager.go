@@ -10,6 +10,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"runtime"
 	"time"
 )
 
@@ -68,21 +69,15 @@ func (manager *KoiManager) Available() (conn *client.Options, err error) {
 }
 
 // Start god daemon.
-func (manager *KoiManager) Start() (err error) {
-	cmd := exec.Cmd{
-		Path: manager.exe,
-		Args: []string{"run", "daemon"},
-		Dir:  filepath.Dir(manager.exe),
+func (manager *KoiManager) Start() error {
+	var cmd *exec.Cmd
+	// THE B3ST S0lUt!0N
+	if runtime.GOOS == "windows" {
+		cmd = exec.Command("cmd.exe", "/C", "start", "/b", manager.exe, "run", "daemon")
+	} else {
+		cmd = exec.Command("sh", manager.exe, "run", "daemon")
 	}
-	err = cmd.Start()
-	if err != nil {
-		return
-	}
-	err = cmd.Process.Release()
-	if err != nil {
-		return
-	}
-	return
+	return cmd.Run()
 }
 
 // Stop the running god daemon if exists.
