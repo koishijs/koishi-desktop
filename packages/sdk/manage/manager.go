@@ -43,7 +43,6 @@ func (manager *KoiManager) Ensure() (conn *client.Options, err error) {
 		return
 	}
 
-	<-time.After(util.TimeWait)
 	conn, err = manager.Available()
 	return
 }
@@ -97,6 +96,10 @@ func (manager *KoiManager) Start() (err error) {
 // and if process still exists Stop will call Kill
 // to ensure daemon dead.
 func (manager *KoiManager) Stop() {
+	defer func ()  {
+		<-time.After(util.TimeWait)
+	}()
+
 	conn, connErr := manager.Conn()
 	done := false
 	if connErr == nil {
