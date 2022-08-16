@@ -23,6 +23,9 @@ func main() {
 
 	do.ProvideNamedValue(i, coreUtil.ServiceAppVersion, util.AppVersion)
 
+	wg := &sync.WaitGroup{}
+	do.ProvideValue(i, wg)
+
 	do.Provide(i, logger.BuildNewKoiFileTarget(os.Stderr))
 	do.Provide(i, logger.BuildNewLogger(0))
 	receiver := rpl.NewReceiver()
@@ -69,6 +72,7 @@ func main() {
 						l.Errorf("failed to gracefully shutdown: %w", err)
 					}
 					l.Close()
+					wg.Wait()
 					os.Exit(0)
 				})
 			}(s)
@@ -77,6 +81,7 @@ func main() {
 
 	err := do.MustInvoke[*cli.App](i).Run(args)
 	l.Close()
+	wg.Wait()
 	if err != nil {
 		os.Exit(1)
 	}

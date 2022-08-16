@@ -5,6 +5,7 @@ import (
 	"gopkg.ilharper.com/koi/core/god/proto"
 	"gopkg.ilharper.com/koi/core/koicmd"
 	"gopkg.ilharper.com/x/rpl"
+	"sync"
 )
 
 type ResponseSender struct {
@@ -12,12 +13,17 @@ type ResponseSender struct {
 }
 
 func NewResponseSender(i *do.Injector) (*ResponseSender, error) {
+	wg := do.MustInvoke[*sync.WaitGroup](i)
+
 	r := &ResponseSender{
 		c: make(chan *rpl.Log),
 	}
 	ch := do.MustInvokeNamed[chan<- *proto.Response](i, koicmd.ServiceKoiCmdResponseChan)
 
+	wg.Add(1)
 	go func(r1 *ResponseSender, ch1 chan<- *proto.Response) {
+		defer wg.Done()
+
 		for {
 			log := <-r1.c
 			if log == nil {

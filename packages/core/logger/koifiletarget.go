@@ -7,6 +7,7 @@ import (
 	"gopkg.ilharper.com/x/rpl"
 	"os"
 	"strings"
+	"sync"
 )
 
 type KoiFileTarget struct {
@@ -16,6 +17,8 @@ type KoiFileTarget struct {
 
 func BuildNewKoiFileTarget(target *os.File) func(i *do.Injector) (*KoiFileTarget, error) {
 	return func(i *do.Injector) (*KoiFileTarget, error) {
+		wg := do.MustInvoke[*sync.WaitGroup](i)
+
 		consoleTarget := &KoiFileTarget{
 			c:     make(chan *rpl.Log),
 			Level: rpl.LevelInfo,
@@ -23,7 +26,10 @@ func BuildNewKoiFileTarget(target *os.File) func(i *do.Injector) (*KoiFileTarget
 
 		adapter := newColorAdapter(target)
 
+		wg.Add(1)
 		go func(ct *KoiFileTarget) {
+			defer wg.Done()
+
 			for {
 				log := <-ct.c
 				if log == nil {
