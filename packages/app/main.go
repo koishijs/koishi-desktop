@@ -28,7 +28,7 @@ func main() {
 	receiver := rpl.NewReceiver()
 	receiver.ChOffset = 100
 	// Use ProvideValue() here because x/rpl didn't provide a do ctor
-	do.ProvideValue(i, &receiver)
+	do.ProvideValue(i, receiver)
 	do.Provide(i, koicli.NewCli)
 
 	l := do.MustInvoke[*logger.Logger](i)
