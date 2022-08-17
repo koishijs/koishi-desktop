@@ -8,7 +8,7 @@ import (
 
 type Daemon struct {
 	// The [god.Task] registry.
-	tasks *taskRegistry
+	tasks taskRegistry
 
 	// The [websocket.Handler].
 	//
@@ -16,10 +16,10 @@ type Daemon struct {
 	Handler websocket.Handler
 }
 
-func NewDaemon(i *do.Injector) Daemon {
+func NewDaemon(i *do.Injector) *Daemon {
 	do.Provide(i, koicmd.NewKoiCmdRegistry)
 
-	daemon := Daemon{}
-	daemon.Handler = buildHandle(i, &daemon)
+	daemon := &Daemon{}
+	daemon.Handler = buildHandle(i, daemon)
 	return daemon
 }
