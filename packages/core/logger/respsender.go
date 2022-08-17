@@ -18,7 +18,9 @@ func NewResponseSender(i *do.Injector) (*ResponseSender, error) {
 	r := &ResponseSender{
 		c: make(chan *rpl.Log),
 	}
-	ch := do.MustInvokeNamed[chan<- *proto.Response](i, koicmd.ServiceKoiCmdResponseChan)
+	// Actually chan<- *proto.Response
+	// But do don't support implicit conversion between channels
+	ch := do.MustInvokeNamed[chan *proto.Response](i, koicmd.ServiceKoiCmdResponseChan)
 
 	wg.Add(1)
 	go func(r1 *ResponseSender, ch1 chan<- *proto.Response) {
