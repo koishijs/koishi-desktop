@@ -22,6 +22,8 @@ func buildHandle(i *do.Injector, daemon *Daemon) func(ws *websocket.Conn) {
 	return func(ws *websocket.Conn) {
 		var err error
 
+		l.Debugf("Client connected at %s", ws.RemoteAddr())
+
 		defer func(ws *websocket.Conn) {
 			closeErr := ws.Close()
 			if closeErr != nil {
@@ -35,6 +37,7 @@ func buildHandle(i *do.Injector, daemon *Daemon) func(ws *websocket.Conn) {
 			l.Error(fmt.Errorf("failed to parse JSON request: %w", err))
 			return
 		}
+		l.Debugf("Parsed request type: %s", request.Type)
 
 		switch request.Type {
 		case "ping":
@@ -42,6 +45,7 @@ func buildHandle(i *do.Injector, daemon *Daemon) func(ws *websocket.Conn) {
 			if err != nil {
 				l.Error(fmt.Errorf("failed to send 'pong': %w", err))
 			}
+			l.Debug("Send pong back")
 			return
 		case "stop":
 			err = do.MustInvoke[*http.Server](i).Shutdown(context.Background())
@@ -56,6 +60,8 @@ func buildHandle(i *do.Injector, daemon *Daemon) func(ws *websocket.Conn) {
 				l.Error(fmt.Errorf("failed to parse command: %w", err))
 				return
 			}
+			l.Debugf("Parsed command: %s", commandRequest.Name)
+
 			err = handleCommand(i, daemon, ws, &commandRequest)
 			if err != nil {
 				l.Error(err)
@@ -82,6 +88,8 @@ func handleCommand(
 	// Acquire Task
 	daemon.tasks.Acquire(scopedI)
 	task := do.MustInvoke[*Task](scopedI)
+
+	localL.Debugf("Acquired task %d", task.Id)
 
 	// Build remote procedure Logger
 	// Then override Logger
