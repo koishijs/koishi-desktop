@@ -28,15 +28,7 @@ func newPreAction(i *do.Injector) (cli.BeforeFunc, error) {
 
 		l.Debugf("Command line arguments:\n%#+v", os.Args)
 
-		l.Debug("Checking config file...")
-		configPath := c.Path("config")
-		if configPath != "" {
-			l.Debugf("Using flag provided config path: %s", configPath)
-		} else {
-			configPath = "koi.yml"
-		}
-		l.Infof("Using config file: %s", configPath)
-		do.Provide(i, config.BuildLoadConfig(configPath))
+		do.Provide(i, config.BuildLoadConfig("koi.yml"))
 
 		return
 	}, nil
