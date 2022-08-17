@@ -1,6 +1,7 @@
 go 1.18
 
 use (
+	./packages/do
 	./packages/core
 	./packages/sdk
 	./packages/app
