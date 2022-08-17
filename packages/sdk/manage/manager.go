@@ -74,7 +74,7 @@ func (manager *KoiManager) Start() error {
 	if runtime.GOOS == "windows" {
 		cmd = exec.Command("cmd.exe", "/C", "start", "/b", manager.exe, "run", "daemon")
 	} else {
-		cmd = exec.Command("sh", manager.exe, "run", "daemon")
+		cmd = exec.Command("sh", "-c", fmt.Sprintf("%s run daemon &", manager.exe))
 	}
 	err := cmd.Run()
 	if err != nil {
