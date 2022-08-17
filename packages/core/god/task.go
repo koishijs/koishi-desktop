@@ -34,7 +34,7 @@ func (registry *taskRegistry) Acquire(i *do.Injector) {
 	id := registry.next
 	for {
 		// index = id - 1. Index range: 0-255
-		if registry.reg[id-1] != nil {
+		if registry.reg[id-1] == nil {
 			break
 		}
 		id++
