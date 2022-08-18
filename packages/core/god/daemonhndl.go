@@ -9,7 +9,6 @@ import (
 	"gopkg.ilharper.com/koi/core/god/proto"
 	"gopkg.ilharper.com/koi/core/koicmd"
 	"gopkg.ilharper.com/koi/core/logger"
-	"gopkg.ilharper.com/koi/core/util/di"
 	"gopkg.ilharper.com/koi/core/util/net"
 	"net/http"
 )
@@ -83,7 +82,7 @@ func handleCommand(
 	localL := do.MustInvoke[*logger.Logger](i)
 
 	// Create scoped injector
-	scopedI := di.Scope(i)
+	scopedI := i.Scope()
 
 	// Acquire Task
 	daemon.tasks.Acquire(scopedI)
