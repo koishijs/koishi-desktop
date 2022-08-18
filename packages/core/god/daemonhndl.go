@@ -96,7 +96,7 @@ func handleCommand(
 
 	// Build Response channel
 	ch := make(chan *proto.Response)
-	do.ProvideNamedValue(scopedI, koicmd.ServiceKoiCmdResponseChan, ch)
+	do.ProvideValue(scopedI, ch)
 
 	// Provide command
 	do.ProvideValue(scopedI, command)

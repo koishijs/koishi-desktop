@@ -3,7 +3,6 @@ package logger
 import (
 	"github.com/samber/do"
 	"gopkg.ilharper.com/koi/core/god/proto"
-	"gopkg.ilharper.com/koi/core/koicmd"
 	"gopkg.ilharper.com/x/rpl"
 	"sync"
 )
@@ -20,7 +19,7 @@ func NewResponseSender(i *do.Injector) (*ResponseSender, error) {
 	}
 	// Actually chan<- *proto.Response
 	// But do don't support implicit conversion between channels
-	ch := do.MustInvokeNamed[chan *proto.Response](i, koicmd.ServiceKoiCmdResponseChan)
+	ch := do.MustInvoke[chan *proto.Response](i)
 
 	wg.Add(1)
 	go func(r1 *ResponseSender, ch1 chan<- *proto.Response) {

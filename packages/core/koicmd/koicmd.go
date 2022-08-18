@@ -5,10 +5,6 @@ import (
 	"gopkg.ilharper.com/koi/core/god/proto"
 )
 
-const (
-	ServiceKoiCmdResponseChan = "gopkg.ilharper.com/koi/core/koicmd.KoiCmdResponseChan"
-)
-
 type KoiCmd func(i *do.Injector) *proto.Response
 
 type Registry map[string]KoiCmd
