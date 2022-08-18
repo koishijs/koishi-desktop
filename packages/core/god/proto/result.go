@@ -33,6 +33,6 @@ func NewFailedResult(code uint16, format string, a ...any) *Response {
 	return NewResult(code, fmt.Sprint(fmt.Errorf(format, a...)))
 }
 
-func NewErrorResult(err koierr.KoiError) *Response {
+func NewErrorResult(err *koierr.KoiError) *Response {
 	return NewResult(err.Code, err.Error())
 }
