@@ -98,6 +98,9 @@ func handleCommand(
 	ch := make(chan *proto.Response)
 	do.ProvideNamedValue(scopedI, koicmd.ServiceKoiCmdResponseChan, ch)
 
+	// Provide command
+	do.ProvideValue(scopedI, command)
+
 	// Build RPL Response Sender
 	do.Provide(scopedI, logger.NewResponseSender)
 	l := do.MustInvoke[*logger.Logger](scopedI)
