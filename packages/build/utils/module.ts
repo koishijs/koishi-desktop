@@ -1,3 +1,4 @@
+// Module "do" isn't here because it's treated as a vendor.
 const modules = ['core', 'sdk', 'app']
 
 export async function eachModule(
