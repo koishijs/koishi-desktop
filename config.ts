@@ -24,6 +24,7 @@ export const versionNode = '16.16.0'
 export const versionYarn = '3.2.2'
 
 export const versionToolsVersioninfo = 'v1.4.0'
+export const versionToolsGolangCILint = 'v1.48.0'
 
 //#endregion
 

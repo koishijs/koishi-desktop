@@ -1,5 +1,8 @@
 import { parallel } from 'gulp'
-import { versionToolsVersioninfo } from '../../utils/config'
+import {
+  versionToolsGolangCILint,
+  versionToolsVersioninfo,
+} from '../../utils/config'
 import { exec } from '../../utils/spawn'
 
 const buildPrepareTool = (name: string, version: string) => () =>
@@ -10,9 +13,12 @@ export const prepareToolsVersioninfo = buildPrepareTool(
   versionToolsVersioninfo
 )
 
+export const prepareToolsGolangCILint = buildPrepareTool(
+  'github.com/golangci/golangci-lint/cmd/golangci-lint',
+  versionToolsGolangCILint
+)
+
 export const prepareTools =
   process.platform === 'win32'
-    ? parallel(prepareToolsVersioninfo)
-    : async () => {
-        /* Ignore */
-      }
+    ? parallel(prepareToolsVersioninfo, prepareToolsGolangCILint)
+    : parallel(prepareToolsGolangCILint)

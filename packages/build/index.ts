@@ -1,8 +1,8 @@
 import { series } from 'gulp'
-import { build, clean, pack, prepare } from './tasks'
+import { build, clean, lint, pack, prepare } from './tasks'
 
-export const dev = series(prepare, build)
+export const dev = series(prepare, lint, build)
 
-export const full = series(clean, prepare, build, pack)
+export const full = series(clean, prepare, lint, build, pack)
 
 export const defaultTask = dev
