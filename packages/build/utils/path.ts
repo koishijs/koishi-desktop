@@ -8,15 +8,15 @@ import { resolve } from 'path'
  * during prepareFolder task.
  */
 const buildPaths = {
-  root: '.',
+  root: './',
 
-  packages: 'packages',
-  src: 'packages/app',
-  srcBuild: 'packages/build',
-  templates: 'packages/build/templates',
+  packages: 'packages/',
+  src: 'packages/app/',
+  srcBuild: 'packages/build/',
+  templates: 'packages/build/templates/',
 
   build: 'build/',
-  buildCache: 'build/caches',
+  buildCache: 'build/caches/',
 
   buildPortable: 'build/varients/portable/',
   buildPortableData: 'build/varients/portable/data/',
