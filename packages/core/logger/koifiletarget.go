@@ -2,12 +2,13 @@ package logger
 
 import (
 	"fmt"
-	"github.com/samber/do"
-	"gopkg.ilharper.com/koi/core/util/strutil"
-	"gopkg.ilharper.com/x/rpl"
 	"os"
 	"strings"
 	"sync"
+
+	"github.com/samber/do"
+	"gopkg.ilharper.com/koi/core/util/strutil"
+	"gopkg.ilharper.com/x/rpl"
 )
 
 type KoiFileTarget struct {

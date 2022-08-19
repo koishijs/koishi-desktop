@@ -1,8 +1,9 @@
 package god
 
 import (
-	"github.com/samber/do"
 	"sync"
+
+	"github.com/samber/do"
 )
 
 type Task struct {

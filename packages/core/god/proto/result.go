@@ -2,6 +2,7 @@ package proto
 
 import (
 	"fmt"
+
 	"gopkg.ilharper.com/koi/core/koierr"
 )
 

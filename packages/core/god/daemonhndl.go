@@ -3,6 +3,8 @@ package god
 import (
 	"context"
 	"fmt"
+	"net/http"
+
 	"github.com/mitchellh/mapstructure"
 	"github.com/samber/do"
 	"golang.org/x/net/websocket"
@@ -10,7 +12,6 @@ import (
 	"gopkg.ilharper.com/koi/core/koicmd"
 	"gopkg.ilharper.com/koi/core/logger"
 	"gopkg.ilharper.com/koi/core/util/net"
-	"net/http"
 )
 
 // Handle request.

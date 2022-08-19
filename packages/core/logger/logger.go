@@ -2,11 +2,12 @@ package logger
 
 import (
 	"fmt"
+	"strings"
+	"time"
+
 	"github.com/samber/do"
 	"gopkg.ilharper.com/koi/core/util/strutil"
 	"gopkg.ilharper.com/x/rpl"
-	"strings"
-	"time"
 )
 
 // Logger defaults

@@ -4,11 +4,12 @@ import (
 	"bufio"
 	"errors"
 	"fmt"
+	"os/exec"
+	"path/filepath"
+
 	"github.com/samber/do"
 	"gopkg.ilharper.com/koi/core/logger"
 	"gopkg.ilharper.com/x/rpl"
-	"os/exec"
-	"path/filepath"
 )
 
 type KoiProc struct {

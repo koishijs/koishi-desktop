@@ -2,9 +2,10 @@ package envutil
 
 import (
 	"fmt"
+	"strings"
+
 	"golang.org/x/text/cases"
 	"golang.org/x/text/language"
-	"strings"
 )
 
 var (

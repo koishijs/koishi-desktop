@@ -1,8 +1,9 @@
 package koiconfig
 
 import (
-	"gopkg.ilharper.com/koi/core/util/envutil"
 	"strings"
+
+	"gopkg.ilharper.com/koi/core/util/envutil"
 )
 
 func UseConfigEnv(env *[]string, cfg *Config) {

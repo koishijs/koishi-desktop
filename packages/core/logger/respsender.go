@@ -1,10 +1,11 @@
 package logger
 
 import (
+	"sync"
+
 	"github.com/samber/do"
 	"gopkg.ilharper.com/koi/core/god/proto"
 	"gopkg.ilharper.com/x/rpl"
-	"sync"
 )
 
 type ResponseSender struct {

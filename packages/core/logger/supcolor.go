@@ -2,11 +2,12 @@ package logger
 
 import (
 	"fmt"
-	"gopkg.ilharper.com/x/colette"
-	"gopkg.ilharper.com/x/supcolor"
 	"os"
 	"regexp"
 	"strconv"
+
+	"gopkg.ilharper.com/x/colette"
+	"gopkg.ilharper.com/x/supcolor"
 )
 
 var (

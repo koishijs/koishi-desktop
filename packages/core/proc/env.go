@@ -2,14 +2,15 @@ package proc
 
 import (
 	"fmt"
-	"github.com/samber/do"
-	"gopkg.ilharper.com/koi/core/koiconfig"
-	"gopkg.ilharper.com/koi/core/util"
-	"gopkg.ilharper.com/koi/core/util/envutil"
 	"os"
 	"path/filepath"
 	"runtime"
 	"strings"
+
+	"github.com/samber/do"
+	"gopkg.ilharper.com/koi/core/koiconfig"
+	"gopkg.ilharper.com/koi/core/util"
+	"gopkg.ilharper.com/koi/core/util/envutil"
 )
 
 func environ(i *do.Injector, path string) *[]string {
