@@ -10,6 +10,7 @@ import { resolve } from 'path'
 const buildPaths = {
   root: '.',
 
+  packages: 'packages',
   src: 'packages/app',
   srcBuild: 'packages/build',
   templates: 'packages/build/templates',
