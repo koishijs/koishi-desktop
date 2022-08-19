@@ -8,9 +8,7 @@ import (
 	"golang.org/x/text/language"
 )
 
-var (
-	titleCaser = cases.Title(language.AmericanEnglish)
-)
+var titleCaser = cases.Title(language.AmericanEnglish)
 
 func UseEnv(env *[]string, key string, value string) {
 	RemoveEnv(env, key)

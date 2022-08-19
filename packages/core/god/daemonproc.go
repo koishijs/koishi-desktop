@@ -2,8 +2,7 @@ package god
 
 import "github.com/samber/do"
 
-type DaemonProc struct {
-}
+type DaemonProc struct{}
 
 func NewDaemonProc(i *do.Injector) (*DaemonProc, error) {
 	return &DaemonProc{}, nil

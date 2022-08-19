@@ -35,28 +35,28 @@ func newColorAdapter(target *os.File) *colorAdapter {
 //
 // A color control sequence consists of 3 parts:
 //
-//     (CSI)[     (colors)     m
-//       |            |        |
-//       |            |        CSI Control End
-//       |      Color Params
-//     CSI Control Start
+//	(CSI)[     (colors)     m
+//	  |            |        |
+//	  |            |        CSI Control End
+//	  |      Color Params
+//	CSI Control Start
 //
 // Where color params has three modes:
 //
-//     16 (basic) color, level = 1:
-//     (CSI)[     (foreground)     m
-//                     |
-//            Foreground: 30-37
+//	16 (basic) color, level = 1:
+//	(CSI)[     (foreground)     m
+//	                |
+//	       Foreground: 30-37
 //
-//     xterm(1) 256 color, level = 2:
-//     (CSI)[     38;5;(foreground)     m
-//                          |
-//                  Foreground: 0-255
+//	xterm(1) 256 color, level = 2:
+//	(CSI)[     38;5;(foreground)     m
+//	                     |
+//	             Foreground: 0-255
 //
-//     true color, level = 3:
-//     (CSI)[     38;2;R;G;B     m
-//                       |
-//           Foreground: (R, G, B)
+//	true color, level = 3:
+//	(CSI)[     38;2;R;G;B     m
+//	                  |
+//	      Foreground: (R, G, B)
 //
 // Mission of this function is to
 // downgrade these control sequences to the level

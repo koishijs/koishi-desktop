@@ -10,7 +10,7 @@ import (
 	"gopkg.ilharper.com/x/rpl"
 )
 
-// Logger defaults
+// Logger defaults.
 const (
 	// defaultTimeFormat known as "yyyy-MM-dd hh:mm:ss".
 	// See [package time].
