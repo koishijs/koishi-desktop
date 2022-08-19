@@ -1,2 +1,17 @@
 linters:
   enable-all: true
+  disable:
+    - funlen
+    - lll
+    - varnamelen
+    - gomnd
+    - cyclop
+    - exhaustivestruct
+    - gochecknoglobals
+    - goerr113
+
+linters-settings:
+  revive:
+    rules:
+      - name: var-naming
+        disabled: true
