@@ -1,6 +1,6 @@
 module gopkg.ilharper.com/koi/core
 
-go 1.18
+go 1.19
 
 require (
 	github.com/goccy/go-json v0.9.10
