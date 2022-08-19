@@ -6,4 +6,6 @@ export const lint = () =>
   eachModule((pkg) => exec('golangci-lint', ['run'], dir('packages', pkg)))
 
 export const lintFix = () =>
-  eachModule((pkg) => exec('golangci-lint', ['run', '--fix'], dir('root', pkg)))
+  eachModule((pkg) =>
+    exec('golangci-lint', ['run', '--fix'], dir('packages', pkg))
+  )
