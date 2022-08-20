@@ -21,8 +21,8 @@ func FilterLog(resp <-chan *proto.Response) (<-chan *rpl.Log, <-chan *proto.Resp
 		for {
 			r := <-resp
 			if r == nil {
-				close(log)
-				close(data)
+				log <- nil
+				data <- nil
 				break
 			}
 
