@@ -86,6 +86,7 @@ func ExtractTgz(src io.Reader, dest string, strip bool) error {
 			if err != nil {
 				return fmt.Errorf("failed to write %s: %w", name, err)
 			}
+			_ = file.Close()
 		}
 	}
 
