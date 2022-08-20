@@ -26,8 +26,8 @@ export async function tryEachModule(
     | ((module: string) => Promise<void>)
     | ((module: string) => () => Promise<void>)
     | ((module: string) => void)
-): Promise<boolean> {
-  let failed = false
+): Promise<void> {
+  const errors: unknown[] = []
 
   for (const module of modules) {
     try {
@@ -41,10 +41,10 @@ export async function tryEachModule(
       }
 
       await fnResult
-    } catch (e) {
-      failed = true
+    } catch (e: unknown) {
+      errors.push(e)
     }
   }
 
-  return failed
+  if (errors) throw errors
 }
