@@ -23,6 +23,8 @@ type taskRegistry struct {
 	reg [256]*Task
 
 	// Records next index to register Task.
+	//
+	// Index range: 0-255
 	next uint8
 }
 
@@ -32,7 +34,7 @@ func (registry *taskRegistry) Acquire(i *do.Injector) {
 	defer registry.mutex.Unlock()
 
 	// Acquire Task Id.
-	id := registry.next
+	id := registry.next + 1
 	for {
 		// index = id - 1. Index range: 0-255
 		if registry.reg[id-1] == nil {
