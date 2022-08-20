@@ -5,8 +5,8 @@
   "dependencies": {
     "7zip-bin": "^5.1.1",
     "axios": "1.0.0-alpha.1",
-    "cross-spawn": "^7",
     "del": "^6",
+    "execa": "^5.0.0",
     "handlebars": "^4.7.7",
     "lzma-native": "^8",
     "node-stream-zip": "^1.15.0",
