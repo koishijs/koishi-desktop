@@ -39,7 +39,7 @@ func Import(
 			var resp proto.Response
 			rErr := net.JSON.Receive(ws, &resp)
 			if rErr != nil {
-				close(wsRespC)
+				wsRespC <- nil
 				break
 			}
 			wsRespC <- &resp
