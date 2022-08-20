@@ -2,15 +2,16 @@ package config
 
 import (
 	"fmt"
-	"github.com/goccy/go-yaml"
-	"github.com/samber/do"
-	"gopkg.ilharper.com/koi/core/koiconfig"
-	"gopkg.ilharper.com/koi/core/logger"
 	"io/fs"
 	"os"
 	"path/filepath"
 	"runtime"
 	"strings"
+
+	"github.com/goccy/go-yaml"
+	"github.com/samber/do"
+	"gopkg.ilharper.com/koi/core/koiconfig"
+	"gopkg.ilharper.com/koi/core/logger"
 )
 
 var defaultConfigData = koiconfig.ConfigData{

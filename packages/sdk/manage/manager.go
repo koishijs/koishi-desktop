@@ -2,15 +2,16 @@ package manage
 
 import (
 	"fmt"
-	"github.com/goccy/go-json"
-	"github.com/shirou/gopsutil/v3/process"
-	"gopkg.ilharper.com/koi/core/god"
-	"gopkg.ilharper.com/koi/sdk/client"
 	"os"
 	"os/exec"
 	"path/filepath"
 	"runtime"
 	"time"
+
+	"github.com/goccy/go-json"
+	"github.com/shirou/gopsutil/v3/process"
+	"gopkg.ilharper.com/koi/core/god"
+	"gopkg.ilharper.com/koi/sdk/client"
 )
 
 type KoiManager struct {

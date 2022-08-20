@@ -2,6 +2,7 @@ package koicli
 
 import (
 	"fmt"
+
 	"github.com/mitchellh/mapstructure"
 	"github.com/samber/do"
 	"github.com/urfave/cli/v2"

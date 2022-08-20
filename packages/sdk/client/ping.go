@@ -2,6 +2,7 @@ package client
 
 import (
 	"fmt"
+
 	"gopkg.ilharper.com/koi/core/god/proto"
 	"gopkg.ilharper.com/koi/core/util/net"
 )

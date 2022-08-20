@@ -1,6 +1,11 @@
 package main
 
 import (
+	"os"
+	"os/signal"
+	"sync"
+	"syscall"
+
 	"github.com/samber/do"
 	"github.com/urfave/cli/v2"
 	"gopkg.ilharper.com/koi/app/koicli"
@@ -8,10 +13,6 @@ import (
 	"gopkg.ilharper.com/koi/core/logger"
 	coreUtil "gopkg.ilharper.com/koi/core/util"
 	"gopkg.ilharper.com/x/rpl"
-	"os"
-	"os/signal"
-	"sync"
-	"syscall"
 )
 
 const (

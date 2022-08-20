@@ -2,6 +2,7 @@ package client
 
 import (
 	"fmt"
+
 	"golang.org/x/net/websocket"
 	"gopkg.ilharper.com/koi/core/god"
 )

@@ -3,16 +3,17 @@ package koicli
 import (
 	"errors"
 	"fmt"
+	"net"
+	"net/http"
+	"os"
+	"path/filepath"
+
 	"github.com/goccy/go-json"
 	"github.com/samber/do"
 	"github.com/urfave/cli/v2"
 	"gopkg.ilharper.com/koi/core/god"
 	"gopkg.ilharper.com/koi/core/koiconfig"
 	"gopkg.ilharper.com/koi/core/logger"
-	"net"
-	"net/http"
-	"os"
-	"path/filepath"
 )
 
 const (
@@ -90,7 +91,7 @@ func newRunDaemonAction(i *do.Injector) (cli.ActionFunc, error) {
 		lock, err := os.OpenFile(
 			filepath.Join(cfg.Computed.DirLock, "daemon.lock"),
 			os.O_WRONLY|os.O_CREATE|os.O_EXCL, // Must create new file and write only
-			0444,                              // -r--r--r--
+			0444,                             // -r--r--r--
 		)
 
 		daemonLock := &god.DaemonLock{
