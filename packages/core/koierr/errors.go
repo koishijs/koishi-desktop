@@ -16,12 +16,4 @@ var (
 	ErrNotImplemented = NewErrNotImplemented(nil)
 
 	NewErrInstanceExists = func(name string) *KoiError { return NewKoiError(1100, fmt.Sprintf("instance %s already exists", name), nil) }
-
-	ErrorDict = map[uint16]*KoiError{
-		0:   ErrSuccess,
-		1:   ErrUnknown,
-		400: ErrBadRequest,
-		500: ErrInternalError,
-		501: ErrNotImplemented,
-	}
 )

@@ -1,6 +1,7 @@
 package koicli
 
 import (
+	"errors"
 	"fmt"
 
 	"github.com/mitchellh/mapstructure"
@@ -8,7 +9,6 @@ import (
 	"github.com/urfave/cli/v2"
 	"gopkg.ilharper.com/koi/core/god/proto"
 	"gopkg.ilharper.com/koi/core/koiconfig"
-	"gopkg.ilharper.com/koi/core/koierr"
 	"gopkg.ilharper.com/koi/core/logger"
 	"gopkg.ilharper.com/koi/sdk/client"
 	"gopkg.ilharper.com/koi/sdk/manage"
@@ -88,7 +88,7 @@ func newImportAction(i *do.Injector) (cli.ActionFunc, error) {
 		}
 
 		if result.Code != 0 {
-			err = koierr.ErrorDict[result.Code]
+			err = errors.New(result.Data.(string))
 		}
 
 		return
