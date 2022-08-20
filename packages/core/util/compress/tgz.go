@@ -48,6 +48,7 @@ func ExtractTgz(src io.Reader, dest string, strip bool) error {
 		if err != nil {
 			return fmt.Errorf("tar reading error: %w", err)
 		}
+
 		if !validRelPath(f.Name) {
 			return fmt.Errorf("zipslip file detected: %s", f.Name)
 		}
