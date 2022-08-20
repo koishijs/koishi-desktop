@@ -144,7 +144,7 @@ func handleCommand(
 
 	// l.Close() must invoke synchronously before ch closed
 	l.Close()
-	close(ch)
+	ch <- nil
 
 	// Wait the final send finish
 	<-send
