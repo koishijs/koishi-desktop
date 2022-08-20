@@ -105,7 +105,6 @@ func handleCommand(
 	// Build RPL Response Sender
 	do.Provide(scopedI, logger.NewResponseSender)
 	l := do.MustInvoke[*logger.Logger](scopedI)
-	defer l.Close()
 	// Register Senders
 	l.Register(do.MustInvoke[*logger.KoiFileTarget](scopedI))
 	l.Register(do.MustInvoke[*logger.ResponseSender](scopedI))
@@ -142,6 +141,9 @@ func handleCommand(
 	if response != nil {
 		ch <- response
 	}
+
+	// l.Close() must invoke synchronously before ch closed
+	l.Close()
 	close(ch)
 
 	// Wait the final send finish
