@@ -1,5 +1,6 @@
 export * from './clean'
 export * from './prepare'
+export * from './kill'
 export * from './lint'
 export * from './build'
 export * from './pack'
