@@ -6,15 +6,15 @@ export async function eachModule(
     | ((module: string) => Promise<void>)
     | ((module: string) => () => Promise<void>)
     | ((module: string) => void)
-) {
+): Promise<void> {
   for (const module of modules) {
     const fnResult = fn(module)
 
-    if (!fnResult) return
+    if (!fnResult) continue
 
     if (typeof fnResult === 'function') {
       await fnResult()
-      return
+      continue
     }
 
     await fnResult
