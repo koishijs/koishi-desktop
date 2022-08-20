@@ -78,7 +78,7 @@ func ExtractTgz(src io.Reader, dest string, strip bool) error {
 				return fmt.Errorf("failed to create %s: %w", dir, err)
 			}
 
-			file, err := os.OpenFile(name, os.O_CREATE|os.O_WRONLY, os.FileMode(f.Mode))
+			file, err := os.OpenFile(name, os.O_CREATE|os.O_WRONLY|os.O_TRUNC, os.FileMode(f.Mode))
 			if err != nil {
 				return fmt.Errorf("failed to create %s: %w", name, err)
 			}
