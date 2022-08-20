@@ -1,52 +1,38 @@
-package util
+package compress
 
 import (
 	"archive/tar"
 	"compress/gzip"
-	"errors"
+	"fmt"
 	"io"
-	l "koi/util/logger"
 	"os"
 	"path/filepath"
 	"strings"
 )
 
-func UnzipFile(src string, dest string, clean bool, strip bool) error {
-	l.Debugf("Unzip: %s", src)
-
+func ExtractTgzFile(src string, dest string, strip bool) error {
 	srcFile, err := os.Open(src)
 	if err != nil {
-		l.Error("Failed to open source file.")
-		return err
+		return fmt.Errorf("failed to open %s: %w", src, err)
 	}
 	defer func() {
 		_ = srcFile.Close()
 	}()
 
-	return Unzip(srcFile, dest, clean, strip)
+	return ExtractTgz(srcFile, dest, strip)
 }
 
-func Unzip(src io.Reader, dest string, clean bool, strip bool) error {
+func ExtractTgz(src io.Reader, dest string, strip bool) error {
 	var err error
 
-	l.Debugf("To: %s", dest)
-	if clean {
-		err = os.RemoveAll(dest)
-		if err != nil {
-			l.Error("Failed to clean destination dir.")
-			return err
-		}
-	}
 	err = os.MkdirAll(dest, os.ModePerm)
 	if err != nil {
-		l.Error("Failed to create destination dir.")
-		return err
+		return fmt.Errorf("failed to create destination dir: %w", err)
 	}
 
 	gReader, err := gzip.NewReader(src)
 	if err != nil {
-		l.Error("Failed to parse gzip.")
-		return err
+		return fmt.Errorf("failed to parse gzip: %w", err)
 	}
 	defer func() {
 		_ = gReader.Close()
@@ -61,14 +47,10 @@ func Unzip(src io.Reader, dest string, clean bool, strip bool) error {
 		}
 
 		if err != nil {
-			l.Error("Tar reading error:")
-			l.Error(err)
-			return err
+			return fmt.Errorf("tar reading error: %w", err)
 		}
 		if !validRelPath(f.Name) {
-			err = errors.New("Tar contains invalid name: " + f.Name)
-			l.Error(err)
-			return err
+			return fmt.Errorf("zipslip file detected: %s", f.Name)
 		}
 
 		if f.Typeflag != tar.TypeDir {
@@ -93,22 +75,16 @@ func Unzip(src io.Reader, dest string, clean bool, strip bool) error {
 			dir := filepath.Dir(name)
 			err = os.MkdirAll(dir, os.ModePerm)
 			if err != nil {
-				l.Error("Failed to create:")
-				l.Error(dir)
-				return err
+				return fmt.Errorf("failed to create %s: %w", dir, err)
 			}
 
 			file, err := os.OpenFile(name, os.O_CREATE|os.O_WRONLY, os.FileMode(f.Mode))
 			if err != nil {
-				l.Error("Failed to create:")
-				l.Error(name)
-				return err
+				return fmt.Errorf("failed to create %s: %w", name, err)
 			}
 			_, err = io.Copy(file, tReader)
 			if err != nil {
-				l.Error("Failed to write:")
-				l.Error(name)
-				return err
+				return fmt.Errorf("failed to write %s: %w", name, err)
 			}
 		}
 	}
