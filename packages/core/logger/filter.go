@@ -27,7 +27,7 @@ func FilterLog(resp <-chan *proto.Response) (<-chan *rpl.Log, <-chan *proto.Resp
 			}
 
 			if r.Type != proto.TypeResponseLog {
-				data <- <-resp
+				data <- r
 			} else {
 				l := rpl.Log{}
 				err := mapstructure.Decode(r.Data, &l)
