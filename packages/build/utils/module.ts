@@ -20,3 +20,31 @@ export async function eachModule(
     await fnResult
   }
 }
+
+export async function tryEachModule(
+  fn:
+    | ((module: string) => Promise<void>)
+    | ((module: string) => () => Promise<void>)
+    | ((module: string) => void)
+): Promise<boolean> {
+  let failed = false
+
+  for (const module of modules) {
+    try {
+      const fnResult = fn(module)
+
+      if (!fnResult) continue
+
+      if (typeof fnResult === 'function') {
+        await fnResult()
+        continue
+      }
+
+      await fnResult
+    } catch (e) {
+      failed = true
+    }
+  }
+
+  return failed
+}
