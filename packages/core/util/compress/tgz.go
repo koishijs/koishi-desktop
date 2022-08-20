@@ -7,7 +7,6 @@ import (
 	"io"
 	"os"
 	"path/filepath"
-	"strings"
 )
 
 func ExtractTgzFile(src string, dest string, strip bool) error {
@@ -90,11 +89,4 @@ func ExtractTgz(src io.Reader, dest string, strip bool) error {
 	}
 
 	return nil
-}
-
-func validRelPath(p string) bool {
-	if p == "" || strings.Contains(p, `\`) || strings.HasPrefix(p, "/") || strings.Contains(p, "../") {
-		return false
-	}
-	return true
 }
