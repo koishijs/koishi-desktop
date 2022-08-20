@@ -22,12 +22,10 @@ var defaultConfigData = koiconfig.ConfigData{
 	Env:     nil,
 }
 
-var (
-	redirectPath = (func() *yaml.Path {
-		r, _ := yaml.PathString("$.redirect")
-		return r
-	})()
-)
+var redirectPath = (func() *yaml.Path {
+	r, _ := yaml.PathString("$.redirect")
+	return r
+})()
 
 func BuildLoadConfig(path string) func(i *do.Injector) (*koiconfig.Config, error) {
 	return func(i *do.Injector) (*koiconfig.Config, error) {
