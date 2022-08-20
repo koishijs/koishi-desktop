@@ -53,7 +53,7 @@ func (logger *Logger) Logs(level int8, value string) {
 func (logger *Logger) Log(level int8, prefix byte, args ...any) {
 	now := time.Now()
 
-	indent := 13 // "[I] launcher "
+	indent := 4
 	output := ""
 
 	timeLen := len(defaultTimeFormat)
