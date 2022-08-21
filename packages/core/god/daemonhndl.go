@@ -88,6 +88,10 @@ func handleCommand(
 	// Acquire Task
 	daemon.tasks.Acquire(scopedI)
 	task := do.MustInvoke[*Task](scopedI)
+	defer func() {
+		localL.Debugf("Releasing task %d", task.Id)
+		daemon.tasks.Release(scopedI)
+	}()
 
 	localL.Debugf("Acquired task %d", task.Id)
 
