@@ -1,8 +1,6 @@
 package proto
 
 import (
-	"fmt"
-
 	"gopkg.ilharper.com/koi/core/koierr"
 )
 
@@ -28,10 +26,6 @@ func NewResult(code uint16, data any) *Response {
 
 func NewSuccessResult(data any) *Response {
 	return NewResult(koierr.ErrSuccess.Code, data)
-}
-
-func NewFailedResult(code uint16, format string, a ...any) *Response {
-	return NewResult(code, fmt.Sprint(fmt.Errorf(format, a...)))
 }
 
 func NewErrorResult(err *koierr.KoiError) *Response {
