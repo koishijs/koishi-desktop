@@ -8,6 +8,7 @@ require (
 	github.com/samber/do v1.2.0
 	golang.org/x/net v0.0.0-20220809012201-f428fae20770
 	golang.org/x/text v0.3.7
+	gopkg.ilharper.com/x/browser v1.0.0
 	gopkg.ilharper.com/x/colette v0.1.0
 	gopkg.ilharper.com/x/rpl v0.2.0
 	gopkg.ilharper.com/x/supcolor v1.0.0

@@ -21,6 +21,15 @@ import (
 func Daemon(i *do.Injector) error {
 	var err error
 
+	// Register daemonProcess synchronously,
+	do.Provide(i, newDaemonProcess)
+	// And start it in a new goroutine as early as possible.
+	// This ensures Koishi starts quickly first.
+	err = do.MustInvoke[*daemonProcess](i).init()
+	if err != nil {
+		return err
+	}
+
 	l := do.MustInvoke[*logger.Logger](i)
 
 	// Provide daemonUnlocker.

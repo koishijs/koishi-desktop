@@ -15,11 +15,15 @@ github.com/stretchr/testify v1.7.1/go.mod h1:6Fq8oRcR53rry900zMqJjRRixrwX3KX962/
 github.com/stretchr/testify v1.8.0 h1:pSgiaMZlXftHpm5L7V1+rVB+AZJydKsMxsQBIJw4PKk=
 github.com/stretchr/testify v1.8.0/go.mod h1:yNjHg4UonilssWZ8iaSj1OCr/vHnekPRkoO+kdMU+MU=
 golang.org/x/net v0.0.0-20220809012201-f428fae20770 h1:dIi4qVdvjZEjiMDv7vhokAZNGnz3kepwuXqFKYDdDMs=
+golang.org/x/net v0.0.0-20220809012201-f428fae20770/go.mod h1:YDH+HFinaLZZlnHAfSS6ZXJJ9M9t4Dl22yv3iI2vPwk=
+golang.org/x/sys v0.0.0-20210616045830-e2b7044e8c71/go.mod h1:oPkhp1MJrh7nUepCBck5+mAzfO9JrbApNNgaTdGDITg=
 golang.org/x/sys v0.0.0-20220722155257-8c9f86f7a55f/go.mod h1:oPkhp1MJrh7nUepCBck5+mAzfO9JrbApNNgaTdGDITg=
 golang.org/x/sys v0.0.0-20220728004956-3c1f35247d10 h1:WIoqL4EROvwiPdUtaip4VcDdpZ4kha7wBWZrbVKCIZg=
 golang.org/x/sys v0.0.0-20220728004956-3c1f35247d10/go.mod h1:oPkhp1MJrh7nUepCBck5+mAzfO9JrbApNNgaTdGDITg=
 golang.org/x/text v0.3.7 h1:olpwvP2KacW1ZWvsR7uQhoyTYvKAupfQrRGBFM352Gk=
 golang.org/x/text v0.3.7/go.mod h1:u+2+/6zg+i71rQMx5EYifcz6MCKuco9NR6JIITiCfzQ=
+gopkg.ilharper.com/x/browser v1.0.0 h1:9oWk1mlFxmBKxu9xDK4Vp5NPlXXXb2aPQG+uLs+CHm4=
+gopkg.ilharper.com/x/browser v1.0.0/go.mod h1:mA3Hb0QIk0dyb9EABiHGFmLopASY4lzm00y2aMR1PFE=
 gopkg.ilharper.com/x/colette v0.1.0 h1:7MCJA0n5g6+wriYSepnJpGUBMQAUfoipTGCp4lJWkg8=
 gopkg.ilharper.com/x/colette v0.1.0/go.mod h1:maa00kijpiojqfY5IURkFkItBE/ajA3e9Gx/aDBBoqw=
 gopkg.ilharper.com/x/isatty v1.0.1 h1:tdoWUKjuvIA/D57JFtLo8JWCF+M1bPw6Wiv8DzcOD+s=
