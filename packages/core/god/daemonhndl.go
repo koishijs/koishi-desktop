@@ -22,7 +22,8 @@ func buildHandle(i *do.Injector, daemon *Daemon) func(ws *websocket.Conn) {
 	return func(ws *websocket.Conn) {
 		var err error
 
-		l.Debugf("Client connected at %s", ws.RemoteAddr())
+		remoteAddr := ws.Request().RemoteAddr
+		l.Debugf("Client connected at %s", remoteAddr)
 
 		defer func(ws *websocket.Conn) {
 			closeErr := ws.Close()
@@ -48,7 +49,7 @@ func buildHandle(i *do.Injector, daemon *Daemon) func(ws *websocket.Conn) {
 			l.Debug("Send pong back")
 			return
 		case "stop":
-			l.Infof("Stopping god daemon as request of %s...", ws.RemoteAddr())
+			l.Infof("Stopping god daemon as request of %s...", remoteAddr)
 			err = net.JSON.Send(ws, proto.NewSuccessResult(nil))
 			if err != nil {
 				l.Error(fmt.Errorf("failed to send stop response: %w", err))
