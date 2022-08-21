@@ -91,6 +91,6 @@ func newImportAction(i *do.Injector) (cli.ActionFunc, error) {
 			err = errors.New(result.Data.(string))
 		}
 
-		return
+		return logger.Wait(respC)
 	}, nil
 }

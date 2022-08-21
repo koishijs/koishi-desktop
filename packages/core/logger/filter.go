@@ -1,6 +1,7 @@
 package logger
 
 import (
+	"errors"
 	"fmt"
 
 	"github.com/mitchellh/mapstructure"
@@ -62,4 +63,14 @@ func LogChannel(i *do.Injector, logC <-chan *rpl.Log) {
 			receiver.Writer() <- log
 		}
 	}()
+}
+
+// Wait for a nil to ensure communication ended.
+func Wait(ch <-chan *proto.Response) error {
+	resp := <- ch
+	if resp != nil {
+		return errors.New("got a non-nil response")
+	} else {
+		return nil
+	}
 }
