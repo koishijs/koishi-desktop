@@ -5,7 +5,6 @@ import (
 	"github.com/urfave/cli/v2"
 	"gopkg.ilharper.com/koi/core/koiconfig"
 	"gopkg.ilharper.com/koi/core/logger"
-	"gopkg.ilharper.com/koi/sdk/client"
 	"gopkg.ilharper.com/koi/sdk/manage"
 )
 
@@ -82,18 +81,10 @@ func newDaemonStopAction(i *do.Injector) (cli.ActionFunc, error) {
 		}
 
 		manager := manage.NewKoiManager(cfg.Computed.Exe, cfg.Computed.DirLock)
-		conn, err := manager.Available()
-		if err != nil {
-			l.Success("No running daemon.")
-			return nil
-		}
+		manager.Stop()
 
-		err = client.Stop(conn)
-		if err != nil {
-			return err
-		}
+		l.Success("All daemon stopped.")
 
-		l.Success("Daemon stopped.")
 		return nil
 	}, nil
 }
