@@ -142,8 +142,11 @@ func handleCommand(
 		ch <- response
 	}
 
-	// l.Close() must invoke synchronously before ch closed
-	l.Close()
+	// Close ResponseSender here.
+	// DO NOT call l.Close(), as it will close
+	// KoiFileTarget the same time, which is used by localL.
+	// Also, this must invoke synchronously before ch closed.
+	do.MustInvoke[*logger.ResponseSender](scopedI).Close()
 	ch <- nil
 
 	// Wait the final send finish
