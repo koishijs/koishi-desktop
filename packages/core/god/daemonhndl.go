@@ -48,6 +48,11 @@ func buildHandle(i *do.Injector, daemon *Daemon) func(ws *websocket.Conn) {
 			l.Debug("Send pong back")
 			return
 		case "stop":
+			l.Infof("Stopping god daemon as request of %s...", ws.RemoteAddr())
+			err = net.JSON.Send(ws, proto.NewSuccessResult(nil))
+			if err != nil {
+				l.Error(fmt.Errorf("failed to send stop response: %w", err))
+			}
 			err = do.MustInvoke[*http.Server](i).Shutdown(context.Background())
 			if err != nil {
 				l.Error(fmt.Errorf("failed to close http server: %w", err))
