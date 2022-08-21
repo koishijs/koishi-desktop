@@ -20,6 +20,8 @@ type KoiProc struct {
 	cmd *exec.Cmd
 
 	logTargets []rpl.Target
+
+	HookOutput func(output string)
 }
 
 func NewKoiProc(
@@ -70,6 +72,10 @@ func (koiProc *KoiProc) Run() error {
 			str := <-out
 			if str == nil {
 				break
+			}
+
+			if koiProc.HookOutput != nil {
+				koiProc.HookOutput(*str)
 			}
 
 			log := &rpl.Log{
