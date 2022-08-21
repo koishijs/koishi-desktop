@@ -25,7 +25,9 @@ github.com/stretchr/objx v0.4.0/go.mod h1:YvHI0jy2hoMjB+UWwv71VJQ9isScKT/TqJzVSS
 github.com/stretchr/testify v1.7.1/go.mod h1:6Fq8oRcR53rry900zMqJjRRixrwX3KX962/h/Wwjteg=
 github.com/stretchr/testify v1.8.0 h1:pSgiaMZlXftHpm5L7V1+rVB+AZJydKsMxsQBIJw4PKk=
 github.com/stretchr/testify v1.8.0/go.mod h1:yNjHg4UonilssWZ8iaSj1OCr/vHnekPRkoO+kdMU+MU=
+github.com/tklauser/go-sysconf v0.3.10 h1:IJ1AZGZRWbY8T5Vfk04D9WOA5WSejdflXxP03OUqALw=
 github.com/tklauser/go-sysconf v0.3.10/go.mod h1:C8XykCvCb+Gn0oNCWPIlcb0RuglQTYaQ2hGm7jmxEFk=
+github.com/tklauser/numcpus v0.4.0 h1:E53Dm1HjH1/R2/aoCtXtPgzmElmn51aOkhCFSuZq//o=
 github.com/tklauser/numcpus v0.4.0/go.mod h1:1+UI3pD8NW14VMwdgJNJ1ESk2UnwhAnz5hMwiKKqXCQ=
 github.com/yusufpapurcu/wmi v1.2.2 h1:KBNDSne4vP5mbSWnJbO+51IMOXJB67QiYCSBrubbPRg=
 github.com/yusufpapurcu/wmi v1.2.2/go.mod h1:SBZ9tNy3G9/m5Oi98Zks0QjeHVDvuK0qfxQmPyzfmi0=
@@ -45,8 +47,7 @@ gopkg.ilharper.com/x/colette v0.1.0 h1:7MCJA0n5g6+wriYSepnJpGUBMQAUfoipTGCp4lJWk
 gopkg.ilharper.com/x/colette v0.1.0/go.mod h1:maa00kijpiojqfY5IURkFkItBE/ajA3e9Gx/aDBBoqw=
 gopkg.ilharper.com/x/isatty v1.0.1 h1:tdoWUKjuvIA/D57JFtLo8JWCF+M1bPw6Wiv8DzcOD+s=
 gopkg.ilharper.com/x/isatty v1.0.1/go.mod h1:Kr3mbYEPfNsY0EtbYhbtfC99Jiex7YE6ulRzlfA/NJI=
-gopkg.ilharper.com/x/rpl v0.1.0 h1:3SO8QRz+GfiTNYgDyErA8kfbXe9Hh5Dk1XlmT2QOqqY=
-gopkg.ilharper.com/x/rpl v0.1.0/go.mod h1:2/B6DQY0yOsMPoP+UzrmoZbkHgu+rkR1KtveXiS8pwk=
+gopkg.ilharper.com/x/rpl v0.2.0 h1:X9w6qD4oYTP/C5gs6RUl8DopGqf1jpWZm7Qk3ecoMKQ=
 gopkg.ilharper.com/x/supcolor v1.0.0 h1:+JCeatjuGQnCH/faG34s2qBLKEdVWLSZQuFl5ryZTrk=
 gopkg.ilharper.com/x/supcolor v1.0.0/go.mod h1:+KcGL5qgyeGTWOGElVBmtWhPBkvMOklPlG64/tjrDGc=
 gopkg.in/check.v1 v0.0.0-20161208181325-20d25e280405/go.mod h1:Co6ibVJAznAaIkqp8huTwlJQCZ016jof/cbN4VW5Yz0=
