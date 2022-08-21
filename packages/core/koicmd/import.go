@@ -75,5 +75,7 @@ func koiCmdImport(i *do.Injector) *proto.Response {
 		return proto.NewErrorResult(koierr.NewErrInternalError(fmt.Errorf("failed to unzip %s: %w", path, err)))
 	}
 
-	return proto.NewErrorResult(koierr.ErrSuccess)
+	l.Successf("Done. Your new instance: %s\nAt: %s", name, targetPath)
+
+	return proto.NewSuccessResult(nil)
 }
