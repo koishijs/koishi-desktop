@@ -1,14 +1,8 @@
 package koicli
 
 import (
-	"errors"
 	"fmt"
-	"net"
-	"net/http"
-	"os"
-	"path/filepath"
 
-	"github.com/goccy/go-json"
 	"github.com/samber/do"
 	"github.com/urfave/cli/v2"
 	"gopkg.ilharper.com/koi/core/god"
@@ -69,91 +63,6 @@ func newRunDaemonAction(i *do.Injector) (cli.ActionFunc, error) {
 	return func(c *cli.Context) (err error) {
 		l.Debug("Trigger action: run daemon")
 
-		do.Provide(i, newDaemonUnlocker)
-
-		cfg, err := do.Invoke[*koiconfig.Config](i)
-		if err != nil {
-			return
-		}
-
-		// Construct TCP listener
-		listener, err := net.Listen("tcp4", "localhost:")
-		if err != nil {
-			return fmt.Errorf("failed to start daemon: %w", err)
-		}
-		addr := listener.Addr().String()
-		host, port, err := net.SplitHostPort(addr)
-		if err != nil {
-			return fmt.Errorf("failed to parse addr %s: %w", addr, err)
-		}
-
-		l.Debug("Writing daemon.lock...")
-		lock, err := os.OpenFile(
-			filepath.Join(cfg.Computed.DirLock, "daemon.lock"),
-			os.O_WRONLY|os.O_CREATE|os.O_EXCL, // Must create new file and write only
-			0444,                             // -r--r--r--
-		)
-
-		daemonLock := &god.DaemonLock{
-			Pid:  os.Getpid(),
-			Host: host,
-			Port: port,
-		}
-		daemonLockJson, err := json.Marshal(daemonLock)
-		if err != nil {
-			return fmt.Errorf("failed to generate daemon lock data: %w", err)
-		}
-		_, err = lock.Write(daemonLockJson)
-		if err != nil {
-			return fmt.Errorf("failed to write daemon lock data: %w", err)
-		}
-		err = lock.Close()
-		if err != nil {
-			return fmt.Errorf("failed to close daemon lock: %w", err)
-		}
-
-		// Construct Daemon
-		daemon := god.NewDaemon(i)
-
-		mux := http.NewServeMux()
-		mux.Handle(god.DaemonEndpoint, daemon.Handler)
-
-		server := &http.Server{Addr: addr, Handler: mux}
-		do.ProvideValue(i, server)
-		l.Debug("Serving daemon...")
-		err = server.Serve(listener)
-		if errors.Is(err, http.ErrServerClosed) {
-			err = nil
-		} else {
-			err = fmt.Errorf("daemon closed: %w", err)
-		}
-
-		return
+		return god.Daemon(i)
 	}, nil
-}
-
-type daemonUnlocker struct {
-	l      *logger.Logger
-	config *koiconfig.Config
-}
-
-func newDaemonUnlocker(i *do.Injector) (*daemonUnlocker, error) {
-	cfg, err := do.Invoke[*koiconfig.Config](i)
-	if err != nil {
-		return nil, err
-	}
-
-	return &daemonUnlocker{
-		l:      do.MustInvoke[*logger.Logger](i),
-		config: cfg,
-	}, nil
-}
-
-func (unlocker *daemonUnlocker) Shutdown() error {
-	err := os.Remove(filepath.Join(unlocker.config.Computed.DirLock, "daemon.lock"))
-	if err != nil {
-		unlocker.l.Errorf("failed to delete daemon lock: %w", err)
-	}
-	// Do not short other do.Shutdownable
-	return nil
 }
