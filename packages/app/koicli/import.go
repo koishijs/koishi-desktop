@@ -79,7 +79,7 @@ func newImportAction(i *do.Injector) (cli.ActionFunc, error) {
 			if response.Type == proto.TypeResponseResult {
 				err = mapstructure.Decode(response.Data, &result)
 				if err != nil {
-					err = fmt.Errorf("failed to parse result: %w, response is: %v", err, response)
+					err = fmt.Errorf("failed to parse result %#+v: %w", response, err)
 					return
 				}
 				break
