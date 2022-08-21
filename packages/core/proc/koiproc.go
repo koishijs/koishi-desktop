@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"os/exec"
 	"path/filepath"
+	"syscall"
 
 	"github.com/samber/do"
 	"gopkg.ilharper.com/koi/core/logger"
@@ -127,6 +128,17 @@ func (koiProc *KoiProc) Run() error {
 	return nil
 }
 
+// Stop sends [syscall.SIGTERM] to process.
+//
+// This just sends the signal and do not wait for anything.
+func (koiProc *KoiProc) Stop() error {
+	return koiProc.cmd.Process.Signal(syscall.SIGTERM)
+}
+
+// Kill sends [syscall.SIGKILL] to process.
+//
+// This just sends the signal and do not wait for anything.
+// If possible, use [KoiProc.Stop].
 func (koiProc *KoiProc) Kill() error {
 	return koiProc.cmd.Process.Kill()
 }
