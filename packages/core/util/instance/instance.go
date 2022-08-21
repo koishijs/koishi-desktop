@@ -1,4 +1,4 @@
-package koicmd
+package instance
 
 import (
 	"errors"
@@ -12,7 +12,7 @@ import (
 	"gopkg.ilharper.com/koi/core/koiconfig"
 )
 
-func isInstanceExists(i *do.Injector, name string) (bool, error) {
+func IsInstanceExists(i *do.Injector, name string) (bool, error) {
 	config := do.MustInvoke[*koiconfig.Config](i)
 	_, err := os.Stat(filepath.Join(config.Computed.DirInstance, name))
 	if err == nil {
@@ -24,12 +24,12 @@ func isInstanceExists(i *do.Injector, name string) (bool, error) {
 	return false, err
 }
 
-func generateInstanceName(i *do.Injector) (string, error) {
+func GenerateInstanceName(i *do.Injector) (string, error) {
 	var err error
 	exists := true
 	prefix := "default"
 	name := prefix
-	exists, err = isInstanceExists(i, name)
+	exists, err = IsInstanceExists(i, name)
 	if err != nil {
 		return "", err
 	}
@@ -38,7 +38,7 @@ func generateInstanceName(i *do.Injector) (string, error) {
 	}
 	for index := 1; index < math.MaxUint16; index++ {
 		name = prefix + strconv.Itoa(index)
-		exists, err = isInstanceExists(i, name)
+		exists, err = IsInstanceExists(i, name)
 		if err != nil {
 			return "", err
 		}
