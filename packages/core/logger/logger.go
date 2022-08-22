@@ -67,7 +67,8 @@ func (logger *Logger) Log(level int8, prefix byte, args ...any) {
 	}
 
 	output += fmt.Sprintf(
-		"[%c] %s92mlauncher%s %s",
+		"%s[%c] %s92mlauncher%s %s",
+		strutil.ResetCtrlStr,
 		prefix,
 		strutil.ColorStartCtr,
 		strutil.ResetCtrlStr,
