@@ -3,6 +3,7 @@ package god
 import (
 	"errors"
 	"fmt"
+	"io/fs"
 	"net"
 	"net/http"
 	"os"
@@ -10,6 +11,7 @@ import (
 
 	"github.com/goccy/go-json"
 	"github.com/samber/do"
+	"github.com/shirou/gopsutil/v3/process"
 	"gopkg.ilharper.com/koi/core/koiconfig"
 	"gopkg.ilharper.com/koi/core/logger"
 )
@@ -52,12 +54,31 @@ func Daemon(i *do.Injector) error {
 		return fmt.Errorf("failed to parse addr %s: %w", addr, err)
 	}
 
+	daemonLockPath := filepath.Join(cfg.Computed.DirLock, "daemon.lock")
+	_, err = os.Stat(daemonLockPath)
+	if err != nil && (!(errors.Is(err, fs.ErrNotExist))) {
+		return fmt.Errorf("failed to stat %s: %w", daemonLockPath, err)
+	}
+	if err == nil {
+		// daemon.lock exists
+		pid, aliveErr := checkDaemonAlive(daemonLockPath)
+		if aliveErr == nil {
+			return fmt.Errorf("god daemon running, PID=%d\nCannot start another god daemon when there's already one.\nIf that daemon crashes, use 'koi daemon' to fix it.\nIf you just want to restart daemon, use 'koi daemon restart'.", pid)
+		} else {
+			_ = os.Remove(daemonLockPath)
+		}
+	}
+
+	// daemon.lock does not exist. Writing
 	l.Debug("Writing daemon.lock...")
 	lock, err := os.OpenFile(
-		filepath.Join(cfg.Computed.DirLock, "daemon.lock"),
+		daemonLockPath,
 		os.O_WRONLY|os.O_CREATE|os.O_EXCL, // Must create new file and write only
 		0o444,                             // -r--r--r--
 	)
+	if err != nil {
+		return fmt.Errorf("failed to create %s: %w", daemonLockPath, err)
+	}
 
 	daemonLock := &DaemonLock{
 		Pid:  os.Getpid(),
@@ -94,4 +115,36 @@ func Daemon(i *do.Injector) error {
 	}
 
 	return nil
+}
+
+func checkDaemonAlive(lockPath string) (int32, error) {
+	var err error
+
+	lockFile, err := os.ReadFile(lockPath)
+	if err != nil {
+		return 0, fmt.Errorf("failed to read %s: %w", lockPath, err)
+	}
+
+	var lock DaemonLock
+	err = json.Unmarshal(lockFile, &lock)
+	if err != nil {
+		return 0, fmt.Errorf("failed to parse %s: %w", lockPath, err)
+	}
+
+	pid := int32(lock.Pid)
+	proc, err := process.NewProcess(pid)
+	if err != nil {
+		return 0, fmt.Errorf("failed to get process %d: %w", pid, err)
+	}
+
+	isRunning, err := proc.IsRunning()
+	if err != nil {
+		return 0, fmt.Errorf("failed to get process %d state: %w", pid, err)
+	}
+
+	if !isRunning {
+		return 0, fmt.Errorf("process %d is not running", pid)
+	}
+
+	return pid, nil
 }
