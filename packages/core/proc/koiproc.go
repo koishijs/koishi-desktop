@@ -33,7 +33,6 @@ func NewKoiProc(
 	cwd string,
 ) *KoiProc {
 	cmdPath := filepath.Join(path, command)
-	cmdArgs := append([]string{cmdPath}, args...)
 	env := environ(i, path)
 
 	return &KoiProc{
@@ -42,7 +41,7 @@ func NewKoiProc(
 
 		cmd: &exec.Cmd{
 			Path: cmdPath,
-			Args: cmdArgs,
+			Args: args,
 			Env:  *env,
 			Dir:  cwd,
 		},
