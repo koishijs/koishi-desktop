@@ -110,6 +110,7 @@ func (daemonProc *daemonProcess) startIntl(name string) error {
 	)
 	daemonProc.reg[index] = koiProc
 
+	koiProc.Register(do.MustInvoke[*logger.KoiFileTarget](daemonProc.i))
 	koiProc.HookOutput = func(msg string) {
 		go func() {
 			if strings.Contains(msg, " server listening at ") {
