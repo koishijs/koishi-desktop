@@ -1,10 +1,10 @@
 import { series } from 'gulp'
 import { boil } from './boil'
 import { compile } from './compile'
-import { generate } from './generate'
+import { generateAfter, generateBefore } from './generate'
 
 export * from './boil'
 export * from './compile'
 export * from './generate'
 
-export const build = series(generate, compile, boil)
+export const build = series(generateBefore, compile, boil, generateAfter)

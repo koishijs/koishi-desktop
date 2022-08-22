@@ -1,8 +1,16 @@
 import { parallel } from 'gulp'
 import * as fs from 'fs'
 import { dir } from '../../utils/path'
-import { koiConfig, koiManifest, koiVersionInfo } from '../../utils/config'
+import {
+  koiConfig,
+  koiConfigBefore,
+  koiManifest,
+  koiVersionInfo,
+} from '../../utils/config'
 import mkdirp from 'mkdirp'
+
+export const generateKoiConfigBefore = () =>
+  fs.promises.writeFile(dir('buildPortable', 'koi.yml'), koiConfigBefore)
 
 export const generateKoiConfig = () =>
   fs.promises.writeFile(dir('buildPortable', 'koi.yml'), koiConfig)
@@ -18,8 +26,10 @@ export const generateKoiManifest = async () => {
   )
 }
 
-export const generate = parallel(
-  generateKoiConfig,
+export const generateBefore = parallel(
+  generateKoiConfigBefore,
   generateKoiVersionInfo,
   generateKoiManifest
 )
+
+export const generateAfter = parallel(generateKoiConfig)

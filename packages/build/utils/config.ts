@@ -47,6 +47,12 @@ export const koiSemver = buildKoiSemver()
 
 //#region Templates
 
+export const koiConfigBefore = Handlebars.compile(
+  fs
+    .readFileSync(dir('templates', 'koi-config-before.yml.hbs'))
+    .toString('utf-8')
+)({})
+
 export const koiConfig = Handlebars.compile(
   fs.readFileSync(dir('templates', 'koi-config.yml.hbs')).toString('utf-8')
 )({ defaultInstance })
