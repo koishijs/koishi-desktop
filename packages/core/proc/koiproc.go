@@ -114,7 +114,7 @@ func (koiProc *KoiProc) Run() error {
 				if scnErr != nil {
 					l.Warn(fmt.Errorf("koiProc scanner err: %w", scnErr))
 				} else {
-					s := scn.Text() + "\n"
+					s := scn.Text()
 					out <- &s
 				}
 			}
