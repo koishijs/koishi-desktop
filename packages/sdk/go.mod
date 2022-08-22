@@ -4,6 +4,7 @@ go 1.19
 
 require (
 	github.com/goccy/go-json v0.9.10
+	github.com/mitchellh/mapstructure v1.5.0
 	github.com/shirou/gopsutil/v3 v3.22.7
 	golang.org/x/net v0.0.0-20220809012201-f428fae20770
 	gopkg.ilharper.com/koi/core v0.0.0-20220808194306-eaa5dd4d1389
@@ -13,7 +14,6 @@ require (
 require (
 	github.com/go-ole/go-ole v1.2.6 // indirect
 	github.com/lufia/plan9stats v0.0.0-20211012122336-39d0f177ccd0 // indirect
-	github.com/mitchellh/mapstructure v1.5.0 // indirect
 	github.com/power-devops/perfstat v0.0.0-20210106213030-5aafc221ea8c // indirect
 	github.com/samber/do v1.2.0 // indirect
 	github.com/tklauser/go-sysconf v0.3.10 // indirect

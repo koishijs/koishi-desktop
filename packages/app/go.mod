@@ -3,7 +3,6 @@ module gopkg.ilharper.com/koi/app
 go 1.19
 
 require (
-	github.com/goccy/go-json v0.9.10
 	github.com/goccy/go-yaml v1.9.5
 	github.com/mitchellh/mapstructure v1.5.0
 	github.com/samber/do v1.2.0
@@ -17,6 +16,7 @@ require (
 	github.com/cpuguy83/go-md2man/v2 v2.0.2 // indirect
 	github.com/fatih/color v1.10.0 // indirect
 	github.com/go-ole/go-ole v1.2.6 // indirect
+	github.com/goccy/go-json v0.9.10 // indirect
 	github.com/lufia/plan9stats v0.0.0-20211012122336-39d0f177ccd0 // indirect
 	github.com/mattn/go-colorable v0.1.8 // indirect
 	github.com/mattn/go-isatty v0.0.12 // indirect
