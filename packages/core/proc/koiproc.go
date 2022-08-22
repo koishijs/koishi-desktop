@@ -137,6 +137,9 @@ func (koiProc *KoiProc) Run() error {
 //
 // This just sends the signal and do not wait for anything.
 func (koiProc *KoiProc) Stop() error {
+	if koiProc.cmd.Process == nil {
+		return nil
+	}
 	return koiProc.cmd.Process.Signal(syscall.SIGTERM)
 }
 
@@ -145,5 +148,8 @@ func (koiProc *KoiProc) Stop() error {
 // This just sends the signal and do not wait for anything.
 // If possible, use [KoiProc.Stop].
 func (koiProc *KoiProc) Kill() error {
+	if koiProc.cmd.Process == nil {
+		return nil
+	}
 	return koiProc.cmd.Process.Kill()
 }
