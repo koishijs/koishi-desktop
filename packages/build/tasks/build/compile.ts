@@ -34,7 +34,7 @@ export const compileAppRelease = () =>
     dir('src')
   )
 
-export const compileApp = compileAppRelease
+export const compileApp = process.env.CI ? compileAppRelease : compileAppDebug
 
 export const compile =
   process.platform === 'win32'
