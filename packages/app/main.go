@@ -70,7 +70,7 @@ func main() {
 					l.Debugf("Received signal %s. Gracefully shutting down", sig)
 					err := i.Shutdown()
 					if err != nil {
-						l.Errorf("failed to gracefully shutdown: %w", err)
+						l.Errorf("failed to gracefully shutdown: %s", err)
 					}
 					l.Close()
 					wg.Wait()
@@ -83,7 +83,7 @@ func main() {
 	err := do.MustInvoke[*cli.App](i).Run(args)
 	shutdownErr := i.Shutdown()
 	if shutdownErr != nil {
-		l.Errorf("failed to gracefully shutdown: %w", err)
+		l.Errorf("failed to gracefully shutdown: %s", err)
 	}
 	l.Close()
 	wg.Wait()
