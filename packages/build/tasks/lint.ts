@@ -3,7 +3,7 @@ import { dir } from '../utils/path'
 import { exec } from '../utils/spawn'
 
 const buildLintArgs = (pkg: string, fix?: boolean) => {
-  const isGh = process.env.GITHUB_ACTION
+  const isGh = process.env.GITHUB_ACTIONS
   const args = ['run']
   if (isGh) args.push('--out-format=github-actions')
   else args.push('--out-format=colored-line-number')
