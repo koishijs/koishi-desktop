@@ -3,6 +3,7 @@ package client
 
 import (
 	"fmt"
+	"net"
 
 	"golang.org/x/net/websocket"
 	"gopkg.ilharper.com/koi/core/god"
@@ -17,8 +18,8 @@ type Options struct {
 // and returns a bare [websocket.Conn].
 func Connect(options *Options) (*websocket.Conn, error) {
 	return websocket.Dial(
-		fmt.Sprintf("ws://%s:%s%s", options.Host, options.Port, god.DaemonEndpoint),
+		fmt.Sprintf("ws://%s%s", net.JoinHostPort(options.Host, options.Port), god.DaemonEndpoint),
 		"",
-		fmt.Sprintf("http://%s:%s/", options.Host, options.Port),
+		fmt.Sprintf("http://%s/", net.JoinHostPort(options.Host, options.Port)),
 	)
 }
