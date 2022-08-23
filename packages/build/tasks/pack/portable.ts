@@ -1,6 +1,18 @@
-import { path7za } from '7zip-bin'
+import archiver from 'archiver'
+import { error, warn } from 'gulplog'
+import * as fs from 'node:fs'
 import { dir } from '../../utils/path'
-import { exec } from '../../utils/spawn'
 
-export const packPortable = () =>
-  exec(path7za, ['a', '../../dist/koi.7z', 'koi', '-mx9'], dir('buildPortable'))
+export const packPortable = async () => {
+  const archive = archiver('zip', { zlib: { level: 9 } })
+  archive.on('warning', warn)
+  archive.on('error', error)
+  archive.on('error', (x) => {
+    throw x
+  })
+
+  archive.pipe(fs.createWriteStream(dir('dist', 'portable.zip')))
+  archive.directory(dir('buildPortable'), false)
+
+  await archive.finalize()
+}
