@@ -9,6 +9,9 @@ linters:
     - exhaustivestruct
     - gochecknoglobals
     - goerr113
+    - wsl
+    - gocognit
+    - nestif
 
 linters-settings:
   revive:
