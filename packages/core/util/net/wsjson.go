@@ -1,3 +1,4 @@
+//nolint:wrapcheck
 package net
 
 import (
@@ -5,12 +6,13 @@ import (
 	"golang.org/x/net/websocket"
 )
 
-func jsonMarshal(v any) (msg []byte, payloadType byte, err error) {
-	msg, err = json.Marshal(v)
+func jsonMarshal(v any) ([]byte, byte, error) {
+	msg, err := json.Marshal(v)
+
 	return msg, 1 /* TextFrame */, err
 }
 
-func jsonUnmarshal(msg []byte, payloadType byte, v any) (err error) {
+func jsonUnmarshal(msg []byte, payloadType byte, v any) error {
 	return json.Unmarshal(msg, v)
 }
 

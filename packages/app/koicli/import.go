@@ -1,3 +1,4 @@
+//nolint:wrapcheck
 package koicli
 
 import (
@@ -46,18 +47,20 @@ func newImportCommand(i *do.Injector) (*cli.Command, error) {
 func newImportAction(i *do.Injector) (cli.ActionFunc, error) {
 	l := do.MustInvoke[*logger.Logger](i)
 
-	return func(c *cli.Context) (err error) {
+	return func(c *cli.Context) error {
+		var err error
+
 		l.Debug("Trigger action: import")
 
 		cfg, err := do.Invoke[*koiconfig.Config](i)
 		if err != nil {
-			return
+			return err
 		}
 
 		manager := manage.NewKoiManager(cfg.Computed.Exe, cfg.Computed.DirLock)
 		conn, err := manager.Ensure()
 		if err != nil {
-			return
+			return err
 		}
 
 		logC, respC, err := client.Import(
@@ -66,6 +69,9 @@ func newImportAction(i *do.Injector) (cli.ActionFunc, error) {
 			c.String("name"),
 			c.Bool("force"),
 		)
+		if err != nil {
+			return err
+		}
 
 		logger.LogChannel(i, logC)
 
@@ -73,22 +79,26 @@ func newImportAction(i *do.Injector) (cli.ActionFunc, error) {
 		for {
 			response := <-respC
 			if response == nil {
-				err = fmt.Errorf("failed to get result, response is nil")
-				return
+				return fmt.Errorf("failed to get result, response is nil")
 			}
 			if response.Type == proto.TypeResponseResult {
 				err = mapstructure.Decode(response.Data, &result)
 				if err != nil {
-					err = fmt.Errorf("failed to parse result %#+v: %w", response, err)
-					return
+					return fmt.Errorf("failed to parse result %#+v: %w", response, err)
 				}
+
 				break
 			}
 			// Ignore other type of responses
 		}
 
 		if result.Code != 0 {
-			err = errors.New(result.Data.(string))
+			s, ok := result.Data.(string)
+			if !ok {
+				return fmt.Errorf("result data %#+v is not string", result.Data)
+			}
+
+			return errors.New(s)
 		}
 
 		return logger.Wait(respC)

@@ -21,5 +21,6 @@ func newDaemonService(i *do.Injector) *daemonService {
 
 	service := &daemonService{}
 	service.Handler = buildHandle(i, service)
+
 	return service
 }

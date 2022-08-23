@@ -102,6 +102,7 @@ func (adapter *colorAdapter) adaptColor(s string) string {
 			return code
 		}
 		c256 := colette.RgbTo256(byte(r), byte(g), byte(b))
+
 		return fmt.Sprintf("\033[38;5;%dm", c256)
 	})
 
@@ -131,6 +132,7 @@ func (adapter *colorAdapter) adaptColor(s string) string {
 		} else {
 			c16 += 82
 		}
+
 		return fmt.Sprintf("\033[%dm", c16)
 	})
 }

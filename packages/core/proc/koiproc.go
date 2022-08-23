@@ -128,7 +128,7 @@ func (koiProc *KoiProc) Run() error {
 		// Here err is likely to be an ExitError,
 		// Which is normal (killed by god daemon).
 		// No need to wrap this error.
-		return err
+		return err //nolint:wrapcheck
 	}
 
 	return nil
@@ -141,7 +141,13 @@ func (koiProc *KoiProc) Stop() error {
 	if koiProc.cmd.Process == nil {
 		return nil
 	}
-	return koiProc.cmd.Process.Signal(syscall.SIGTERM)
+
+	err := koiProc.cmd.Process.Signal(syscall.SIGTERM)
+	if err != nil {
+		return fmt.Errorf("failed to send SIGTERM to process: %w", err)
+	}
+
+	return nil
 }
 
 // Kill sends [syscall.SIGKILL] to process.
@@ -152,5 +158,11 @@ func (koiProc *KoiProc) Kill() error {
 	if koiProc.cmd.Process == nil {
 		return nil
 	}
-	return koiProc.cmd.Process.Kill()
+
+	err := koiProc.cmd.Process.Kill()
+	if err != nil {
+		return fmt.Errorf("failed to send SIGKILL to process: %w", err)
+	}
+
+	return nil
 }

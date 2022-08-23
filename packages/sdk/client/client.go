@@ -1,3 +1,4 @@
+//nolint:wrapcheck
 package client
 
 import (
@@ -14,7 +15,7 @@ type Options struct {
 
 // Connect tries to connect to Koi god daemon
 // and returns a bare [websocket.Conn].
-func Connect(options *Options) (client *websocket.Conn, err error) {
+func Connect(options *Options) (*websocket.Conn, error) {
 	return websocket.Dial(
 		fmt.Sprintf("ws://%s:%s%s", options.Host, options.Port, god.DaemonEndpoint),
 		"",

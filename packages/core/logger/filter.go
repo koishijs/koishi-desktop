@@ -24,6 +24,7 @@ func FilterLog(resp <-chan *proto.Response) (<-chan *rpl.Log, <-chan *proto.Resp
 			if r == nil {
 				log <- nil
 				data <- nil
+
 				break
 			}
 
@@ -67,8 +68,7 @@ func LogChannel(i *do.Injector, logC <-chan *rpl.Log) {
 
 // Wait for a nil to ensure communication ended.
 func Wait(ch <-chan *proto.Response) error {
-	resp := <-ch
-	if resp != nil {
+	if <-ch != nil {
 		return errors.New("got a non-nil response")
 	}
 

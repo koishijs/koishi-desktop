@@ -29,6 +29,7 @@ func removeEnvIntl(env *[]string, key string) {
 			if strings.HasPrefix(e, key+"=") {
 				*env = append((*env)[:i], (*env)[i+1:]...)
 				notFound = false
+
 				break
 			}
 		}

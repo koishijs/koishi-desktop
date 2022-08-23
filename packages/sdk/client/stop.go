@@ -14,20 +14,20 @@ func Stop(conn *Options) error {
 
 	ws, err := Connect(conn)
 	if err != nil {
-		return err
+		return fmt.Errorf("failed to stop daemon: %w", err)
 	}
 
 	request := proto.NewRequest("stop", nil)
 
 	err = net.JSON.Send(ws, request)
 	if err != nil {
-		return err
+		return fmt.Errorf("failed to stop daemon: %w", err)
 	}
 
 	var resp proto.Response
 	err = net.JSON.Receive(ws, &resp)
 	if err != nil {
-		return err
+		return fmt.Errorf("failed to stop daemon: %w", err)
 	}
 
 	if resp.Type != proto.TypeResponseResult {
@@ -39,7 +39,12 @@ func Stop(conn *Options) error {
 		return fmt.Errorf("failed to stop daemon: failed to parse result %#+v: %w", resp.Data, err)
 	}
 	if result.Code != 0 {
-		return errors.New(result.Data.(string))
+		s, ok := result.Data.(string)
+		if !ok {
+			return fmt.Errorf("result data %#+v is not string", result.Data)
+		}
+
+		return errors.New(s)
 	}
 
 	return nil

@@ -1,6 +1,8 @@
 package koicli
 
 import (
+	"fmt"
+
 	"github.com/samber/do"
 	"github.com/urfave/cli/v2"
 	"gopkg.ilharper.com/koi/core/koiconfig"
@@ -47,23 +49,25 @@ func newDaemonCommand(i *do.Injector) (*cli.Command, error) {
 func newDaemonPingAction(i *do.Injector) (cli.ActionFunc, error) {
 	l := do.MustInvoke[*logger.Logger](i)
 
-	return func(c *cli.Context) (err error) {
+	return func(c *cli.Context) error {
+		var err error
+
 		l.Debug("Trigger action: daemon ping")
 
 		cfg, err := do.Invoke[*koiconfig.Config](i)
 		if err != nil {
-			return
+			return err
 		}
 
 		manager := manage.NewKoiManager(cfg.Computed.Exe, cfg.Computed.DirLock)
 		conn, err := manager.Available()
 		if err != nil {
-			return
+			return fmt.Errorf("failed to get daemon status: %w", err)
 		}
 
 		l.Successf("PONG at:\n%#+v", conn)
 
-		return
+		return nil
 	}, nil
 }
 

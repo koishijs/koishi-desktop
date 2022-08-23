@@ -1,3 +1,4 @@
+//nolint:wrapcheck
 package instance
 
 import (
@@ -21,12 +22,14 @@ func IsInstanceExists(i *do.Injector, name string) (bool, error) {
 	if errors.Is(err, fs.ErrNotExist) {
 		return false, nil
 	}
+
 	return false, err
 }
 
 func GenerateInstanceName(i *do.Injector) (string, error) {
 	var err error
-	exists := true
+
+	var exists bool
 	prefix := "default"
 	name := prefix
 	exists, err = IsInstanceExists(i, name)

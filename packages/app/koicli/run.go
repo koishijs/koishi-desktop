@@ -1,3 +1,4 @@
+//nolint:wrapcheck
 package koicli
 
 import (
@@ -38,21 +39,25 @@ func newRunCommand(i *do.Injector) (*cli.Command, error) {
 func newRunAction(i *do.Injector) (cli.ActionFunc, error) {
 	l := do.MustInvoke[*logger.Logger](i)
 
-	return func(c *cli.Context) (err error) {
+	return func(c *cli.Context) error {
+		var err error
+
 		l.Debug("Trigger action: run")
 
 		cfg, err := do.Invoke[*koiconfig.Config](i)
 		if err != nil {
-			return
+			return err
 		}
 
 		switch cfg.Data.Mode {
 		case "cli":
 			err = do.MustInvokeNamed[cli.ActionFunc](i, serviceActionRunDaemon)(c)
-			return
+
+			return err
 		default:
 			err = fmt.Errorf("unknown mode: %s", cfg.Data.Mode)
-			return
+
+			return err
 		}
 	}, nil
 }
@@ -60,7 +65,7 @@ func newRunAction(i *do.Injector) (cli.ActionFunc, error) {
 func newRunDaemonAction(i *do.Injector) (cli.ActionFunc, error) {
 	l := do.MustInvoke[*logger.Logger](i)
 
-	return func(c *cli.Context) (err error) {
+	return func(c *cli.Context) error {
 		l.Debug("Trigger action: run daemon")
 
 		return god.Daemon(i)

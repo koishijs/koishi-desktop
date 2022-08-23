@@ -19,12 +19,11 @@ type KoiManager struct {
 	lock string
 }
 
-func NewKoiManager(exe string, dirLock string) (manager *KoiManager) {
-	manager = &KoiManager{
+func NewKoiManager(exe string, dirLock string) *KoiManager {
+	return &KoiManager{
 		exe:  exe,
 		lock: filepath.Join(dirLock, "daemon.lock"),
 	}
-	return
 }
 
 // Ensure god daemon available and can be used.
@@ -32,20 +31,21 @@ func NewKoiManager(exe string, dirLock string) (manager *KoiManager) {
 // Ensure handles all situations
 // and you should generally use this method
 // to get [client.Options] of god daemon.
-func (manager *KoiManager) Ensure() (conn *client.Options, err error) {
+func (manager *KoiManager) Ensure() (*client.Options, error) {
+	var err error
+
 	conn, availErr := manager.Available()
 	if availErr == nil {
-		return
+		return conn, nil
 	}
 
 	manager.Stop()
 	err = manager.Start()
 	if err != nil {
-		return
+		return nil, err
 	}
 
-	conn, err = manager.Available()
-	return
+	return manager.Available()
 }
 
 // Available detects whether god daemon can be used.
@@ -54,18 +54,20 @@ func (manager *KoiManager) Ensure() (conn *client.Options, err error) {
 // If you want get [client.Options] of
 // a available god daemon,
 // use Ensure instead.
-func (manager *KoiManager) Available() (conn *client.Options, err error) {
-	conn, err = manager.Conn()
+func (manager *KoiManager) Available() (*client.Options, error) {
+	var err error
+
+	conn, err := manager.Conn()
 	if err != nil {
-		return
+		return nil, err
 	}
 
 	err = client.Ping(conn)
 	if err != nil {
-		return
+		return nil, fmt.Errorf("failed to ping god daemon: %w", err)
 	}
 
-	return
+	return conn, nil
 }
 
 // Start god daemon.
@@ -77,12 +79,12 @@ func (manager *KoiManager) Start() error {
 	} else {
 		cmd = exec.Command("sh", "-c", fmt.Sprintf("%s run daemon &", manager.exe)) //nolint:gosec
 	}
-	err := cmd.Run()
-	if err != nil {
-		return err
+	if err := cmd.Run(); err != nil {
+		return fmt.Errorf("failed to run daemon bootstrap shell: %w", err)
 	}
 
 	<-time.After(4 * time.Second)
+
 	return nil
 }
 
@@ -111,11 +113,11 @@ func (manager *KoiManager) Stop() {
 	}
 	if done {
 		manager.tryDeleteLock()
+
 		return
 	}
 
 	_ = manager.Kill()
-	return
 }
 
 // Kill the running daemon if exists.
@@ -170,6 +172,7 @@ func (manager *KoiManager) Lock() (*god.DaemonLock, error) {
 
 func (manager *KoiManager) tryKillProcesses() uint16 {
 	killed, _ := manager.killProcesses()
+
 	return killed
 }
 
@@ -191,11 +194,13 @@ func (manager *KoiManager) killProcesses() (uint16, error) {
 	return killed, nil
 }
 
-func (manager *KoiManager) processes() (pss []*process.Process, err error) {
+func (manager *KoiManager) processes() ([]*process.Process, error) {
 	processes, err := process.Processes()
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to get processes running: %w", err)
 	}
+
+	var pss []*process.Process
 
 	selfPid := int32(os.Getpid())
 	for _, p := range processes {
@@ -212,5 +217,5 @@ func (manager *KoiManager) processes() (pss []*process.Process, err error) {
 		pss = append(pss, p)
 	}
 
-	return
+	return pss, nil
 }

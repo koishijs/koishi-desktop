@@ -116,10 +116,8 @@ func Daemon(i *do.Injector) error {
 	do.ProvideValue(i, server)
 	l.Debug("Serving daemon...")
 	err = server.Serve(listener)
-	if errors.Is(err, http.ErrServerClosed) {
-		err = nil
-	} else {
-		err = fmt.Errorf("daemon closed: %w", err)
+	if !(errors.Is(err, http.ErrServerClosed)) {
+		return fmt.Errorf("daemon closed: %w", err)
 	}
 
 	return nil

@@ -24,6 +24,7 @@ var defaultConfigData = koiconfig.ConfigData{
 
 var redirectPath = (func() *yaml.Path {
 	r, _ := yaml.PathString("$.redirect")
+
 	return r
 })()
 
@@ -43,11 +44,14 @@ func BuildLoadConfig(path string) func(i *do.Injector) (*koiconfig.Config, error
 				DirExe: dirExe,
 			},
 		}
+
 		return config, loadConfigIntl(i, config, path, 1)
 	}
 }
 
-func loadConfigIntl(i *do.Injector, c *koiconfig.Config, path string, recur uint8) (err error) {
+func loadConfigIntl(i *do.Injector, c *koiconfig.Config, path string, recur uint8) error {
+	var err error
+
 	l := do.MustInvoke[*logger.Logger](i)
 
 	if recur >= 64 {
@@ -74,6 +78,7 @@ func loadConfigIntl(i *do.Injector, c *koiconfig.Config, path string, recur uint
 	err = redirectPath.Read(strings.NewReader(string(file)), &redirect)
 	if err == nil {
 		l.Debugf("'redirect' field detected: %s", redirect)
+
 		return loadConfigIntl(i, c, filepath.Join(c.Computed.DirConfig, redirect), recur+1)
 	}
 
@@ -90,10 +95,12 @@ func loadConfigIntl(i *do.Injector, c *koiconfig.Config, path string, recur uint
 
 	l.Debug("Config parsed successfully.")
 
-	return
+	return nil
 }
 
-func postConfig(c *koiconfig.Config) (err error) {
+func postConfig(c *koiconfig.Config) error {
+	var err error
+
 	c.Computed.DirData, err = joinAndCreate(c.Computed.DirConfig, "data")
 	if err != nil {
 		return fmt.Errorf("failed to process dir data: %w", err)
@@ -127,19 +134,22 @@ func postConfig(c *koiconfig.Config) (err error) {
 		return fmt.Errorf("failed to process dir data/instances: %w", err)
 	}
 
-	return
+	return nil
 }
 
-func joinAndCreate(base, path string) (joinedPath string, err error) {
-	joinedPath = filepath.Join(base, path)
+func joinAndCreate(base, path string) (string, error) {
+	var err error
+
+	joinedPath := filepath.Join(base, path)
 	err = os.MkdirAll(joinedPath, fs.ModePerm) // -rwxrwxrwx
 	if err != nil {
-		return "", err
+		return "", fmt.Errorf("failed to create data folder %s: %w", path, err)
 	}
 	// Set perm for directory that already exists
 	err = os.Chmod(joinedPath, fs.ModePerm) // -rwxrwxrwx
 	if err != nil {
-		return "", err
+		return "", fmt.Errorf("failed to chmod data folder %s: %w", path, err)
 	}
+
 	return joinedPath, nil
 }

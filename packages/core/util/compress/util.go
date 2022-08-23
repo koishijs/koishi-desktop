@@ -8,8 +8,8 @@ import (
 
 // https://snyk.io/research/zip-slip-vulnerability
 // https://github.com/securego/gosec/issues/324#issuecomment-935927967
-func sanitizeArchivePath(dest string, filename string) (v string, err error) {
-	v = filepath.Join(dest, filename)
+func sanitizeArchivePath(dest string, filename string) (string, error) {
+	v := filepath.Join(dest, filename)
 	if strings.HasPrefix(v, filepath.Clean(dest)) {
 		return v, nil
 	}

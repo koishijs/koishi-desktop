@@ -46,6 +46,7 @@ func environ(i *do.Injector, path string) *[]string {
 				pathEnv = e[5:]
 				env = append(env[:i], env[i+1:]...)
 				notFound = false
+
 				break
 			}
 		}

@@ -59,10 +59,12 @@ func (daemonProc *daemonProcess) init() error {
 		exists, existsErr := instance.IsInstanceExists(daemonProc.i, name)
 		if existsErr != nil {
 			l.Warnf("Failed to check instance %s: %s", name, existsErr.Error())
+
 			continue
 		}
 		if !exists {
 			l.Warnf("Instance %s doesn't exist. Skipped.", name)
+
 			continue
 		}
 
@@ -161,7 +163,7 @@ func (daemonProc *daemonProcess) Stop(name string) error {
 
 // Must ensure lock before calling this method.
 func (daemonProc *daemonProcess) stopIntl(name string) error {
-	return daemonProc.reg[daemonProc.nameReg[name]].Stop()
+	return daemonProc.reg[daemonProc.nameReg[name]].Stop() //nolint:wrapcheck
 }
 
 func (daemonProc *daemonProcess) Shutdown() error {
@@ -195,5 +197,6 @@ func (daemonProc *daemonProcess) getIndex(name string) uint8 {
 		index++
 	}
 	daemonProc.nameReg[name] = index
+
 	return index
 }
