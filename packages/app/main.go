@@ -80,8 +80,7 @@ func main() {
 	}()
 
 	err := do.MustInvoke[*cli.App](i).Run(args)
-	shutdownErr := i.Shutdown()
-	if shutdownErr != nil {
+	if shutdownErr := i.Shutdown(); shutdownErr != nil {
 		l.Errorf("failed to gracefully shutdown: %s", err)
 	}
 	l.Close()

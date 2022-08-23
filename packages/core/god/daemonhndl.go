@@ -154,8 +154,7 @@ func handleCommand(
 	}()
 
 	// Invoke command
-	response := kCmd(scopedI)
-	if response != nil {
+	if response := kCmd(scopedI); response != nil {
 		ch <- response
 	}
 
