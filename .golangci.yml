@@ -12,6 +12,7 @@ linters:
     - wsl
     - gocognit
     - nestif
+    - nosnakecase
 
 linters-settings:
   revive:
