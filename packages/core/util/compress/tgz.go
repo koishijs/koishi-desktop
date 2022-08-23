@@ -3,6 +3,7 @@ package compress
 import (
 	"archive/tar"
 	"compress/gzip"
+	"errors"
 	"fmt"
 	"io"
 	"os"
@@ -41,7 +42,7 @@ func ExtractTgz(src io.Reader, dest string, strip bool) error {
 
 	for {
 		f, err := tReader.Next()
-		if err == io.EOF {
+		if errors.Is(err, io.EOF) {
 			break
 		}
 
