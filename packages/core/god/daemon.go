@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"time"
 
 	"github.com/goccy/go-json"
 	"github.com/samber/do"
@@ -104,7 +105,13 @@ func Daemon(i *do.Injector) error {
 	mux := http.NewServeMux()
 	mux.Handle(DaemonEndpoint, service.Handler)
 
-	server := &http.Server{Addr: addr, Handler: mux}
+	server := &http.Server{
+		Addr:    addr,
+		Handler: mux,
+
+		ReadTimeout:  3 * time.Second,
+		WriteTimeout: 3 * time.Second,
+	}
 	do.ProvideValue(i, server)
 	l.Debug("Serving daemon...")
 	err = server.Serve(listener)
