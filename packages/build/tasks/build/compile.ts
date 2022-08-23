@@ -15,7 +15,7 @@ export const compileAppDebug = () =>
       dir('buildPortable', process.platform === 'win32' ? 'koi.exe' : 'koi'),
       '-trimpath',
       '-ldflags',
-      `-X gopkg.ilharper.com/koi/app/util.AppVersion=${koiVersion}`,
+      `-X gopkg.ilharper.com/koi/app/util.AppVersion=${koiVersion.slice(1)}`,
     ],
     dir('src')
   )
@@ -29,7 +29,9 @@ export const compileAppRelease = () =>
       dir('buildPortable', process.platform === 'win32' ? 'koi.exe' : 'koi'),
       '-trimpath',
       '-ldflags',
-      `-w -s -X gopkg.ilharper.com/koi/app/util.AppVersion=${koiVersion}`,
+      `-w -s -X gopkg.ilharper.com/koi/app/util.AppVersion=${koiVersion.slice(
+        1
+      )}`,
     ],
     dir('src')
   )
