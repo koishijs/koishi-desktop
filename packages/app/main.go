@@ -53,7 +53,6 @@ func main() {
 		syscall.SIGTERM, // "the normal way to politely ask a program to terminate"
 		syscall.SIGINT,  // Ctrl-C
 		syscall.SIGQUIT, // Ctrl-\
-		syscall.SIGKILL, // May not be caught
 		syscall.SIGHUP,  // Terminal disconnected. SIGHUP also needs gracefully terminating
 	)
 	go func() {
