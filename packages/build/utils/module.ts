@@ -46,5 +46,5 @@ export async function tryEachModule(
     }
   }
 
-  if (errors) throw errors
+  if (errors.length) throw errors
 }
