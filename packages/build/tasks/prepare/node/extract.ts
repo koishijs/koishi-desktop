@@ -72,7 +72,7 @@ export const prepareNodeExtractLinux = async () => {
   const cachedFile = dir('buildCache', destFileLinux)
 
   info('Checking destination cache.')
-  if (await exists(nodeFolder)) return
+  if (await exists(dir('buildPortableData', 'node/bin/node'))) return
 
   if (!(await exists(cachedFile))) {
     throw Exceptions.fileNotFound(cachedFile)
