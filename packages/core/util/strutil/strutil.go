@@ -16,5 +16,6 @@ func Trim(s string) string {
 	if lenS >= 4 && s[lenS-4:] == ResetCtrlStr {
 		return Trim(s[:lenS-4])
 	}
+
 	return s
 }

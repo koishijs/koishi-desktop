@@ -67,10 +67,10 @@ func LogChannel(i *do.Injector, logC <-chan *rpl.Log) {
 
 // Wait for a nil to ensure communication ended.
 func Wait(ch <-chan *proto.Response) error {
-	resp := <- ch
+	resp := <-ch
 	if resp != nil {
 		return errors.New("got a non-nil response")
-	} else {
-		return nil
 	}
+
+	return nil
 }

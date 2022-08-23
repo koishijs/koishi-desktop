@@ -7,10 +7,10 @@ import (
 )
 
 type Task struct {
-	// Id of the Task.
+	// ID of the Task.
 	//
-	// Id range: 1-256
-	Id uint8
+	// ID range: 1-256
+	ID uint8
 }
 
 // taskRegistry is the task registry
@@ -33,7 +33,7 @@ func (registry *taskRegistry) Acquire(i *do.Injector) {
 	registry.mutex.Lock()
 	defer registry.mutex.Unlock()
 
-	// Acquire Task Id.
+	// Acquire Task ID.
 	id := registry.next + 1
 	for {
 		// index = id - 1. Index range: 0-255
@@ -42,7 +42,7 @@ func (registry *taskRegistry) Acquire(i *do.Injector) {
 		}
 		id++
 	}
-	do.ProvideValue(i, &Task{Id: id})
+	do.ProvideValue(i, &Task{ID: id})
 	registry.next++
 }
 
@@ -53,5 +53,5 @@ func (registry *taskRegistry) Release(i *do.Injector) {
 
 	task := do.MustInvoke[*Task](i)
 	// index = id - 1. Index range: 0-255
-	registry.reg[task.Id-1] = nil
+	registry.reg[task.ID-1] = nil
 }

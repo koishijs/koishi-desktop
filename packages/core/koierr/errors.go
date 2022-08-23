@@ -15,5 +15,7 @@ var (
 	ErrInternalError  = NewErrInternalError(nil)
 	ErrNotImplemented = NewErrNotImplemented(nil)
 
-	NewErrInstanceExists = func(name string) *KoiError { return NewKoiError(1100, fmt.Sprintf("instance %s already exists", name), nil) }
+	NewErrInstanceExists = func(name string) *KoiError {
+		return NewKoiError(1100, fmt.Sprintf("instance %s already exists", name), nil)
+	}
 )

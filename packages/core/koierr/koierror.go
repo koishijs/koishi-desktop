@@ -13,9 +13,9 @@ func NewKoiError(code uint16, msg string, err error) *KoiError {
 func (e *KoiError) Error() string {
 	if e.Err != nil {
 		return "koi: " + e.Msg + ": " + e.Err.Error()
-	} else {
-		return "koi: " + e.Msg
 	}
+
+	return "koi: " + e.Msg
 }
 
 func (e *KoiError) Unwrap() error {

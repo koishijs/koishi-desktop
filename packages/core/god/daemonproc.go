@@ -36,7 +36,7 @@ type daemonProcess struct {
 
 func newDaemonProcess(i *do.Injector) (*daemonProcess, error) {
 	return &daemonProcess{
-		i: i,
+		i:       i,
 		nameReg: make(map[string]uint8),
 	}, nil
 }
@@ -114,8 +114,8 @@ func (daemonProc *daemonProcess) startIntl(name string) error {
 	koiProc.HookOutput = func(msg string) {
 		go func() {
 			if strings.Contains(msg, " server listening at ") {
-				s := msg[strings.Index(msg, "http"):]
-				s = s[:strings.Index(s, strutil.ColorStartCtr)]
+				s := msg[strings.Index(msg, "http"):]           //nolint:gocritic
+				s = s[:strings.Index(s, strutil.ColorStartCtr)] //nolint:gocritic
 				l.Debugf("Parsed %s. Try opening browser.", s)
 				err := browser.OpenURL(s)
 				if err != nil {
