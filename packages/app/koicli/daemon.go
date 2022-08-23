@@ -61,7 +61,7 @@ func newDaemonPingAction(i *do.Injector) (cli.ActionFunc, error) {
 			return
 		}
 
-		l.Success("PONG at:\n%#+v", conn)
+		l.Successf("PONG at:\n%#+v", conn)
 
 		return
 	}, nil
