@@ -109,8 +109,9 @@ func Daemon(i *do.Injector) error {
 		Addr:    addr,
 		Handler: mux,
 
-		ReadTimeout:  3 * time.Second,
-		WriteTimeout: 3 * time.Second,
+		ReadTimeout:       3 * time.Second,
+		ReadHeaderTimeout: 3 * time.Second,
+		WriteTimeout:      3 * time.Second,
 	}
 	do.ProvideValue(i, server)
 	l.Debug("Serving daemon...")
