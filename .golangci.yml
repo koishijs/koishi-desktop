@@ -13,6 +13,7 @@ linters:
     - gocognit
     - nestif
     - nosnakecase
+    - exhaustruct
 
 linters-settings:
   revive:
