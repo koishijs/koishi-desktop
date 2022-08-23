@@ -81,7 +81,7 @@ func ExtractTgz(src io.Reader, dest string, strip bool) error {
 			if err != nil {
 				return fmt.Errorf("failed to create %s: %w", name, err)
 			}
-			_, err = io.Copy(file, tReader)
+			_, err = io.Copy(file, tReader) //nolint:gosec
 			if err != nil {
 				return fmt.Errorf("failed to write %s: %w", name, err)
 			}

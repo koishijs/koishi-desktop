@@ -69,7 +69,7 @@ func extractZipFileIntl(dest string, f *zip.File) error {
 			_ = reader.Close()
 		}()
 
-		_, err = io.Copy(file, reader)
+		_, err = io.Copy(file, reader) //nolint:gosec
 		if err != nil {
 			return err
 		}
