@@ -1,10 +1,18 @@
 package compress
 
-import "strings"
+import (
+	"fmt"
+	"path/filepath"
+	"strings"
+)
 
-func validRelPath(p string) bool {
-	if p == "" || strings.Contains(p, `\`) || strings.HasPrefix(p, "/") || strings.Contains(p, "../") {
-		return false
+// https://snyk.io/research/zip-slip-vulnerability
+// https://github.com/securego/gosec/issues/324#issuecomment-935927967
+func sanitizeArchivePath(dest string, filename string) (v string, err error) {
+	v = filepath.Join(dest, filename)
+	if strings.HasPrefix(v, filepath.Clean(dest)) {
+		return v, nil
 	}
-	return true
+
+	return "", fmt.Errorf("%s: %s", "content filepath is tainted", filename)
 }

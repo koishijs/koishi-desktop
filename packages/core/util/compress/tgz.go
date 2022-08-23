@@ -49,10 +49,6 @@ func ExtractTgz(src io.Reader, dest string, strip bool) error {
 			return fmt.Errorf("tar reading error: %w", err)
 		}
 
-		if !validRelPath(f.Name) {
-			return fmt.Errorf("zipslip file detected: %s", f.Name)
-		}
-
 		if f.Typeflag != tar.TypeDir {
 			rel := f.Name
 			if rel == "pax_global_header" {
@@ -71,7 +67,10 @@ func ExtractTgz(src io.Reader, dest string, strip bool) error {
 				}
 			}
 
-			name := filepath.Join(dest, rel)
+			name, err := sanitizeArchivePath(dest, rel)
+			if err != nil {
+				return err
+			}
 			dir := filepath.Dir(name)
 			err = os.MkdirAll(dir, os.ModePerm)
 			if err != nil {
