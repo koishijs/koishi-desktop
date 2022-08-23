@@ -47,7 +47,7 @@ func main() {
 		args = append(args, defaultCommand)
 	}
 
-	c := make(chan os.Signal)
+	c := make(chan os.Signal, 1)
 	signal.Notify(
 		c,
 		syscall.SIGTERM, // "the normal way to politely ask a program to terminate"
