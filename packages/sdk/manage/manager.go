@@ -200,7 +200,7 @@ func (manager *KoiManager) processes() ([]*process.Process, error) {
 		return nil, fmt.Errorf("failed to get processes running: %w", err)
 	}
 
-	var pss []*process.Process
+	pss := make([]*process.Process, 0, len(processes))
 
 	selfPid := int32(os.Getpid())
 	for _, p := range processes {
