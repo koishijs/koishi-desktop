@@ -20,7 +20,7 @@ const buildKoiVersion = () => {
   if (overrideKoiVersion) return overrideKoiVersion
 
   try {
-    return spawnSyncOutput('git', ['describe', '--tags']).trim()
+    return spawnSyncOutput('git', ['describe', '--tags', '--dirty']).trim()
   } catch (error) {
     return '0.0.1'
   }
