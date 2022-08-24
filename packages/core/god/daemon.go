@@ -24,6 +24,27 @@ import (
 func Daemon(i *do.Injector) error {
 	var err error
 
+	cfg, err := do.Invoke[*koiconfig.Config](i)
+	if err != nil {
+		return err
+	}
+
+	// Daemon mutex
+	daemonLockPath := filepath.Join(cfg.Computed.DirLock, "daemon.lock")
+	_, err = os.Stat(daemonLockPath)
+	if err != nil && (!(errors.Is(err, fs.ErrNotExist))) {
+		return fmt.Errorf("failed to stat %s: %w", daemonLockPath, err)
+	}
+	if err == nil {
+		// daemon.lock exists
+		pid, aliveErr := checkDaemonAlive(daemonLockPath)
+		if aliveErr == nil {
+			return fmt.Errorf("god daemon running, PID=%d\nCannot start another god daemon when there's already one.\nIf that daemon crashes, use 'koi daemon' to fix it.\nIf you just want to restart daemon, use 'koi daemon restart'", pid)
+		}
+
+		_ = os.Remove(daemonLockPath)
+	}
+
 	// Register daemonProcess synchronously,
 	do.Provide(i, newDaemonProcess)
 	// And start it in a new goroutine as early as possible.
@@ -39,11 +60,6 @@ func Daemon(i *do.Injector) error {
 	// It will try to remove daemon.lock when shutdown.
 	do.Provide(i, newDaemonUnlocker)
 
-	cfg, err := do.Invoke[*koiconfig.Config](i)
-	if err != nil {
-		return err
-	}
-
 	// Construct TCP listener
 	listener, err := net.Listen("tcp4", "localhost:")
 	if err != nil {
@@ -53,21 +69,6 @@ func Daemon(i *do.Injector) error {
 	host, port, err := net.SplitHostPort(addr)
 	if err != nil {
 		return fmt.Errorf("failed to parse addr %s: %w", addr, err)
-	}
-
-	daemonLockPath := filepath.Join(cfg.Computed.DirLock, "daemon.lock")
-	_, err = os.Stat(daemonLockPath)
-	if err != nil && (!(errors.Is(err, fs.ErrNotExist))) {
-		return fmt.Errorf("failed to stat %s: %w", daemonLockPath, err)
-	}
-	if err == nil {
-		// daemon.lock exists
-		pid, aliveErr := checkDaemonAlive(daemonLockPath)
-		if aliveErr == nil {
-			return fmt.Errorf("god daemon running, PID=%d\nCannot start another god daemon when there's already one.\nIf that daemon crashes, use 'koi daemon' to fix it.\nIf you just want to restart daemon, use 'koi daemon restart'", pid)
-		}
-
-		_ = os.Remove(daemonLockPath)
 	}
 
 	// daemon.lock does not exist. Writing
