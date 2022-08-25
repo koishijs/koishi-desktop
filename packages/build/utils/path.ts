@@ -17,6 +17,7 @@ const buildPaths = {
 
   build: 'build/',
   buildCache: 'build/caches/',
+  buildVendor: 'build/vendor/',
 
   buildPortable: 'build/varients/portable/',
   buildPortableData: 'build/varients/portable/data/',

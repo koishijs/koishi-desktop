@@ -4,6 +4,7 @@ import { dir } from '../../utils/path'
 
 const prepareFolderTasks = [
   dir('buildCache'),
+  dir('buildVendor'),
   dir('buildPortableData'),
   dir('dist'),
   dir('buildPortableData', process.platform === 'win32' ? 'node' : 'node/bin'),
