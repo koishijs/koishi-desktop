@@ -6,6 +6,7 @@ import (
 
 	"github.com/samber/do"
 	"github.com/urfave/cli/v2"
+	"gopkg.ilharper.com/koi/app/ui/tray"
 	"gopkg.ilharper.com/koi/core/god"
 	"gopkg.ilharper.com/koi/core/koiconfig"
 	"gopkg.ilharper.com/koi/core/logger"
@@ -16,11 +17,13 @@ const (
 
 	serviceActionRun       = "gopkg.ilharper.com/koi/app/koicli/action.Run"
 	serviceActionRunDaemon = "gopkg.ilharper.com/koi/app/koicli/action.RunDaemon"
+	serviceActionRunUi     = "gopkg.ilharper.com/koi/app/koicli/action.RunUi"
 )
 
 func newRunCommand(i *do.Injector) (*cli.Command, error) {
 	do.ProvideNamed(i, serviceActionRun, newRunAction)
 	do.ProvideNamed(i, serviceActionRunDaemon, newRunDaemonAction)
+	do.ProvideNamed(i, serviceActionRunUi, newRunUiAction)
 
 	return &cli.Command{
 		Name:   "run",
@@ -31,6 +34,11 @@ func newRunCommand(i *do.Injector) (*cli.Command, error) {
 				Name:   "daemon",
 				Usage:  "Run daemon",
 				Action: do.MustInvokeNamed[cli.ActionFunc](i, serviceActionRunDaemon),
+			},
+			{
+				Name:   "ui",
+				Usage:  "Run UI",
+				Action: do.MustInvokeNamed[cli.ActionFunc](i, serviceActionRunUi),
 			},
 		},
 	}, nil
@@ -51,13 +59,11 @@ func newRunAction(i *do.Injector) (cli.ActionFunc, error) {
 
 		switch cfg.Data.Mode {
 		case "cli":
-			err = do.MustInvokeNamed[cli.ActionFunc](i, serviceActionRunDaemon)(c)
-
-			return err
+			return do.MustInvokeNamed[cli.ActionFunc](i, serviceActionRunDaemon)(c)
+		case "ui":
+			return do.MustInvokeNamed[cli.ActionFunc](i, serviceActionRunUi)(c)
 		default:
-			err = fmt.Errorf("unknown mode: %s", cfg.Data.Mode)
-
-			return err
+			return fmt.Errorf("unknown mode: %s", cfg.Data.Mode)
 		}
 	}, nil
 }
@@ -69,5 +75,15 @@ func newRunDaemonAction(i *do.Injector) (cli.ActionFunc, error) {
 		l.Debug("Trigger action: run daemon")
 
 		return god.Daemon(i)
+	}, nil
+}
+
+func newRunUiAction(i *do.Injector) (cli.ActionFunc, error) {
+	l := do.MustInvoke[*logger.Logger](i)
+
+	return func(c *cli.Context) error {
+		l.Debug("Trigger action: run ui")
+
+		return tray.Run(i)
 	}, nil
 }
