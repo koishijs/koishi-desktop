@@ -6,6 +6,7 @@ import (
 	"sync"
 	"syscall"
 
+	"github.com/apenwarr/fixconsole"
 	"github.com/samber/do"
 	"github.com/urfave/cli/v2"
 	"gopkg.ilharper.com/koi/app/koicli"
@@ -39,6 +40,12 @@ func main() {
 	consoleTarget := do.MustInvoke[*logger.KoiFileTarget](i)
 	receiver.Register(consoleTarget)
 	l.Register(consoleTarget)
+
+	fixConsoleErr := fixconsole.FixConsoleIfNeeded()
+	if fixConsoleErr != nil {
+		// Which means that this log will only print to file logs
+		l.Warnf("Failed to fix console. You may not see console output: %s", fixConsoleErr)
+	}
 
 	l.Infof("Koishi Desktop v%s", util.AppVersion)
 
@@ -79,13 +86,13 @@ func main() {
 		}
 	}()
 
-	err := do.MustInvoke[*cli.App](i).Run(args)
+	runErr := do.MustInvoke[*cli.App](i).Run(args)
 	if shutdownErr := i.Shutdown(); shutdownErr != nil {
-		l.Errorf("failed to gracefully shutdown: %s", err)
+		l.Errorf("failed to gracefully shutdown: %s", runErr)
 	}
 	l.Close()
 	wg.Wait()
-	if err != nil {
+	if runErr != nil {
 		os.Exit(1)
 	}
 }

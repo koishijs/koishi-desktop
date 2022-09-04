@@ -3,6 +3,7 @@ module gopkg.ilharper.com/koi/app
 go 1.19
 
 require (
+	github.com/apenwarr/fixconsole v0.0.0-20191012055117-5a9f6489cc29
 	github.com/goccy/go-yaml v1.9.5
 	github.com/mitchellh/mapstructure v1.5.0
 	github.com/samber/do v1.2.0
@@ -13,6 +14,7 @@ require (
 )
 
 require (
+	github.com/apenwarr/w32 v0.0.0-20190407065021-aa00fece76ab // indirect
 	github.com/cpuguy83/go-md2man/v2 v2.0.2 // indirect
 	github.com/fatih/color v1.10.0 // indirect
 	github.com/go-ole/go-ole v1.2.6 // indirect

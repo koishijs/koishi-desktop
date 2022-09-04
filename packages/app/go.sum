@@ -1,3 +1,7 @@
+github.com/apenwarr/fixconsole v0.0.0-20191012055117-5a9f6489cc29 h1:muXWUcay7DDy1/hEQWrYlBy+g0EuwT70sBHg65SeUc4=
+github.com/apenwarr/fixconsole v0.0.0-20191012055117-5a9f6489cc29/go.mod h1:JYWahgHer+Z2xbsgHPtaDYVWzeHDminu+YIBWkxpCAY=
+github.com/apenwarr/w32 v0.0.0-20190407065021-aa00fece76ab h1:CMGzRRCjnD50RjUFSArBLuCxiDvdp7b8YPAcikBEQ+k=
+github.com/apenwarr/w32 v0.0.0-20190407065021-aa00fece76ab/go.mod h1:nfFtvHn2Hgs9G1u0/J6LHQv//EksNC+7G8vXmd1VTJ8=
 github.com/cpuguy83/go-md2man/v2 v2.0.2 h1:p1EgwI/C7NhT0JmVkwCD2ZBK8j4aeHQX2pMHHBfMQ6w=
 github.com/cpuguy83/go-md2man/v2 v2.0.2/go.mod h1:tgQtvFlXSQOSOSIRvRPT7W67SCa46tRHOmNcaadrF8o=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
@@ -64,6 +68,7 @@ golang.org/x/net v0.0.0-20190404232315-eb5bcb51f2a3/go.mod h1:t9HGtf8HONx5eT2rtn
 golang.org/x/net v0.0.0-20220809012201-f428fae20770 h1:dIi4qVdvjZEjiMDv7vhokAZNGnz3kepwuXqFKYDdDMs=
 golang.org/x/net v0.0.0-20220809012201-f428fae20770/go.mod h1:YDH+HFinaLZZlnHAfSS6ZXJJ9M9t4Dl22yv3iI2vPwk=
 golang.org/x/sys v0.0.0-20190215142949-d0b11bdaac8a/go.mod h1:STP8DvDyc/dI5b8T5hshtkjS+E42TnysNCUPdjciGhY=
+golang.org/x/sys v0.0.0-20190405154228-4b34438f7a67/go.mod h1:h1NjWce9XRLGQEsW7wpKNCjG9DtNlClVuFLEZdDNbEs=
 golang.org/x/sys v0.0.0-20190412213103-97732733099d/go.mod h1:h1NjWce9XRLGQEsW7wpKNCjG9DtNlClVuFLEZdDNbEs=
 golang.org/x/sys v0.0.0-20190916202348-b4ddaad3f8a3/go.mod h1:h1NjWce9XRLGQEsW7wpKNCjG9DtNlClVuFLEZdDNbEs=
 golang.org/x/sys v0.0.0-20200116001909-b77594299b42/go.mod h1:h1NjWce9XRLGQEsW7wpKNCjG9DtNlClVuFLEZdDNbEs=
