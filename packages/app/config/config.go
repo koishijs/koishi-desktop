@@ -15,7 +15,7 @@ import (
 )
 
 var defaultConfigData = koiconfig.ConfigData{
-	Mode:    "cli",
+	Mode:    "ui",
 	Open:    true,
 	Isolate: "normal",
 	Start:   nil,
