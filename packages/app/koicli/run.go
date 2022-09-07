@@ -17,13 +17,13 @@ const (
 
 	serviceActionRun       = "gopkg.ilharper.com/koi/app/koicli/action.Run"
 	serviceActionRunDaemon = "gopkg.ilharper.com/koi/app/koicli/action.RunDaemon"
-	serviceActionRunUi     = "gopkg.ilharper.com/koi/app/koicli/action.RunUi"
+	serviceActionRunUI     = "gopkg.ilharper.com/koi/app/koicli/action.RunUi"
 )
 
 func newRunCommand(i *do.Injector) (*cli.Command, error) {
 	do.ProvideNamed(i, serviceActionRun, newRunAction)
 	do.ProvideNamed(i, serviceActionRunDaemon, newRunDaemonAction)
-	do.ProvideNamed(i, serviceActionRunUi, newRunUiAction)
+	do.ProvideNamed(i, serviceActionRunUI, newRunUIAction)
 
 	return &cli.Command{
 		Name:   "run",
@@ -38,7 +38,7 @@ func newRunCommand(i *do.Injector) (*cli.Command, error) {
 			{
 				Name:   "ui",
 				Usage:  "Run UI",
-				Action: do.MustInvokeNamed[cli.ActionFunc](i, serviceActionRunUi),
+				Action: do.MustInvokeNamed[cli.ActionFunc](i, serviceActionRunUI),
 			},
 		},
 	}, nil
@@ -61,7 +61,7 @@ func newRunAction(i *do.Injector) (cli.ActionFunc, error) {
 		case "cli":
 			return do.MustInvokeNamed[cli.ActionFunc](i, serviceActionRunDaemon)(c)
 		case "ui":
-			return do.MustInvokeNamed[cli.ActionFunc](i, serviceActionRunUi)(c)
+			return do.MustInvokeNamed[cli.ActionFunc](i, serviceActionRunUI)(c)
 		default:
 			return fmt.Errorf("unknown mode: %s", cfg.Data.Mode)
 		}
@@ -78,7 +78,7 @@ func newRunDaemonAction(i *do.Injector) (cli.ActionFunc, error) {
 	}, nil
 }
 
-func newRunUiAction(i *do.Injector) (cli.ActionFunc, error) {
+func newRunUIAction(i *do.Injector) (cli.ActionFunc, error) {
 	l := do.MustInvoke[*logger.Logger](i)
 
 	return func(c *cli.Context) error {
