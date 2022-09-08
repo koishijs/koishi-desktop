@@ -28,6 +28,8 @@ func main() {
 	wg := &sync.WaitGroup{}
 	do.ProvideValue(i, wg)
 
+	fixConsoleErr := fixconsole.FixConsoleIfNeeded()
+
 	do.Provide(i, logger.BuildNewKoiFileTarget(os.Stderr))
 	do.Provide(i, logger.BuildNewLogger(0))
 	receiver := rpl.NewReceiver()
@@ -41,7 +43,7 @@ func main() {
 	receiver.Register(consoleTarget)
 	l.Register(consoleTarget)
 
-	fixConsoleErr := fixconsole.FixConsoleIfNeeded()
+	// Delay fixConsoleErr to wait logger constructed
 	if fixConsoleErr != nil {
 		// Which means that this log will only print to file logs
 		l.Warnf("Failed to fix console. You may not see console output: %s", fixConsoleErr)
