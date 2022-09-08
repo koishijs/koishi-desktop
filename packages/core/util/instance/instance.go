@@ -13,6 +13,34 @@ import (
 	"gopkg.ilharper.com/koi/core/koiconfig"
 )
 
+func Instances(i *do.Injector) ([]string, error) {
+	var err error
+
+	config := do.MustInvoke[*koiconfig.Config](i)
+
+	entries, err := os.ReadDir(config.Computed.DirInstance)
+	if err != nil {
+		return nil, err
+	}
+
+	instances := make([]string, 0, len(entries))
+	for _, entry := range entries {
+		if !entry.IsDir() {
+			continue
+		}
+		instance := entry.Name()
+		exists, err := IsInstanceExists(i, instance)
+		if err != nil {
+			return nil, err
+		}
+		if exists {
+			instances = append(instances, instance)
+		}
+	}
+
+	return instances, nil
+}
+
 func IsInstanceExists(i *do.Injector, name string) (bool, error) {
 	var err error
 
