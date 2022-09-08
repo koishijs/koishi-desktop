@@ -58,7 +58,7 @@ func (daemonProc *daemonProcess) init() error {
 	for _, name := range cfg.Data.Start {
 		exists, existsErr := instance.IsInstanceExists(daemonProc.i, name)
 		if existsErr != nil {
-			l.Warnf("Failed to check instance %s: %s", name, existsErr.Error())
+			l.Warn(existsErr)
 
 			continue
 		}
@@ -80,7 +80,7 @@ func (daemonProc *daemonProcess) init() error {
 func (daemonProc *daemonProcess) Start(name string) error {
 	exists, existsErr := instance.IsInstanceExists(daemonProc.i, name)
 	if existsErr != nil {
-		return fmt.Errorf("failed to check instance %s: %w", name, existsErr)
+		return existsErr
 	}
 	if !exists {
 		return fmt.Errorf("instance %s dows not exist", name)
@@ -152,7 +152,7 @@ func (daemonProc *daemonProcess) startIntl(name string) error {
 func (daemonProc *daemonProcess) Stop(name string) error {
 	exists, existsErr := instance.IsInstanceExists(daemonProc.i, name)
 	if existsErr != nil {
-		return fmt.Errorf("failed to check instance %s: %w", name, existsErr)
+		return existsErr
 	}
 	if !exists {
 		return fmt.Errorf("instance %s dows not exist", name)

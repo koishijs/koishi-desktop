@@ -3,6 +3,7 @@ package instance
 
 import (
 	"errors"
+	"fmt"
 	"io/fs"
 	"math"
 	"os"
@@ -52,7 +53,7 @@ func IsInstanceExists(i *do.Injector, name string) (bool, error) {
 		return false, nil
 	}
 	if err != nil {
-		return false, err
+		return false, fmt.Errorf("failed to check instance %s: %w", name, err)
 	}
 
 	for _, f := range []string{
