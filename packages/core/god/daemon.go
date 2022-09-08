@@ -45,11 +45,11 @@ func Daemon(i *do.Injector) error {
 		_ = os.Remove(daemonLockPath)
 	}
 
-	// Register daemonProcess synchronously,
+	// Register DaemonProcess synchronously,
 	do.Provide(i, newDaemonProcess)
 	// And start it in a new goroutine as early as possible.
 	// This ensures Koishi starts quickly first.
-	err = do.MustInvoke[*daemonProcess](i).init()
+	err = do.MustInvoke[*DaemonProcess](i).init()
 	if err != nil {
 		return err
 	}

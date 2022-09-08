@@ -20,7 +20,7 @@ const deltaCh uint16 = 1000
 
 var ErrAlreadyStarted = errors.New("instance already started")
 
-type daemonProcess struct {
+type DaemonProcess struct {
 	// The mutex lock.
 	//
 	// There's no need to use [sync.RWMutex]
@@ -34,14 +34,14 @@ type daemonProcess struct {
 	nameReg map[string]uint8
 }
 
-func newDaemonProcess(i *do.Injector) (*daemonProcess, error) {
-	return &daemonProcess{
+func newDaemonProcess(i *do.Injector) (*DaemonProcess, error) {
+	return &DaemonProcess{
 		i:       i,
 		nameReg: make(map[string]uint8),
 	}, nil
 }
 
-func (daemonProc *daemonProcess) init() error {
+func (daemonProc *DaemonProcess) init() error {
 	var err error
 
 	l := do.MustInvoke[*logger.Logger](daemonProc.i)
@@ -77,7 +77,7 @@ func (daemonProc *daemonProcess) init() error {
 	return nil
 }
 
-func (daemonProc *daemonProcess) Start(name string) error {
+func (daemonProc *DaemonProcess) Start(name string) error {
 	exists, existsErr := instance.IsInstanceExists(daemonProc.i, name)
 	if existsErr != nil {
 		return existsErr
@@ -93,7 +93,7 @@ func (daemonProc *daemonProcess) Start(name string) error {
 }
 
 // Must ensure lock before calling this method.
-func (daemonProc *daemonProcess) startIntl(name string) error {
+func (daemonProc *DaemonProcess) startIntl(name string) error {
 	l := do.MustInvoke[*logger.Logger](daemonProc.i)
 	cfg := do.MustInvoke[*koiconfig.Config](daemonProc.i)
 
@@ -149,7 +149,7 @@ func (daemonProc *daemonProcess) startIntl(name string) error {
 	return nil
 }
 
-func (daemonProc *daemonProcess) Stop(name string) error {
+func (daemonProc *DaemonProcess) Stop(name string) error {
 	exists, existsErr := instance.IsInstanceExists(daemonProc.i, name)
 	if existsErr != nil {
 		return existsErr
@@ -165,11 +165,11 @@ func (daemonProc *daemonProcess) Stop(name string) error {
 }
 
 // Must ensure lock before calling this method.
-func (daemonProc *daemonProcess) stopIntl(name string) error {
+func (daemonProc *DaemonProcess) stopIntl(name string) error {
 	return daemonProc.reg[daemonProc.nameReg[name]].Stop() //nolint:wrapcheck
 }
 
-func (daemonProc *daemonProcess) Shutdown() error {
+func (daemonProc *DaemonProcess) Shutdown() error {
 	daemonProc.mutex.Lock()
 
 	for _, koiProc := range daemonProc.reg {
@@ -191,7 +191,7 @@ func (daemonProc *daemonProcess) Shutdown() error {
 // getIndex finds the reg index of instance name.
 //
 // Must ensure lock before calling this method.
-func (daemonProc *daemonProcess) getIndex(name string) uint8 {
+func (daemonProc *DaemonProcess) getIndex(name string) uint8 {
 	var index uint8 = 0
 	for n, i := range daemonProc.nameReg {
 		if name == n {
@@ -207,7 +207,7 @@ func (daemonProc *daemonProcess) getIndex(name string) uint8 {
 // GetPid find and return PID of instance.
 //
 // Returns 0 if instance is not running.
-func (daemonProc *daemonProcess) GetPid(name string) int {
+func (daemonProc *DaemonProcess) GetPid(name string) int {
 	koiProc := daemonProc.reg[daemonProc.getIndex(name)]
 	if koiProc == nil {
 		return 0
