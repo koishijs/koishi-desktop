@@ -203,3 +203,14 @@ func (daemonProc *daemonProcess) getIndex(name string) uint8 {
 
 	return index
 }
+
+// GetPid find and return PID of instance.
+//
+// Returns 0 if instance is not running.
+func (daemonProc *daemonProcess) GetPid(name string) int {
+	koiProc := daemonProc.reg[daemonProc.getIndex(name)]
+	if koiProc == nil {
+		return 0
+	}
+	return koiProc.Pid()
+}
