@@ -1,6 +1,8 @@
 package tray
 
 import (
+	"runtime"
+
 	"fyne.io/systray"
 	"github.com/samber/do"
 	"gopkg.ilharper.com/koi/app/ui/icon"
@@ -17,7 +19,9 @@ func buildOnReady(i *do.Injector) func() {
 	l := do.MustInvoke[*logger.Logger](i)
 
 	return func() {
-		systray.SetTitle("Koishi")
+		if runtime.GOOS != "darwin" {
+			systray.SetTitle("Koishi")
+		}
 		systray.SetTooltip("Koishi")
 		systray.SetTemplateIcon(icon.Data, icon.Data)
 
