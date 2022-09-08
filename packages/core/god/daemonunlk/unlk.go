@@ -1,4 +1,4 @@
-package god
+package daemonunlk
 
 import (
 	"os"
@@ -14,7 +14,7 @@ type daemonUnlocker struct {
 	config *koiconfig.Config
 }
 
-func newDaemonUnlocker(i *do.Injector) (*daemonUnlocker, error) {
+func NewDaemonUnlocker(i *do.Injector) (*daemonUnlocker, error) {
 	cfg, err := do.Invoke[*koiconfig.Config](i)
 	if err != nil {
 		return nil, err

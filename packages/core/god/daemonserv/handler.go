@@ -1,4 +1,4 @@
-package god
+package daemonserv
 
 import (
 	"context"
@@ -9,6 +9,7 @@ import (
 	"github.com/samber/do"
 	"golang.org/x/net/websocket"
 	"gopkg.ilharper.com/koi/core/god/proto"
+	"gopkg.ilharper.com/koi/core/god/task"
 	"gopkg.ilharper.com/koi/core/koicmd"
 	"gopkg.ilharper.com/koi/core/logger"
 	"gopkg.ilharper.com/koi/core/util/net"
@@ -99,17 +100,17 @@ func handleCommand(
 
 	// Acquire Task
 	daemon.tasks.Acquire(scopedI)
-	task := do.MustInvoke[*Task](scopedI)
+	t := do.MustInvoke[*task.Task](scopedI)
 	defer func() {
-		localL.Debugf("Releasing task %d", task.ID)
+		localL.Debugf("Releasing task %d", t.ID)
 		daemon.tasks.Release(scopedI)
 	}()
 
-	localL.Debugf("Acquired task %d", task.ID)
+	localL.Debugf("Acquired task %d", t.ID)
 
 	// Build remote procedure Logger
 	// Then override Logger
-	do.Override(scopedI, logger.BuildNewLogger(uint16(task.ID)))
+	do.Override(scopedI, logger.BuildNewLogger(uint16(t.ID)))
 
 	// Build Response channel
 	ch := make(chan *proto.Response)

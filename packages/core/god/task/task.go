@@ -1,4 +1,4 @@
-package god
+package task
 
 import (
 	"sync"
@@ -13,9 +13,9 @@ type Task struct {
 	ID uint8
 }
 
-// taskRegistry is the task registry
+// TaskRegistry is the task registry
 // of task manager ([god.daemonService]).
-type taskRegistry struct {
+type TaskRegistry struct {
 	// The registry [sync.Mutex].
 	mutex sync.Mutex
 
@@ -28,8 +28,8 @@ type taskRegistry struct {
 	next uint8
 }
 
-func (registry *taskRegistry) Acquire(i *do.Injector) {
-	// Lock taskRegistry.
+func (registry *TaskRegistry) Acquire(i *do.Injector) {
+	// Lock TaskRegistry.
 	registry.mutex.Lock()
 	defer registry.mutex.Unlock()
 
@@ -46,8 +46,8 @@ func (registry *taskRegistry) Acquire(i *do.Injector) {
 	registry.next++
 }
 
-func (registry *taskRegistry) Release(i *do.Injector) {
-	// Lock taskRegistry.
+func (registry *TaskRegistry) Release(i *do.Injector) {
+	// Lock TaskRegistry.
 	registry.mutex.Lock()
 	defer registry.mutex.Unlock()
 

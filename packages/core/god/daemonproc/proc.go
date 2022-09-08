@@ -1,4 +1,4 @@
-package god
+package daemonproc
 
 import (
 	"errors"
@@ -34,14 +34,14 @@ type DaemonProcess struct {
 	nameReg map[string]uint8
 }
 
-func newDaemonProcess(i *do.Injector) (*DaemonProcess, error) {
+func NewDaemonProcess(i *do.Injector) (*DaemonProcess, error) {
 	return &DaemonProcess{
 		i:       i,
 		nameReg: make(map[string]uint8),
 	}, nil
 }
 
-func (daemonProc *DaemonProcess) init() error {
+func (daemonProc *DaemonProcess) Init() error {
 	var err error
 
 	l := do.MustInvoke[*logger.Logger](daemonProc.i)

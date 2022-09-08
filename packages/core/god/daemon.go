@@ -13,9 +13,22 @@ import (
 	"github.com/goccy/go-json"
 	"github.com/samber/do"
 	"github.com/shirou/gopsutil/v3/process"
+	"gopkg.ilharper.com/koi/core/god/daemonproc"
+	"gopkg.ilharper.com/koi/core/god/daemonserv"
+	"gopkg.ilharper.com/koi/core/god/daemonunlk"
 	"gopkg.ilharper.com/koi/core/koiconfig"
 	"gopkg.ilharper.com/koi/core/logger"
 )
+
+const (
+	DaemonEndpoint = "/api"
+)
+
+type DaemonLock struct {
+	Pid  int    `json:"pid" mapstructure:"pid"`
+	Host string `json:"host" mapstructure:"host"`
+	Port string `json:"port" mapstructure:"port"`
+}
 
 // Daemon the world.
 //
@@ -46,10 +59,10 @@ func Daemon(i *do.Injector) error {
 	}
 
 	// Register DaemonProcess synchronously,
-	do.Provide(i, newDaemonProcess)
+	do.Provide(i, daemonproc.NewDaemonProcess)
 	// And start it in a new goroutine as early as possible.
 	// This ensures Koishi starts quickly first.
-	err = do.MustInvoke[*DaemonProcess](i).init()
+	err = do.MustInvoke[*daemonproc.DaemonProcess](i).Init()
 	if err != nil {
 		return err
 	}
@@ -58,7 +71,7 @@ func Daemon(i *do.Injector) error {
 
 	// Provide daemonUnlocker.
 	// It will try to remove daemon.lock when shutdown.
-	do.Provide(i, newDaemonUnlocker)
+	do.Provide(i, daemonunlk.NewDaemonUnlocker)
 
 	// Construct TCP listener
 	listener, err := net.Listen("tcp4", "localhost:")
@@ -101,7 +114,7 @@ func Daemon(i *do.Injector) error {
 	}
 
 	// Construct daemonService
-	service := newDaemonService(i)
+	service := daemonserv.NewDaemonService(i)
 
 	mux := http.NewServeMux()
 	mux.Handle(DaemonEndpoint, service.Handler)

@@ -1,14 +1,15 @@
-package god
+package daemonserv
 
 import (
 	"github.com/samber/do"
 	"golang.org/x/net/websocket"
+	"gopkg.ilharper.com/koi/core/god/task"
 	"gopkg.ilharper.com/koi/core/koicmd"
 )
 
 type daemonService struct {
 	// The [god.Task] registry.
-	tasks taskRegistry
+	tasks task.TaskRegistry
 
 	// The [websocket.Handler].
 	//
@@ -16,7 +17,7 @@ type daemonService struct {
 	Handler websocket.Handler
 }
 
-func newDaemonService(i *do.Injector) *daemonService {
+func NewDaemonService(i *do.Injector) *daemonService {
 	do.Provide(i, koicmd.NewKoiCmdRegistry)
 
 	service := &daemonService{}
