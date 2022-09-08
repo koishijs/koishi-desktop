@@ -208,6 +208,9 @@ func (daemonProc *DaemonProcess) getIndex(name string) uint8 {
 //
 // Returns 0 if instance is not running.
 func (daemonProc *DaemonProcess) GetPid(name string) int {
+	daemonProc.mutex.Lock()
+	defer daemonProc.mutex.Unlock()
+
 	koiProc := daemonProc.reg[daemonProc.getIndex(name)]
 	if koiProc == nil {
 		return 0
