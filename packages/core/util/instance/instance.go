@@ -14,16 +14,34 @@ import (
 )
 
 func IsInstanceExists(i *do.Injector, name string) (bool, error) {
+	var err error
+
 	config := do.MustInvoke[*koiconfig.Config](i)
-	_, err := os.Stat(filepath.Join(config.Computed.DirInstance, name))
-	if err == nil {
-		return true, nil
-	}
+	instanceDir := filepath.Join(config.Computed.DirInstance, name)
+
+	_, err = os.Stat(instanceDir)
 	if errors.Is(err, fs.ErrNotExist) {
 		return false, nil
 	}
+	if err != nil {
+		return false, err
+	}
 
-	return false, err
+	for _, f := range []string{
+		// Deprecated koishi.config.yml are not supported
+		filepath.Join(instanceDir, "koishi.yml"),
+		filepath.Join(instanceDir, "package.json"),
+	} {
+		_, err = os.Stat(f)
+		if errors.Is(err, fs.ErrNotExist) {
+			return false, nil
+		}
+		if err != nil {
+			return false, err
+		}
+	}
+
+	return true, nil
 }
 
 func GenerateInstanceName(i *do.Injector) (string, error) {
