@@ -25,6 +25,11 @@ type dProc struct {
 	listen  string
 }
 
+type DProcMeta struct {
+	Pid    int
+	Listen string
+}
+
 type DaemonProcess struct {
 	// The mutex lock.
 	//
@@ -229,10 +234,7 @@ func (daemonProc *DaemonProcess) GetPid(name string) int {
 // GetMeta find and return meta info of instance.
 //
 // Returns nil if instance is not running.
-func (daemonProc *DaemonProcess) GetMeta(name string) *struct {
-	Pid    int
-	Listen string
-} {
+func (daemonProc *DaemonProcess) GetMeta(name string) *DProcMeta {
 	daemonProc.mutex.Lock()
 	defer daemonProc.mutex.Unlock()
 
@@ -240,8 +242,8 @@ func (daemonProc *DaemonProcess) GetMeta(name string) *struct {
 	if dp == nil {
 		return nil
 	}
-	return &struct {
-		Pid    int
-		Listen string
-	}{Pid: dp.koiProc.Pid(), Listen: dp.listen}
+	return &DProcMeta{
+		Pid:    dp.koiProc.Pid(),
+		Listen: dp.listen,
+	}
 }
