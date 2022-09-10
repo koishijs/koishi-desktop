@@ -19,7 +19,7 @@ func NewNodeProc(
 		i,
 		ch,
 		cfg.Computed.DirNodeExe,
-		"node",
+		"koishi",
 		command,
 		cwd,
 	)

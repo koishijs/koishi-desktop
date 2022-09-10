@@ -1,4 +1,5 @@
 import del from 'del'
+import { series, TaskFunction } from 'gulp'
 import { info } from 'gulplog'
 import * as lzma from 'lzma-native'
 import StreamZip from 'node-stream-zip'
@@ -40,6 +41,11 @@ export const prepareNodeExtractWin = async () => {
   await del(dir('buildPortableData', 'node/npm.cmd'))
   await del(dir('buildPortableData', 'node/npx'))
   await del(dir('buildPortableData', 'node/npx.cmd'))
+
+  await fs.promises.rename(
+    dir('buildPortableData', 'node/node.exe'),
+    dir('buildPortableData', 'node/koishi.exe')
+  )
 }
 
 export const prepareNodeRcedit = async () => {
@@ -91,6 +97,11 @@ export const prepareNodeExtractMac = async () => {
   await del(dir('buildPortableData', 'node/include'))
   await del(dir('buildPortableData', 'node/lib'))
   await del(dir('buildPortableData', 'node/share'))
+
+  await fs.promises.rename(
+    dir('buildPortableData', 'node/bin/node.exe'),
+    dir('buildPortableData', 'node/bin/koishi.exe')
+  )
 }
 
 export const prepareNodeExtractLinux = async () => {
@@ -119,12 +130,17 @@ export const prepareNodeExtractLinux = async () => {
   await del(dir('buildPortableData', 'node/include'))
   await del(dir('buildPortableData', 'node/lib'))
   await del(dir('buildPortableData', 'node/share'))
+
+  await fs.promises.rename(
+    dir('buildPortableData', 'node/bin/node.exe'),
+    dir('buildPortableData', 'node/bin/koishi.exe')
+  )
 }
 
-const buildPrepareNodeExtract = (): (() => Promise<void>) => {
+const buildPrepareNodeExtract = (): TaskFunction => {
   switch (process.platform) {
     case 'win32':
-      return prepareNodeExtractWin
+      return series(prepareNodeExtractWin, prepareNodeRcedit)
     case 'darwin':
       return prepareNodeExtractMac
     case 'linux':
