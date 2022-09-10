@@ -11,9 +11,9 @@ import (
 	"gopkg.ilharper.com/koi/core/koiconfig"
 	"gopkg.ilharper.com/koi/core/logger"
 	"gopkg.ilharper.com/koi/core/proc"
+	"gopkg.ilharper.com/koi/core/ui/webview"
 	"gopkg.ilharper.com/koi/core/util/instance"
 	"gopkg.ilharper.com/koi/core/util/strutil"
-	"gopkg.ilharper.com/x/browser"
 )
 
 const deltaCh uint16 = 1000
@@ -129,17 +129,11 @@ func (daemonProc *DaemonProcess) startIntl(name string) error {
 	dp.koiProc.HookOutput = func(msg string) {
 		go func() {
 			if strings.Contains(msg, " server listening at ") {
-				s := msg[strings.Index(msg, "http"):]           //nolint:gocritic
-				s = s[:strings.Index(s, strutil.ColorStartCtr)] //nolint:gocritic
-				l.Debugf("Parsed %s.", s)
-				dp.listen = s
-				if cfg.Data.Open {
-					l.Debug("Try opening browser.")
-					err := browser.OpenURL(s)
-					if err != nil {
-						l.Warnf("cannot open browser: %s", err.Error())
-					}
-				}
+				listen := msg[strings.Index(msg, "http"):]                     //nolint:gocritic
+				listen = listen[:strings.Index(listen, strutil.ColorStartCtr)] //nolint:gocritic
+				l.Debugf("Parsed %s.", listen)
+				dp.listen = listen
+				webview.Open(daemonProc.i, name, listen)
 			}
 		}()
 	}

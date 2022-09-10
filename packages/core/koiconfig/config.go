@@ -8,7 +8,7 @@ type Config struct {
 //goland:noinspection GoNameStartsWithPackageName
 type ConfigData struct {
 	Mode    string `yaml:"mode"`
-	Open    bool   `yaml:"open"`
+	Open    string `yaml:"open"`
 	Isolate string `yaml:"isolate"`
 	Start   []string
 	Env     []string `yaml:"env"`

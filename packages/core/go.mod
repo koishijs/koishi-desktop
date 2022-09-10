@@ -7,6 +7,7 @@ require (
 	github.com/mitchellh/mapstructure v1.5.0
 	github.com/samber/do v1.2.0
 	github.com/shirou/gopsutil/v3 v3.22.7
+	github.com/webview/webview v0.0.0-20220816141928-2ee04ccd0530
 	golang.org/x/net v0.0.0-20220809012201-f428fae20770
 	golang.org/x/text v0.3.7
 	gopkg.ilharper.com/x/browser v1.0.0
