@@ -48,7 +48,7 @@ export const prepareNodeRcedit = async () => {
   await fs.promises.writeFile(koishiManifestPath, koishiManifest)
 
   const args = [
-    dir('buildPortableData', 'koishi.exe'),
+    dir('buildPortableData', 'node/koishi.exe'),
     '--set-icon',
     dir('src', 'resources/koi.ico'),
     '--application-manifest',
