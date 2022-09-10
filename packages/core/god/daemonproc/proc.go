@@ -126,21 +126,22 @@ func (daemonProc *DaemonProcess) startIntl(name string) error {
 
 	dp.koiProc.Register(do.MustInvoke[*logger.KoiFileTarget](daemonProc.i))
 
-	if cfg.Data.Open {
-		dp.koiProc.HookOutput = func(msg string) {
-			go func() {
-				if strings.Contains(msg, " server listening at ") {
-					s := msg[strings.Index(msg, "http"):]           //nolint:gocritic
-					s = s[:strings.Index(s, strutil.ColorStartCtr)] //nolint:gocritic
-					l.Debugf("Parsed %s. Try opening browser.", s)
-					dp.listen = s
+	dp.koiProc.HookOutput = func(msg string) {
+		go func() {
+			if strings.Contains(msg, " server listening at ") {
+				s := msg[strings.Index(msg, "http"):]           //nolint:gocritic
+				s = s[:strings.Index(s, strutil.ColorStartCtr)] //nolint:gocritic
+				l.Debugf("Parsed %s.", s)
+				dp.listen = s
+				if cfg.Data.Open {
+					l.Debug("Try opening browser.")
 					err := browser.OpenURL(s)
 					if err != nil {
 						l.Warnf("cannot open browser: %s", err.Error())
 					}
 				}
-			}()
-		}
+			}
+		}()
 	}
 
 	daemonProc.wg.Add(1)
