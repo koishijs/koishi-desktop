@@ -58,6 +58,21 @@ export const koiVersionStrings = {
   SpecialBuild: koiVersion,
 }
 
+export const koishiVersionStrings = {
+  Comments: 'Koishi',
+  CompanyName: 'Koishi.js',
+  FileDescription: 'Koishi',
+  FileVersion: koiVersion,
+  InternalName: 'Koishi',
+  LegalCopyright: '2022 Koishi.js Team',
+  LegalTrademarks: '2022 Koishi.js Team',
+  OriginalFilename: 'koishi',
+  PrivateBuild: koiVersion,
+  ProductName: 'Koishi',
+  ProductVersion: koiVersion,
+  SpecialBuild: koiVersion,
+}
+
 export const koiVersionStringsJson = JSON.stringify(koiVersionStrings)
 
 //#endregion

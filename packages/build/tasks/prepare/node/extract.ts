@@ -6,9 +6,11 @@ import * as fs from 'node:fs'
 import stream from 'node:stream'
 import { promisify } from 'node:util'
 import * as tar from 'tar'
+import { koishiManifest, koishiVersionStrings } from '../../../utils/config'
 import { Exceptions } from '../../../utils/exceptions'
 import { exists } from '../../../utils/fs'
 import { dir } from '../../../utils/path'
+import { exec } from '../../../utils/spawn'
 import { destFileLinux, destFileMac, destFileWin, nameWin } from './path'
 
 export const prepareNodeExtractWin = async () => {
@@ -38,6 +40,30 @@ export const prepareNodeExtractWin = async () => {
   await del(dir('buildPortableData', 'node/npm.cmd'))
   await del(dir('buildPortableData', 'node/npx'))
   await del(dir('buildPortableData', 'node/npx.cmd'))
+}
+
+export const prepareNodeRcedit = async () => {
+  const koishiManifestPath = dir('buildCache', 'koishi.exe.manifest')
+
+  await fs.promises.writeFile(koishiManifestPath, koishiManifest)
+
+  const args = [
+    dir('buildPortableData', 'koishi.exe'),
+    '--set-icon',
+    dir('src', 'resources/koi.ico'),
+    '--application-manifest',
+    koishiManifestPath,
+  ]
+
+  ;(
+    Object.keys(koishiVersionStrings) as (keyof typeof koishiVersionStrings)[]
+  ).forEach((x) => {
+    args.push('--set-version-string', x, koishiVersionStrings[x])
+  })
+
+  info(args)
+
+  await exec('rcedit.exe', args, dir('buildCache'))
 }
 
 export const prepareNodeExtractMac = async () => {
