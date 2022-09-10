@@ -128,6 +128,7 @@ func (daemonProc *DaemonProcess) startIntl(name string) error {
 					s := msg[strings.Index(msg, "http"):]           //nolint:gocritic
 					s = s[:strings.Index(s, strutil.ColorStartCtr)] //nolint:gocritic
 					l.Debugf("Parsed %s. Try opening browser.", s)
+					dp.listen = s
 					err := browser.OpenURL(s)
 					if err != nil {
 						l.Warnf("cannot open browser: %s", err.Error())
