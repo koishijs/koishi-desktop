@@ -67,8 +67,6 @@ export const prepareNodeRcedit = async () => {
     args.push('--set-version-string', x, koishiVersionStrings[x])
   })
 
-  info(args)
-
   await exec('rcedit.exe', args, dir('buildCache'))
 }
 
