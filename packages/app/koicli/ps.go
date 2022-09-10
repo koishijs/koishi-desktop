@@ -105,7 +105,7 @@ func newPsAction(i *do.Injector) (cli.ActionFunc, error) {
 			return fmt.Errorf("failed to marshal result %#+v: %w", resultPs, err)
 		}
 
-		fmt.Println(resultPsInstanceJson)
+		fmt.Println(string(resultPsInstanceJson))
 
 		return logger.Wait(respC)
 	}, nil
