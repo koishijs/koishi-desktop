@@ -20,6 +20,11 @@ const deltaCh uint16 = 1000
 
 var ErrAlreadyStarted = errors.New("instance already started")
 
+type dProc struct {
+	koiProc *proc.KoiProc
+	listen  string
+}
+
 type DaemonProcess struct {
 	// The mutex lock.
 	//
@@ -30,7 +35,7 @@ type DaemonProcess struct {
 
 	i *do.Injector
 
-	reg     [256]*proc.KoiProc
+	reg     [256]*dProc
 	nameReg map[string]uint8
 }
 
@@ -99,23 +104,25 @@ func (daemonProc *DaemonProcess) startIntl(name string) error {
 
 	index := daemonProc.getIndex(name)
 
-	koiProc := daemonProc.reg[index]
-	if koiProc != nil {
+	dp := daemonProc.reg[index]
+	if dp != nil {
 		return ErrAlreadyStarted
 	}
 
-	koiProc = proc.NewYarnProc(
-		daemonProc.i,
-		deltaCh+uint16(index),
-		[]string{"koishi", "start"},
-		filepath.Join(cfg.Computed.DirInstance, name),
-	)
-	daemonProc.reg[index] = koiProc
+	dp = &dProc{
+		koiProc: proc.NewYarnProc(
+			daemonProc.i,
+			deltaCh+uint16(index),
+			[]string{"koishi", "start"},
+			filepath.Join(cfg.Computed.DirInstance, name),
+		),
+	}
+	daemonProc.reg[index] = dp
 
-	koiProc.Register(do.MustInvoke[*logger.KoiFileTarget](daemonProc.i))
+	dp.koiProc.Register(do.MustInvoke[*logger.KoiFileTarget](daemonProc.i))
 
 	if cfg.Data.Open {
-		koiProc.HookOutput = func(msg string) {
+		dp.koiProc.HookOutput = func(msg string) {
 			go func() {
 				if strings.Contains(msg, " server listening at ") {
 					s := msg[strings.Index(msg, "http"):]           //nolint:gocritic
@@ -132,7 +139,7 @@ func (daemonProc *DaemonProcess) startIntl(name string) error {
 
 	daemonProc.wg.Add(1)
 	go func() {
-		err := koiProc.Run()
+		err := dp.koiProc.Run()
 		if err == nil {
 			l.Infof("Instance %s exited.", name)
 		} else {
@@ -166,17 +173,17 @@ func (daemonProc *DaemonProcess) Stop(name string) error {
 
 // Must ensure lock before calling this method.
 func (daemonProc *DaemonProcess) stopIntl(name string) error {
-	return daemonProc.reg[daemonProc.nameReg[name]].Stop() //nolint:wrapcheck
+	return daemonProc.reg[daemonProc.nameReg[name]].koiProc.Stop() //nolint:wrapcheck
 }
 
 func (daemonProc *DaemonProcess) Shutdown() error {
 	daemonProc.mutex.Lock()
 
-	for _, koiProc := range daemonProc.reg {
-		if koiProc != nil {
-			err := koiProc.Stop()
+	for _, dp := range daemonProc.reg {
+		if dp != nil {
+			err := dp.koiProc.Stop()
 			if err != nil {
-				_ = koiProc.Kill()
+				_ = dp.koiProc.Kill()
 			}
 		}
 	}
@@ -211,9 +218,9 @@ func (daemonProc *DaemonProcess) GetPid(name string) int {
 	daemonProc.mutex.Lock()
 	defer daemonProc.mutex.Unlock()
 
-	koiProc := daemonProc.reg[daemonProc.getIndex(name)]
-	if koiProc == nil {
+	dp := daemonProc.reg[daemonProc.getIndex(name)]
+	if dp == nil {
 		return 0
 	}
-	return koiProc.Pid()
+	return dp.koiProc.Pid()
 }
