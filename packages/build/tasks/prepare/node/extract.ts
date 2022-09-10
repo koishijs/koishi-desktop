@@ -19,7 +19,7 @@ export const prepareNodeExtractWin = async () => {
   const cachedFile = dir('buildCache', destFileWin)
 
   info('Checking destination cache.')
-  if (await exists(dir('buildPortableData', 'node/node.exe'))) return
+  if (await exists(dir('buildPortableData', 'node/koishi.exe'))) return
 
   if (!(await exists(cachedFile))) {
     throw Exceptions.fileNotFound(cachedFile)
@@ -77,7 +77,7 @@ export const prepareNodeExtractMac = async () => {
   const cachedFile = dir('buildCache', destFileMac)
 
   info('Checking destination cache.')
-  if (await exists(dir('buildPortableData', 'node/bin/node'))) return
+  if (await exists(dir('buildPortableData', 'node/bin/koishi'))) return
 
   if (!(await exists(cachedFile))) {
     throw Exceptions.fileNotFound(cachedFile)
@@ -99,8 +99,8 @@ export const prepareNodeExtractMac = async () => {
   await del(dir('buildPortableData', 'node/share'))
 
   await fs.promises.rename(
-    dir('buildPortableData', 'node/bin/node.exe'),
-    dir('buildPortableData', 'node/bin/koishi.exe')
+    dir('buildPortableData', 'node/bin/node'),
+    dir('buildPortableData', 'node/bin/koishi')
   )
 }
 
@@ -109,7 +109,7 @@ export const prepareNodeExtractLinux = async () => {
   const cachedFile = dir('buildCache', destFileLinux)
 
   info('Checking destination cache.')
-  if (await exists(dir('buildPortableData', 'node/bin/node'))) return
+  if (await exists(dir('buildPortableData', 'node/bin/koishi'))) return
 
   if (!(await exists(cachedFile))) {
     throw Exceptions.fileNotFound(cachedFile)
@@ -132,8 +132,8 @@ export const prepareNodeExtractLinux = async () => {
   await del(dir('buildPortableData', 'node/share'))
 
   await fs.promises.rename(
-    dir('buildPortableData', 'node/bin/node.exe'),
-    dir('buildPortableData', 'node/bin/koishi.exe')
+    dir('buildPortableData', 'node/bin/node'),
+    dir('buildPortableData', 'node/bin/koishi')
   )
 }
 
