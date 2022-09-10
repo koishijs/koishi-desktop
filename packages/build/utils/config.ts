@@ -65,4 +65,8 @@ export const koiManifest = Handlebars.compile(
   fs.readFileSync(dir('templates', 'koi.exe.manifest.hbs')).toString('utf-8')
 )({ koiSemver })
 
+export const koishiManifest = Handlebars.compile(
+  fs.readFileSync(dir('templates', 'koishi.exe.manifest.hbs')).toString('utf-8')
+)({ koiSemver })
+
 //#endregion
