@@ -13,6 +13,8 @@ export const compileAppDebug = () =>
       'build',
       '-o',
       dir('buildPortable', process.platform === 'win32' ? 'koi.exe' : 'koi'),
+      '-x',
+      '-v',
       '-ldflags',
       `${
         process.platform === 'win32' ? '-H=windowsgui ' : ''
@@ -28,6 +30,8 @@ export const compileAppRelease = () =>
       'build',
       '-o',
       dir('buildPortable', process.platform === 'win32' ? 'koi.exe' : 'koi'),
+      '-x',
+      '-v',
       '-trimpath',
       '-ldflags',
       `-w -s ${
