@@ -33,7 +33,9 @@ func buildOnReady(i *do.Injector) func() {
 		if runtime.GOOS != "darwin" {
 			systray.SetTitle("Koishi")
 		}
-		systray.SetTooltip("Koishi")
+		if runtime.GOOS != "windows" {
+			systray.SetTooltip("Koishi")
+		}
 		systray.SetTemplateIcon(icon.Data, icon.Data)
 
 		mStarting := systray.AddMenuItem("Starting...", "Starting...")
