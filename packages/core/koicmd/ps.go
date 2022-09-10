@@ -13,6 +13,7 @@ type ResultPsInstance struct {
 	Name    string `json:"name" mapstructure:"name"`
 	Running bool   `json:"running" mapstructure:"running"`
 	Pid     int    `json:"pid" mapstructure:"pid"`
+	Listen  string `json:"listen" mapstructure:"listen"`
 }
 
 type ResultPs struct {
@@ -42,15 +43,22 @@ func koiCmdPs(i *do.Injector) *proto.Response {
 	result := &ResultPs{}
 
 	for _, name := range instanceNames {
-		pid := daemonProc.GetPid(name)
-		running := pid != 0
+		meta := daemonProc.GetMeta(name)
+		if meta == nil {
+			meta = &daemonproc.DProcMeta{
+				Pid:    0,
+				Listen: "",
+			}
+		}
+		running := meta.Pid != 0
 		if (!running) && (!all) {
 			continue
 		}
 		result.Instances = append(result.Instances, &ResultPsInstance{
 			Name:    name,
 			Running: running,
-			Pid:     pid,
+			Pid:     meta.Pid,
+			Listen:  meta.Listen,
 		})
 	}
 
