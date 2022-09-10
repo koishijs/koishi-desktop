@@ -43,6 +43,23 @@ const buildKoiSemver = () => {
 
 export const koiSemver = buildKoiSemver()
 
+export const koiVersionStrings = {
+  Comments: 'Koishi Desktop',
+  CompanyName: 'Koishi.js',
+  FileDescription: 'Koishi Desktop',
+  FileVersion: koiVersion,
+  InternalName: 'Koishi Desktop',
+  LegalCopyright: '2022 Il Harper',
+  LegalTrademarks: '2022 Il Harper',
+  OriginalFilename: 'koi',
+  PrivateBuild: koiVersion,
+  ProductName: 'Koishi Desktop',
+  ProductVersion: koiVersion,
+  SpecialBuild: koiVersion,
+}
+
+export const koiVersionStringsJson = JSON.stringify(koiVersionStrings)
+
 //#endregion
 
 //#region Templates
@@ -59,7 +76,7 @@ export const koiConfig = Handlebars.compile(
 
 export const koiVersionInfo = Handlebars.compile(
   fs.readFileSync(dir('templates', 'versioninfo.json.hbs')).toString('utf-8')
-)({ koiVersion, koiSemver })
+)({ koiSemver, koiVersionStringsJson })
 
 export const koiManifest = Handlebars.compile(
   fs.readFileSync(dir('templates', 'koi.exe.manifest.hbs')).toString('utf-8')
