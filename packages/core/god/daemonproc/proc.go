@@ -225,3 +225,23 @@ func (daemonProc *DaemonProcess) GetPid(name string) int {
 	}
 	return dp.koiProc.Pid()
 }
+
+// GetMeta find and return meta info of instance.
+//
+// Returns nil if instance is not running.
+func (daemonProc *DaemonProcess) GetMeta(name string) *struct {
+	Pid    int
+	Listen string
+} {
+	daemonProc.mutex.Lock()
+	defer daemonProc.mutex.Unlock()
+
+	dp := daemonProc.reg[daemonProc.getIndex(name)]
+	if dp == nil {
+		return nil
+	}
+	return &struct {
+		Pid    int
+		Listen string
+	}{Pid: dp.koiProc.Pid(), Listen: dp.listen}
+}
