@@ -14,7 +14,7 @@ func Import(
 	path string,
 	name string,
 	force bool,
-) (<-chan *rpl.Log, <-chan *proto.Response, error) {
+) (<-chan *proto.Response, <-chan *rpl.Log, error) {
 	var err error
 
 	ws, err := Connect(conn)
@@ -51,7 +51,7 @@ func Import(
 		}
 	}()
 
-	logC, respC := logger.FilterLog(wsRespC)
+	respC, logC := logger.FilterLog(wsRespC)
 
-	return logC, respC, nil
+	return respC, logC, nil
 }

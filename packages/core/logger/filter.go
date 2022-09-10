@@ -10,26 +10,28 @@ import (
 	"gopkg.ilharper.com/x/rpl"
 )
 
-func FilterLog(resp <-chan *proto.Response) (<-chan *rpl.Log, <-chan *proto.Response) {
+func FilterLog(
+	resp <-chan *proto.Response,
+) (<-chan *proto.Response, <-chan *rpl.Log) {
 	if resp == nil {
 		panic("koi/core/logger/filter: response channel is nil")
 	}
 
-	log := make(chan *rpl.Log)
-	data := make(chan *proto.Response)
+	respC := make(chan *proto.Response)
+	logC := make(chan *rpl.Log)
 
 	go func() {
 		for {
 			r := <-resp
 			if r == nil {
-				log <- nil
-				data <- nil
+				logC <- nil
+				respC <- nil
 
 				break
 			}
 
 			if r.Type != proto.TypeResponseLog {
-				data <- r
+				respC <- r
 			} else {
 				l := rpl.Log{}
 				err := mapstructure.Decode(r.Data, &l)
@@ -40,12 +42,12 @@ func FilterLog(resp <-chan *proto.Response) (<-chan *rpl.Log, <-chan *proto.Resp
 					// This will not introduce a new major version so please treat carefully.
 					panic(fmt.Errorf("koi/core/logger/filter: failed to decode response: %w", err))
 				}
-				log <- &l
+				logC <- &l
 			}
 		}
 	}()
 
-	return log, data
+	return respC, logC
 }
 
 func LogChannel(i *do.Injector, logC <-chan *rpl.Log) {

@@ -63,7 +63,7 @@ func newImportAction(i *do.Injector) (cli.ActionFunc, error) {
 			return err
 		}
 
-		logC, respC, err := client.Import(
+		respC, logC, err := client.Import(
 			conn,
 			c.Args().First(),
 			c.String("name"),
