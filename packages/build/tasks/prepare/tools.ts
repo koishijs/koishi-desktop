@@ -1,6 +1,7 @@
 import { parallel } from 'gulp'
 import { info } from 'gulplog'
 import {
+  sourceGitHub,
   versionToolsGolangCILint,
   versionToolsRcedit,
   versionToolsVersioninfo,
@@ -24,7 +25,7 @@ export const prepareToolsGolangCILint = buildPrepareTool(
 )
 
 export const prepareToolsRcedit = async () => {
-  const src = `https://github.com/electron/rcedit/releases/download/${versionToolsRcedit}/rcedit-x64.exe`
+  const src = `${sourceGitHub}/electron/rcedit/releases/download/${versionToolsRcedit}/rcedit-x64.exe`
   const destFile = 'rcedit.exe'
 
   info('Checking temporary cache.')
