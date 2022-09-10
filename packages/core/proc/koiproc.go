@@ -168,5 +168,5 @@ func (koiProc *KoiProc) Kill() error {
 }
 
 func (koiProc *KoiProc) Pid() int {
-	return koiProc.cmd.ProcessState.Pid()
+	return koiProc.cmd.Process.Pid
 }
