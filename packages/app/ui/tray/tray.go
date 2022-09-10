@@ -28,6 +28,8 @@ func buildOnReady(i *do.Injector) func() {
 	l := do.MustInvoke[*logger.Logger](i)
 
 	return func() {
+		var err error
+
 		l.Debug("Tray ready.")
 
 		if runtime.GOOS != "darwin" {
@@ -56,71 +58,77 @@ func buildOnReady(i *do.Injector) func() {
 			systray.Quit()
 		}
 
-		go func() {
-			for {
-				respC, logC, err := client.Ps(conn, true)
-				if err != nil {
-					l.Error(err)
+		go trayDaemon(i, conn)
+	}
+}
 
-					continue
-				}
+func trayDaemon(i *do.Injector, conn *client.Options) {
+	l := do.MustInvoke[*logger.Logger](i)
 
-				logger.LogChannel(i, logC)
+	for {
+		var err error
 
-				var result proto.Result
-				response := <-respC
-				if response == nil {
-					l.Error("failed to get result, response is nil")
+		respC, logC, err := client.Ps(conn, true)
+		if err != nil {
+			l.Error(err)
 
-					continue
-				}
+			continue
+		}
 
-				if response.Type != proto.TypeResponseResult {
-					l.Errorf("failed to parse result %#+v: response type '%s' is not '%s': %v", response, response.Type, proto.TypeResponseResult, err)
+		logger.LogChannel(i, logC)
 
-					continue
-				}
+		var result proto.Result
+		response := <-respC
+		if response == nil {
+			l.Error("failed to get result, response is nil")
 
-				err = mapstructure.Decode(response.Data, &result)
-				if err != nil {
-					l.Errorf("failed to parse result %#+v: %v", response, err)
+			continue
+		}
 
-					continue
-				}
+		if response.Type != proto.TypeResponseResult {
+			l.Errorf("failed to parse result %#+v: response type '%s' is not '%s': %v", response, response.Type, proto.TypeResponseResult, err)
 
-				if result.Code != 0 {
-					s, ok := result.Data.(string)
-					if !ok {
-						l.Errorf("result data %#+v is not string", result.Data)
+			continue
+		}
 
-						continue
-					}
-					l.Error(s)
+		err = mapstructure.Decode(response.Data, &result)
+		if err != nil {
+			l.Errorf("failed to parse result %#+v: %v", response, err)
 
-					continue
-				}
+			continue
+		}
 
-				var resultPs koicmd.ResultPs
-				err = mapstructure.Decode(result.Data, &resultPs)
-				if err != nil {
-					l.Errorf("failed to parse result %#+v: %w", result, err)
+		if result.Code != 0 {
+			s, ok := result.Data.(string)
+			if !ok {
+				l.Errorf("result data %#+v is not string", result.Data)
 
-					continue
-				}
-
-				instances := resultPs.Instances
-
-				systray.ResetMenu()
-
-				for _, instance := range instances {
-					systray.AddMenuItem(instance.Name, instance.Name)
-				}
-
-				addHide(i)
-
-				<-time.NewTimer(3 * time.Second).C
+				continue
 			}
-		}()
+			l.Error(s)
+
+			continue
+		}
+
+		var resultPs koicmd.ResultPs
+		err = mapstructure.Decode(result.Data, &resultPs)
+		if err != nil {
+			l.Errorf("failed to parse result %#+v: %w", result, err)
+
+			continue
+		}
+
+		instances := resultPs.Instances
+
+		systray.ResetMenu()
+
+		for _, instance := range instances {
+			systray.AddMenuItem(instance.Name, instance.Name)
+		}
+
+		addHide(i)
+
+		<-time.NewTimer(3 * time.Second).C
 	}
 }
 
