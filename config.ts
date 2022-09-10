@@ -27,6 +27,7 @@ export const versionWebView2 = '1.0.1293.44'
 
 export const versionToolsVersioninfo = 'v1.4.0'
 export const versionToolsGolangCILint = 'v1.48.0'
+export const versionToolsRcedit = 'v1.1.1'
 
 //#endregion
 
