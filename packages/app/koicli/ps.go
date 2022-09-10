@@ -94,15 +94,15 @@ func newPsAction(i *do.Injector) (cli.ActionFunc, error) {
 			return errors.New(s)
 		}
 
-		var resultPsInstance koicmd.ResultPsInstance
-		err = mapstructure.Decode(result.Data, &resultPsInstance)
+		var resultPs koicmd.ResultPs
+		err = mapstructure.Decode(result.Data, &resultPs)
 		if err != nil {
 			return fmt.Errorf("failed to parse result %#+v: %w", result, err)
 		}
 
-		resultPsInstanceJson, err := json.Marshal(resultPsInstance)
+		resultPsInstanceJson, err := json.Marshal(resultPs)
 		if err != nil {
-			return fmt.Errorf("failed to marshal result %#+v: %w", resultPsInstance, err)
+			return fmt.Errorf("failed to marshal result %#+v: %w", resultPs, err)
 		}
 
 		fmt.Println(resultPsInstanceJson)
