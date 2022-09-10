@@ -54,23 +54,23 @@ func buildOnReady(i *do.Injector) func() {
 		}
 
 		manager := manage.NewKoiManager(cfg.Computed.Exe, cfg.Computed.DirLock)
-		// Ensure() only once. No need to Ensure() every tick.
-		conn, err := manager.Ensure()
-		if err != nil {
-			l.Error(err)
-			systray.Quit()
-		}
-
-		go trayDaemon(i, conn)
+		go trayDaemon(i, manager)
 	}
 }
 
-func trayDaemon(i *do.Injector, conn *client.Options) {
+func trayDaemon(i *do.Injector, manager *manage.KoiManager) {
 	l := do.MustInvoke[*logger.Logger](i)
 	channelRegistry := do.MustInvokeNamed[*ChannelRegistry](i, serviceTrayChannelRegistry)
 
 	for {
 		var err error
+
+		conn, err := manager.Ensure()
+		if err != nil {
+			l.Error(err)
+
+			continue
+		}
 
 		respC, logC, err := client.Ps(conn, true)
 		if err != nil {
