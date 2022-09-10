@@ -7,6 +7,7 @@ import (
 	"fyne.io/systray"
 	"github.com/mitchellh/mapstructure"
 	"github.com/samber/do"
+	"gopkg.ilharper.com/koi/app/util"
 	"gopkg.ilharper.com/koi/core/god/proto"
 	"gopkg.ilharper.com/koi/core/koicmd"
 	"gopkg.ilharper.com/koi/core/koiconfig"
@@ -126,6 +127,8 @@ func trayDaemon(i *do.Injector, conn *client.Options) {
 		// Clear all menu items.
 		systray.ResetMenu()
 
+		addInfo(i)
+
 		// Iterate all instances.
 		for _, instance := range instances {
 			// Add menu items for each instance.
@@ -151,6 +154,20 @@ func trayDaemon(i *do.Injector, conn *client.Options) {
 
 		<-time.NewTimer(refreshDuration).C
 	}
+}
+
+func addInfo(i *do.Injector) {
+	channelRegistry := do.MustInvokeNamed[*ChannelRegistry](i, serviceTrayChannelRegistry)
+
+	mTitle := systray.AddMenuItem("Koishi Desktop", "Koishi Desktop")
+	mTitle.Disable()
+	version := "v" + util.AppVersion
+	mVersion := systray.AddMenuItem(version, version)
+	mVersion.Disable()
+	systray.AddSeparator()
+
+	channelRegistry.Insert(mTitle.ClickedCh)
+	channelRegistry.Insert(mVersion.ClickedCh)
 }
 
 func addHide(i *do.Injector) {
