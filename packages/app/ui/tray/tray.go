@@ -19,22 +19,23 @@ func buildOnReady(i *do.Injector) func() {
 	l := do.MustInvoke[*logger.Logger](i)
 
 	return func() {
+		l.Debug("Tray ready.")
+
 		if runtime.GOOS != "darwin" {
 			systray.SetTitle("Koishi")
 		}
 		systray.SetTooltip("Koishi")
 		systray.SetTemplateIcon(icon.Data, icon.Data)
 
+		mStarting := systray.AddMenuItem("Starting...", "Starting...")
+		mStarting.Disable()
+		systray.AddSeparator()
 		mQuit := systray.AddMenuItem("Hide", "Hide Tray Button")
 
-		go func() {
-			for {
-				select {
-				case <-mQuit.ClickedCh:
-					l.Debugf("Exiting systray")
-					systray.Quit()
-				}
-			}
-		}()
+		_, ok := <-mQuit.ClickedCh
+		if ok {
+			l.Debugf("Exiting systray")
+			systray.Quit()
+		}
 	}
 }
