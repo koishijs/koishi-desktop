@@ -19,6 +19,8 @@ import (
 const refreshDuration = 3 * time.Second
 
 func Run(i *do.Injector) error {
+	do.ProvideNamed(i, serviceTrayChannelRegistry, NewChannelRegistry)
+
 	systray.Run(buildOnReady(i), nil)
 
 	return nil
@@ -64,6 +66,7 @@ func buildOnReady(i *do.Injector) func() {
 
 func trayDaemon(i *do.Injector, conn *client.Options) {
 	l := do.MustInvoke[*logger.Logger](i)
+	channelRegistry := do.MustInvokeNamed[*ChannelRegistry](i, serviceTrayChannelRegistry)
 
 	for {
 		var err error
@@ -120,23 +123,44 @@ func trayDaemon(i *do.Injector, conn *client.Options) {
 
 		instances := resultPs.Instances
 
+		// Clear all menu items.
 		systray.ResetMenu()
 
+		// Iterate all instances.
 		for _, instance := range instances {
-			systray.AddMenuItem(instance.Name, instance.Name)
+			// Add menu items for each instance.
+			m := systray.AddMenuItem(instance.Name, instance.Name)
+			mOpen := m.AddSubMenuItem("Open", "Open")
+			mStart := m.AddSubMenuItem("Start", "Start")
+			mRestart := m.AddSubMenuItem("Restart", "Restart")
+			mStop := m.AddSubMenuItem("Stop", "Stop")
+			if instance.Running {
+				mStart.Disable()
+			} else {
+				mRestart.Disable()
+				mStop.Disable()
+			}
+
+			channelRegistry.Insert(mOpen.ClickedCh)
+			channelRegistry.Insert(mStart.ClickedCh)
+			channelRegistry.Insert(mRestart.ClickedCh)
+			channelRegistry.Insert(mStop.ClickedCh)
 		}
 
 		addHide(i)
 
-		<-time.NewTimer(3 * time.Second).C
+		<-time.NewTimer(refreshDuration).C
 	}
 }
 
 func addHide(i *do.Injector) {
 	l := do.MustInvoke[*logger.Logger](i)
+	channelRegistry := do.MustInvokeNamed[*ChannelRegistry](i, serviceTrayChannelRegistry)
 
 	systray.AddSeparator()
 	mQuit := systray.AddMenuItem("Hide", "Hide Tray Button")
+
+	channelRegistry.Insert(mQuit.ClickedCh)
 
 	go func() {
 		_, ok := <-mQuit.ClickedCh
