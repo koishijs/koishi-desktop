@@ -48,6 +48,7 @@ gopkg.ilharper.com/x/colette v0.1.0/go.mod h1:maa00kijpiojqfY5IURkFkItBE/ajA3e9G
 gopkg.ilharper.com/x/isatty v1.0.1 h1:tdoWUKjuvIA/D57JFtLo8JWCF+M1bPw6Wiv8DzcOD+s=
 gopkg.ilharper.com/x/isatty v1.0.1/go.mod h1:Kr3mbYEPfNsY0EtbYhbtfC99Jiex7YE6ulRzlfA/NJI=
 gopkg.ilharper.com/x/rpl v0.2.0 h1:X9w6qD4oYTP/C5gs6RUl8DopGqf1jpWZm7Qk3ecoMKQ=
+gopkg.ilharper.com/x/rpl v0.2.0/go.mod h1:2/B6DQY0yOsMPoP+UzrmoZbkHgu+rkR1KtveXiS8pwk=
 gopkg.ilharper.com/x/supcolor v1.0.0 h1:+JCeatjuGQnCH/faG34s2qBLKEdVWLSZQuFl5ryZTrk=
 gopkg.ilharper.com/x/supcolor v1.0.0/go.mod h1:+KcGL5qgyeGTWOGElVBmtWhPBkvMOklPlG64/tjrDGc=
 gopkg.in/check.v1 v0.0.0-20161208181325-20d25e280405/go.mod h1:Co6ibVJAznAaIkqp8huTwlJQCZ016jof/cbN4VW5Yz0=
