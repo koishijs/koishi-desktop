@@ -7,11 +7,11 @@ import (
 	"fyne.io/systray"
 	"github.com/mitchellh/mapstructure"
 	"github.com/samber/do"
-	"gopkg.ilharper.com/koi/app/ui/icon"
 	"gopkg.ilharper.com/koi/core/god/proto"
 	"gopkg.ilharper.com/koi/core/koicmd"
 	"gopkg.ilharper.com/koi/core/koiconfig"
 	"gopkg.ilharper.com/koi/core/logger"
+	"gopkg.ilharper.com/koi/core/ui/icon"
 	"gopkg.ilharper.com/koi/sdk/client"
 	"gopkg.ilharper.com/koi/sdk/manage"
 )
