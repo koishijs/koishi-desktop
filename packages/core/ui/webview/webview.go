@@ -13,6 +13,15 @@ func run(
 	name string,
 	listen string,
 ) {
+	l := do.MustInvoke[*logger.Logger](i)
+
+	defer func() {
+		err := recover()
+		if err != nil {
+			l.Errorf("webview failed: %s", err)
+		}
+	}()
+
 	w := webview.New(false)
 	defer w.Destroy()
 
