@@ -21,7 +21,13 @@ const (
 )
 
 func main() {
-	i := do.New()
+	l, _ := logger.BuildNewLogger(0)(nil)
+
+	i := do.NewWithOpts(&do.InjectorOpts{
+		Logf: func(format string, args ...any) {
+			l.Debugf(format, args...)
+		},
+	})
 
 	do.ProvideNamedValue(i, coreUtil.ServiceAppVersion, util.AppVersion)
 
@@ -31,14 +37,13 @@ func main() {
 	fixConsoleErr := fixconsole.FixConsoleIfNeeded()
 
 	do.Provide(i, logger.BuildNewKoiFileTarget(os.Stderr))
-	do.Provide(i, logger.BuildNewLogger(0))
+	do.ProvideValue(i, l)
 	receiver := rpl.NewReceiver()
 	receiver.ChOffset = 100
 	// Use ProvideValue() here because x/rpl didn't provide a do ctor
 	do.ProvideValue(i, receiver)
 	do.Provide(i, koicli.NewCli)
 
-	l := do.MustInvoke[*logger.Logger](i)
 	consoleTarget := do.MustInvoke[*logger.KoiFileTarget](i)
 	receiver.Register(consoleTarget)
 	l.Register(consoleTarget)
