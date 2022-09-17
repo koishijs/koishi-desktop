@@ -11,6 +11,7 @@
     "handlebars": "^4.7.7",
     "lzma-native": "^8",
     "node-stream-zip": "^1.15.0",
+    "sharp": "~0.30.7",
     "tar": "^6"
   },
   "devDependencies": {
