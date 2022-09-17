@@ -199,6 +199,13 @@
   resolved "https://registry.npmmirror.com/@types/node/-/node-18.6.2.tgz#ffc5f0f099d27887c8d9067b54e55090fcd54126"
   integrity sha512-KcfkBq9H4PI6Vpu5B/KoPeuVDAbmi+2mDBqGPGUgoL7yXQtcWGu2vJWmmRkneWK3Rh0nIAX192Aa87AqKHYChQ==
 
+"@types/sharp@~0.30.5":
+  version "0.30.5"
+  resolved "https://registry.yarnpkg.com/@types/sharp/-/sharp-0.30.5.tgz#d75d91f7acf5260525aeae229845046dcff6d17a"
+  integrity sha512-EhO29617AIBqxoVtpd1qdBanWpspk/kD2B6qTFRJ31Q23Rdf+DNU1xlHSwtqvwq1vgOqBwq1i38SX+HGCymIQg==
+  dependencies:
+    "@types/node" "*"
+
 "@types/tar@^6":
   version "6.1.1"
   resolved "https://registry.npmmirror.com/@types/tar/-/tar-6.1.1.tgz#ab341ec1f149d7eb2a4f4ded56ff85f0d4fe7cb5"
