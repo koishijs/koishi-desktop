@@ -240,11 +240,3 @@ $RECYCLE.BIN/
 Network Trash Folder
 Temporary Items
 .apdisk
-
-# Temp files
-tmp/
-
-# Generated manifest
-packages/app/versioninfo.json
-packages/app/resource.syso
-packages/app/resources/koi.exe.manifest
