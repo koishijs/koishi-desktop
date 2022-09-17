@@ -10,6 +10,7 @@
     "del": "^6",
     "execa": "^5.0.0",
     "handlebars": "^4.7.7",
+    "jimp": "^0.16.2",
     "lzma-native": "^8",
     "node-stream-zip": "^1.15.0",
     "sharp": "~0.30.7",
