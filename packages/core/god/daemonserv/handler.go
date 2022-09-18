@@ -17,7 +17,7 @@ import (
 
 // Handle request.
 // Here's already a new goroutine started by [websocket.Handler].
-func buildHandle(i *do.Injector, daemon *daemonService) func(ws *websocket.Conn) {
+func buildHandle(i *do.Injector, daemon *DaemonService) func(ws *websocket.Conn) {
 	l := do.MustInvoke[*logger.Logger](i)
 
 	return func(ws *websocket.Conn) {
@@ -89,7 +89,7 @@ func buildHandle(i *do.Injector, daemon *daemonService) func(ws *websocket.Conn)
 
 func handleCommand(
 	i *do.Injector,
-	daemon *daemonService,
+	daemon *DaemonService,
 	ws *websocket.Conn,
 	command *proto.CommandRequest,
 ) error {

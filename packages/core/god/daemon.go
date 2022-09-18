@@ -113,8 +113,9 @@ func Daemon(i *do.Injector) error {
 		return fmt.Errorf("failed to close daemon lock: %w", err)
 	}
 
-	// Construct daemonService
-	service := daemonserv.NewDaemonService(i)
+	// Invoke DaemonService
+	do.Provide(i, daemonserv.NewDaemonService)
+	service := do.MustInvoke[*daemonserv.DaemonService](i)
 
 	mux := http.NewServeMux()
 	mux.Handle(DaemonEndpoint, service.Handler)

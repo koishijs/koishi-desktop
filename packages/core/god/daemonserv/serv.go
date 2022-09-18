@@ -7,7 +7,7 @@ import (
 	"gopkg.ilharper.com/koi/core/koicmd"
 )
 
-type daemonService struct {
+type DaemonService struct {
 	// The [god.Task] registry.
 	tasks task.TaskRegistry
 
@@ -17,11 +17,11 @@ type daemonService struct {
 	Handler websocket.Handler
 }
 
-func NewDaemonService(i *do.Injector) *daemonService {
+func NewDaemonService(i *do.Injector) (*DaemonService, error) {
 	do.Provide(i, koicmd.NewKoiCmdRegistry)
 
-	service := &daemonService{}
+	service := &DaemonService{}
 	service.Handler = buildHandle(i, service)
 
-	return service
+	return service, nil
 }
