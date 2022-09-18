@@ -2,7 +2,6 @@ package tray
 
 import (
 	"runtime"
-	"time"
 
 	"fyne.io/systray"
 	"github.com/mitchellh/mapstructure"
@@ -17,172 +16,275 @@ import (
 	"gopkg.ilharper.com/koi/sdk/manage"
 )
 
-const refreshDuration = 3 * time.Second
+type TrayDaemon struct {
+	i       *do.Injector
+	chanReg []chan struct{}
+	manager *manage.KoiManager
+}
 
-func Run(i *do.Injector) error {
-	do.ProvideNamed(i, serviceTrayChannelRegistry, NewChannelRegistry)
+func NewTrayDaemon(i *do.Injector) (*TrayDaemon, error) {
+	cfg := do.MustInvoke[*koiconfig.Config](i)
 
-	systray.Run(buildOnReady(i), nil)
+	return &TrayDaemon{
+		i:       i,
+		manager: manage.NewKoiManager(cfg.Computed.Exe, cfg.Computed.DirLock),
+	}, nil
+}
+
+func (tray *TrayDaemon) Run() error {
+	systray.Run(tray.onReady, nil)
 
 	return nil
 }
 
-func buildOnReady(i *do.Injector) func() {
-	l := do.MustInvoke[*logger.Logger](i)
+func (tray *TrayDaemon) onReady() {
+	l := do.MustInvoke[*logger.Logger](tray.i)
 
-	return func() {
-		var err error
+	l.Debug("Tray ready.")
 
-		l.Debug("Tray ready.")
-
-		if runtime.GOOS != "darwin" {
-			systray.SetTitle("Koishi")
-		}
-		if runtime.GOOS != "windows" {
-			systray.SetTooltip("Koishi")
-		}
-		systray.SetTemplateIcon(icon.Data, icon.Data)
-
-		mStarting := systray.AddMenuItem("Starting...", "Starting...")
-		mStarting.Disable()
-		addHide(i)
-
-		cfg, err := do.Invoke[*koiconfig.Config](i)
-		if err != nil {
-			l.Error(err)
-			systray.Quit()
-		}
-
-		manager := manage.NewKoiManager(cfg.Computed.Exe, cfg.Computed.DirLock)
-		go trayDaemon(i, manager)
+	// systray.SetTitle("Koishi")
+	if runtime.GOOS != "windows" {
+		systray.SetTooltip("Koishi")
 	}
+	systray.SetTemplateIcon(icon.Koishi, icon.Koishi)
+
+	mStarting := systray.AddMenuItem("Starting...", "")
+	mStarting.Disable()
+	tray.chanReg = append(tray.chanReg, mStarting.ClickedCh)
+
+	tray.addItemsAfter()
+
+	_, err := tray.manager.Ensure()
+	if err != nil {
+		l.Error(err)
+	}
+
+	tray.rebuild()
 }
 
-func trayDaemon(i *do.Injector, manager *manage.KoiManager) {
-	l := do.MustInvoke[*logger.Logger](i)
-	channelRegistry := do.MustInvokeNamed[*ChannelRegistry](i, serviceTrayChannelRegistry)
+func (tray *TrayDaemon) rebuild() {
+	var err error
 
-	for {
-		var err error
+	l := do.MustInvoke[*logger.Logger](tray.i)
 
-		conn, err := manager.Ensure()
-		if err != nil {
-			l.Error(err)
+	conn, err := tray.manager.Available()
+	if err != nil {
+		systray.ResetMenu()
+		for _, c := range tray.chanReg {
+			close(c)
+		}
+		tray.chanReg = []chan struct{}{}
+		tray.addItemsBefore()
+		systray.AddSeparator()
+		tray.addItemsAfter()
 
-			continue
+		return
+	}
+
+	respC, logC, err := client.Ps(conn, true)
+	if err != nil {
+		l.Error(err)
+
+		return
+	}
+
+	logger.LogChannel(tray.i, logC)
+
+	var result proto.Result
+	response := <-respC
+	if response == nil {
+		l.Error("failed to get result, response is nil")
+
+		return
+	}
+
+	if response.Type != proto.TypeResponseResult {
+		l.Errorf("failed to parse result %#+v: response type '%s' is not '%s': %v", response, response.Type, proto.TypeResponseResult, err)
+
+		return
+	}
+
+	err = mapstructure.Decode(response.Data, &result)
+	if err != nil {
+		l.Errorf("failed to parse result %#+v: %v", response, err)
+
+		return
+	}
+
+	if result.Code != 0 {
+		s, ok := result.Data.(string)
+		if !ok {
+			l.Errorf("result data %#+v is not string", result.Data)
+
+			return
+		}
+		l.Error(s)
+
+		return
+	}
+
+	var resultPs koicmd.ResultPs
+	err = mapstructure.Decode(result.Data, &resultPs)
+	if err != nil {
+		l.Errorf("failed to parse result %#+v: %w", result, err)
+
+		return
+	}
+
+	instances := resultPs.Instances
+
+	// Clear all menu items.
+	systray.ResetMenu()
+	for _, c := range tray.chanReg {
+		close(c)
+	}
+	tray.chanReg = []chan struct{}{}
+
+	tray.addItemsBefore()
+
+	if len(instances) > 0 {
+		systray.AddSeparator()
+	}
+
+	// Iterate all instances.
+	for _, instance := range instances {
+		// Add menu items for each instance.
+		m := systray.AddMenuItem(instance.Name, instance.Name)
+		mOpen := m.AddSubMenuItem("Open", "Open")
+		mOpen.SetTemplateIcon(icon.Open, icon.Open)
+		mStart := m.AddSubMenuItem("Start", "Start")
+		mStart.SetTemplateIcon(icon.Start, icon.Start)
+		mRestart := m.AddSubMenuItem("Restart", "Restart")
+		mRestart.SetTemplateIcon(icon.Restart, icon.Restart)
+		mStop := m.AddSubMenuItem("Stop", "Stop")
+		mStop.SetTemplateIcon(icon.Stop, icon.Stop)
+		if instance.Running {
+			mStart.Disable()
+		} else {
+			mOpen.Disable()
+			mRestart.Disable()
+			mStop.Disable()
 		}
 
-		respC, logC, err := client.Ps(conn, true)
-		if err != nil {
-			l.Error(err)
+		tray.chanReg = append(tray.chanReg, mOpen.ClickedCh)
+		tray.chanReg = append(tray.chanReg, mStart.ClickedCh)
+		tray.chanReg = append(tray.chanReg, mRestart.ClickedCh)
+		tray.chanReg = append(tray.chanReg, mStop.ClickedCh)
+	}
 
-			continue
-		}
+	systray.AddSeparator()
+	tray.addItemsAfter()
+}
 
-		logger.LogChannel(i, logC)
+func (tray *TrayDaemon) addItemsBefore() {
+	mTitle := systray.AddMenuItem("Koishi Desktop", "")
+	mTitle.Disable()
+	mTitle.SetTemplateIcon(icon.Koishi, icon.Koishi)
+	version := "v" + util.AppVersion
+	mVersion := systray.AddMenuItem(version, "")
+	mVersion.Disable()
 
-		var result proto.Result
-		response := <-respC
-		if response == nil {
-			l.Error("failed to get result, response is nil")
+	tray.chanReg = append(tray.chanReg, mTitle.ClickedCh)
+	tray.chanReg = append(tray.chanReg, mVersion.ClickedCh)
+}
 
-			continue
-		}
+func (tray *TrayDaemon) addItemsAfter() {
+	l := do.MustInvoke[*logger.Logger](tray.i)
 
-		if response.Type != proto.TypeResponseResult {
-			l.Errorf("failed to parse result %#+v: response type '%s' is not '%s': %v", response, response.Type, proto.TypeResponseResult, err)
+	mAdvanced := systray.AddMenuItem("Advanced", "")
+	mRefresh := mAdvanced.AddSubMenuItem("Refresh", "")
+	mRefresh.SetTemplateIcon(icon.Restart, icon.Restart)
+	mStartDaemon := mAdvanced.AddSubMenuItem("Start Daemon", "")
+	mStartDaemon.SetTemplateIcon(icon.Start, icon.Start)
+	mStopDaemon := mAdvanced.AddSubMenuItem("Stop Daemon", "")
+	mStopDaemon.SetTemplateIcon(icon.Stop, icon.Stop)
+	mKillDaemon := mAdvanced.AddSubMenuItem("Kill Daemon", "")
+	mKillDaemon.SetTemplateIcon(icon.Kill, icon.Kill)
+	mExit := mAdvanced.AddSubMenuItem("Stop and Exit", "")
+	mExit.SetTemplateIcon(icon.Exit, icon.Exit)
+	mQuit := systray.AddMenuItem("Hide", "")
+	mQuit.SetTemplateIcon(icon.Hide, icon.Hide)
 
-			continue
-		}
+	tray.chanReg = append(tray.chanReg, mAdvanced.ClickedCh)
+	tray.chanReg = append(tray.chanReg, mRefresh.ClickedCh)
+	tray.chanReg = append(tray.chanReg, mStartDaemon.ClickedCh)
+	tray.chanReg = append(tray.chanReg, mStopDaemon.ClickedCh)
+	tray.chanReg = append(tray.chanReg, mKillDaemon.ClickedCh)
+	tray.chanReg = append(tray.chanReg, mExit.ClickedCh)
+	tray.chanReg = append(tray.chanReg, mQuit.ClickedCh)
 
-		err = mapstructure.Decode(response.Data, &result)
-		if err != nil {
-			l.Errorf("failed to parse result %#+v: %v", response, err)
-
-			continue
-		}
-
-		if result.Code != 0 {
-			s, ok := result.Data.(string)
+	go func() {
+		for {
+			_, ok := <-mRefresh.ClickedCh
 			if !ok {
-				l.Errorf("result data %#+v is not string", result.Data)
+				break
+			}
+			l.Debug("Rebuilding tray")
+			tray.rebuild()
+		}
+	}()
+
+	go func() {
+		for {
+			_, ok := <-mStartDaemon.ClickedCh
+			if !ok {
+				break
+			}
+			l.Debug("Starting daemon")
+			err := tray.manager.Start()
+			if err != nil {
+				l.Error(err)
 
 				continue
 			}
-			l.Error(s)
-
-			continue
+			l.Debug("Rebuilding tray")
+			tray.rebuild()
 		}
+	}()
 
-		var resultPs koicmd.ResultPs
-		err = mapstructure.Decode(result.Data, &resultPs)
-		if err != nil {
-			l.Errorf("failed to parse result %#+v: %w", result, err)
-
-			continue
-		}
-
-		instances := resultPs.Instances
-
-		// Clear all menu items.
-		systray.ResetMenu()
-
-		addInfo(i)
-
-		// Iterate all instances.
-		for _, instance := range instances {
-			// Add menu items for each instance.
-			m := systray.AddMenuItem(instance.Name, instance.Name)
-			mOpen := m.AddSubMenuItem("Open", "Open")
-			mStart := m.AddSubMenuItem("Start", "Start")
-			mRestart := m.AddSubMenuItem("Restart", "Restart")
-			mStop := m.AddSubMenuItem("Stop", "Stop")
-			if instance.Running {
-				mStart.Disable()
-			} else {
-				mRestart.Disable()
-				mStop.Disable()
+	go func() {
+		for {
+			_, ok := <-mStopDaemon.ClickedCh
+			if !ok {
+				break
 			}
-
-			channelRegistry.Insert(mOpen.ClickedCh)
-			channelRegistry.Insert(mStart.ClickedCh)
-			channelRegistry.Insert(mRestart.ClickedCh)
-			channelRegistry.Insert(mStop.ClickedCh)
+			l.Debug("Stopping daemon")
+			tray.manager.Stop()
+			l.Debug("Rebuilding tray")
+			tray.rebuild()
 		}
+	}()
 
-		addHide(i)
+	go func() {
+		for {
+			_, ok := <-mKillDaemon.ClickedCh
+			if !ok {
+				break
+			}
+			l.Debug("Killing daemon")
+			tray.manager.Kill()
+			l.Debug("Rebuilding tray")
+			tray.rebuild()
+		}
+	}()
 
-		<-time.NewTimer(refreshDuration).C
-	}
-}
-
-func addInfo(i *do.Injector) {
-	channelRegistry := do.MustInvokeNamed[*ChannelRegistry](i, serviceTrayChannelRegistry)
-
-	mTitle := systray.AddMenuItem("Koishi Desktop", "Koishi Desktop")
-	mTitle.Disable()
-	version := "v" + util.AppVersion
-	mVersion := systray.AddMenuItem(version, version)
-	mVersion.Disable()
-	systray.AddSeparator()
-
-	channelRegistry.Insert(mTitle.ClickedCh)
-	channelRegistry.Insert(mVersion.ClickedCh)
-}
-
-func addHide(i *do.Injector) {
-	l := do.MustInvoke[*logger.Logger](i)
-	channelRegistry := do.MustInvokeNamed[*ChannelRegistry](i, serviceTrayChannelRegistry)
-
-	systray.AddSeparator()
-	mQuit := systray.AddMenuItem("Hide", "Hide Tray Button")
-
-	channelRegistry.Insert(mQuit.ClickedCh)
+	go func() {
+		for {
+			_, ok := <-mExit.ClickedCh
+			if !ok {
+				break
+			}
+			l.Debug("Stopping daemon")
+			tray.manager.Stop()
+			l.Debug("Exiting systray")
+			systray.Quit()
+		}
+	}()
 
 	go func() {
 		_, ok := <-mQuit.ClickedCh
 		if ok {
-			l.Debugf("Exiting systray")
+			l.Debug("Exiting systray")
 			systray.Quit()
 		}
 	}()

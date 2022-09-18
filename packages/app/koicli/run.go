@@ -84,6 +84,7 @@ func newRunUIAction(i *do.Injector) (cli.ActionFunc, error) {
 	return func(c *cli.Context) error {
 		l.Debug("Trigger action: run ui")
 
-		return tray.Run(i)
+		do.Provide(i, tray.NewTrayDaemon)
+		return do.MustInvoke[*tray.TrayDaemon](i).Run()
 	}, nil
 }
