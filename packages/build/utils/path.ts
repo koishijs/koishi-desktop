@@ -12,10 +12,14 @@ const buildPaths = {
 
   packages: 'packages/',
   src: 'packages/app/',
+  srcCore: 'packages/core/',
+  srcAssets: 'packages/assets/',
+  srcIcon: 'packages/core/ui/icon/',
   srcBuild: 'packages/build/',
   templates: 'packages/build/templates/',
 
   build: 'build/',
+  buildAssets: 'build/assets',
   buildCache: 'build/caches/',
   buildVendor: 'build/vendor/',
 

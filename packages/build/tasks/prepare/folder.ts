@@ -3,6 +3,7 @@ import mkdirp from 'mkdirp'
 import { dir } from '../../utils/path'
 
 const prepareFolderTasks = [
+  dir('buildAssets'),
   dir('buildCache'),
   dir('buildVendor'),
   dir('buildPortableData'),

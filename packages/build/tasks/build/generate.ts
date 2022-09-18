@@ -8,6 +8,7 @@ import {
   koiVersionInfo,
 } from '../../utils/config'
 import mkdirp from 'mkdirp'
+import { generateAssets } from './assets'
 
 export const generateKoiConfigBefore = () =>
   fs.promises.writeFile(dir('buildPortable', 'koi.yml'), koiConfigBefore)
@@ -29,7 +30,8 @@ export const generateKoiManifest = async () => {
 export const generateBefore = parallel(
   generateKoiConfigBefore,
   generateKoiVersionInfo,
-  generateKoiManifest
+  generateKoiManifest,
+  generateAssets
 )
 
 export const generateAfter = parallel(generateKoiConfig)
