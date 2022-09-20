@@ -169,6 +169,222 @@ func (tray *TrayDaemon) rebuild() {
 		tray.chanReg = append(tray.chanReg, mStart.ClickedCh)
 		tray.chanReg = append(tray.chanReg, mRestart.ClickedCh)
 		tray.chanReg = append(tray.chanReg, mStop.ClickedCh)
+
+		go func(name string) {
+			for {
+				_, ok := <-mOpen.ClickedCh
+				if !ok {
+					break
+				}
+
+				l.Debugf("Opening instance %s", name)
+
+				conn, err := tray.manager.Available()
+				if err != nil {
+					l.Error(err)
+
+					continue
+				}
+
+				respC, logC, err := client.Open(
+					conn,
+					[]string{name},
+				)
+				if err != nil {
+					l.Error(err)
+
+					continue
+				}
+
+				logger.LogChannel(tray.i, logC)
+
+				var result proto.Result
+				for {
+					response := <-respC
+					if response == nil {
+						l.Error("failed to get result, response is nil")
+
+						break
+					}
+					if response.Type == proto.TypeResponseResult {
+						err = mapstructure.Decode(response.Data, &result)
+						if err != nil {
+							l.Error("failed to parse result %#+v: %w", response, err)
+
+							break
+						}
+
+						break
+					}
+					// Ignore other type of responses
+				}
+
+				l.Debug("Rebuilding tray")
+				tray.rebuild()
+			}
+		}(instance.Name)
+
+		go func(name string) {
+			for {
+				_, ok := <-mStart.ClickedCh
+				if !ok {
+					break
+				}
+
+				l.Debugf("Starting instance %s", name)
+
+				conn, err := tray.manager.Available()
+				if err != nil {
+					l.Error(err)
+
+					continue
+				}
+
+				respC, logC, err := client.Start(
+					conn,
+					[]string{name},
+				)
+				if err != nil {
+					l.Error(err)
+
+					continue
+				}
+
+				logger.LogChannel(tray.i, logC)
+
+				var result proto.Result
+				for {
+					response := <-respC
+					if response == nil {
+						l.Error("failed to get result, response is nil")
+
+						break
+					}
+					if response.Type == proto.TypeResponseResult {
+						err = mapstructure.Decode(response.Data, &result)
+						if err != nil {
+							l.Error("failed to parse result %#+v: %w", response, err)
+
+							break
+						}
+
+						break
+					}
+					// Ignore other type of responses
+				}
+
+				l.Debug("Rebuilding tray")
+				tray.rebuild()
+			}
+		}(instance.Name)
+
+		go func(name string) {
+			for {
+				_, ok := <-mStop.ClickedCh
+				if !ok {
+					break
+				}
+
+				l.Debugf("Stopping instance %s", name)
+
+				conn, err := tray.manager.Available()
+				if err != nil {
+					l.Error(err)
+
+					continue
+				}
+
+				respC, logC, err := client.Stop(
+					conn,
+					[]string{name},
+				)
+				if err != nil {
+					l.Error(err)
+
+					continue
+				}
+
+				logger.LogChannel(tray.i, logC)
+
+				var result proto.Result
+				for {
+					response := <-respC
+					if response == nil {
+						l.Error("failed to get result, response is nil")
+
+						break
+					}
+					if response.Type == proto.TypeResponseResult {
+						err = mapstructure.Decode(response.Data, &result)
+						if err != nil {
+							l.Error("failed to parse result %#+v: %w", response, err)
+
+							break
+						}
+
+						break
+					}
+					// Ignore other type of responses
+				}
+
+				l.Debug("Rebuilding tray")
+				tray.rebuild()
+			}
+		}(instance.Name)
+
+		go func(name string) {
+			for {
+				_, ok := <-mRestart.ClickedCh
+				if !ok {
+					break
+				}
+
+				l.Debugf("Restarting instance %s", name)
+
+				conn, err := tray.manager.Available()
+				if err != nil {
+					l.Error(err)
+
+					continue
+				}
+
+				respC, logC, err := client.Restart(
+					conn,
+					[]string{name},
+				)
+				if err != nil {
+					l.Error(err)
+
+					continue
+				}
+
+				logger.LogChannel(tray.i, logC)
+
+				var result proto.Result
+				for {
+					response := <-respC
+					if response == nil {
+						l.Error("failed to get result, response is nil")
+
+						break
+					}
+					if response.Type == proto.TypeResponseResult {
+						err = mapstructure.Decode(response.Data, &result)
+						if err != nil {
+							l.Error("failed to parse result %#+v: %w", response, err)
+
+							break
+						}
+
+						break
+					}
+					// Ignore other type of responses
+				}
+
+				l.Debug("Rebuilding tray")
+				tray.rebuild()
+			}
+		}(instance.Name)
 	}
 
 	systray.AddSeparator()

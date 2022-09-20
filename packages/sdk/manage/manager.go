@@ -108,7 +108,7 @@ func (manager *KoiManager) Stop() {
 	if connErr == nil {
 		// Successfully get connection options.
 		// Try gracefully shutdown.
-		stopErr := client.Stop(conn)
+		stopErr := client.StopDaemon(conn)
 		done = stopErr == nil
 	}
 	if done {

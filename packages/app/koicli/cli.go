@@ -17,6 +17,11 @@ func NewCli(i *do.Injector) (*cli.App, error) {
 	do.ProvideNamed(i, serviceCommandImport, newImportCommand)
 	do.ProvideNamed(i, serviceCommandDaemon, newDaemonCommand)
 	do.ProvideNamed(i, serviceCommandPs, newPsCommand)
+	do.ProvideNamed(i, serviceCommandOpen, newOpenCommand)
+	do.ProvideNamed(i, serviceCommandStart, newStartCommand)
+	do.ProvideNamed(i, serviceCommandStop, newStopCommand)
+	do.ProvideNamed(i, serviceCommandRestart, newRestartCommand)
+	do.ProvideNamed(i, serviceCommandYarn, newYarnCommand)
 
 	return &cli.App{
 		Name:    "Koishi Desktop",
@@ -48,6 +53,11 @@ func NewCli(i *do.Injector) (*cli.App, error) {
 			do.MustInvokeNamed[*cli.Command](i, serviceCommandImport),
 			do.MustInvokeNamed[*cli.Command](i, serviceCommandDaemon),
 			do.MustInvokeNamed[*cli.Command](i, serviceCommandPs),
+			do.MustInvokeNamed[*cli.Command](i, serviceCommandOpen),
+			do.MustInvokeNamed[*cli.Command](i, serviceCommandStart),
+			do.MustInvokeNamed[*cli.Command](i, serviceCommandStop),
+			do.MustInvokeNamed[*cli.Command](i, serviceCommandRestart),
+			do.MustInvokeNamed[*cli.Command](i, serviceCommandYarn),
 		},
 
 		Before: do.MustInvokeNamed[cli.BeforeFunc](i, serviceActionPre),

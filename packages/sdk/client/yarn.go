@@ -9,9 +9,10 @@ import (
 	"gopkg.ilharper.com/x/rpl"
 )
 
-func Stop(
+func Yarn(
 	conn *Options,
-	instances []string,
+	instance string,
+	args []string,
 ) (<-chan *proto.Response, <-chan *rpl.Log, error) {
 	var err error
 
@@ -21,9 +22,10 @@ func Stop(
 	}
 
 	request := proto.NewCommandRequest(
-		"stop",
+		"yarn",
 		map[string]any{
-			"instances": instances,
+			"instance": instance,
+			"args":     args,
 		},
 	)
 

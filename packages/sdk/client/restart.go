@@ -9,7 +9,7 @@ import (
 	"gopkg.ilharper.com/x/rpl"
 )
 
-func Stop(
+func Restart(
 	conn *Options,
 	instances []string,
 ) (<-chan *proto.Response, <-chan *rpl.Log, error) {
@@ -21,7 +21,7 @@ func Stop(
 	}
 
 	request := proto.NewCommandRequest(
-		"stop",
+		"restart",
 		map[string]any{
 			"instances": instances,
 		},

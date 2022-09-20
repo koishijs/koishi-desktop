@@ -11,7 +11,11 @@ type Registry map[string]KoiCmd
 
 func NewKoiCmdRegistry(i *do.Injector) (*Registry, error) {
 	return &Registry{
-		"import": koiCmdImport,
-		"ps":     koiCmdPs,
+		"import":  koiCmdImport,
+		"ps":      koiCmdPs,
+		"open":    koiCmdOpen,
+		"start":   koiCmdStart,
+		"stop":    koiCmdStop,
+		"restart": koiCmdRestart,
 	}, nil
 }
