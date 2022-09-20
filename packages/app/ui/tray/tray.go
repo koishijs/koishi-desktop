@@ -235,7 +235,7 @@ func (tray *TrayDaemon) rebuild() {
 					continue
 				}
 
-				<-time.NewTimer(refreshWaitDuration).C
+				<-time.After(refreshWaitDuration)
 				l.Debug("Rebuilding tray")
 				tray.rebuild()
 			}
@@ -303,7 +303,7 @@ func (tray *TrayDaemon) rebuild() {
 					continue
 				}
 
-				<-time.NewTimer(refreshWaitDuration).C
+				<-time.After(refreshWaitDuration)
 				l.Debug("Rebuilding tray")
 				tray.rebuild()
 			}
@@ -371,7 +371,7 @@ func (tray *TrayDaemon) rebuild() {
 					continue
 				}
 
-				<-time.NewTimer(refreshWaitDuration).C
+				<-time.After(refreshWaitDuration)
 				l.Debug("Rebuilding tray")
 				tray.rebuild()
 			}
@@ -439,7 +439,7 @@ func (tray *TrayDaemon) rebuild() {
 					continue
 				}
 
-				<-time.NewTimer(refreshWaitDuration).C
+				<-time.After(refreshWaitDuration)
 				l.Debug("Rebuilding tray")
 				tray.rebuild()
 			}
