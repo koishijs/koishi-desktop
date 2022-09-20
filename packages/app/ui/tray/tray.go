@@ -219,6 +219,19 @@ func (tray *TrayDaemon) rebuild() {
 					// Ignore other type of responses
 				}
 
+				if result.Code != 0 {
+					s, ok := result.Data.(string)
+					if !ok {
+						l.Errorf("result data %#+v is not string", result.Data)
+
+						continue
+					}
+
+					l.Error(s)
+
+					continue
+				}
+
 				l.Debug("Rebuilding tray")
 				tray.rebuild()
 			}
@@ -271,6 +284,19 @@ func (tray *TrayDaemon) rebuild() {
 						break
 					}
 					// Ignore other type of responses
+				}
+
+				if result.Code != 0 {
+					s, ok := result.Data.(string)
+					if !ok {
+						l.Errorf("result data %#+v is not string", result.Data)
+
+						continue
+					}
+
+					l.Error(s)
+
+					continue
 				}
 
 				l.Debug("Rebuilding tray")
@@ -327,6 +353,19 @@ func (tray *TrayDaemon) rebuild() {
 					// Ignore other type of responses
 				}
 
+				if result.Code != 0 {
+					s, ok := result.Data.(string)
+					if !ok {
+						l.Errorf("result data %#+v is not string", result.Data)
+
+						continue
+					}
+
+					l.Error(s)
+
+					continue
+				}
+
 				l.Debug("Rebuilding tray")
 				tray.rebuild()
 			}
@@ -379,6 +418,19 @@ func (tray *TrayDaemon) rebuild() {
 						break
 					}
 					// Ignore other type of responses
+				}
+
+				if result.Code != 0 {
+					s, ok := result.Data.(string)
+					if !ok {
+						l.Errorf("result data %#+v is not string", result.Data)
+
+						continue
+					}
+
+					l.Error(s)
+
+					continue
 				}
 
 				l.Debug("Rebuilding tray")
