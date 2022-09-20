@@ -1,3 +1,7 @@
+run:
+  skip-dirs:
+    - ui/icon
+
 linters:
   enable-all: true
   disable:
