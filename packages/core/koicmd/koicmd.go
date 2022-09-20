@@ -17,5 +17,6 @@ func NewKoiCmdRegistry(i *do.Injector) (*Registry, error) {
 		"start":   koiCmdStart,
 		"stop":    koiCmdStop,
 		"restart": koiCmdRestart,
+		"yarn":    koiCmdYarn,
 	}, nil
 }
