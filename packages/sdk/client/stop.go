@@ -24,6 +24,7 @@ func Stop(
 		"stop",
 		map[string]any{
 			"instances": instances,
+			"all":       true,
 		},
 	)
 

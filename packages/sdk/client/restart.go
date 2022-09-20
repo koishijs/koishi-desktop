@@ -24,6 +24,7 @@ func Restart(
 		"restart",
 		map[string]any{
 			"instances": instances,
+			"all":       true,
 		},
 	)
 

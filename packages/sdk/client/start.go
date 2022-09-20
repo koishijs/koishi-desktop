@@ -24,6 +24,7 @@ func Start(
 		"start",
 		map[string]any{
 			"instances": instances,
+			"all":       true,
 		},
 	)
 
