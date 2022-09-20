@@ -26,8 +26,8 @@ func newStopCommand(i *do.Injector) (*cli.Command, error) {
 	do.ProvideNamed(i, serviceActionStop, newStopAction)
 
 	return &cli.Command{
-		Name:      "start",
-		Usage:     "Start Instances",
+		Name:      "stop",
+		Usage:     "Stop Instances",
 		ArgsUsage: "instances",
 		Action:    do.MustInvokeNamed[cli.ActionFunc](i, serviceActionStop),
 	}, nil
