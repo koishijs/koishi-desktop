@@ -2,6 +2,7 @@ package tray
 
 import (
 	"runtime"
+	"time"
 
 	"fyne.io/systray"
 	"github.com/mitchellh/mapstructure"
@@ -15,6 +16,8 @@ import (
 	"gopkg.ilharper.com/koi/sdk/client"
 	"gopkg.ilharper.com/koi/sdk/manage"
 )
+
+var refreshWaitDuration = 2 * time.Second
 
 type TrayDaemon struct { //nolint:golint
 	i       *do.Injector
@@ -232,6 +235,7 @@ func (tray *TrayDaemon) rebuild() {
 					continue
 				}
 
+				<-time.NewTimer(refreshWaitDuration).C
 				l.Debug("Rebuilding tray")
 				tray.rebuild()
 			}
@@ -299,6 +303,7 @@ func (tray *TrayDaemon) rebuild() {
 					continue
 				}
 
+				<-time.NewTimer(refreshWaitDuration).C
 				l.Debug("Rebuilding tray")
 				tray.rebuild()
 			}
@@ -366,6 +371,7 @@ func (tray *TrayDaemon) rebuild() {
 					continue
 				}
 
+				<-time.NewTimer(refreshWaitDuration).C
 				l.Debug("Rebuilding tray")
 				tray.rebuild()
 			}
@@ -433,6 +439,7 @@ func (tray *TrayDaemon) rebuild() {
 					continue
 				}
 
+				<-time.NewTimer(refreshWaitDuration).C
 				l.Debug("Rebuilding tray")
 				tray.rebuild()
 			}
