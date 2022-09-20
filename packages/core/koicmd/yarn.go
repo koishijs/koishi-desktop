@@ -30,7 +30,7 @@ func koiCmdYarn(i *do.Injector) *proto.Response {
 		return proto.NewErrorResult(koierr.ErrBadRequest)
 	}
 
-	var args []string
+	args := make([]string, 0, len(argsAny))
 	for _, argAny := range argsAny {
 		args = append(args, argAny.(string))
 	}
