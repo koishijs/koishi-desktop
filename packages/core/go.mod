@@ -3,12 +3,12 @@ module gopkg.ilharper.com/koi/core
 go 1.19
 
 require (
-	github.com/goccy/go-json v0.9.10
+	github.com/goccy/go-json v0.9.11
 	github.com/mitchellh/mapstructure v1.5.0
-	github.com/samber/do v1.2.0
-	github.com/shirou/gopsutil/v3 v3.22.7
+	github.com/samber/do v1.4.0
+	github.com/shirou/gopsutil/v3 v3.22.8
 	github.com/webview/webview v0.0.0-20220816141928-2ee04ccd0530
-	golang.org/x/net v0.0.0-20220809012201-f428fae20770
+	golang.org/x/net v0.0.0-20220920152717-4a395b0a80a1
 	golang.org/x/text v0.3.7
 	gopkg.ilharper.com/x/browser v1.0.0
 	gopkg.ilharper.com/x/colette v0.1.0
