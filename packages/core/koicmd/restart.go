@@ -18,12 +18,14 @@ func koiCmdRestart(i *do.Injector) *proto.Response {
 	l.Debug("Trigger KoiCmd restart")
 
 	// Parse command
-	instances, ok := command.Flags["instances"].([]string)
+	instances, ok := command.Flags["instances"].([]any)
 	if !ok {
 		return proto.NewErrorResult(koierr.ErrBadRequest)
 	}
 
-	for _, instance := range instances {
+	for _, instanceAny := range instances {
+		instance := instanceAny.(string)
+
 		l.Infof("Stopping instance %s...", instance)
 
 		err = daemonProc.Stop(instance)

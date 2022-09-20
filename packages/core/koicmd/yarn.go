@@ -25,9 +25,14 @@ func koiCmdYarn(i *do.Injector) *proto.Response {
 	if !ok {
 		return proto.NewErrorResult(koierr.ErrBadRequest)
 	}
-	args, ok := command.Flags["args"].([]string)
+	argsAny, ok := command.Flags["args"].([]any)
 	if !ok {
 		return proto.NewErrorResult(koierr.ErrBadRequest)
+	}
+
+	var args []string
+	for _, argAny := range argsAny {
+		args = append(args, argAny.(string))
 	}
 
 	koiProc := proc.NewYarnProc(

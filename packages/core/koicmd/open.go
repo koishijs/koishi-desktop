@@ -19,12 +19,14 @@ func koiCmdOpen(i *do.Injector) *proto.Response {
 	l.Debug("Trigger KoiCmd open")
 
 	// Parse command
-	instances, ok := command.Flags["instances"].([]string)
+	instances, ok := command.Flags["instances"].([]any)
 	if !ok {
 		return proto.NewErrorResult(koierr.ErrBadRequest)
 	}
 
-	for _, instance := range instances {
+	for _, instanceAny := range instances {
+		instance := instanceAny.(string)
+
 		l.Infof("Opening instance %s...", instance)
 
 		meta := daemonProc.GetMeta(instance)
