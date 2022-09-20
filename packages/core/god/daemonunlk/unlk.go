@@ -9,24 +9,24 @@ import (
 	"gopkg.ilharper.com/koi/core/logger"
 )
 
-type daemonUnlocker struct {
+type DaemonUnlocker struct {
 	l      *logger.Logger
 	config *koiconfig.Config
 }
 
-func NewDaemonUnlocker(i *do.Injector) (*daemonUnlocker, error) {
+func NewDaemonUnlocker(i *do.Injector) (*DaemonUnlocker, error) {
 	cfg, err := do.Invoke[*koiconfig.Config](i)
 	if err != nil {
 		return nil, err
 	}
 
-	return &daemonUnlocker{
+	return &DaemonUnlocker{
 		l:      do.MustInvoke[*logger.Logger](i),
 		config: cfg,
 	}, nil
 }
 
-func (unlocker *daemonUnlocker) Shutdown() error {
+func (unlocker *DaemonUnlocker) Shutdown() error {
 	err := os.Remove(filepath.Join(unlocker.config.Computed.DirLock, "daemon.lock"))
 	if err != nil {
 		unlocker.l.Errorf("failed to delete daemon lock: %s", err)

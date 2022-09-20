@@ -64,7 +64,7 @@ func Daemon(i *do.Injector) error {
 	// This ensures Koishi starts quickly first.
 	err = do.MustInvoke[*daemonproc.DaemonProcess](i).Init()
 	if err != nil {
-		return err
+		return fmt.Errorf("daemon process init failed: %w", err)
 	}
 
 	l := do.MustInvoke[*logger.Logger](i)

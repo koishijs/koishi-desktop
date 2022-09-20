@@ -16,7 +16,7 @@ import (
 	"gopkg.ilharper.com/koi/sdk/manage"
 )
 
-type TrayDaemon struct {
+type TrayDaemon struct { //nolint:golint
 	i       *do.Injector
 	chanReg []chan struct{}
 	manager *manage.KoiManager
@@ -54,8 +54,7 @@ func (tray *TrayDaemon) onReady() {
 
 	tray.addItemsAfter()
 
-	_, err := tray.manager.Ensure()
-	if err != nil {
+	if _, err := tray.manager.Ensure(); err != nil {
 		l.Error(err)
 	}
 
@@ -126,7 +125,7 @@ func (tray *TrayDaemon) rebuild() {
 	var resultPs koicmd.ResultPs
 	err = mapstructure.Decode(result.Data, &resultPs)
 	if err != nil {
-		l.Errorf("failed to parse result %#+v: %w", result, err)
+		l.Errorf("failed to parse result %#+v: %v", result, err)
 
 		return
 	}

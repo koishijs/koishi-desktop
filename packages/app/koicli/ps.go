@@ -55,7 +55,7 @@ func newPsAction(i *do.Injector) (cli.ActionFunc, error) {
 		manager := manage.NewKoiManager(cfg.Computed.Exe, cfg.Computed.DirLock)
 		conn, err := manager.Ensure()
 		if err != nil {
-			return err
+			return fmt.Errorf("failed to get daemon connection: %w", err)
 		}
 
 		respC, logC, err := client.Ps(
@@ -63,7 +63,7 @@ func newPsAction(i *do.Injector) (cli.ActionFunc, error) {
 			c.Bool("all"),
 		)
 		if err != nil {
-			return err
+			return fmt.Errorf("failed to process command ps: %w", err)
 		}
 
 		logger.LogChannel(i, logC)
@@ -100,13 +100,18 @@ func newPsAction(i *do.Injector) (cli.ActionFunc, error) {
 			return fmt.Errorf("failed to parse result %#+v: %w", result, err)
 		}
 
-		resultPsInstanceJson, err := json.Marshal(resultPs)
+		resultPsInstanceJSON, err := json.Marshal(resultPs)
 		if err != nil {
 			return fmt.Errorf("failed to marshal result %#+v: %w", resultPs, err)
 		}
 
-		fmt.Println(string(resultPsInstanceJson))
+		fmt.Println(string(resultPsInstanceJSON))
 
-		return logger.Wait(respC)
+		err = logger.Wait(respC)
+		if err != nil {
+			return fmt.Errorf("failed to process command ps: %w", err)
+		}
+
+		return nil
 	}, nil
 }

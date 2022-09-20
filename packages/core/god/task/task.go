@@ -15,7 +15,7 @@ type Task struct {
 
 // TaskRegistry is the task registry
 // of task manager ([god.daemonService]).
-type TaskRegistry struct {
+type TaskRegistry struct { //nolint:golint
 	// The registry [sync.Mutex].
 	mutex sync.Mutex
 

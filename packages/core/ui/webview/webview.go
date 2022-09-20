@@ -9,7 +9,6 @@ import (
 )
 
 func run(
-	i *do.Injector,
 	name string,
 	listen string,
 ) {
@@ -38,9 +37,8 @@ func Open(
 			listen,
 		)
 		go func() {
-			run(i, name, listen)
+			run(name, listen)
 		}()
-		break
 	case "external":
 		l.Debugf(
 			"Running webview for instance %s: %s",
@@ -51,6 +49,5 @@ func Open(
 		if err != nil {
 			l.Warnf("cannot open browser: %s", err.Error())
 		}
-		break
 	}
 }
