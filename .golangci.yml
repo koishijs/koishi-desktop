@@ -20,6 +20,7 @@ linters:
     - exhaustruct
     - forbidigo
     - forcetypeassert
+    - dupl
 
 linters-settings:
   revive:
