@@ -19,6 +19,7 @@ linters:
     - nosnakecase
     - exhaustruct
     - forbidigo
+    - forcetypeassert
 
 linters-settings:
   revive:
