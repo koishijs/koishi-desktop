@@ -1,7 +1,6 @@
 package killdren
 
 import (
-	"os"
 	"os/exec"
 	"syscall"
 )
@@ -18,6 +17,6 @@ func Kill(cmd *exec.Cmd) error {
 	return Signal(cmd, syscall.SIGKILL)
 }
 
-func Signal(cmd *exec.Cmd, sig os.Signal) error {
-	syscall.Kill(-cmd.Process.Pid, sig)
+func Signal(cmd *exec.Cmd, sig syscall.Signal) error {
+	return syscall.Kill(-cmd.Process.Pid, sig)
 }
