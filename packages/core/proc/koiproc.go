@@ -6,10 +6,10 @@ import (
 	"fmt"
 	"os/exec"
 	"path/filepath"
-	"syscall"
 
 	"github.com/samber/do"
 	"gopkg.ilharper.com/koi/core/logger"
+	"gopkg.ilharper.com/koi/core/util/killdren"
 	"gopkg.ilharper.com/x/rpl"
 )
 
@@ -36,16 +36,18 @@ func NewKoiProc(
 	cmdArgs := append([]string{cmdPath}, args...)
 	env := environ(i, path)
 
-	return &KoiProc{
-		i:  i,
-		ch: ch,
+	cmd := &exec.Cmd{
+		Path: cmdPath,
+		Args: cmdArgs,
+		Env:  *env,
+		Dir:  cwd,
+	}
+	killdren.Set(cmd)
 
-		cmd: &exec.Cmd{
-			Path: cmdPath,
-			Args: cmdArgs,
-			Env:  *env,
-			Dir:  cwd,
-		},
+	return &KoiProc{
+		i:   i,
+		ch:  ch,
+		cmd: cmd,
 	}
 }
 
@@ -142,7 +144,7 @@ func (koiProc *KoiProc) Stop() error {
 		return nil
 	}
 
-	err := koiProc.cmd.Process.Signal(syscall.SIGTERM)
+	err := killdren.Stop(koiProc.cmd)
 	if err != nil {
 		return fmt.Errorf("failed to send SIGTERM to process: %w", err)
 	}
@@ -159,7 +161,7 @@ func (koiProc *KoiProc) Kill() error {
 		return nil
 	}
 
-	err := koiProc.cmd.Process.Kill()
+	err := killdren.Kill(koiProc.cmd)
 	if err != nil {
 		return fmt.Errorf("failed to send SIGKILL to process: %w", err)
 	}
