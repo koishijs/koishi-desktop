@@ -21,6 +21,7 @@ linters:
     - forbidigo
     - forcetypeassert
     - dupl
+    - gocyclo
 
 linters-settings:
   revive:
