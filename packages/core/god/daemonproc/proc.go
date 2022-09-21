@@ -177,9 +177,9 @@ func (daemonProc *DaemonProcess) stopIntl(name string) error {
 	l := do.MustInvoke[*logger.Logger](daemonProc.i)
 
 	dp := daemonProc.reg[daemonProc.nameReg[name]]
-	err := dp.koiProc.Stop()
-	if err != nil {
+	if err := dp.koiProc.Stop(); err != nil {
 		l.Debugf("failed to gracefully stop process %d: %v. Trying kill", dp.koiProc.Pid(), err)
+
 		return dp.koiProc.Kill() //nolint:wrapcheck
 	}
 
