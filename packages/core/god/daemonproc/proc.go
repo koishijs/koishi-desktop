@@ -174,7 +174,16 @@ func (daemonProc *DaemonProcess) Stop(name string) error {
 
 // Must ensure lock before calling this method.
 func (daemonProc *DaemonProcess) stopIntl(name string) error {
-	return daemonProc.reg[daemonProc.nameReg[name]].koiProc.Stop() //nolint:wrapcheck
+	l := do.MustInvoke[*logger.Logger](daemonProc.i)
+
+	dp := daemonProc.reg[daemonProc.nameReg[name]]
+	err := dp.koiProc.Stop()
+	if err != nil {
+		l.Debugf("failed to gracefully stop process %d: %v. Trying kill", dp.koiProc.Pid(), err)
+		return dp.koiProc.Kill() //nolint:wrapcheck
+	}
+
+	return nil
 }
 
 func (daemonProc *DaemonProcess) Shutdown() error {
