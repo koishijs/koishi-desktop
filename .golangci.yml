@@ -22,6 +22,7 @@ linters:
     - forcetypeassert
     - dupl
     - gocyclo
+    - maintidx
 
 linters-settings:
   revive:
