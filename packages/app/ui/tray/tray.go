@@ -212,7 +212,7 @@ func (tray *TrayDaemon) rebuild() {
 					if response.Type == proto.TypeResponseResult {
 						err = mapstructure.Decode(response.Data, &result)
 						if err != nil {
-							l.Error("failed to parse result %#+v: %w", response, err)
+							l.Errorf("failed to parse result %#+v: %w", response, err)
 
 							break
 						}
@@ -280,7 +280,7 @@ func (tray *TrayDaemon) rebuild() {
 					if response.Type == proto.TypeResponseResult {
 						err = mapstructure.Decode(response.Data, &result)
 						if err != nil {
-							l.Error("failed to parse result %#+v: %w", response, err)
+							l.Errorf("failed to parse result %#+v: %w", response, err)
 
 							break
 						}
@@ -348,7 +348,7 @@ func (tray *TrayDaemon) rebuild() {
 					if response.Type == proto.TypeResponseResult {
 						err = mapstructure.Decode(response.Data, &result)
 						if err != nil {
-							l.Error("failed to parse result %#+v: %w", response, err)
+							l.Errorf("failed to parse result %#+v: %w", response, err)
 
 							break
 						}
@@ -416,7 +416,7 @@ func (tray *TrayDaemon) rebuild() {
 					if response.Type == proto.TypeResponseResult {
 						err = mapstructure.Decode(response.Data, &result)
 						if err != nil {
-							l.Error("failed to parse result %#+v: %w", response, err)
+							l.Errorf("failed to parse result %#+v: %w", response, err)
 
 							break
 						}
