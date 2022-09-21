@@ -1,3 +1,4 @@
+//nolint:wrapcheck
 package killdren
 
 import (
