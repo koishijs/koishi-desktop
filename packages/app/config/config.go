@@ -16,7 +16,7 @@ import (
 
 var defaultConfigData = koiconfig.ConfigData{
 	Mode:    "ui",
-	Open:    "integrated",
+	Open:    "external",
 	Isolate: "normal",
 	Start:   nil,
 	Env:     nil,
