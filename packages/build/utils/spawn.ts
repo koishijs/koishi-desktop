@@ -1,4 +1,5 @@
 import execa, { sync as execaSync } from 'execa'
+import { error } from 'gulplog'
 import { Exceptions } from './exceptions'
 import { dir } from './path'
 
@@ -83,5 +84,18 @@ export async function exec(
     throw new Error(
       `'${child.spawnargs.join(' ')}' exited with error code: ${result}`
     )
+  }
+}
+
+export async function tryExec(
+  command: string,
+  args?: ReadonlyArray<string>,
+  cwd?: string,
+  options?: execa.SyncOptions
+): Promise<void> {
+  try {
+    await exec(command, args, cwd, options)
+  } catch (e: unknown) {
+    error(e)
   }
 }
