@@ -21,12 +21,12 @@ export const sourceGitHub = 'https://github.com'
 // versions.
 
 export const versionNode = '16.17.0'
-export const versionYarn = '3.2.2'
+export const versionYarn = '3.2.3'
 
-export const versionWebView2 = '1.0.1293.44'
+export const versionWebView2 = '1.0.1343.22'
 
 export const versionToolsVersioninfo = 'v1.4.0'
-export const versionToolsGolangCILint = 'v1.48.0'
+export const versionToolsGolangCILint = 'v1.49.0'
 export const versionToolsRcedit = 'v1.1.1'
 
 //#endregion
@@ -35,7 +35,7 @@ export const versionToolsRcedit = 'v1.1.1'
 // These are defaults for koishi-desktop.
 
 export const repoBoilerplate = 'koishijs/boilerplate'
-export const versionBoilerplate = 'v1.0.5'
+export const versionBoilerplate = 'v1.0.6'
 
 /**
  * ID of the default instance.
