@@ -4,7 +4,14 @@
   "singleQuote": true,
   "overrides": [
     {
-      "files": "*.wxs",
+      "files": [
+        "*.manifest",
+        "*.manifest.hbs",
+        "*.plist",
+        "*.plist.hbs",
+        "*.wxs",
+        "*.wxs.hbs"
+      ],
       "options": {
         "parser": "xml"
       }
