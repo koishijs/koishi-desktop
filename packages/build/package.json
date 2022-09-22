@@ -8,7 +8,6 @@
     "@types/sharp": "~0.30.5",
     "archiver": "^5.3.1",
     "axios": "1.0.0-alpha.1",
-    "create-dmg": "^5.4.0",
     "del": "^6",
     "execa": "^5.0.0",
     "handlebars": "^4.7.7",
@@ -23,5 +22,8 @@
     "@types/cross-spawn": "^6",
     "@types/lzma-native": "^4",
     "@types/tar": "^6"
+  },
+  "optionalDependencies": {
+    "create-dmg": "^5.4.0"
   }
 }
