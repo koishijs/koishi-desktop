@@ -36,6 +36,19 @@
     minimatch "^3.1.2"
     strip-json-comments "^3.1.1"
 
+"@fiahfy/icns@^0.0.7":
+  version "0.0.7"
+  resolved "https://registry.npmmirror.com/@fiahfy/icns/-/icns-0.0.7.tgz#5492420c64f522f3a88765a058ea9bf60ee4c648"
+  integrity sha512-0apAtbUXTU3Opy/Z4h69o53voBa+am8FmdZauyagUMskAVYN1a5yIRk48Sf+tEdBLlefbvqLWPJ4pxr/Y/QtTg==
+  dependencies:
+    "@fiahfy/packbits" "^0.0.6"
+    pngjs "^6.0.0"
+
+"@fiahfy/packbits@^0.0.6":
+  version "0.0.6"
+  resolved "https://registry.npmmirror.com/@fiahfy/packbits/-/packbits-0.0.6.tgz#d93146683fa59f476c6ccb988eb1cf9d7c16e489"
+  integrity sha512-XuhF/edg+iIvXjkCWgfj6fWtRi/KrEPg2ILXj1l86EN4EssuOiPcLKgkMDr9cL8jTGtVd/MKUWW6Y0/ZVf1PGA==
+
 "@humanwhocodes/config-array@^0.9.2":
   version "0.9.5"
   resolved "https://registry.npmmirror.com/@humanwhocodes/config-array/-/config-array-0.9.5.tgz#2cbaf9a89460da24b5ca6531b8bbfc23e1df50c7"
@@ -3653,6 +3666,11 @@ pngjs@^3.0.0, pngjs@^3.3.3:
   version "3.4.0"
   resolved "https://registry.npmmirror.com/pngjs/-/pngjs-3.4.0.tgz#99ca7d725965fb655814eaf65f38f12bbdbf555f"
   integrity sha512-NCrCHhWmnQklfH4MtJMRjZ2a8c80qXeMlQMv2uVp9ISJMTt562SbGd6n2oq0PaPgKm7Z6pL9E2UlLIhC+SHL3w==
+
+pngjs@^6.0.0:
+  version "6.0.0"
+  resolved "https://registry.npmmirror.com/pngjs/download/pngjs-6.0.0.tgz#ca9e5d2aa48db0228a52c419c3308e87720da821"
+  integrity sha1-yp5dKqSNsCKKUsQZwzCOh3INqCE=
 
 posix-character-classes@^0.1.0:
   version "0.1.1"

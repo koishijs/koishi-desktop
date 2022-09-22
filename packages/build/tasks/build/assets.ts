@@ -1,11 +1,43 @@
+import { Icns, IcnsImage } from '@fiahfy/icns'
 import { series } from 'gulp'
 import { info } from 'gulplog'
 import * as fs from 'node:fs'
+import sharp from 'sharp'
 import { exists } from '../../utils/fs'
 import { dir } from '../../utils/path'
-import sharp from 'sharp'
 
 const builtFilename = dir('buildAssets', '.built')
+
+const icnsTypes = [
+  {
+    size: 16,
+    ostypes: ['icp4'],
+  },
+  {
+    size: 32,
+    ostypes: ['icp5', 'ic11'],
+  },
+  {
+    size: 64,
+    ostypes: ['icp6', 'ic12'],
+  },
+  {
+    size: 128,
+    ostypes: ['ic07'],
+  },
+  {
+    size: 256,
+    ostypes: ['ic08', 'ic13'],
+  },
+  {
+    size: 512,
+    ostypes: ['ic09', 'ic14'],
+  },
+  {
+    size: 1024,
+    ostypes: ['ic10'],
+  },
+] as const
 
 const buildIcons = () =>
   fs
@@ -147,6 +179,17 @@ const generateIco = async (icon: string, image: sharp.Sharp) => {
   await fs.promises.writeFile(dir('buildAssets', `${icon}.ico`), buf)
 }
 
+const generateIcns = async (icon: string, image: sharp.Sharp) => {
+  const icns = new Icns()
+  for (const icnsType of icnsTypes) {
+    const png = await image.clone().resize(icnsType.size).toBuffer()
+    for (const ostype of icnsType.ostypes)
+      icns.append(IcnsImage.fromPNG(png, ostype))
+  }
+
+  await fs.promises.writeFile(dir('buildAssets', `${icon}.icns`), icns.data)
+}
+
 export const generateAssetsImage = async () => {
   info('Checking assets cache.')
   if (await exists(builtFilename)) {
@@ -160,6 +203,7 @@ export const generateAssetsImage = async () => {
 
       return Promise.all([
         generateIco(icon, image.clone()),
+        generateIcns(icon, image.clone()),
         image.clone().toFile(dir('buildAssets', `${icon}.png`)),
       ])
     })
