@@ -1,6 +1,22 @@
 import { parallel } from 'gulp'
+import { Exceptions } from '../../utils/exceptions'
+import { packMacApp } from './mac'
 import { packPortable } from './portable'
 
+export * from './mac'
 export * from './portable'
 
-export const pack = parallel(packPortable)
+const buildPack = () => {
+  switch (process.platform) {
+    case 'win32':
+      return parallel(packPortable)
+    case 'darwin':
+      return parallel(packPortable, packMacApp)
+    case 'linux':
+      return parallel(packPortable)
+    default:
+      throw Exceptions.platformNotSupported()
+  }
+}
+
+export const pack = buildPack()

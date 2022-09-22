@@ -101,4 +101,8 @@ export const koishiManifest = Handlebars.compile(
   fs.readFileSync(dir('templates', 'koishi.exe.manifest.hbs')).toString('utf-8')
 )({ koiSemver })
 
+export const macAppPlist = Handlebars.compile(
+  fs.readFileSync(dir('templates', 'mac-app.plist.hbs')).toString('utf-8')
+)({ koiVersion })
+
 //#endregion
