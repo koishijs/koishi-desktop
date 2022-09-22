@@ -13,6 +13,7 @@
     "graceful-fs": "^4"
   },
   "devDependencies": {
+    "@prettier/plugin-xml": "^2.2.0",
     "@types/gulp": "^4",
     "@types/mkdirp": "^1",
     "@typescript-eslint/eslint-plugin": "*",
