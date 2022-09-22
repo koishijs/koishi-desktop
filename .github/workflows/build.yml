@@ -38,9 +38,14 @@ jobs:
         with:
           go-version: '>=1.19.0'
 
-      - name: Install Dependencies
+      - name: Install Dependencies (Linux)
         if: ${{ fromJson(matrix.target).goos == 'linux' }}
         run: sudo apt update && sudo apt install -y libgtk-3-dev libwebkit2gtk-4.0-dev
+        shell: bash
+
+      - name: Install Dependencies (macOS)
+        if: ${{ fromJson(matrix.target).goos == 'darwin' }}
+        run: brew install graphicsmagick imagemagick
         shell: bash
 
       - name: Install Build Package
