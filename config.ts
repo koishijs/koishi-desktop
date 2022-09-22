@@ -28,6 +28,7 @@ export const versionWebView2 = '1.0.1343.22'
 export const versionToolsVersioninfo = 'v1.4.0'
 export const versionToolsGolangCILint = 'v1.49.0'
 export const versionToolsRcedit = 'v1.1.1'
+export const versionToolsWix = '311'
 
 //#endregion
 
