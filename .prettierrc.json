@@ -7,6 +7,8 @@
       "files": [
         "*.manifest",
         "*.manifest.hbs",
+        "*.xml",
+        "*.xml.hbs",
         "*.plist",
         "*.plist.hbs",
         "*.wxs",
