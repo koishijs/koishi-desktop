@@ -1,6 +1,7 @@
 import mkdirp from 'mkdirp'
 import { promises as fs } from 'node:fs'
-import { koiVersion, macAppPlist } from '../../utils/config'
+import { macAppPlist } from '../../templates'
+import { koiVersion } from '../../utils/config'
 import { dir } from '../../utils/path'
 import { tryExec } from '../../utils/spawn'
 

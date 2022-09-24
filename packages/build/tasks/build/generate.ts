@@ -1,13 +1,13 @@
-import { parallel } from 'gulp'
 import * as fs from 'fs'
-import { dir } from '../../utils/path'
+import { parallel } from 'gulp'
+import mkdirp from 'mkdirp'
 import {
   koiConfig,
   koiConfigBefore,
   koiManifest,
   koiVersionInfo,
-} from '../../utils/config'
-import mkdirp from 'mkdirp'
+} from '../../templates'
+import { dir } from '../../utils/path'
 import { generateAssets } from './assets'
 
 export const generateKoiConfigBefore = () =>

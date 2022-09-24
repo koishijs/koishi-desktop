@@ -1,8 +1,4 @@
-import Handlebars from 'handlebars'
-import * as fs from 'node:fs'
 import { overrideKoiVersion } from '../../../config'
-import { defaultInstance } from './config'
-import { dir } from './path'
 import { spawnSyncOutput } from './spawn'
 
 export * from '../../../config'
@@ -74,35 +70,5 @@ export const koishiVersionStrings = {
 }
 
 export const koiVersionStringsJson = JSON.stringify(koiVersionStrings)
-
-//#endregion
-
-//#region Templates
-
-export const koiConfigBefore = Handlebars.compile(
-  fs
-    .readFileSync(dir('templates', 'koi-config-before.yml.hbs'))
-    .toString('utf-8')
-)({})
-
-export const koiConfig = Handlebars.compile(
-  fs.readFileSync(dir('templates', 'koi-config.yml.hbs')).toString('utf-8')
-)({ defaultInstance })
-
-export const koiVersionInfo = Handlebars.compile(
-  fs.readFileSync(dir('templates', 'versioninfo.json.hbs')).toString('utf-8')
-)({ koiSemver, koiVersionStringsJson })
-
-export const koiManifest = Handlebars.compile(
-  fs.readFileSync(dir('templates', 'koi.exe.manifest.hbs')).toString('utf-8')
-)({ koiSemver })
-
-export const koishiManifest = Handlebars.compile(
-  fs.readFileSync(dir('templates', 'koishi.exe.manifest.hbs')).toString('utf-8')
-)({ koiSemver })
-
-export const macAppPlist = Handlebars.compile(
-  fs.readFileSync(dir('templates', 'mac-app.plist.hbs')).toString('utf-8')
-)({ koiVersion })
 
 //#endregion
