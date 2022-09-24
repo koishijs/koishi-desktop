@@ -26,6 +26,7 @@ const buildPaths = {
   buildPortable: 'build/varients/portable/',
   buildPortableData: 'build/varients/portable/data/',
   buildMac: 'build/varients/mac/',
+  buildMsi: 'build/varients/msi/',
 
   dist: 'build/dist/',
 }

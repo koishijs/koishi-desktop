@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<?xml-model href="../../../../build/vendor/wix/doc/wix.xsd"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Product
+    Id="*"
+    Name="Koishi"
+    Manufacturer="Il Harper"
+    UpgradeCode="02318298-8D9E-4C30-B963-BB0B16F1F126"
+    Language="1033"
+    Codepage="1252"
+    Version="{{koiSemver.major}}.{{koiSemver.minor}}.{{koiSemver.patch}}"
+  >
+    <Package
+      Id="*"
+      Compressed="yes"
+      Keywords="Installer"
+      InstallerVersion="500"
+      InstallPrivileges="limited"
+      InstallScope="perUser"
+      Description="Koishi Installer"
+      Comments="Koishi {{koiVersion}} Installer"
+      Manufacturer="Il Harper"
+      Languages="1033"
+      SummaryCodepage="1252"
+    />
+
+    <Property Id="ALLUSERS" Value="2" Secure="yes" />
+    <Property Id="MSIINSTALLPERUSER" Value="1" Secure="yes" />
+    <Condition
+      Message="Setting the ALLUSERS property is not allowed because Koishi is a per-user application. Setup will now exit."
+    >
+      <!-- https://learn.microsoft.com/windows/win32/msi/allusers -->
+      <![CDATA[ALLUSERS = ""]]>
+    </Condition>
+
+    <Icon Id="Icon.exe" SourceFile="{{{iconPath}}}" />
+    <Property Id="ARPPRODUCTICON" Value="Icon.exe" />
+    <Property Id="ARPHELPLINK" Value="https://koishi.chat" />
+    <Property Id="ARPNOREPAIR" Value="yes" Secure="yes" />
+    <Property Id="ARPNOMODIFY" Value="yes" Secure="yes" />
+
+    <Condition Message="Koishi only runs on Windows 8.1 or higher.">
+      <![CDATA[VersionNT >= 603]]>
+    </Condition>
+    <Condition Message="You need to install Koishi on 64-bit Windows.">
+      <![CDATA[VersionNT64]]>
+    </Condition>
+
+    <MajorUpgrade
+      AllowSameVersionUpgrades="yes"
+      DowngradeErrorMessage="A newer version of Koishi is already installed."
+    />
+
+    <!--
+    <Upgrade Id="02318298-8D9E-4C30-B963-BB0B16F1F126">
+      <UpgradeVersion
+        OnlyDetect="yes"
+        Property="SELFFOUND"
+        Minimum="{{koiSemver.major}}.{{koiSemver.minor}}.{{koiSemver.patch}}"
+        IncludeMinimum="yes"
+        Maximum="{{koiSemver.major}}.{{koiSemver.minor}}.{{koiSemver.patch}}"
+        IncludeMaximum="yes"
+      />
+      <UpgradeVersion
+        OnlyDetect="yes"
+        Property="NEWERFOUND"
+        Minimum="{{koiSemver.major}}.{{koiSemver.minor}}.{{koiSemver.patch}}"
+        IncludeMinimum="no"
+      />
+      <UpgradeVersion
+        OnlyDetect="no"
+        Property="PREVIOUSORSELFFOUND"
+        Minimum="0.1.0"
+        IncludeMinimum="yes"
+        Maximum="{{koiSemver.major}}.{{koiSemver.minor}}.{{koiSemver.patch}}"
+        IncludeMaximum="yes"
+      />
+    </Upgrade>
+    -->
+
+    <Media Id="1" Cabinet="media.cab" EmbedCab="yes" />
+    <Property Id="DiskPrompt" Value="Koishi {{koiVersion}} Installer" />
+
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="ProgramFilesFolder">
+        <Directory Id="DirectoryInstall" Name="Koishi">
+          <Component
+            Id="ComponentDirectoryInstall"
+            Guid="7D40E7CF-C007-47C9-A6F9-75E7BFF355C8"
+          >
+            <CreateFolder />
+            <RemoveFolder Id="DirectoryInstall" On="uninstall" />
+          </Component>
+        </Directory>
+      </Directory>
+
+      <Directory Id="ProgramMenuFolder">
+        <Directory Id="DirectoryProgramMenuFolder" Name="Koishi">
+          <Component
+            Id="ComponentDirectoryProgramMenuFolder"
+            Guid="4D488340-00D4-4D15-A3EA-1F4C38CB3963"
+          >
+            <CreateFolder />
+            <RemoveFolder Id="DirectoryProgramMenuFolder" On="uninstall" />
+            <Shortcut
+              Id="ShortcutDirectoryProgramMenuFolderKoishi"
+              Name="Koishi"
+              Description="Start Koishi."
+              Target="[DirectoryInstall]koi.exe"
+              WorkingDirectory="DirectoryInstall"
+            />
+            <Shortcut
+              Id="ShortcutDirectoryProgramMenuFolderUninstallKoishi"
+              Name="Uninstall Koishi"
+              Target="[SystemFolder]msiexec.exe"
+              Arguments="/x [ProductCode]"
+              Description="Uninstalls Koishi."
+            />
+            <RegistryValue
+              Root="HKCU"
+              Key="Software\Il Harper\Koishi"
+              Name="installed"
+              Type="integer"
+              Value="1"
+              KeyPath="yes"
+            />
+          </Component>
+        </Directory>
+      </Directory>
+    </Directory>
+
+    <Feature
+      Id="Complete"
+      Title="Koishi"
+      Description="The Koishi app."
+      Display="expand"
+      Level="1"
+    >
+      <Feature
+        Id="FeatureCore"
+        Title="Core"
+        Description="Core feature of Koishi."
+        Level="1"
+      >
+        <ComponentRef Id="ComponentDirectoryInstall" />
+        <ComponentGroupRef Id="ComponentCore" />
+        <ComponentRef Id="ComponentDirectoryProgramMenuFolder" />
+      </Feature>
+    </Feature>
+  </Product>
+</Wix>
