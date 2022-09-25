@@ -9,7 +9,7 @@ on:
 
 jobs:
   gopkg:
-    name: Deploy gopkg
+    name: ${{ matrix.pkg }}
 
     strategy:
       fail-fast: false
