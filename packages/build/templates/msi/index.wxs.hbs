@@ -26,12 +26,10 @@
 
     <Property Id="ALLUSERS" Value="2" Secure="yes" />
     <Property Id="MSIINSTALLPERUSER" Value="1" Secure="yes" />
+    <!-- https://learn.microsoft.com/windows/win32/msi/allusers -->
     <Condition
       Message="Setting the ALLUSERS property is not allowed because Koishi is a per-user application. Setup will now exit."
-    >
-      <!-- https://learn.microsoft.com/windows/win32/msi/allusers -->
-      <![CDATA[ALLUSERS = ""]]>
-    </Condition>
+    >ALLUSERS = ""</Condition>
 
     <Icon Id="Icon.exe" SourceFile="{{{iconPath}}}" />
     <Property Id="ARPPRODUCTICON" Value="Icon.exe" />
@@ -39,12 +37,12 @@
     <Property Id="ARPNOREPAIR" Value="yes" Secure="yes" />
     <Property Id="ARPNOMODIFY" Value="yes" Secure="yes" />
 
-    <Condition Message="Koishi only runs on Windows 8.1 or higher.">
-      <![CDATA[VersionNT >= 603]]>
-    </Condition>
-    <Condition Message="You need to install Koishi on 64-bit Windows.">
-      <![CDATA[VersionNT64]]>
-    </Condition>
+    <Condition
+      Message="Koishi only runs on Windows 8.1 or higher."
+    >VersionNT >= 603</Condition>
+    <Condition
+      Message="You need to install Koishi on 64-bit Windows."
+    >VersionNT64</Condition>
 
     <MajorUpgrade
       AllowSameVersionUpgrades="yes"
