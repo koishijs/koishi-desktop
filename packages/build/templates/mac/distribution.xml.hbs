@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<installer-gui-script minSpecVersion="1">
+  <title>Koishi</title>
+  <options
+    allow-external-scripts="false"
+    customize="never"
+    require-scripts="true"
+    hostArchitectures="x86_64,arm64"
+    rootVolumeOnly="true"
+  />
+  <domains
+    enable_anywhere="false"
+    enable_currentUserHome="false"
+    enable_localSystem="true"
+  />
+  <choices-outline>
+    <line choice="chat.koishi.desktop" />
+  </choices-outline>
+  <choice
+    id="chat.koishi.desktop"
+    title="Koishi"
+    description="The Koishi app."
+    description-mime-type="text/plain"
+    visible="false"
+  >
+    <pkg-ref id="chat.koishi.desktop" />
+  </choice>
+  <pkg-ref id="chat.koishi.desktop">
+    <must-close>
+      <app id="chat.koishi.desktop" />
+    </must-close>
+  </pkg-ref>
+  <pkg-ref
+    id="chat.koishi.desktop"
+    version="{{koiSemver.major}}.{{koiSemver.minor}}.{{koiSemver.patch}}"
+    onConclusion="none"
+  >koishi-app.pkg</pkg-ref>
+</installer-gui-script>

@@ -1,12 +1,14 @@
+import { parallel, series } from 'gulp'
 import mkdirp from 'mkdirp'
 import { promises as fs } from 'node:fs'
-import { macAppPlist } from '../../templates'
+import { macAppPlist, macPkgDistribution } from '../../templates'
 import { koiVersion } from '../../utils/config'
 import { dir } from '../../utils/path'
-import { tryExec } from '../../utils/spawn'
+import { exec, tryExec } from '../../utils/spawn'
+
+const appPath = dir('buildMac', 'Koishi.app/')
 
 export const packMacApp = async () => {
-  const appPath = dir('buildMac', 'Koishi.app/')
   const appInfoPlistPath = dir('buildMac', 'Koishi.app/Contents/Info.plist')
   const appMacosPath = dir('buildMac', 'Koishi.app/Contents/MacOS/')
   const appResourcesPath = dir('buildMac', 'Koishi.app/Contents/Resources/')
@@ -21,10 +23,60 @@ export const packMacApp = async () => {
   await fs.cp(dir('buildPortable'), appMacosPath, { recursive: true })
   await fs.copyFile(dir('buildAssets', 'koishi.icns'), appIconPath)
   await fs.writeFile(appInfoPlistPath, macAppPlist)
+}
 
+export const packMacDmg = async () => {
   await tryExec('yarn', ['create-dmg', appPath, dir('buildMac'), '--overwrite'])
   await fs.rename(
     dir('buildMac', `Koishi ${koiVersion}.dmg`),
     dir('dist', 'koishi.dmg')
   )
 }
+
+export const packMacPkg = async () => {
+  const scriptsPath = dir('buildMac', 'scripts/')
+  const postinstallPath = dir('buildMac', 'scripts/postinstall')
+
+  await mkdirp(scriptsPath)
+
+  await fs.writeFile(dir('buildMac', 'distribution.xml'), macPkgDistribution)
+  await fs.writeFile(
+    postinstallPath,
+    `
+#!/bin/bash
+echo "Starting post-install process..."
+xattr -d com.apple.quarantine /Applications/Koishi.app/ || true
+echo "Post-install process finished."
+`.trim()
+  )
+
+  await exec(
+    'pkgbuild',
+    [
+      '--identifier',
+      'chat.koishi.desktop',
+      '--component',
+      'Koishi.app',
+      '--scripts',
+      'scripts',
+      '--install-location',
+      '/Applications',
+      'koishi-app.pkg',
+    ],
+    dir('buildMac')
+  )
+
+  await exec(
+    'productbuild',
+    [
+      '--distribution',
+      'distribution.xml',
+      '--package-path',
+      '.',
+      dir('dist', 'koishi.pkg'),
+    ],
+    dir('buildMac')
+  )
+}
+
+export const packMac = series(packMacApp, parallel(packMacDmg, packMacPkg))

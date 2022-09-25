@@ -1,6 +1,6 @@
 import { parallel } from 'gulp'
 import { Exceptions } from '../../utils/exceptions'
-import { packMacApp } from './mac'
+import { packMac } from './mac'
 import { packMsi } from './msi'
 import { packPortable } from './portable'
 
@@ -13,7 +13,7 @@ const buildPack = () => {
     case 'win32':
       return parallel(packPortable, packMsi)
     case 'darwin':
-      return parallel(packPortable, packMacApp)
+      return parallel(packPortable, packMac)
     case 'linux':
       return parallel(packPortable)
     default:
