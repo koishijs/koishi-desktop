@@ -11,7 +11,7 @@ export const packPortable = async () => {
     throw x
   })
 
-  archive.pipe(fs.createWriteStream(dir('dist', 'portable.zip')))
+  archive.pipe(fs.createWriteStream(dir('dist', 'koishi.zip')))
   archive.directory(dir('buildPortable'), false)
 
   await archive.finalize()
