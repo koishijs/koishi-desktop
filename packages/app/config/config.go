@@ -88,7 +88,7 @@ func loadConfigIntl(i *do.Injector, c *koiconfig.Config, path string, recur uint
 		return fmt.Errorf("failed to parse config %s: %w", absPath, err)
 	}
 
-	err = postConfig(c)
+	err = postConfig(i, c)
 	if err != nil {
 		return fmt.Errorf("failed to process postconfig: %w", err)
 	}
@@ -98,38 +98,38 @@ func loadConfigIntl(i *do.Injector, c *koiconfig.Config, path string, recur uint
 	return nil
 }
 
-func postConfig(c *koiconfig.Config) error {
+func postConfig(i *do.Injector, c *koiconfig.Config) error {
 	var err error
 
-	c.Computed.DirData, err = joinAndCreate(c.Computed.DirConfig, "data")
+	c.Computed.DirData, err = joinAndCreate(i, c.Computed.DirConfig, "data")
 	if err != nil {
 		return fmt.Errorf("failed to process dir data: %w", err)
 	}
-	c.Computed.DirHome, err = joinAndCreate(c.Computed.DirData, "home")
+	c.Computed.DirHome, err = joinAndCreate(i, c.Computed.DirData, "home")
 	if err != nil {
 		return fmt.Errorf("failed to process dir data/home: %w", err)
 	}
-	c.Computed.DirNode, err = joinAndCreate(c.Computed.DirData, "node")
+	c.Computed.DirNode, err = joinAndCreate(i, c.Computed.DirData, "node")
 	if err != nil {
 		return fmt.Errorf("failed to process dir data/node: %w", err)
 	}
 	if runtime.GOOS == "windows" {
 		c.Computed.DirNodeExe = c.Computed.DirNode
 	} else {
-		c.Computed.DirNodeExe, err = joinAndCreate(c.Computed.DirNode, "bin")
+		c.Computed.DirNodeExe, err = joinAndCreate(i, c.Computed.DirNode, "bin")
 		if err != nil {
 			return fmt.Errorf("failed to process dir node/bin: %w", err)
 		}
 	}
-	c.Computed.DirLock, err = joinAndCreate(c.Computed.DirData, "lock")
+	c.Computed.DirLock, err = joinAndCreate(i, c.Computed.DirData, "lock")
 	if err != nil {
 		return fmt.Errorf("failed to process dir data/lock: %w", err)
 	}
-	c.Computed.DirTemp, err = joinAndCreate(c.Computed.DirData, "tmp")
+	c.Computed.DirTemp, err = joinAndCreate(i, c.Computed.DirData, "tmp")
 	if err != nil {
 		return fmt.Errorf("failed to process dir data/tmp: %w", err)
 	}
-	c.Computed.DirInstance, err = joinAndCreate(c.Computed.DirData, "instances")
+	c.Computed.DirInstance, err = joinAndCreate(i, c.Computed.DirData, "instances")
 	if err != nil {
 		return fmt.Errorf("failed to process dir data/instances: %w", err)
 	}
@@ -137,8 +137,10 @@ func postConfig(c *koiconfig.Config) error {
 	return nil
 }
 
-func joinAndCreate(base, path string) (string, error) {
+func joinAndCreate(i *do.Injector, base, path string) (string, error) {
 	var err error
+
+	l := do.MustInvoke[*logger.Logger](i)
 
 	joinedPath := filepath.Join(base, path)
 	err = os.MkdirAll(joinedPath, fs.ModePerm) // -rwxrwxrwx
@@ -148,7 +150,7 @@ func joinAndCreate(base, path string) (string, error) {
 	// Set perm for directory that already exists
 	err = os.Chmod(joinedPath, fs.ModePerm) // -rwxrwxrwx
 	if err != nil {
-		return "", fmt.Errorf("failed to chmod data folder %s: %w", path, err)
+		l.Warnf("failed to chmod data folder %s: %v", path, err)
 	}
 
 	return joinedPath, nil
