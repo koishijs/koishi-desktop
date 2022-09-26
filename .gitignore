@@ -240,3 +240,6 @@ $RECYCLE.BIN/
 Network Trash Folder
 Temporary Items
 .apdisk
+
+# Go work
+go.work.sum
