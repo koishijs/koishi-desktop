@@ -45,10 +45,14 @@ export const packMacPkg = async () => {
     `
 #!/bin/bash
 echo "Starting post-install process..."
-xattr -d com.apple.quarantine /Applications/Koishi.app/ || true
+echo "Removing com.apple.quarantine..."
+sudo xattr -d com.apple.quarantine /Applications/Koishi.app/ || true
+echo "Setting chmod..."
+sudo chmod -R 777 /Applications/Koishi.app/ || true
 echo "Post-install process finished."
 `.trim()
   )
+  await fs.chmod(postinstallPath, 0o755)
 
   await exec(
     'pkgbuild',
