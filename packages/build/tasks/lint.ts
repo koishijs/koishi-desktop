@@ -1,4 +1,4 @@
-import { tryEachModule } from '../utils/module'
+import { eachModule } from '../utils/module'
 import { dir } from '../utils/path'
 import { tryExec } from '../utils/spawn'
 
@@ -13,11 +13,11 @@ const buildLintArgs = (pkg: string, fix?: boolean) => {
 }
 
 export const lint = () =>
-  tryEachModule((pkg) =>
+  eachModule((pkg) =>
     tryExec('golangci-lint', buildLintArgs(pkg), dir('packages', pkg))
   )
 
 export const lintFix = () =>
-  tryEachModule((pkg) =>
+  eachModule((pkg) =>
     tryExec('golangci-lint', buildLintArgs(pkg, true), dir('packages', pkg))
   )

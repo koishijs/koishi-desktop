@@ -1,4 +1,4 @@
-name: Build
+name: Lint
 
 on: [push, pull_request]
 
@@ -53,12 +53,7 @@ jobs:
           yarn
         shell: bash
 
-      - name: Build Koi
+      - name: Lint
         run: |
-          yarn gulp ciBuild
+          yarn gulp ciLint
         shell: bash
-
-      - uses: actions/upload-artifact@v2
-        with:
-          name: koi-dist-${{ fromJson(matrix.target).rid }}-${{ github.sha }}
-          path: build/dist/
