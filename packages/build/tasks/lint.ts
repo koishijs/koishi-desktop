@@ -1,6 +1,6 @@
-import { eachModule } from '../utils/module'
+import { tryEachModule } from '../utils/module'
 import { dir } from '../utils/path'
-import { tryExec } from '../utils/spawn'
+import { exec } from '../utils/spawn'
 
 const buildLintArgs = (pkg: string, fix?: boolean) => {
   const isGh = process.env.GITHUB_ACTIONS
@@ -13,11 +13,11 @@ const buildLintArgs = (pkg: string, fix?: boolean) => {
 }
 
 export const lint = () =>
-  eachModule((pkg) =>
-    tryExec('golangci-lint', buildLintArgs(pkg), dir('packages', pkg))
+  tryEachModule((pkg) =>
+    exec('golangci-lint', buildLintArgs(pkg), dir('packages', pkg))
   )
 
 export const lintFix = () =>
-  eachModule((pkg) =>
-    tryExec('golangci-lint', buildLintArgs(pkg, true), dir('packages', pkg))
+  tryEachModule((pkg) =>
+    exec('golangci-lint', buildLintArgs(pkg, true), dir('packages', pkg))
   )
