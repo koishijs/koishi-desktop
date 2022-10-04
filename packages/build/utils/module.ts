@@ -1,5 +1,5 @@
 // Module "do" isn't here because it's treated as a vendor.
-const modules = ['core', 'sdk', 'app']
+const modules = ['core', 'sdk', 'app', 'unfold']
 
 export async function eachModule(
   fn:
