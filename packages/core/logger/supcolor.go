@@ -126,7 +126,7 @@ func (adapter *colorAdapter) adaptColor(s string) string {
 			// ?? Not a number? Just return
 			return code
 		}
-		c16 := colette.Color256To16(c256)
+		c16 := colette.Color256To16(byte(c256))
 		if c16 < 8 {
 			c16 += 30
 		} else {
