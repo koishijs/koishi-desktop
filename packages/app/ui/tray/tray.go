@@ -57,7 +57,7 @@ func (tray *TrayDaemon) onReady() {
 
 	tray.addItemsAfter()
 
-	if _, err := tray.manager.Ensure(); err != nil {
+	if _, err := tray.manager.Ensure(true); err != nil {
 		l.Error(err)
 	}
 
@@ -505,7 +505,7 @@ func (tray *TrayDaemon) addItemsAfter() {
 				break
 			}
 			l.Debug("Starting daemon")
-			err := tray.manager.Start()
+			err := tray.manager.Start(true)
 			if err != nil {
 				l.Error(err)
 

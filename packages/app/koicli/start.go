@@ -47,7 +47,7 @@ func newStartAction(i *do.Injector) (cli.ActionFunc, error) {
 		}
 
 		manager := manage.NewKoiManager(cfg.Computed.Exe, cfg.Computed.DirLock)
-		conn, err := manager.Ensure()
+		conn, err := manager.Ensure(true)
 		if err != nil {
 			return err
 		}

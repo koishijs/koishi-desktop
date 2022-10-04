@@ -74,7 +74,7 @@ func newRunDaemonAction(i *do.Injector) (cli.ActionFunc, error) {
 	return func(c *cli.Context) error {
 		l.Debug("Trigger action: run daemon")
 
-		return god.Daemon(i)
+		return god.Daemon(i, !c.Bool("no-start"))
 	}, nil
 }
 

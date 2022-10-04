@@ -34,7 +34,7 @@ type DaemonLock struct {
 //
 // This will serve as the main goroutine
 // and run during the whole lifecycle.
-func Daemon(i *do.Injector) error {
+func Daemon(i *do.Injector, startInstances bool) error {
 	var err error
 
 	cfg, err := do.Invoke[*koiconfig.Config](i)
@@ -60,11 +60,13 @@ func Daemon(i *do.Injector) error {
 
 	// Register DaemonProcess synchronously,
 	do.Provide(i, daemonproc.NewDaemonProcess)
-	// And start it in a new goroutine as early as possible.
-	// This ensures Koishi starts quickly first.
-	err = do.MustInvoke[*daemonproc.DaemonProcess](i).Init()
-	if err != nil {
-		return fmt.Errorf("daemon process init failed: %w", err)
+	if startInstances {
+		// And start it in a new goroutine as early as possible.
+		// This ensures Koishi starts quickly first.
+		err = do.MustInvoke[*daemonproc.DaemonProcess](i).Init()
+		if err != nil {
+			return fmt.Errorf("daemon process init failed: %w", err)
+		}
 	}
 
 	l := do.MustInvoke[*logger.Logger](i)

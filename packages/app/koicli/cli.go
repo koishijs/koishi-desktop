@@ -43,6 +43,13 @@ func NewCli(i *do.Injector) (*cli.App, error) {
 				Usage: "Enable debug mode",
 			},
 
+			&cli.BoolFlag{
+				Name:     "no-start",
+				Usage:    "Do not start instance(s)",
+				Required: false,
+				Value:    false,
+			},
+
 			cli.HelpFlag,
 			cli.VersionFlag,
 			cli.BashCompletionFlag,

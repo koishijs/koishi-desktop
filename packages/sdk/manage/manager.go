@@ -31,7 +31,7 @@ func NewKoiManager(exe string, dirLock string) *KoiManager {
 // Ensure handles all situations
 // and you should generally use this method
 // to get [client.Options] of god daemon.
-func (manager *KoiManager) Ensure() (*client.Options, error) {
+func (manager *KoiManager) Ensure(startInstances bool) (*client.Options, error) {
 	var err error
 
 	conn, availErr := manager.Available()
@@ -40,7 +40,7 @@ func (manager *KoiManager) Ensure() (*client.Options, error) {
 	}
 
 	manager.Stop()
-	err = manager.Start()
+	err = manager.Start(startInstances)
 	if err != nil {
 		return nil, err
 	}
@@ -71,13 +71,21 @@ func (manager *KoiManager) Available() (*client.Options, error) {
 }
 
 // Start god daemon.
-func (manager *KoiManager) Start() error {
+func (manager *KoiManager) Start(startInstances bool) error {
 	var cmd *exec.Cmd
 	// THE B3ST S0lUt!0N
 	if runtime.GOOS == "windows" {
-		cmd = exec.Command("cmd.exe", "/C", "start", "", "CALL", manager.exe, "run", "daemon") //nolint:gosec
+		if startInstances {
+			cmd = exec.Command("cmd.exe", "/C", "start", "", "CALL", manager.exe, "run", "daemon") //nolint:gosec
+		} else {
+			cmd = exec.Command("cmd.exe", "/C", "start", "", "CALL", manager.exe, "--no-start", "run", "daemon") //nolint:gosec
+		}
 	} else {
-		cmd = exec.Command("sh", "-c", fmt.Sprintf("%s run daemon &", manager.exe)) //nolint:gosec
+		if startInstances {
+			cmd = exec.Command("sh", "-c", fmt.Sprintf("%s run daemon &", manager.exe)) //nolint:gosec
+		} else {
+			cmd = exec.Command("sh", "-c", fmt.Sprintf("%s --no-start run daemon &", manager.exe)) //nolint:gosec
+		}
 	}
 	if err := cmd.Run(); err != nil {
 		return fmt.Errorf("failed to run daemon bootstrap shell: %w", err)
