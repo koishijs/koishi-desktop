@@ -7,12 +7,6 @@ import {
   koiVersionStringsJson,
 } from '../../utils/config'
 
-export const koiConfigBefore = Handlebars.compile(
-  fs
-    .readFileSync(path.join(__dirname, 'koi-config-before.yml.hbs'))
-    .toString('utf-8')
-)({})
-
 export const koiConfig = Handlebars.compile(
   fs.readFileSync(path.join(__dirname, 'koi-config.yml.hbs')).toString('utf-8')
 )({ defaultInstance })
