@@ -4,6 +4,7 @@ go 1.19
 
 require (
 	github.com/goccy/go-json v0.9.11
+	github.com/mitchellh/go-homedir v1.1.0
 	github.com/mitchellh/mapstructure v1.5.0
 	github.com/samber/do v1.4.0
 	github.com/shirou/gopsutil/v3 v3.22.8
