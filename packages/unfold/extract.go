@@ -11,7 +11,7 @@ import (
 	"strings"
 )
 
-func extract(dest string) error {
+func extract(dest string, writeConfig bool) error {
 	var err error
 
 	reader, err := zip.NewReader(bytes.NewReader(portableData), int64(len(portableData)))
@@ -25,7 +25,7 @@ func extract(dest string) error {
 	}
 
 	for _, f := range reader.File {
-		err = extractIntl(dest, f)
+		err = extractIntl(dest, writeConfig, f)
 		if err != nil {
 			return fmt.Errorf("failed to write %s: %w", f.Name, err)
 		}
@@ -34,8 +34,12 @@ func extract(dest string) error {
 	return nil
 }
 
-func extractIntl(dest string, f *zip.File) error {
+func extractIntl(dest string, writeConfig bool, f *zip.File) error {
 	var err error
+
+	if (!writeConfig) && (f.Name == "koi.yml") {
+		return nil
+	}
 
 	path, err := sanitizeArchivePath(dest, f.Name)
 	if err != nil {
