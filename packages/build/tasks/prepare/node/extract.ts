@@ -1,5 +1,5 @@
 import del from 'del'
-import { series, TaskFunction } from 'gulp'
+import { TaskFunction } from 'gulp'
 import { info } from 'gulplog'
 import * as lzma from 'lzma-native'
 import StreamZip from 'node-stream-zip'
@@ -7,12 +7,9 @@ import * as fs from 'node:fs'
 import stream from 'node:stream'
 import { promisify } from 'node:util'
 import * as tar from 'tar'
-import { koishiManifest } from '../../../templates'
-import { koishiVersionStrings } from '../../../utils/config'
 import { Exceptions } from '../../../utils/exceptions'
 import { exists } from '../../../utils/fs'
 import { dir } from '../../../utils/path'
-import { exec } from '../../../utils/spawn'
 import { destFileLinux, destFileMac, destFileWin, nameWin } from './path'
 
 export const prepareNodeExtractWin = async () => {
@@ -47,37 +44,6 @@ export const prepareNodeExtractWin = async () => {
     dir('buildPortableData', 'node/node.exe'),
     dir('buildPortableData', 'node/koishi.exe')
   )
-}
-
-export const prepareNodeRcedit = async () => {
-  const koishiManifestPath = dir('buildCache', 'koishi.exe.manifest')
-  const exePath = dir('buildPortableData', 'node/koishi.exe')
-
-  await fs.promises.writeFile(koishiManifestPath, koishiManifest)
-
-  const args = [
-    exePath,
-    '--set-icon',
-    dir('src', 'resources/koi.ico'),
-    '--application-manifest',
-    koishiManifestPath,
-  ]
-
-  ;(
-    Object.keys(koishiVersionStrings) as (keyof typeof koishiVersionStrings)[]
-  ).forEach((x) => {
-    args.push('--set-version-string', x, koishiVersionStrings[x])
-  })
-
-  await exec('rcedit.exe', args, dir('buildCache'))
-
-  // Change subsystem to GUI
-  // https://learn.microsoft.com/windows/win32/api/winnt/ns-winnt-image_optional_header64
-  const buf = await fs.promises.readFile(exePath)
-  const peOffset = buf.readUint32LE(0x3c) // IMAGE_DOS_HEADER.e_lfanew, the offset of PE Header
-  const subsystemOffset = peOffset + 0x5c // Offset of IMAGE_OPTIONAL_HEADER64.Subsystem
-  buf.writeUInt8(2, subsystemOffset) // IMAGE_SUBSYSTEM_WINDOWS_GUI
-  await fs.promises.writeFile(exePath, buf)
 }
 
 export const prepareNodeExtractMac = async () => {
@@ -148,7 +114,7 @@ export const prepareNodeExtractLinux = async () => {
 const buildPrepareNodeExtract = (): TaskFunction => {
   switch (process.platform) {
     case 'win32':
-      return series(prepareNodeExtractWin, prepareNodeRcedit)
+      return prepareNodeExtractWin
     case 'darwin':
       return prepareNodeExtractMac
     case 'linux':
