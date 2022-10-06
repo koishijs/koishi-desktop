@@ -1,3 +1,4 @@
+//nolint:typecheck
 package main
 
 import (

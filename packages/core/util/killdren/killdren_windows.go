@@ -2,6 +2,7 @@
 package killdren
 
 import (
+	"errors"
 	"os"
 	"os/exec"
 	"syscall"
@@ -31,7 +32,7 @@ func Stop(cmd *exec.Cmd) error {
 		return err
 	}
 	r1, _, err := f.Call(uintptr(pid))
-	if r1 == 0 && err != syscall.ERROR_ACCESS_DENIED {
+	if r1 == 0 && !errors.Is(err, syscall.ERROR_ACCESS_DENIED) {
 		return err
 	}
 
@@ -55,6 +56,7 @@ func Stop(cmd *exec.Cmd) error {
 	if r1 == 0 {
 		return err
 	}
+
 	return nil
 }
 
