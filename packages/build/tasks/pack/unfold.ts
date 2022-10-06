@@ -39,6 +39,8 @@ export const compileUnfoldDebug = () =>
         'buildUnfoldBinary',
         process.platform === 'win32' ? 'unfold.exe' : 'unfold'
       ),
+      '-ldflags',
+      `${process.platform === 'win32' ? '-H=windowsgui ' : ''}`,
     ],
     dir('srcUnfold')
   )
@@ -55,7 +57,7 @@ export const compileUnfoldRelease = () =>
       ),
       '-trimpath',
       '-ldflags',
-      '-w -s',
+      `-w -s ${process.platform === 'win32' ? '-H=windowsgui' : ''}`,
     ],
     dir('srcUnfold')
   )
