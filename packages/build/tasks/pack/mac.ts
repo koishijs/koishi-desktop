@@ -11,14 +11,14 @@ export const packMacApp = async () => {
   const appResourcesPath = dir('buildMac', 'Koishi.app/Contents/Resources/')
   const appIconPath = dir(
     'buildMac',
-    'Koishi.app/Contents/Resources/koishi.icns'
+    'Koishi.app/Contents/Resources/koishi-app.icns'
   )
 
   await mkdirp(appMacosPath)
   await mkdirp(appResourcesPath)
 
   await fs.cp(dir('buildPortable'), appMacosPath, { recursive: true })
-  await fs.copyFile(dir('buildAssets', 'koishi.icns'), appIconPath)
+  await fs.copyFile(dir('buildAssets', 'koishi-app.icns'), appIconPath)
   await fs.writeFile(appInfoPlistPath, macAppPlist)
 }
 
