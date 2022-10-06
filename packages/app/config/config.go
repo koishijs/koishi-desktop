@@ -88,7 +88,7 @@ func loadConfigIntl(i *do.Injector, c *koiconfig.Config, path string, recur uint
 			l.Debugf("Redirecting to user data: %s", redirect)
 		}
 
-		return loadConfigIntl(i, c, filepath.Join(c.Computed.DirConfig, redirect), recur+1)
+		return loadConfigIntl(i, c, redirect, recur+1)
 	}
 
 	l.Debug("Parsing config.")
