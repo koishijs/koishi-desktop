@@ -1,5 +1,3 @@
-//go:build !windows
-
 package pathutil
 
 import (
@@ -15,5 +13,5 @@ func UserDataDir() (string, error) {
 		return "", fmt.Errorf("failed to get home directory: %w", err)
 	}
 
-	return filepath.Join(home, "koishijs/koishi-desktop"), nil
+	return filepath.Join(home, "Library/Application Support/koishijs/koishi-desktop"), nil
 }
