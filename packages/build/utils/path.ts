@@ -13,6 +13,7 @@ const buildPaths = {
   packages: 'packages/',
   src: 'packages/app/',
   srcCore: 'packages/core/',
+  srcUnfold: 'packages/unfold/',
   srcAssets: 'packages/assets/',
   srcIcon: 'packages/core/ui/icon/',
   srcBuild: 'packages/build/',
@@ -25,6 +26,9 @@ const buildPaths = {
 
   buildPortable: 'build/varients/portable/',
   buildPortableData: 'build/varients/portable/data/',
+  buildUnfold: 'build/varients/unfold/',
+  buildUnfoldData: 'build/varients/unfold/portabledata/',
+  buildUnfoldBinary: 'build/varients/unfold/binary/',
   buildMac: 'build/varients/mac/',
   buildMsi: 'build/varients/msi/',
 

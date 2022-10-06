@@ -1,21 +1,23 @@
-import { parallel } from 'gulp'
+import { parallel, series } from 'gulp'
 import { Exceptions } from '../../utils/exceptions'
 import { packMac } from './mac'
 import { packMsi } from './msi'
 import { packPortable } from './portable'
+import { packUnfold } from './unfold'
 
 export * from './mac'
 export * from './msi'
 export * from './portable'
+export * from './unfold'
 
 const buildPack = () => {
   switch (process.platform) {
     case 'win32':
-      return parallel(packPortable, packMsi)
+      return parallel(packPortable, series(packUnfold, packMsi))
     case 'darwin':
-      return parallel(packPortable, packMac)
+      return parallel(packPortable, series(packUnfold, packMac))
     case 'linux':
-      return parallel(packPortable)
+      return parallel(packPortable, series(packUnfold))
     default:
       throw Exceptions.platformNotSupported()
   }
