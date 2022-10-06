@@ -24,6 +24,9 @@ export const packUnfoldData = async () => {
     await fs.copyFile(dir('buildPortable', b), dir('buildUnfoldBinary', b))
 
   await zip(dir('buildUnfoldData'), dir('srcUnfold', 'portabledata.zip'))
+
+  // Wait 2 seconds for macOS
+  await new Promise((resolve) => setTimeout(resolve, 2000))
 }
 
 export const compileUnfoldDebug = () =>
