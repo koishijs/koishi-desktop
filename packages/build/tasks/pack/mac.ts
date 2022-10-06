@@ -17,7 +17,7 @@ export const packMacApp = async () => {
   await mkdirp(appMacosPath)
   await mkdirp(appResourcesPath)
 
-  await fs.cp(dir('buildPortable'), appMacosPath, { recursive: true })
+  await fs.cp(dir('buildUnfoldBinary'), appMacosPath, { recursive: true })
   await fs.copyFile(dir('buildAssets', 'koishi-app.icns'), appIconPath)
   await fs.writeFile(appInfoPlistPath, macAppPlist)
 }
@@ -36,8 +36,12 @@ export const packMacPkg = async () => {
 echo "Starting post-install process..."
 echo "Removing com.apple.quarantine..."
 sudo xattr -d com.apple.quarantine /Applications/Koishi.app/ || true
-echo "Setting chmod..."
+echo "Setting chmod for unfold..."
 sudo chmod -R 777 /Applications/Koishi.app/ || true
+echo "Starting unfold..."
+sudo /Applications/Koishi.app/Contents/MacOS/unfold ensure
+echo "Setting chmod..."
+sudo chmod -R 755 /Applications/Koishi.app/ || true
 echo "Post-install process finished."
 `.trim()
   )
