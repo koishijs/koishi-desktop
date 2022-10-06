@@ -40,8 +40,10 @@ echo "Setting chmod for unfold..."
 sudo chmod -R 777 /Applications/Koishi.app/ || true
 echo "Starting unfold..."
 sudo /Applications/Koishi.app/Contents/MacOS/unfold ensure
-echo "Setting chmod..."
+echo "Setting chmod for app..."
 sudo chmod -R 755 /Applications/Koishi.app/ || true
+echo "Setting chmod for user data..."
+sudo chmod -R 777 ~/Library/Application\\ Support/koishijs/koishi-desktop/ || true
 echo "Post-install process finished."
 `.trim()
   )
