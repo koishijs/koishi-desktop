@@ -2,20 +2,9 @@ import { series } from 'gulp'
 import { koiVersion } from '../../utils/config'
 import { dir } from '../../utils/path'
 import { exec } from '../../utils/spawn'
-import execa from 'execa'
 
 export const compileVersioninfo = () =>
   exec('goversioninfo', ['-64'], dir('src'))
-
-const compileAppExecOptions: execa.SyncOptions =
-  process.platform === 'win32'
-    ? {
-        env: {
-          CGO_CXXFLAGS: `-I${dir('buildVendor', 'WebView2/include')}`,
-          CGO_LDFLAGS: `-L${dir('buildVendor', 'WebView2/x64')}`,
-        },
-      }
-    : {}
 
 export const compileAppDebug = () =>
   exec(
@@ -29,8 +18,7 @@ export const compileAppDebug = () =>
         process.platform === 'win32' ? '-H=windowsgui ' : ''
       }-X gopkg.ilharper.com/koi/app/util.AppVersion=${koiVersion.slice(1)}`,
     ],
-    dir('src'),
-    compileAppExecOptions
+    dir('src')
   )
 
 export const compileAppRelease = () =>
@@ -46,8 +34,7 @@ export const compileAppRelease = () =>
         process.platform === 'win32' ? '-H=windowsgui' : ''
       } -X gopkg.ilharper.com/koi/app/util.AppVersion=${koiVersion.slice(1)}`,
     ],
-    dir('src'),
-    compileAppExecOptions
+    dir('src')
   )
 
 export const compileApp = process.env.CI ? compileAppRelease : compileAppDebug
