@@ -10,39 +10,16 @@ export const packMsiMkdir = () => mkdirp(dir('buildMsi'))
 export const packMsiIndex = () =>
   fs.writeFile(dir('buildMsi', 'index.wxs'), msiWxs)
 
-export const packMsiHeat = () =>
-  exec(
-    dir('buildVendor', 'wix/heat.exe'),
-    [
-      'dir',
-      dir('buildPortable'),
-      '-ag',
-      '-srd',
-      '-dr',
-      'DirectoryInstall',
-      '-cg',
-      'ComponentCore',
-      // '-ke', // LGHT0230
-      '-indent',
-      '2',
-      '-sw5150',
-      '-nologo',
-      '-out',
-      'files.wxs',
-    ],
-    dir('buildMsi')
-  )
-
 export const packMsiFiles = async () => {
   const dirSource = dir('buildMsi', 'SourceDir/')
   await mkdirp(dirSource)
-  await fs.cp(dir('buildPortable'), dirSource, { recursive: true })
+  await fs.cp(dir('buildUnfoldBinary'), dirSource, { recursive: true })
 }
 
 export const packMsiCandle = () =>
   exec(
     dir('buildVendor', 'wix/candle.exe'),
-    ['-nologo', 'index.wxs', 'files.wxs'],
+    ['-nologo', 'index.wxs'],
     dir('buildMsi')
   )
 
@@ -55,15 +32,16 @@ export const packMsiLight = () =>
       '-spdb',
       '-out',
       dir('dist', 'koishi.msi'),
+      '-ext',
+      'WixUIExtension',
       'index.wixobj',
-      'files.wixobj',
     ],
     dir('buildMsi')
   )
 
 export const packMsi = series(
   packMsiMkdir,
-  parallel(packMsiIndex, packMsiHeat, packMsiFiles),
+  parallel(packMsiIndex, packMsiFiles),
   packMsiCandle,
   packMsiLight
 )

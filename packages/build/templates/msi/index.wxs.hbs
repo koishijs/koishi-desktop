@@ -15,21 +15,14 @@
       Compressed="yes"
       Keywords="Installer"
       InstallerVersion="500"
-      InstallPrivileges="limited"
-      InstallScope="perUser"
+      InstallPrivileges="elevated"
+      Platform="x64"
       Description="Koishi Installer"
       Comments="Koishi {{koiVersion}} Installer"
       Manufacturer="Il Harper"
       Languages="1033"
       SummaryCodepage="1252"
     />
-
-    <Property Id="ALLUSERS" Value="2" Secure="yes" />
-    <Property Id="MSIINSTALLPERUSER" Value="1" Secure="yes" />
-    <!-- https://learn.microsoft.com/windows/win32/msi/allusers -->
-    <Condition
-      Message="Setting the ALLUSERS property is not allowed because Koishi is a per-user application. Setup will now exit."
-    >ALLUSERS = ""</Condition>
 
     <Icon Id="Icon.exe" SourceFile="{{{iconPath}}}" />
     <Property Id="ARPPRODUCTICON" Value="Icon.exe" />
@@ -49,45 +42,31 @@
       DowngradeErrorMessage="A newer version of Koishi is already installed."
     />
 
-    <!--
-    <Upgrade Id="02318298-8D9E-4C30-B963-BB0B16F1F126">
-      <UpgradeVersion
-        OnlyDetect="yes"
-        Property="SELFFOUND"
-        Minimum="{{koiSemver.major}}.{{koiSemver.minor}}.{{koiSemver.patch}}"
-        IncludeMinimum="yes"
-        Maximum="{{koiSemver.major}}.{{koiSemver.minor}}.{{koiSemver.patch}}"
-        IncludeMaximum="yes"
-      />
-      <UpgradeVersion
-        OnlyDetect="yes"
-        Property="NEWERFOUND"
-        Minimum="{{koiSemver.major}}.{{koiSemver.minor}}.{{koiSemver.patch}}"
-        IncludeMinimum="no"
-      />
-      <UpgradeVersion
-        OnlyDetect="no"
-        Property="PREVIOUSORSELFFOUND"
-        Minimum="0.1.0"
-        IncludeMinimum="yes"
-        Maximum="{{koiSemver.major}}.{{koiSemver.minor}}.{{koiSemver.patch}}"
-        IncludeMaximum="yes"
-      />
-    </Upgrade>
-    -->
-
     <Media Id="1" Cabinet="media.cab" EmbedCab="yes" />
     <Property Id="DiskPrompt" Value="Koishi {{koiVersion}} Installer" />
 
     <Directory Id="TARGETDIR" Name="SourceDir">
-      <Directory Id="ProgramFilesFolder">
-        <Directory Id="DirectoryInstall" Name="Koishi">
+      <Directory Id="ProgramFiles64Folder">
+        <Directory Id="DIRECTORYINSTALL" Name="Koishi">
           <Component
             Id="ComponentDirectoryInstall"
             Guid="7D40E7CF-C007-47C9-A6F9-75E7BFF355C8"
+            Win64="yes"
           >
             <CreateFolder />
-            <RemoveFolder Id="DirectoryInstall" On="uninstall" />
+          </Component>
+          <Component Id="ComponentFileKoi" Guid="*" Win64="yes">
+            <File Id="FileKoi" KeyPath="yes" Source="SourceDir\koi.exe" />
+          </Component>
+          <Component Id="ComponentFileUnfold" Guid="*" Win64="yes">
+            <File Id="FileUnfold" KeyPath="yes" Source="SourceDir\unfold.exe" />
+          </Component>
+          <Component Id="ComponentFileWebViewLoader" Guid="*" Win64="yes">
+            <File
+              Id="FileWebViewLoader"
+              KeyPath="yes"
+              Source="SourceDir\WebView2Loader.dll"
+            />
           </Component>
         </Directory>
       </Directory>
@@ -97,15 +76,19 @@
           <Component
             Id="ComponentDirectoryProgramMenuFolder"
             Guid="4D488340-00D4-4D15-A3EA-1F4C38CB3963"
+            Win64="yes"
           >
             <CreateFolder />
-            <RemoveFolder Id="DirectoryProgramMenuFolder" On="uninstall" />
+            <RemoveFolder
+              Id="RemoveDirectoryProgramMenuFolder"
+              On="uninstall"
+            />
             <Shortcut
               Id="ShortcutDirectoryProgramMenuFolderKoishi"
               Name="Koishi"
               Description="Start Koishi."
-              Target="[DirectoryInstall]koi.exe"
-              WorkingDirectory="DirectoryInstall"
+              Target="[DIRECTORYINSTALL]koi.exe"
+              WorkingDirectory="DIRECTORYINSTALL"
             />
             <Shortcut
               Id="ShortcutDirectoryProgramMenuFolderUninstallKoishi"
@@ -117,13 +100,36 @@
             <RegistryValue
               Root="HKCU"
               Key="Software\Il Harper\Koishi"
-              Name="installed"
-              Type="integer"
-              Value="1"
+              Type="string"
+              Value=""
               KeyPath="yes"
             />
           </Component>
         </Directory>
+      </Directory>
+
+      <Directory Id="DesktopFolder">
+        <Component
+          Id="ComponentDirectoryDesktopFolder"
+          Guid="B3988140-7A1A-4240-A0E9-315CCBD5193B"
+          Win64="yes"
+        >
+          <CreateFolder />
+          <Shortcut
+            Id="ShortcutDirectoryDesktopFolderKoishi"
+            Name="Koishi"
+            Description="Start Koishi."
+            Target="[DIRECTORYINSTALL]koi.exe"
+            WorkingDirectory="DIRECTORYINSTALL"
+          />
+          <RegistryValue
+            Root="HKCU"
+            Key="Software\Il Harper\Koishi"
+            Type="string"
+            Value=""
+            KeyPath="yes"
+          />
+        </Component>
       </Directory>
     </Directory>
 
@@ -133,17 +139,55 @@
       Description="The Koishi app."
       Display="expand"
       Level="1"
+      Absent="disallow"
+      InstallDefault="local"
+      AllowAdvertise="no"
+      ConfigurableDirectory="DIRECTORYINSTALL"
     >
       <Feature
         Id="FeatureCore"
         Title="Core"
         Description="Core feature of Koishi."
         Level="1"
+        Absent="disallow"
+        InstallDefault="local"
+        AllowAdvertise="no"
       >
         <ComponentRef Id="ComponentDirectoryInstall" />
-        <ComponentGroupRef Id="ComponentCore" />
+        <ComponentRef Id="ComponentFileKoi" />
+        <ComponentRef Id="ComponentFileUnfold" />
+        <ComponentRef Id="ComponentFileWebViewLoader" />
         <ComponentRef Id="ComponentDirectoryProgramMenuFolder" />
       </Feature>
+      <Feature
+        Id="FeatureDesktopIcon"
+        Title="Desktop Icon"
+        Description="Add a shortcut of Koishi on desktop."
+        Level="1000"
+        InstallDefault="local"
+        AllowAdvertise="no"
+      >
+        <ComponentRef Id="ComponentDirectoryDesktopFolder" />
+      </Feature>
     </Feature>
+
+    <Property Id="WIXUI_INSTALLDIR" Value="DIRECTORYINSTALL" />
+    <UIRef Id="WixUI_Mondo" />
+    <UIRef Id="WixUI_ErrorProgressText" />
+
+    <CustomAction
+      Id="CustomActionUnfold"
+      FileKey="FileUnfold"
+      ExeCommand="ensure"
+      Execute="deferred"
+      Impersonate="no"
+      Return="check"
+    />
+    <InstallExecuteSequence>
+      <Custom
+        Action="CustomActionUnfold"
+        After="InstallFiles"
+      >NOT Installed</Custom>
+    </InstallExecuteSequence>
   </Product>
 </Wix>
