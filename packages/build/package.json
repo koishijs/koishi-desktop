@@ -22,8 +22,5 @@
     "@types/cross-spawn": "^6",
     "@types/lzma-native": "^4",
     "@types/tar": "^6"
-  },
-  "optionalDependencies": {
-    "create-dmg": "^5.4.0"
   }
 }
