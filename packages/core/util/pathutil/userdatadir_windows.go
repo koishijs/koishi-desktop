@@ -6,5 +6,5 @@ import (
 )
 
 func UserDataDir() (string, error) {
-	return filepath.Join(os.Getenv("APPDATA"), "koishijs/koishi-desktop"), nil
+	return filepath.Join(os.Getenv("APPDATA"), "Il Harper/Koishi"), nil
 }

@@ -43,7 +43,7 @@ sudo /Applications/Koishi.app/Contents/MacOS/unfold ensure
 echo "Setting chmod for app..."
 sudo chmod -R 755 /Applications/Koishi.app/ || true
 echo "Setting chmod for user data..."
-sudo chmod -R 777 ~/Library/Application\\ Support/koishijs/koishi-desktop/ || true
+sudo chmod -R 777 ~/Library/Application\\ Support/Il\\ Harper/Koishi/ || true
 echo "Post-install process finished."
 `.trim()
   )
