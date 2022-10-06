@@ -53,13 +53,24 @@
             Guid="7C94CA6D-778B-4CD4-BABB-3E2CDDEE3D6C"
             Win64="yes"
           >
-            <CreateFolder />
-            <File Id="FileKoi" KeyPath="yes" Source="SourceDir\koi.exe" />
-            <File Id="FileUnfold" KeyPath="yes" Source="SourceDir\unfold.exe" />
+            <RemoveFile
+              Id="RemoveFileKoiConfig"
+              Name="koi.yml"
+              On="uninstall"
+            />
+            <RemoveFolder Id="RemoveDirectoryInstall" On="uninstall" />
+            <File Id="FileKoi" Source="SourceDir\koi.exe" />
+            <File Id="FileUnfold" Source="SourceDir\unfold.exe" />
             <File
               Id="FileWebViewLoader"
-              KeyPath="yes"
               Source="SourceDir\WebView2Loader.dll"
+            />
+            <RegistryValue
+              Root="HKLM"
+              Key="Software\Il Harper\Koishi"
+              Type="string"
+              Value=""
+              KeyPath="yes"
             />
           </Component>
         </Directory>
@@ -69,10 +80,9 @@
         <Directory Id="DirectoryProgramMenuFolder" Name="Koishi">
           <Component
             Id="ComponentDirectoryProgramMenuFolder"
-            Guid="4D488340-00D4-4D15-A3EA-1F4C38CB3963"
+            Guid="732EF903-8411-4BF3-9FA9-4B36DAC78B7D"
             Win64="yes"
           >
-            <CreateFolder />
             <RemoveFolder
               Id="RemoveDirectoryProgramMenuFolder"
               On="uninstall"
@@ -81,15 +91,8 @@
               Id="ShortcutDirectoryProgramMenuFolderKoishi"
               Name="Koishi"
               Description="Start Koishi."
-              Target="[DIRECTORYINSTALL]koi.exe"
+              Target="[#FileKoi]"
               WorkingDirectory="DIRECTORYINSTALL"
-            />
-            <Shortcut
-              Id="ShortcutDirectoryProgramMenuFolderUninstallKoishi"
-              Name="Uninstall Koishi"
-              Target="[SystemFolder]msiexec.exe"
-              Arguments="/x [ProductCode]"
-              Description="Uninstalls Koishi."
             />
             <RegistryValue
               Root="HKCU"
@@ -108,12 +111,11 @@
           Guid="B3988140-7A1A-4240-A0E9-315CCBD5193B"
           Win64="yes"
         >
-          <CreateFolder />
           <Shortcut
             Id="ShortcutDirectoryDesktopFolderKoishi"
             Name="Koishi"
             Description="Start Koishi."
-            Target="[DIRECTORYINSTALL]koi.exe"
+            Target="[#FileKoi]"
             WorkingDirectory="DIRECTORYINSTALL"
           />
           <RegistryValue
@@ -163,7 +165,7 @@
     </Feature>
 
     <Property Id="WIXUI_INSTALLDIR" Value="DIRECTORYINSTALL" />
-    <UIRef Id="WixUI_Mondo" />
+    <UIRef Id="WixUI_FeatureTree" />
     <UIRef Id="WixUI_ErrorProgressText" />
 
     <CustomAction

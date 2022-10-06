@@ -29,6 +29,7 @@ export const packMsiLight = () =>
     [
       '-nologo',
       '-sice:ICE61',
+      '-sice:ICE69',
       '-spdb',
       '-out',
       dir('dist', 'koishi.msi'),
