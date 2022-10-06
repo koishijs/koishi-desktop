@@ -12,6 +12,7 @@ import (
 	"github.com/samber/do"
 	"gopkg.ilharper.com/koi/core/koiconfig"
 	"gopkg.ilharper.com/koi/core/logger"
+	"gopkg.ilharper.com/koi/core/util/pathutil"
 )
 
 var defaultConfigData = koiconfig.ConfigData{
@@ -78,6 +79,14 @@ func loadConfigIntl(i *do.Injector, c *koiconfig.Config, path string, recur uint
 	err = redirectPath.Read(strings.NewReader(string(file)), &redirect)
 	if err == nil {
 		l.Debugf("'redirect' field detected: %s", redirect)
+		if redirect == "USERDATA" {
+			r, uddErr := pathutil.UserDataDir()
+			if uddErr != nil {
+				return fmt.Errorf("failed to resolve user data: %w", uddErr)
+			}
+			redirect = r
+			l.Debugf("Redirecting to user data: %s", redirect)
+		}
 
 		return loadConfigIntl(i, c, filepath.Join(c.Computed.DirConfig, redirect), recur+1)
 	}
