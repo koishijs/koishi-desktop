@@ -50,19 +50,12 @@
         <Directory Id="DIRECTORYINSTALL" Name="Koishi">
           <Component
             Id="ComponentDirectoryInstall"
-            Guid="7D40E7CF-C007-47C9-A6F9-75E7BFF355C8"
+            Guid="7C94CA6D-778B-4CD4-BABB-3E2CDDEE3D6C"
             Win64="yes"
           >
             <CreateFolder />
-            <RemoveFolder Id="RemoveDirectoryInstall" On="uninstall" />
-          </Component>
-          <Component Id="ComponentFileKoi" Guid="*" Win64="yes">
             <File Id="FileKoi" KeyPath="yes" Source="SourceDir\koi.exe" />
-          </Component>
-          <Component Id="ComponentFileUnfold" Guid="*" Win64="yes">
             <File Id="FileUnfold" KeyPath="yes" Source="SourceDir\unfold.exe" />
-          </Component>
-          <Component Id="ComponentFileWebViewLoader" Guid="*" Win64="yes">
             <File
               Id="FileWebViewLoader"
               KeyPath="yes"
@@ -155,9 +148,6 @@
         AllowAdvertise="no"
       >
         <ComponentRef Id="ComponentDirectoryInstall" />
-        <ComponentRef Id="ComponentFileKoi" />
-        <ComponentRef Id="ComponentFileUnfold" />
-        <ComponentRef Id="ComponentFileWebViewLoader" />
         <ComponentRef Id="ComponentDirectoryProgramMenuFolder" />
       </Feature>
       <Feature
