@@ -54,6 +54,7 @@
             Win64="yes"
           >
             <CreateFolder />
+            <RemoveFolder Id="RemoveDirectoryInstall" On="uninstall" />
           </Component>
           <Component Id="ComponentFileKoi" Guid="*" Win64="yes">
             <File Id="FileKoi" KeyPath="yes" Source="SourceDir\koi.exe" />
