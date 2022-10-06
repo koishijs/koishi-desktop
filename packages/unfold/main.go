@@ -53,6 +53,13 @@ func main() {
 		_, err := os.Stat(pathConfig)
 		if err == nil {
 			fmt.Println("User data exists. Skip unfolding.")
+
+			err = os.WriteFile(pathConfigRedirect, []byte("redirect: USERDATA"), 0o644)
+			if err != nil {
+				fmt.Printf("Failed to setup redirect: %v\n", err)
+				os.Exit(1)
+			}
+
 			return
 		}
 		if !errors.Is(err, fs.ErrNotExist) {
