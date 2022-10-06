@@ -173,10 +173,6 @@ cmake-build-*/
 # Dependency directories (remove the comment below to include it)
 # vendor/
 
-# IDEs
-.idea/*
-!.idea/runConfigurations
-
 # Windows thumbnail cache files
 Thumbs.db
 Thumbs.db:encryptable
