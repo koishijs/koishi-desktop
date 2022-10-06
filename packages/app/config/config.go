@@ -84,7 +84,7 @@ func loadConfigIntl(i *do.Injector, c *koiconfig.Config, path string, recur uint
 			if uddErr != nil {
 				return fmt.Errorf("failed to resolve user data: %w", uddErr)
 			}
-			redirect = r
+			redirect = filepath.Join(r, "koi.yml")
 			l.Debugf("Redirecting to user data: %s", redirect)
 		}
 
