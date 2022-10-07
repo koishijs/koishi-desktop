@@ -1,4 +1,5 @@
 import { info } from 'gulplog'
+import fs from 'node:fs/promises'
 import { sourceGitHub, versionAppimagetool } from '../../utils/config'
 import { exists } from '../../utils/fs'
 import { download } from '../../utils/net'
@@ -13,6 +14,7 @@ export const prepareAppimagetoolDownload = async () => {
 
   info('Now downloading appimagetool.')
   await download(src, dir('buildCache'), destFile)
+  await fs.chmod(dir('buildCache', destFile), 0o755)
 }
 
 export const prepareAppimagetool =
