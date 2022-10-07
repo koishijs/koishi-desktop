@@ -1,14 +1,13 @@
 import { parallel, series } from 'gulp'
 import { Exceptions } from '../../utils/exceptions'
-import { packAppImage } from './appimage'
 import { packMac } from './mac'
 import { packMsi } from './msi'
 import { packPortable } from './portable'
 import { packUnfold } from './unfold'
 
+export * from './appimage'
 export * from './mac'
 export * from './msi'
-export * from './appimage'
 export * from './portable'
 export * from './unfold'
 
@@ -19,7 +18,7 @@ const buildPack = () => {
     case 'darwin':
       return parallel(packPortable, series(packUnfold, packMac))
     case 'linux':
-      return parallel(packPortable, packAppImage, series(packUnfold))
+      return parallel(packPortable, /* packAppImage, */ series(packUnfold))
     default:
       throw Exceptions.platformNotSupported()
   }
