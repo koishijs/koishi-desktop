@@ -1,4 +1,5 @@
 import { parallel, series } from 'gulp'
+import { prepareAppimagetool } from './appimagetool'
 import { prepareBoilerplate } from './boilerplate'
 import { prepareFolder } from './folder'
 import { prepareGoMod } from './gomod'
@@ -14,11 +15,13 @@ export * from './node'
 export * from './wv2'
 export * from './tools'
 export * from './wix'
+export * from './appimagetool'
 
 export const prepare = parallel(
   prepareTools,
   prepareGoMod,
   series(prepareFolder, parallel(prepareNode, prepareBoilerplate)),
   prepareWebView2,
+  prepareAppimagetool,
   prepareWix
 )
