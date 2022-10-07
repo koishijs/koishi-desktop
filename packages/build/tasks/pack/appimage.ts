@@ -3,6 +3,7 @@ import mkdirp from 'mkdirp'
 import { dir } from '../../utils/path'
 import path from 'node:path'
 import fs from 'node:fs/promises'
+import { exec } from '../../utils/spawn'
 
 const appDirPath = dir('buildLinux', 'Koishi.AppDir/')
 const appBinaryPath = path.join(appDirPath, 'usr/bin/')
@@ -13,7 +14,7 @@ export const packAppImageMkdir = parallel(
   () => mkdirp(appMetaInfoPath)
 )
 
-export const packAppImageFiles = parallel(
+export const packAppImageCopyFiles = parallel(
   series(
     () =>
       fs.copyFile(
@@ -45,4 +46,22 @@ export const packAppImageFiles = parallel(
   () => fs.cp(dir('buildPortable'), appBinaryPath, { recursive: true })
 )
 
-export const packAppImage = series(packAppImageMkdir, packAppImageFiles)
+export const packAppImageGenerate = () =>
+  exec(
+    dir('buildCache', 'appimagetool.AppImage'),
+    [appDirPath],
+    dir('buildLinux')
+  )
+
+export const packAppImageCopyDist = () =>
+  fs.copyFile(
+    dir('buildLinux', 'Koishi.AppImage'),
+    dir('dist', 'Koishi.AppImage')
+  )
+
+export const packAppImage = series(
+  packAppImageMkdir,
+  packAppImageCopyFiles,
+  packAppImageGenerate,
+  packAppImageCopyDist
+)
