@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<component
+  type="desktop-application"
+  xmlns="https://specifications.freedesktop.org/metainfo/1.0"
+>
+  <id>chat.koishi.desktop</id>
+
+  <metadata_license>AGPL-1.0</metadata_license>
+  <project_license>AGPL-1.0</project_license>
+
+  <name>Koishi</name>
+  <summary>Cross-platform chatbot framework made with love</summary>
+  <description>
+    <p>Cross-platform chatbot framework made with love</p>
+  </description>
+  <developer_name>Koishi.js</developer_name>
+
+  <categories>
+    <category>Development</category>
+  </categories>
+
+  <keywords>
+    <keyword>Bot</keyword>
+    <keyword xml:lang="zh">机器人</keyword>
+
+    <keyword>Chatbot</keyword>
+    <keyword xml:lang="zh">聊天机器人</keyword>
+
+    <keyword translate="no">Koishi</keyword>
+
+    <keyword translate="no">Discord</keyword>
+    <keyword translate="no">Telegram</keyword>
+    <keyword translate="no">OneBot</keyword>
+
+    <keyword>Framework</keyword>
+    <keyword xml:lang="zh">框架</keyword>
+  </keywords>
+
+  <url type="homepage">https://koishi.chat</url>
+  <url type="bugtracker">https://github.com/koishijs/koishi/issues</url>
+  <url type="faq">https://koishi.chat</url>
+  <url type="help">https://koishi.chat</url>
+  <url type="contact">https://github.com/koishijs</url>
+  <url type="vcs-browser">https://github.com/koishijs/koishi</url>
+  <url
+    type="translate"
+  >https://github.com/koishijs/koishi/blob/master/CONTRIBUTING.md</url>
+  <url
+    type="contribute"
+  >https://github.com/koishijs/koishi/blob/master/CONTRIBUTING.md</url>
+
+  <screenshots>
+    <screenshot type="default">
+      <image>https://koishi.chat/console/status.png</image>
+    </screenshot>
+    <screenshot type="default">
+      <image>https://koishi.chat/console/bot.png</image>
+    </screenshot>
+    <screenshot type="default">
+      <image>https://koishi.chat/console/logger.png</image>
+    </screenshot>
+    <screenshot type="default">
+      <image>https://koishi.chat/console/market.png</image>
+    </screenshot>
+    <screenshot type="default">
+      <image>https://koishi.chat/console/settings.png</image>
+    </screenshot>
+  </screenshots>
+
+  <launchable type="desktop-id">chat.koishi.desktop.desktop</launchable>
+  <provides>
+    <id>chat.koishi.desktop.desktop</id>
+  </provides>
+</component>

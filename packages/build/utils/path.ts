@@ -31,6 +31,7 @@ const buildPaths = {
   buildUnfoldBinary: 'build/varients/unfold/binary/',
   buildMac: 'build/varients/mac/',
   buildMsi: 'build/varients/msi/',
+  buildLinux: 'build/varients/linux/',
 
   dist: 'build/dist/',
 }

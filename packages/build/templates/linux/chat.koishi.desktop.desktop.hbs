@@ -1,0 +1,23 @@
+[Desktop Entry]
+Version={{koiVersion}}
+Type=Application
+Name=Koishi
+Comment=Start Koishi
+TryExec=koi
+Exec=koi
+Icon=chat.koishi.desktop
+Categories=Development;
+Keywords=Bot;Chatbot;Koishi;Discord;Telegram;OneBot;Framework;
+Keywords[zh]=Bot;机器人;聊天机器人;Koishi;Discord;Telegram;OneBot;框架;
+Actions=UI;Daemon;
+X-AppImage-Name=Koishi
+X-AppImage-Version={{koiVersion}}
+X-AppImage-Arch=x86_64
+
+[Desktop Action UI]
+Exec=koi run ui
+Name=Open UI
+
+[Desktop Action Daemon]
+Exec=koi run daemon
+Name=Run as Daemon
