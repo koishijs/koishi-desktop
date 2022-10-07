@@ -40,7 +40,7 @@ jobs:
 
       - name: Install Build Package
         run: |
-          yarn
+          yarn install --frozen-lockfile
         shell: bash
 
       - name: Build Koi
