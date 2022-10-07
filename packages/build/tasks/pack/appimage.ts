@@ -56,7 +56,8 @@ export const packAppImageGenerate = () =>
   exec(
     dir('buildCache', 'appimagetool.AppImage'),
     [appDirPath],
-    dir('buildLinux')
+    dir('buildLinux'),
+    { env: { ARCH: 'x86_64' } }
   )
 
 export const packAppImageCopyDist = () =>
