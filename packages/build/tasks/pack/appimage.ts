@@ -4,6 +4,7 @@ import { dir } from '../../utils/path'
 import path from 'node:path'
 import fs from 'node:fs/promises'
 import { exec } from '../../utils/spawn'
+import { linuxAppImageDesktop } from '../../templates/linux'
 
 const appDirPath = dir('buildLinux', 'Koishi.AppDir/')
 const appBinaryPath = path.join(appDirPath, 'usr/bin/')
@@ -23,6 +24,11 @@ export const packAppImageCopyFiles = parallel(
       ),
     () => fs.chmod(path.join(appDirPath, 'AppRun'), 0o755)
   ),
+  () =>
+    fs.writeFile(
+      path.join(appDirPath, 'chat.koishi.desktop.desktop'),
+      linuxAppImageDesktop
+    ),
   () =>
     fs.copyFile(
       dir('templates', 'linux/chat.koishi.desktop.appdata.xml'),
