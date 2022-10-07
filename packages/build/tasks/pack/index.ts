@@ -19,7 +19,7 @@ const buildPack = () => {
     case 'darwin':
       return parallel(packPortable, series(packUnfold, packMac))
     case 'linux':
-      return parallel(packPortable, series(packUnfold, packAppImage))
+      return parallel(packPortable, packAppImage, series(packUnfold))
     default:
       throw Exceptions.platformNotSupported()
   }
