@@ -36,6 +36,11 @@ export const packAppImageCopyFiles = parallel(
     ),
   () =>
     fs.copyFile(
+      dir('templates', 'linux/chat.koishi.desktop.appdata.xml'),
+      path.join(appMetaInfoPath, 'chat.koishi.desktop.metainfo.xml')
+    ),
+  () =>
+    fs.copyFile(
       dir('buildAssets', 'koishi.png'),
       path.join(appDirPath, '.DirIcon')
     ),
