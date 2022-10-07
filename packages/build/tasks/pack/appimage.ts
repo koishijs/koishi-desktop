@@ -67,7 +67,7 @@ export const packAppImageGenerate = () =>
 
 export const packAppImageCopyDist = () =>
   fs.copyFile(
-    dir('buildLinux', 'Koishi.AppImage'),
+    dir('buildLinux', 'Koishi-x86_64.AppImage'),
     dir('dist', 'Koishi.AppImage')
   )
 
