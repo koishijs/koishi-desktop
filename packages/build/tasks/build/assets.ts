@@ -1,5 +1,5 @@
 import { Icns, IcnsImage } from '@fiahfy/icns'
-import { series } from 'gulp'
+import { parallel, series } from 'gulp'
 import { info } from 'gulplog'
 import * as fs from 'node:fs'
 import sharp from 'sharp'
@@ -265,4 +265,10 @@ export const generateAssetsCode = async () => {
   )
 }
 
-export const generateAssets = series(generateAssetsImage, generateAssetsCode)
+export const generateAssetsCopySvg = () =>
+  fs.promises.cp(dir('srcAssets'), dir('buildAssets'), { recursive: true })
+
+export const generateAssets = parallel(
+  generateAssetsCopySvg,
+  series(generateAssetsImage, generateAssetsCode)
+)
