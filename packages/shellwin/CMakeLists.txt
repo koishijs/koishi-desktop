@@ -37,6 +37,10 @@ target_compile_definitions(koishell
     PRIVATE
         UNICODE
         _UNICODE
+        WIN32
+        _WIN32
+        WINDOWS
+        _WINDOWS
 )
 
 target_compile_options(koishell
