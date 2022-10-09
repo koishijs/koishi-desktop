@@ -130,6 +130,8 @@ func (shell *KoiShell) exec(arg any) (map[string]any, error) {
 
 	if err != nil {
 		return nil, fmt.Errorf("KoiShell exited with error: %w", err)
+	} else {
+		l.Debugf("KoiShell successfully exited.")
 	}
 
 	// Parse output
