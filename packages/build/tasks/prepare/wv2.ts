@@ -1,4 +1,4 @@
-import { parallel, series } from 'gulp'
+import { series } from 'gulp'
 import { info } from 'gulplog'
 import mkdirp from 'mkdirp'
 import StreamZip from 'node-stream-zip'
@@ -57,10 +57,7 @@ export const prepareWebView2CopyDll = async () => {
   await fs.promises.copyFile(cachedFile, destFile)
 }
 
-export const prepareWebView2Copy = parallel(
-  prepareWebView2CopyVendor,
-  prepareWebView2CopyDll
-)
+export const prepareWebView2Copy = series(prepareWebView2CopyVendor)
 
 export const prepareWebView2 =
   process.platform === 'win32'
