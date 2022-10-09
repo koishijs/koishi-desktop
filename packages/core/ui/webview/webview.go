@@ -3,6 +3,7 @@ package webview
 import (
 	"github.com/samber/do"
 	"gopkg.ilharper.com/koi/core/koiconfig"
+	"gopkg.ilharper.com/koi/core/koishell"
 	"gopkg.ilharper.com/koi/core/logger"
 	"gopkg.ilharper.com/x/browser"
 )
@@ -13,7 +14,12 @@ func run(
 	listen string,
 ) {
 	l := do.MustInvoke[*logger.Logger](i)
-	l.Warn("Webview is not currently available")
+	shell := do.MustInvoke[*koishell.KoiShell](i)
+
+	err := shell.WebView(name, listen)
+	if err != nil {
+		l.Errorf("WebView error: %v", err)
+	}
 }
 
 func Open(
