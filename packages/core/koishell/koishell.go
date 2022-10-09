@@ -171,3 +171,13 @@ func (shell *KoiShell) Shutdown() error {
 	// Do not short other do.Shutdownable
 	return nil
 }
+
+func (shell *KoiShell) WebView(name, url string) error {
+	_, err := shell.exec(map[string]string{
+		"mode": "webview",
+		"name": name,
+		"url":  url,
+	})
+
+	return err
+}
