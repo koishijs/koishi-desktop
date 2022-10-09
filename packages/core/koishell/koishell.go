@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"os/exec"
 	"path/filepath"
+	"sync"
 
 	"github.com/goccy/go-json"
 	"github.com/samber/do"
@@ -20,6 +21,14 @@ type KoiShell struct {
 
 	path string
 	cwd  string
+
+	// The mutex lock.
+	//
+	// There's no need to use [sync.RWMutex]
+	// because almost all ops are write.
+	mutex sync.Mutex
+	wg    sync.WaitGroup
+	reg   [256]*exec.Cmd
 }
 
 func BuildKoiShell(path string) func(i *do.Injector) (*KoiShell, error) {
@@ -29,6 +38,21 @@ func BuildKoiShell(path string) func(i *do.Injector) (*KoiShell, error) {
 			path: path,
 			cwd:  filepath.Dir(path),
 		}, nil
+	}
+}
+
+func (shell *KoiShell) getIndex(cmd *exec.Cmd) uint8 {
+	shell.mutex.Lock()
+	defer shell.mutex.Unlock()
+
+	var index uint8 = 0
+	for {
+		if shell.reg[index] == nil {
+			shell.reg[index] = cmd
+
+			return index
+		}
+		index++
 	}
 }
 
@@ -92,7 +116,15 @@ func (shell *KoiShell) exec(arg any) (map[string]any, error) {
 	}(bufio.NewScanner(stderrPipe))
 
 	// Wait process to stop
+	index := shell.getIndex(cmd)
+	shell.wg.Add(1)
 	err = cmd.Run()
+	shell.wg.Done()
+
+	shell.mutex.Lock()
+	shell.reg[index] = nil
+	shell.mutex.Unlock()
+
 	if err != nil {
 		return nil, fmt.Errorf("KoiShell exited with error: %w", err)
 	}
@@ -110,4 +142,28 @@ func (shell *KoiShell) exec(arg any) (map[string]any, error) {
 	}
 
 	return out, nil
+}
+
+func (shell *KoiShell) Shutdown() error {
+	l := do.MustInvoke[*logger.Logger](shell.i)
+
+	l.Debug("Shutting down DaemonProcess.")
+
+	shell.mutex.Lock()
+
+	for _, cmd := range shell.reg {
+		if cmd != nil {
+			err := killdren.Stop(cmd)
+			if err != nil {
+				l.Debugf("failed to gracefully stop KoiShell %d: %v. Trying kill", cmd.Process.Pid, err)
+				_ = killdren.Kill(cmd)
+			}
+		}
+	}
+
+	shell.mutex.Unlock()
+	shell.wg.Wait()
+
+	// Do not short other do.Shutdownable
+	return nil
 }
