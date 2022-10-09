@@ -15,7 +15,7 @@ func ksWebView(_ arg: [String: Any]) {
 
     let delegate = KSWebViewDelegate(url, name)
     NSApp.delegate = delegate
-    delegate.run()
+    NSApp.run()
 }
 
 class KSWebViewDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
@@ -43,12 +43,8 @@ class KSWebViewDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
         hostingView = NSHostingView(rootView: contentView)
         window.contentView = hostingView
         window.delegate = self
-    }
-
-    func run() {
         window.makeKeyAndOrderFront(nil)
         NSApp.activate(ignoringOtherApps: true)
-        NSApp.run()
     }
 }
 
