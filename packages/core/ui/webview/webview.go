@@ -1,6 +1,8 @@
 package webview
 
 import (
+	"strings"
+
 	"github.com/samber/do"
 	"gopkg.ilharper.com/koi/core/koiconfig"
 	"gopkg.ilharper.com/koi/core/koishell"
@@ -29,6 +31,8 @@ func Open(
 ) {
 	l := do.MustInvoke[*logger.Logger](i)
 	cfg := do.MustInvoke[*koiconfig.Config](i)
+
+	listen = strings.ReplaceAll(listen, "0.0.0.0", "localhost")
 
 	switch cfg.Data.Open {
 	case "integrated":
