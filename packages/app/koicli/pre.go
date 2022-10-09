@@ -3,6 +3,8 @@ package koicli
 import (
 	"fmt"
 	"os"
+	"path/filepath"
+	"runtime"
 
 	"github.com/samber/do"
 	"github.com/urfave/cli/v2"
@@ -38,7 +40,14 @@ func newPreAction(i *do.Injector) (cli.BeforeFunc, error) {
 		l.Debugf("Command line arguments:\n%#+v", os.Args)
 
 		do.Provide(i, config.BuildLoadConfig("koi.yml"))
-		do.Provide(i, koishell.BuildKoiShell(exe))
+
+		var shellName string
+		if runtime.GOOS == "windows" {
+			shellName = "koishell.exe"
+		} else {
+			shellName = "koishell"
+		}
+		do.Provide(i, koishell.BuildKoiShell(filepath.Join(filepath.Dir(exe), shellName)))
 
 		return nil
 	}, nil
