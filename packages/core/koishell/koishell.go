@@ -130,6 +130,10 @@ func (shell *KoiShell) exec(arg any) (map[string]any, error) {
 	}
 
 	// Parse output
+	if outB64 == "" {
+		return nil, nil
+	}
+
 	outJson, err := base64.StdEncoding.DecodeString(outB64)
 	if err != nil {
 		return nil, fmt.Errorf("failed to decode KoiShell output %s: %w", outB64, err)
