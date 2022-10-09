@@ -118,7 +118,10 @@ func (shell *KoiShell) exec(arg any) (map[string]any, error) {
 	// Wait process to stop
 	index := shell.getIndex(cmd)
 	shell.wg.Add(1)
+
+	l.Debugf("Starting KoiShell process.\narg: %#+v\nargJson: %s\nargB64: %s", arg, argJson, argB64)
 	err = cmd.Run()
+
 	shell.wg.Done()
 
 	shell.mutex.Lock()
