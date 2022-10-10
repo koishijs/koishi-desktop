@@ -32,6 +32,7 @@ const buildPaths = {
   buildUnfold: 'build/varients/unfold/',
   buildUnfoldData: 'build/varients/unfold/portabledata/',
   buildUnfoldBinary: 'build/varients/unfold/binary/',
+  buildShellWin: 'build/varients/shellwin/',
   buildMac: 'build/varients/mac/',
   buildMsi: 'build/varients/msi/',
   buildLinux: 'build/varients/linux/',
