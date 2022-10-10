@@ -7,13 +7,11 @@ import { dir } from '../../utils/path'
 const buildCompileShellMac = (isRelease: boolean) => async () => {
   const conf = isRelease ? 'release' : 'debug'
 
-  const buildPath = await spawnOutput(
-    'swift',
-    ['build', '--show-bin-path', '-c', conf],
-    {
+  const buildPath = (
+    await spawnOutput('swift', ['build', '--show-bin-path', '-c', conf], {
       cwd: dir('srcShellMac'),
-    }
-  )
+    })
+  ).trim()
 
   await exec('swift', ['build', '-c', conf], dir('srcShellMac'))
 
