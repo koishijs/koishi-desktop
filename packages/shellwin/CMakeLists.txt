@@ -17,11 +17,22 @@ set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_MESSAGE_LOG_LEVEL VERBOSE)
 
 ############################################################
+# Dependencies
+############################################################
+
+add_subdirectory(../libb64 lib/libb64)
+
+############################################################
 # App
 ############################################################
 
 add_executable(koishell
     src/main.cpp
+)
+
+target_link_libraries(koishell
+    PRIVATE
+        libb64
 )
 
 target_include_directories(koishell
