@@ -6,7 +6,7 @@ import { zip } from '../../utils/compress'
 import { dir } from '../../utils/path'
 import { exec } from '../../utils/spawn'
 
-export const packUnfoldData = async () => {
+export const packUnfoldDataCopy = async () => {
   await mkdirp(dir('buildUnfoldData', 'data'))
   await mkdirp(dir('buildUnfoldBinary'))
 
@@ -23,9 +23,10 @@ export const packUnfoldData = async () => {
   )
   for (const b of binaries)
     await fs.copyFile(dir('buildPortable', b), dir('buildUnfoldBinary', b))
+}
 
+export const packUnfoldDataZip = async () => {
   await zip(dir('buildUnfoldData'), dir('srcUnfold', 'portabledata.zip'))
-
   await sleepForMac()
 }
 
@@ -66,4 +67,8 @@ export const compileUnfold = process.env.CI
   ? compileUnfoldRelease
   : compileUnfoldDebug
 
-export const packUnfold = series(packUnfoldData, compileUnfold)
+export const packUnfold = series(
+  packUnfoldDataCopy,
+  packUnfoldDataZip,
+  compileUnfold
+)
