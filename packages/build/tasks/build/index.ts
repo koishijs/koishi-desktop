@@ -9,6 +9,7 @@ export * from './assets'
 export * from './boil'
 export * from './clean'
 export * from './compile'
+export * from './compileShell'
 export * from './generate'
 export * from './patch'
 
