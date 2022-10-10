@@ -49,31 +49,30 @@ func main() {
 
 	pathConfigRedirect := filepath.Join(folderBinary, "koi.yml")
 	pathConfig := filepath.Join(folderData, "koi.yml")
+	var extractMode uint8
 
 	if mode == "ensure" {
 		_, err := os.Stat(pathConfig)
-		if err == nil {
-			fmt.Println("User data exists. Skip unfolding.")
 
-			err = os.WriteFile(pathConfigRedirect, []byte("redirect: USERDATA"), 0o644)
-			if err != nil {
-				fmt.Printf("Failed to setup redirect: %v\n", err)
-				os.Exit(1)
-			}
-
-			return
-		}
-		if !errors.Is(err, fs.ErrNotExist) {
+		if errors.Is(err, fs.ErrNotExist) {
+			fmt.Println("User data does not exist. Extracting all files.")
+			extractMode = EXTRACT_DATA | EXTRACT_CONFIG | EXTRACT_NODE
+		} else if err == nil {
+			fmt.Println("User data exists. Extracting only node.")
+			extractMode = EXTRACT_NODE
+		} else {
 			fmt.Printf("Failed to stat config %s: %v\n", pathConfig, err)
 			os.Exit(1)
 		}
+	} else if mode == "reset-data" {
+		extractMode = EXTRACT_DATA | EXTRACT_NODE
+	} else {
+		extractMode = EXTRACT_DATA | EXTRACT_CONFIG | EXTRACT_NODE
 	}
 
-	if mode == "reset-data" {
-		err = extract(folderData, false)
-	} else {
-		err = extract(folderData, true)
-	}
+	fmt.Printf("Extract mode: %v\n", extractMode)
+
+	err = extract(folderData, extractMode)
 	if err != nil {
 		fmt.Printf("Failed to unfold: %v\n", err)
 		os.Exit(1)
@@ -86,14 +85,6 @@ func main() {
 	}
 
 	fmt.Println("Unfold complete.")
-}
-
-func setupRedirect(pathConfigRedirect string) {
-	err := os.WriteFile(pathConfigRedirect, []byte(""), 0o644)
-	if err != nil {
-		fmt.Printf("Failed to setup redirect: %v", err)
-		os.Exit(1)
-	}
 }
 
 func help() {
