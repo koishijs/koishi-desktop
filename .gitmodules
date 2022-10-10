@@ -1,3 +1,6 @@
 [submodule "packages/do"]
   path = packages/do
   url = https://github.com/ilharp/do.git
+[submodule "packages/libb64"]
+  path = packages/libb64
+  url = https://github.com/ifrstr/libb64-cmake.git
