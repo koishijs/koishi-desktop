@@ -38,6 +38,10 @@ jobs:
         with:
           go-version: '>=1.19.0'
 
+      - name: Setup Swift
+        if: ${{ fromJson(matrix.target).goos == 'darwin' }}
+        uses: swift-actions/setup-swift@v1
+
       - name: Install Build Package
         run: |
           yarn install --frozen-lockfile
