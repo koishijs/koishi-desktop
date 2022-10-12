@@ -13,7 +13,7 @@ jobs:
         target:
           - '{"goos":"windows","rid":"win-x64","os":"windows-latest"}'
           - '{"goos":"linux","rid":"linux-x64","os":"ubuntu-latest"}'
-          - '{"goos":"darwin","rid":"osx-x64","os":"macos-latest"}'
+          - '{"goos":"darwin","rid":"osx-x64","os":"macos-12"}'
 
     runs-on: ${{ fromJson(matrix.target).os }}
 
@@ -23,18 +23,18 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           submodules: recursive
           fetch-depth: 0
 
       - name: Setup Node.js
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
           node-version: '18'
 
       - name: Setup Go
-        uses: actions/setup-go@v2
+        uses: actions/setup-go@v3
         with:
           go-version: '>=1.19.0'
 
@@ -48,7 +48,7 @@ jobs:
           yarn gulp ciBuild
         shell: bash
 
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         with:
           name: koi-dist-${{ fromJson(matrix.target).rid }}-${{ github.sha }}
           path: build/dist/
