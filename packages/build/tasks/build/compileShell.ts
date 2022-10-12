@@ -53,7 +53,10 @@ const buildCompileShellMac = (isRelease: boolean) => async () => {
 const buildCompileShell = () => {
   switch (process.platform) {
     case 'win32':
-      return buildCompileShellWin(Boolean(process.env.CI))
+      // return buildCompileShellWin(Boolean(process.env.CI))
+      return async () => {
+        /* Ignore */
+      }
     case 'darwin':
       return buildCompileShellMac(Boolean(process.env.CI))
     case 'linux':
