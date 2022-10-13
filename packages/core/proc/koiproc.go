@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"os/exec"
 	"path/filepath"
+	"sync"
 
 	"github.com/samber/do"
 	"gopkg.ilharper.com/koi/core/logger"
@@ -68,6 +69,9 @@ func (koiProc *KoiProc) Run() error {
 	out := make(chan *string)
 	defer close(out)
 
+	wg := sync.WaitGroup{}
+	defer wg.Wait()
+
 	// Setup log targets
 	go func() {
 		for {
@@ -108,9 +112,11 @@ func (koiProc *KoiProc) Run() error {
 		bufio.NewScanner(stderrPipe),
 	}
 	for _, scanner := range scanners {
+		wg.Add(1)
 		go func(scn *bufio.Scanner) {
 			for {
 				if !scn.Scan() {
+					wg.Done()
 					break
 				}
 				scnErr := scn.Err()
