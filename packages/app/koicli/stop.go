@@ -106,6 +106,6 @@ func newStopAction(i *do.Injector) (cli.ActionFunc, error) {
 			return fmt.Errorf("failed to process command ps: %w", err)
 		}
 
-		return logger.Wait(respC)
+		return nil
 	}, nil
 }
