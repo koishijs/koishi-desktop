@@ -76,9 +76,9 @@ func (manager *KoiManager) Start(startInstances bool) error {
 	// THE B3ST S0lUt!0N
 	if runtime.GOOS == "windows" {
 		if startInstances {
-			cmd = exec.Command("cmd.exe", "/C", "start", "/b", "", "CALL", manager.exe, "run", "daemon") //nolint:gosec
+			cmd = exec.Command("cmd.exe", "/C", "START", "/B", "/MIN", "", "CALL", manager.exe, "run", "daemon") //nolint:gosec
 		} else {
-			cmd = exec.Command("cmd.exe", "/C", "start", "/b", "", "CALL", manager.exe, "--no-start", "run", "daemon") //nolint:gosec
+			cmd = exec.Command("cmd.exe", "/C", "START", "/B", "/MIN", "", "CALL", manager.exe, "--no-start", "run", "daemon") //nolint:gosec
 		}
 	} else {
 		if startInstances {
