@@ -141,9 +141,10 @@ const generateIco = async (icon: string, image: sharp.Sharp) => {
       return {
         size,
         buffer:
-          size === 256
-            ? await image.resize(size).toBuffer() // use png in 256
-            : await generateBmp(size, image.resize(size)), // and bmp in other
+          // size === 256
+          //   ? await image.resize(size).toBuffer() // use png in 256
+          //   : await generateBmp(size, image.resize(size)), // and bmp in other
+          await image.resize(size).toBuffer(),
       }
     })
   )
