@@ -6,4 +6,5 @@ use (
 	./packages/do
 	./packages/sdk
 	./packages/unfold
+	./packages/systray
 )

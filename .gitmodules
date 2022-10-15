@@ -4,3 +4,6 @@
 [submodule "packages/libb64"]
   path = packages/libb64
   url = https://github.com/ifrstr/libb64-cmake.git
+[submodule "packages/systray"]
+  path = packages/systray
+  url = https://github.com/ilharp/systray.git
