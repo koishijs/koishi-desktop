@@ -19,6 +19,7 @@ func HideConsole() error {
 	if hwnd == 0 {
 		return nil
 	}
+	_, _, _ = showWindowAsync.Call(hwnd, syscall.SW_HIDE)
 	result, _, err := showWindowAsync.Call(hwnd, syscall.SW_HIDE)
 	if result != 0 {
 		return nil
