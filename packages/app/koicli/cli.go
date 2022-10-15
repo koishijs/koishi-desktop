@@ -44,6 +44,13 @@ func NewCli(i *do.Injector) (*cli.App, error) {
 			},
 
 			&cli.BoolFlag{
+				Name:     "no-console",
+				Usage:    "Do not show console window on Windows",
+				Required: false,
+				Value:    false,
+			},
+
+			&cli.BoolFlag{
 				Name:     "no-start",
 				Usage:    "Do not start instance(s)",
 				Required: false,

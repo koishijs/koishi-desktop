@@ -6,7 +6,6 @@ import (
 	"sync"
 	"syscall"
 
-	"github.com/apenwarr/fixconsole"
 	"github.com/samber/do"
 	"github.com/urfave/cli/v2"
 	"gopkg.ilharper.com/koi/app/koicli"
@@ -14,10 +13,6 @@ import (
 	"gopkg.ilharper.com/koi/core/logger"
 	coreUtil "gopkg.ilharper.com/koi/core/util"
 	"gopkg.ilharper.com/x/rpl"
-)
-
-const (
-	defaultCommand = "run"
 )
 
 func main() {
@@ -34,8 +29,6 @@ func main() {
 	wg := &sync.WaitGroup{}
 	do.ProvideValue(i, wg)
 
-	fixConsoleErr := fixconsole.FixConsoleIfNeeded()
-
 	do.Provide(i, logger.BuildNewKoiFileTarget(os.Stderr))
 	do.ProvideValue(i, l)
 	receiver := rpl.NewReceiver()
@@ -48,17 +41,11 @@ func main() {
 	receiver.Register(consoleTarget)
 	l.Register(consoleTarget)
 
-	// Delay fixConsoleErr to wait logger constructed
-	if fixConsoleErr != nil {
-		// Which means that this log will only print to file logs
-		l.Warnf("Failed to fix console. You may not see console output: %s", fixConsoleErr)
-	}
-
 	l.Infof("Koishi Desktop v%s", util.AppVersion)
 
 	args := os.Args
 	if len(args) <= 1 {
-		args = append(args, defaultCommand)
+		args = append(args, "run")
 	}
 
 	c := make(chan os.Signal, 1)
