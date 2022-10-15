@@ -28,11 +28,11 @@ export const patchNodeRcedit = async () => {
 
   // Change subsystem to GUI
   // https://learn.microsoft.com/windows/win32/api/winnt/ns-winnt-image_optional_header64
-  const buf = await fs.promises.readFile(exePath)
-  const peOffset = buf.readUint32LE(0x3c) // IMAGE_DOS_HEADER.e_lfanew, the offset of PE Header
-  const subsystemOffset = peOffset + 0x5c // Offset of IMAGE_OPTIONAL_HEADER64.Subsystem
-  buf.writeUInt8(2, subsystemOffset) // IMAGE_SUBSYSTEM_WINDOWS_GUI
-  await fs.promises.writeFile(exePath, buf)
+  // const buf = await fs.promises.readFile(exePath)
+  // const peOffset = buf.readUint32LE(0x3c) // IMAGE_DOS_HEADER.e_lfanew, the offset of PE Header
+  // const subsystemOffset = peOffset + 0x5c // Offset of IMAGE_OPTIONAL_HEADER64.Subsystem
+  // buf.writeUInt8(2, subsystemOffset) // IMAGE_SUBSYSTEM_WINDOWS_GUI
+  // await fs.promises.writeFile(exePath, buf)
 }
 
 export const patch =
