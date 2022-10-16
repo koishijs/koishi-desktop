@@ -4,16 +4,12 @@ import fs from 'node:fs/promises'
 import { dir } from '../../utils/path'
 import { exec, tryExec } from '../../utils/spawn'
 
-export const i18nExtract = async () => {
-  await del(dir('locales'))
-  await del(dir('src', 'catalog.go'))
-
-  await exec(
+export const i18nExtract = () =>
+  exec(
     'gotext',
     ['extract', '--lang=en-US,zh-CN', 'gopkg.ilharper.com/...'],
     dir('root')
   )
-}
 
 export const i18nGenerate = async () => {
   const pathCatalog = dir('src', 'catalog.go')
