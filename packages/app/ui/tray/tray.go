@@ -45,7 +45,7 @@ func (tray *TrayDaemon) onReady() {
 	l := do.MustInvoke[*logger.Logger](tray.i)
 	p := do.MustInvoke[*message.Printer](tray.i)
 
-	l.Debug(p.Sprint("Tray ready."))
+	l.Debug(p.Sprintf("Tray ready."))
 
 	// systray.SetTitle("Koishi")
 	if runtime.GOOS != "windows" {
@@ -53,7 +53,7 @@ func (tray *TrayDaemon) onReady() {
 	}
 	systray.SetTemplateIcon(icon.Koishi, icon.Koishi)
 
-	mStarting := systray.AddMenuItem(p.Sprint("Starting..."), "")
+	mStarting := systray.AddMenuItem(p.Sprintf("Starting..."), "")
 	mStarting.Disable()
 	tray.chanReg = append(tray.chanReg, mStarting.ClickedCh)
 
@@ -98,7 +98,7 @@ func (tray *TrayDaemon) rebuild() {
 	var result proto.Result
 	response := <-respC
 	if response == nil {
-		l.Error(p.Sprint("failed to get result, response is nil"))
+		l.Error(p.Sprintf("failed to get result, response is nil"))
 
 		return
 	}
@@ -155,13 +155,13 @@ func (tray *TrayDaemon) rebuild() {
 	for _, instance := range instances {
 		// Add menu items for each instance.
 		m := systray.AddMenuItem(instance.Name, instance.Name)
-		mOpen := m.AddSubMenuItem(p.Sprint("Open"), p.Sprint("Open"))
+		mOpen := m.AddSubMenuItem(p.Sprintf("Open"), p.Sprintf("Open"))
 		mOpen.SetTemplateIcon(icon.Open, icon.Open)
-		mStart := m.AddSubMenuItem(p.Sprint("Start"), p.Sprint("Start"))
+		mStart := m.AddSubMenuItem(p.Sprintf("Start"), p.Sprintf("Start"))
 		mStart.SetTemplateIcon(icon.Start, icon.Start)
-		mRestart := m.AddSubMenuItem(p.Sprint("Restart"), p.Sprint("Restart"))
+		mRestart := m.AddSubMenuItem(p.Sprintf("Restart"), p.Sprintf("Restart"))
 		mRestart.SetTemplateIcon(icon.Restart, icon.Restart)
-		mStop := m.AddSubMenuItem(p.Sprint("Stop"), p.Sprint("Stop"))
+		mStop := m.AddSubMenuItem(p.Sprintf("Stop"), p.Sprintf("Stop"))
 		mStop.SetTemplateIcon(icon.Stop, icon.Stop)
 		if instance.Running {
 			mStart.Disable()
@@ -208,7 +208,7 @@ func (tray *TrayDaemon) rebuild() {
 				for {
 					response := <-respC
 					if response == nil {
-						l.Error(p.Sprint("failed to get result, response is nil"))
+						l.Error(p.Sprintf("failed to get result, response is nil"))
 
 						break
 					}
@@ -239,7 +239,7 @@ func (tray *TrayDaemon) rebuild() {
 				}
 
 				<-time.After(refreshWaitDuration)
-				l.Debug(p.Sprint("Rebuilding tray"))
+				l.Debug(p.Sprintf("Rebuilding tray"))
 				tray.rebuild()
 			}
 		}(instance.Name)
@@ -276,7 +276,7 @@ func (tray *TrayDaemon) rebuild() {
 				for {
 					response := <-respC
 					if response == nil {
-						l.Error(p.Sprint("failed to get result, response is nil"))
+						l.Error(p.Sprintf("failed to get result, response is nil"))
 
 						break
 					}
@@ -307,7 +307,7 @@ func (tray *TrayDaemon) rebuild() {
 				}
 
 				<-time.After(refreshWaitDuration)
-				l.Debug(p.Sprint("Rebuilding tray"))
+				l.Debug(p.Sprintf("Rebuilding tray"))
 				tray.rebuild()
 			}
 		}(instance.Name)
@@ -344,7 +344,7 @@ func (tray *TrayDaemon) rebuild() {
 				for {
 					response := <-respC
 					if response == nil {
-						l.Error(p.Sprint("failed to get result, response is nil"))
+						l.Error(p.Sprintf("failed to get result, response is nil"))
 
 						break
 					}
@@ -375,7 +375,7 @@ func (tray *TrayDaemon) rebuild() {
 				}
 
 				<-time.After(refreshWaitDuration)
-				l.Debug(p.Sprint("Rebuilding tray"))
+				l.Debug(p.Sprintf("Rebuilding tray"))
 				tray.rebuild()
 			}
 		}(instance.Name)
@@ -412,7 +412,7 @@ func (tray *TrayDaemon) rebuild() {
 				for {
 					response := <-respC
 					if response == nil {
-						l.Error(p.Sprint("failed to get result, response is nil"))
+						l.Error(p.Sprintf("failed to get result, response is nil"))
 
 						break
 					}
@@ -443,7 +443,7 @@ func (tray *TrayDaemon) rebuild() {
 				}
 
 				<-time.After(refreshWaitDuration)
-				l.Debug(p.Sprint("Rebuilding tray"))
+				l.Debug(p.Sprintf("Rebuilding tray"))
 				tray.rebuild()
 			}
 		}(instance.Name)
@@ -456,7 +456,7 @@ func (tray *TrayDaemon) rebuild() {
 func (tray *TrayDaemon) addItemsBefore() {
 	p := do.MustInvoke[*message.Printer](tray.i)
 
-	mTitle := systray.AddMenuItem(p.Sprint("Koishi Desktop"), "")
+	mTitle := systray.AddMenuItem(p.Sprintf("Koishi Desktop"), "")
 	mTitle.Disable()
 	mTitle.SetTemplateIcon(icon.Koishi, icon.Koishi)
 	version := "v" + util.AppVersion
@@ -471,18 +471,18 @@ func (tray *TrayDaemon) addItemsAfter() {
 	l := do.MustInvoke[*logger.Logger](tray.i)
 	p := do.MustInvoke[*message.Printer](tray.i)
 
-	mAdvanced := systray.AddMenuItem(p.Sprint("Advanced"), "")
-	mRefresh := mAdvanced.AddSubMenuItem(p.Sprint("Refresh"), "")
+	mAdvanced := systray.AddMenuItem(p.Sprintf("Advanced"), "")
+	mRefresh := mAdvanced.AddSubMenuItem(p.Sprintf("Refresh"), "")
 	mRefresh.SetTemplateIcon(icon.Restart, icon.Restart)
-	mStartDaemon := mAdvanced.AddSubMenuItem(p.Sprint("Start Daemon"), "")
+	mStartDaemon := mAdvanced.AddSubMenuItem(p.Sprintf("Start Daemon"), "")
 	mStartDaemon.SetTemplateIcon(icon.Start, icon.Start)
-	mStopDaemon := mAdvanced.AddSubMenuItem(p.Sprint("Stop Daemon"), "")
+	mStopDaemon := mAdvanced.AddSubMenuItem(p.Sprintf("Stop Daemon"), "")
 	mStopDaemon.SetTemplateIcon(icon.Stop, icon.Stop)
-	mKillDaemon := mAdvanced.AddSubMenuItem(p.Sprint("Kill Daemon"), "")
+	mKillDaemon := mAdvanced.AddSubMenuItem(p.Sprintf("Kill Daemon"), "")
 	mKillDaemon.SetTemplateIcon(icon.Kill, icon.Kill)
-	mExit := mAdvanced.AddSubMenuItem(p.Sprint("Stop and Exit"), "")
+	mExit := mAdvanced.AddSubMenuItem(p.Sprintf("Stop and Exit"), "")
 	mExit.SetTemplateIcon(icon.Exit, icon.Exit)
-	mQuit := systray.AddMenuItem(p.Sprint("Hide"), "")
+	mQuit := systray.AddMenuItem(p.Sprintf("Hide"), "")
 	mQuit.SetTemplateIcon(icon.Hide, icon.Hide)
 
 	tray.chanReg = append(tray.chanReg, mAdvanced.ClickedCh)
@@ -499,7 +499,7 @@ func (tray *TrayDaemon) addItemsAfter() {
 			if !ok {
 				break
 			}
-			l.Debug(p.Sprint("Rebuilding tray"))
+			l.Debug(p.Sprintf("Rebuilding tray"))
 			tray.rebuild()
 		}
 	}()
@@ -510,14 +510,14 @@ func (tray *TrayDaemon) addItemsAfter() {
 			if !ok {
 				break
 			}
-			l.Debug(p.Sprint("Starting daemon"))
+			l.Debug(p.Sprintf("Starting daemon"))
 			err := tray.manager.Start(true)
 			if err != nil {
 				l.Error(err)
 
 				continue
 			}
-			l.Debug(p.Sprint("Rebuilding tray"))
+			l.Debug(p.Sprintf("Rebuilding tray"))
 			tray.rebuild()
 		}
 	}()
@@ -528,9 +528,9 @@ func (tray *TrayDaemon) addItemsAfter() {
 			if !ok {
 				break
 			}
-			l.Debug(p.Sprint("Stopping daemon"))
+			l.Debug(p.Sprintf("Stopping daemon"))
 			tray.manager.Stop()
-			l.Debug(p.Sprint("Rebuilding tray"))
+			l.Debug(p.Sprintf("Rebuilding tray"))
 			tray.rebuild()
 		}
 	}()
@@ -541,9 +541,9 @@ func (tray *TrayDaemon) addItemsAfter() {
 			if !ok {
 				break
 			}
-			l.Debug(p.Sprint("Killing daemon"))
+			l.Debug(p.Sprintf("Killing daemon"))
 			tray.manager.Kill()
-			l.Debug(p.Sprint("Rebuilding tray"))
+			l.Debug(p.Sprintf("Rebuilding tray"))
 			tray.rebuild()
 		}
 	}()
@@ -554,9 +554,9 @@ func (tray *TrayDaemon) addItemsAfter() {
 			if !ok {
 				break
 			}
-			l.Debug(p.Sprint("Stopping daemon"))
+			l.Debug(p.Sprintf("Stopping daemon"))
 			tray.manager.Stop()
-			l.Debug(p.Sprint("Exiting systray"))
+			l.Debug(p.Sprintf("Exiting systray"))
 			systray.Quit()
 		}
 	}()
@@ -564,7 +564,7 @@ func (tray *TrayDaemon) addItemsAfter() {
 	go func() {
 		_, ok := <-mQuit.ClickedCh
 		if ok {
-			l.Debug(p.Sprint("Exiting systray"))
+			l.Debug(p.Sprintf("Exiting systray"))
 			systray.Quit()
 		}
 	}()

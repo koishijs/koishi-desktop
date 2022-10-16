@@ -194,7 +194,7 @@ func (daemonProc *DaemonProcess) Shutdown() error {
 	l := do.MustInvoke[*logger.Logger](daemonProc.i)
 	p := do.MustInvoke[*message.Printer](daemonProc.i)
 
-	l.Debug(p.Sprint("Shutting down DaemonProcess."))
+	l.Debug(p.Sprintf("Shutting down DaemonProcess."))
 
 	daemonProc.mutex.Lock()
 
