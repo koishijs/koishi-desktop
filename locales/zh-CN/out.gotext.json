@@ -1,0 +1,354 @@
+{
+    "language": "zh-CN",
+    "messages": [
+        {
+            "id": "Koishi Desktop v{AppVersion}",
+            "message": "Koishi Desktop v{AppVersion}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "AppVersion",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "util.AppVersion"
+                }
+            ]
+        },
+        {
+            "id": "Failed to hide console: {HideConsoleErr}",
+            "message": "Failed to hide console: {HideConsoleErr}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "HideConsoleErr",
+                    "string": "%[1]v",
+                    "type": "error",
+                    "underlyingType": "interface{Error() string}",
+                    "argNum": 1,
+                    "expr": "hideConsoleErr"
+                }
+            ]
+        },
+        {
+            "id": "Received signal {Sig}. Gracefully shutting down",
+            "message": "Received signal {Sig}. Gracefully shutting down",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Sig",
+                    "string": "%[1]s",
+                    "type": "os.Signal",
+                    "underlyingType": "interface{Signal(); String() string}",
+                    "argNum": 1,
+                    "expr": "sig"
+                }
+            ]
+        },
+        {
+            "id": "failed to gracefully shutdown: {Err}",
+            "message": "failed to gracefully shutdown: {Err}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Err",
+                    "string": "%[1]v",
+                    "type": "error",
+                    "underlyingType": "interface{Error() string}",
+                    "argNum": 1,
+                    "expr": "err"
+                }
+            ]
+        },
+        {
+            "id": "failed to parse result {Response}: response type '{Type}' is not '{TypeResponseResult}': {Err}",
+            "message": "failed to parse result {Response}: response type '{Type}' is not '{TypeResponseResult}': {Err}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Response",
+                    "string": "%#+[1]v",
+                    "type": "*gopkg.ilharper.com/koi/core/god/proto.Response",
+                    "underlyingType": "*gopkg.ilharper.com/koi/core/god/proto.Response",
+                    "argNum": 1,
+                    "expr": "response"
+                },
+                {
+                    "id": "Type",
+                    "string": "%[2]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 2,
+                    "expr": "response.Type"
+                },
+                {
+                    "id": "TypeResponseResult",
+                    "string": "%[3]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 3,
+                    "expr": "proto.TypeResponseResult"
+                },
+                {
+                    "id": "Err",
+                    "string": "%[4]v",
+                    "type": "error",
+                    "underlyingType": "interface{Error() string}",
+                    "argNum": 4,
+                    "expr": "err"
+                }
+            ]
+        },
+        {
+            "id": "failed to parse response {Response}: {Err}",
+            "message": "failed to parse response {Response}: {Err}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Response",
+                    "string": "%#+[1]v",
+                    "type": "*gopkg.ilharper.com/koi/core/god/proto.Response",
+                    "underlyingType": "*gopkg.ilharper.com/koi/core/god/proto.Response",
+                    "argNum": 1,
+                    "expr": "response"
+                },
+                {
+                    "id": "Err",
+                    "string": "%[2]v",
+                    "type": "error",
+                    "underlyingType": "interface{Error() string}",
+                    "argNum": 2,
+                    "expr": "err"
+                }
+            ]
+        },
+        {
+            "id": "result data {Data} is not string",
+            "message": "result data {Data} is not string",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Data",
+                    "string": "%#+[1]v",
+                    "type": "any",
+                    "underlyingType": "any",
+                    "argNum": 1,
+                    "expr": "result.Data"
+                }
+            ]
+        },
+        {
+            "id": "failed to parse result {Result}: {Err}",
+            "message": "failed to parse result {Result}: {Err}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Result",
+                    "string": "%#+[1]v",
+                    "type": "gopkg.ilharper.com/koi/core/god/proto.Result",
+                    "underlyingType": "struct{Code uint16 \"json:\\\"code\\\" mapstructure:\\\"code\\\"\"; Data any \"json:\\\"data\\\" mapstructure:\\\"data\\\"\"}",
+                    "argNum": 1,
+                    "expr": "result"
+                },
+                {
+                    "id": "Err",
+                    "string": "%[2]v",
+                    "type": "error",
+                    "underlyingType": "interface{Error() string}",
+                    "argNum": 2,
+                    "expr": "err"
+                }
+            ]
+        },
+        {
+            "id": "Opening instance {Name}",
+            "message": "Opening instance {Name}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Name",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "name"
+                }
+            ]
+        },
+        {
+            "id": "Starting instance {Name}",
+            "message": "Starting instance {Name}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Name",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "name"
+                }
+            ]
+        },
+        {
+            "id": "Stopping instance {Name}",
+            "message": "Stopping instance {Name}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Name",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "name"
+                }
+            ]
+        },
+        {
+            "id": "Restarting instance {Name}",
+            "message": "Restarting instance {Name}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Name",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "name"
+                }
+            ]
+        },
+        {
+            "id": "Starting these instances:\n{Start__}",
+            "message": "Starting these instances:\n{Start__}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Start__",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "strings.Join(cfg.Data.Start, \", \")"
+                }
+            ]
+        },
+        {
+            "id": "Instance {Name} doesn't exist. Skipped.",
+            "message": "Instance {Name} doesn't exist. Skipped.",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Name",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "name"
+                }
+            ]
+        },
+        {
+            "id": "Failed to start {Name}: {Err}",
+            "message": "Failed to start {Name}: {Err}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Name",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "name"
+                },
+                {
+                    "id": "Err",
+                    "string": "%[2]v",
+                    "type": "error",
+                    "underlyingType": "interface{Error() string}",
+                    "argNum": 2,
+                    "expr": "err"
+                }
+            ]
+        },
+        {
+            "id": "Parsed {Listen}.",
+            "message": "Parsed {Listen}.",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Listen",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "listen"
+                }
+            ]
+        },
+        {
+            "id": "Instance {Name} exited.",
+            "message": "Instance {Name} exited.",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Name",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "name"
+                }
+            ]
+        },
+        {
+            "id": "Instance {Name} exited with: {Err}",
+            "message": "Instance {Name} exited with: {Err}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Name",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "name"
+                },
+                {
+                    "id": "Err",
+                    "string": "%[2]v",
+                    "type": "error",
+                    "underlyingType": "interface{Error() string}",
+                    "argNum": 2,
+                    "expr": "err"
+                }
+            ]
+        },
+        {
+            "id": "failed to gracefully stop process {Pid}: {Err}. Trying kill",
+            "message": "failed to gracefully stop process {Pid}: {Err}. Trying kill",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Pid",
+                    "string": "%[1]d",
+                    "type": "int",
+                    "underlyingType": "int",
+                    "argNum": 1,
+                    "expr": "dp.koiProc.Pid()"
+                },
+                {
+                    "id": "Err",
+                    "string": "%[2]v",
+                    "type": "error",
+                    "underlyingType": "interface{Error() string}",
+                    "argNum": 2,
+                    "expr": "err"
+                }
+            ]
+        }
+    ]
+}
