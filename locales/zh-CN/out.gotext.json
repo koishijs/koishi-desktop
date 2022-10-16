@@ -4,7 +4,8 @@
         {
             "id": "Koishi Desktop v{AppVersion}",
             "message": "Koishi Desktop v{AppVersion}",
-            "translation": "",
+            "translation": "Koishi 桌面 v{AppVersion}",
+            "translatorComment": "Copied from source.",
             "placeholders": [
                 {
                     "id": "AppVersion",
@@ -19,7 +20,8 @@
         {
             "id": "Failed to hide console: {HideConsoleErr}",
             "message": "Failed to hide console: {HideConsoleErr}",
-            "translation": "",
+            "translation": "隐藏控制台失败：{HideConsoleErr}",
+            "translatorComment": "Copied from source.",
             "placeholders": [
                 {
                     "id": "HideConsoleErr",
@@ -34,7 +36,8 @@
         {
             "id": "Received signal {Sig}. Gracefully shutting down",
             "message": "Received signal {Sig}. Gracefully shutting down",
-            "translation": "",
+            "translation": "收到信号 {Sig}。正在平滑关闭",
+            "translatorComment": "Copied from source.",
             "placeholders": [
                 {
                     "id": "Sig",
@@ -49,7 +52,8 @@
         {
             "id": "failed to gracefully shutdown: {Err}",
             "message": "failed to gracefully shutdown: {Err}",
-            "translation": "",
+            "translation": "平滑关闭失败：{Err}",
+            "translatorComment": "Copied from source.",
             "placeholders": [
                 {
                     "id": "Err",
@@ -64,22 +68,29 @@
         {
             "id": "Tray ready.",
             "message": "Tray ready.",
-            "translation": ""
+            "translation": "Tray ready.",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
         },
         {
             "id": "Starting...",
             "message": "Starting...",
-            "translation": ""
+            "translation": "Starting...",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
         },
         {
             "id": "failed to get result, response is nil",
             "message": "failed to get result, response is nil",
-            "translation": ""
+            "translation": "failed to get result, response is nil",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
         },
         {
             "id": "failed to parse result {Response}: response type '{Type}' is not '{TypeResponseResult}': {Err}",
             "message": "failed to parse result {Response}: response type '{Type}' is not '{TypeResponseResult}': {Err}",
-            "translation": "",
+            "translation": "解析结果 {Response} 失败：响应类型「{Type}」不是「{TypeResponseResult}」：{Err}",
+            "translatorComment": "Copied from source.",
             "placeholders": [
                 {
                     "id": "Response",
@@ -118,7 +129,8 @@
         {
             "id": "failed to parse response {Response}: {Err}",
             "message": "failed to parse response {Response}: {Err}",
-            "translation": "",
+            "translation": "解析响应 {Response} 失败：{Err}",
+            "translatorComment": "Copied from source.",
             "placeholders": [
                 {
                     "id": "Response",
@@ -141,7 +153,8 @@
         {
             "id": "result data {Data} is not string",
             "message": "result data {Data} is not string",
-            "translation": "",
+            "translation": "结果数据 {Data} 不是字符串",
+            "translatorComment": "Copied from source.",
             "placeholders": [
                 {
                     "id": "Data",
@@ -156,7 +169,8 @@
         {
             "id": "failed to parse result {Result}: {Err}",
             "message": "failed to parse result {Result}: {Err}",
-            "translation": "",
+            "translation": "解析结果 {Result} 失败：{Err}",
+            "translatorComment": "Copied from source.",
             "placeholders": [
                 {
                     "id": "Result",
@@ -179,27 +193,36 @@
         {
             "id": "Open",
             "message": "Open",
-            "translation": ""
+            "translation": "Open",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
         },
         {
             "id": "Start",
             "message": "Start",
-            "translation": ""
+            "translation": "Start",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
         },
         {
             "id": "Restart",
             "message": "Restart",
-            "translation": ""
+            "translation": "Restart",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
         },
         {
             "id": "Stop",
             "message": "Stop",
-            "translation": ""
+            "translation": "Stop",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
         },
         {
             "id": "Opening instance {Name}",
             "message": "Opening instance {Name}",
-            "translation": "",
+            "translation": "正在打开实例 {Name}",
+            "translatorComment": "Copied from source.",
             "placeholders": [
                 {
                     "id": "Name",
@@ -214,12 +237,15 @@
         {
             "id": "Rebuilding tray",
             "message": "Rebuilding tray",
-            "translation": ""
+            "translation": "Rebuilding tray",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
         },
         {
             "id": "Starting instance {Name}",
             "message": "Starting instance {Name}",
-            "translation": "",
+            "translation": "正在启动实例 {Name}",
+            "translatorComment": "Copied from source.",
             "placeholders": [
                 {
                     "id": "Name",
@@ -234,7 +260,8 @@
         {
             "id": "Stopping instance {Name}",
             "message": "Stopping instance {Name}",
-            "translation": "",
+            "translation": "正在停止实例 {Name}",
+            "translatorComment": "Copied from source.",
             "placeholders": [
                 {
                     "id": "Name",
@@ -249,7 +276,8 @@
         {
             "id": "Restarting instance {Name}",
             "message": "Restarting instance {Name}",
-            "translation": "",
+            "translation": "正在重启实例 {Name}",
+            "translatorComment": "Copied from source.",
             "placeholders": [
                 {
                     "id": "Name",
@@ -264,67 +292,92 @@
         {
             "id": "Koishi Desktop",
             "message": "Koishi Desktop",
-            "translation": ""
+            "translation": "Koishi Desktop",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
         },
         {
             "id": "Advanced",
             "message": "Advanced",
-            "translation": ""
+            "translation": "Advanced",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
         },
         {
             "id": "Refresh",
             "message": "Refresh",
-            "translation": ""
+            "translation": "Refresh",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
         },
         {
             "id": "Start Daemon",
             "message": "Start Daemon",
-            "translation": ""
+            "translation": "Start Daemon",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
         },
         {
             "id": "Stop Daemon",
             "message": "Stop Daemon",
-            "translation": ""
+            "translation": "Stop Daemon",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
         },
         {
             "id": "Kill Daemon",
             "message": "Kill Daemon",
-            "translation": ""
+            "translation": "Kill Daemon",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
         },
         {
             "id": "Stop and Exit",
             "message": "Stop and Exit",
-            "translation": ""
+            "translation": "Stop and Exit",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
         },
         {
             "id": "Hide",
             "message": "Hide",
-            "translation": ""
+            "translation": "Hide",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
         },
         {
             "id": "Starting daemon",
             "message": "Starting daemon",
-            "translation": ""
+            "translation": "Starting daemon",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
         },
         {
             "id": "Stopping daemon",
             "message": "Stopping daemon",
-            "translation": ""
+            "translation": "Stopping daemon",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
         },
         {
             "id": "Killing daemon",
             "message": "Killing daemon",
-            "translation": ""
+            "translation": "Killing daemon",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
         },
         {
             "id": "Exiting systray",
             "message": "Exiting systray",
-            "translation": ""
+            "translation": "Exiting systray",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
         },
         {
             "id": "Starting these instances:\n{Start__}",
             "message": "Starting these instances:\n{Start__}",
-            "translation": "",
+            "translation": "正在启动这些实例：\n{Start__}",
+            "translatorComment": "Copied from source.",
             "placeholders": [
                 {
                     "id": "Start__",
@@ -339,7 +392,8 @@
         {
             "id": "Instance {Name} doesn't exist. Skipped.",
             "message": "Instance {Name} doesn't exist. Skipped.",
-            "translation": "",
+            "translation": "实例 {Name} 不存在。跳过。",
+            "translatorComment": "Copied from source.",
             "placeholders": [
                 {
                     "id": "Name",
@@ -354,7 +408,8 @@
         {
             "id": "Failed to start {Name}: {Err}",
             "message": "Failed to start {Name}: {Err}",
-            "translation": "",
+            "translation": "启动 {Name} 失败：{Err}",
+            "translatorComment": "Copied from source.",
             "placeholders": [
                 {
                     "id": "Name",
@@ -377,7 +432,8 @@
         {
             "id": "Parsed {Listen}.",
             "message": "Parsed {Listen}.",
-            "translation": "",
+            "translation": "已解析到 {Listen}。",
+            "translatorComment": "Copied from source.",
             "placeholders": [
                 {
                     "id": "Listen",
@@ -392,7 +448,8 @@
         {
             "id": "Instance {Name} exited.",
             "message": "Instance {Name} exited.",
-            "translation": "",
+            "translation": "实例 {Name} 已退出。",
+            "translatorComment": "Copied from source.",
             "placeholders": [
                 {
                     "id": "Name",
@@ -407,7 +464,8 @@
         {
             "id": "Instance {Name} exited with: {Err}",
             "message": "Instance {Name} exited with: {Err}",
-            "translation": "",
+            "translation": "实例 {Name} 退出：{Err}",
+            "translatorComment": "Copied from source.",
             "placeholders": [
                 {
                     "id": "Name",
@@ -430,7 +488,8 @@
         {
             "id": "failed to gracefully stop process {Pid}: {Err}. Trying kill",
             "message": "failed to gracefully stop process {Pid}: {Err}. Trying kill",
-            "translation": "",
+            "translation": "平滑停止进程 {Pid} 失败：{Err}。尝试强制结束",
+            "translatorComment": "Copied from source.",
             "placeholders": [
                 {
                     "id": "Pid",
@@ -453,7 +512,9 @@
         {
             "id": "Shutting down DaemonProcess.",
             "message": "Shutting down DaemonProcess.",
-            "translation": ""
+            "translation": "Shutting down DaemonProcess.",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
         }
     ]
 }
