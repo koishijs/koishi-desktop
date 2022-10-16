@@ -62,6 +62,21 @@
             ]
         },
         {
+            "id": "Tray ready.",
+            "message": "Tray ready.",
+            "translation": ""
+        },
+        {
+            "id": "Starting...",
+            "message": "Starting...",
+            "translation": ""
+        },
+        {
+            "id": "failed to get result, response is nil",
+            "message": "failed to get result, response is nil",
+            "translation": ""
+        },
+        {
             "id": "failed to parse result {Response}: response type '{Type}' is not '{TypeResponseResult}': {Err}",
             "message": "failed to parse result {Response}: response type '{Type}' is not '{TypeResponseResult}': {Err}",
             "translation": "",
@@ -162,6 +177,26 @@
             ]
         },
         {
+            "id": "Open",
+            "message": "Open",
+            "translation": ""
+        },
+        {
+            "id": "Start",
+            "message": "Start",
+            "translation": ""
+        },
+        {
+            "id": "Restart",
+            "message": "Restart",
+            "translation": ""
+        },
+        {
+            "id": "Stop",
+            "message": "Stop",
+            "translation": ""
+        },
+        {
             "id": "Opening instance {Name}",
             "message": "Opening instance {Name}",
             "translation": "",
@@ -175,6 +210,11 @@
                     "expr": "name"
                 }
             ]
+        },
+        {
+            "id": "Rebuilding tray",
+            "message": "Rebuilding tray",
+            "translation": ""
         },
         {
             "id": "Starting instance {Name}",
@@ -220,6 +260,66 @@
                     "expr": "name"
                 }
             ]
+        },
+        {
+            "id": "Koishi Desktop",
+            "message": "Koishi Desktop",
+            "translation": ""
+        },
+        {
+            "id": "Advanced",
+            "message": "Advanced",
+            "translation": ""
+        },
+        {
+            "id": "Refresh",
+            "message": "Refresh",
+            "translation": ""
+        },
+        {
+            "id": "Start Daemon",
+            "message": "Start Daemon",
+            "translation": ""
+        },
+        {
+            "id": "Stop Daemon",
+            "message": "Stop Daemon",
+            "translation": ""
+        },
+        {
+            "id": "Kill Daemon",
+            "message": "Kill Daemon",
+            "translation": ""
+        },
+        {
+            "id": "Stop and Exit",
+            "message": "Stop and Exit",
+            "translation": ""
+        },
+        {
+            "id": "Hide",
+            "message": "Hide",
+            "translation": ""
+        },
+        {
+            "id": "Starting daemon",
+            "message": "Starting daemon",
+            "translation": ""
+        },
+        {
+            "id": "Stopping daemon",
+            "message": "Stopping daemon",
+            "translation": ""
+        },
+        {
+            "id": "Killing daemon",
+            "message": "Killing daemon",
+            "translation": ""
+        },
+        {
+            "id": "Exiting systray",
+            "message": "Exiting systray",
+            "translation": ""
         },
         {
             "id": "Starting these instances:\n{Start__}",
@@ -349,6 +449,11 @@
                     "expr": "err"
                 }
             ]
+        },
+        {
+            "id": "Shutting down DaemonProcess.",
+            "message": "Shutting down DaemonProcess.",
+            "translation": ""
         }
     ]
 }
