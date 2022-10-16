@@ -1,5 +1,5 @@
 import * as fs from 'fs'
-import { parallel } from 'gulp'
+import { parallel, series } from 'gulp'
 import { koiConfig, koiManifest, koiVersionInfo } from '../../templates'
 import { dir } from '../../utils/path'
 import { i18nGenerate } from '../i18n'
@@ -14,10 +14,12 @@ export const generateKoiVersionInfo = () =>
 export const generateKoiManifest = () =>
   fs.promises.writeFile(dir('src', 'koi.exe.manifest'), koiManifest)
 
-export const generate = parallel(
-  generateKoiConfig,
-  generateKoiVersionInfo,
-  generateKoiManifest,
-  i18nGenerate,
-  generateAssets
+export const generate = series(
+  parallel(
+    generateKoiConfig,
+    generateKoiVersionInfo,
+    generateKoiManifest,
+    generateAssets
+  ),
+  i18nGenerate
 )
