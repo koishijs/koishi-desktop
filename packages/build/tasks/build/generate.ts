@@ -2,6 +2,7 @@ import * as fs from 'fs'
 import { parallel } from 'gulp'
 import { koiConfig, koiManifest, koiVersionInfo } from '../../templates'
 import { dir } from '../../utils/path'
+import { i18nGenerate } from '../i18n'
 import { generateAssets } from './assets'
 
 export const generateKoiConfig = () =>
@@ -17,5 +18,6 @@ export const generate = parallel(
   generateKoiConfig,
   generateKoiVersionInfo,
   generateKoiManifest,
+  i18nGenerate,
   generateAssets
 )

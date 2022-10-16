@@ -1,10 +1,12 @@
 import del from 'del'
+import { series } from 'gulp'
 import fs from 'node:fs/promises'
 import { dir } from '../../utils/path'
 import { exec, tryExec } from '../../utils/spawn'
 
 export const i18nExtract = async () => {
   await del(dir('locales'))
+  await del(dir('src', 'catalog.go'))
 
   await exec(
     'gotext',
@@ -14,6 +16,9 @@ export const i18nExtract = async () => {
 }
 
 export const i18nGenerate = async () => {
+  const pathCatalog = dir('src', 'catalog.go')
+  await del(pathCatalog)
+
   await tryExec(
     'gotext',
     [
@@ -26,8 +31,9 @@ export const i18nGenerate = async () => {
     dir('root')
   )
 
-  const pathCatalog = dir('src', 'catalog.go')
   const catalog = (await fs.readFile(pathCatalog)).toString()
   catalog.replace('package ', 'package main')
   await fs.writeFile(pathCatalog, catalog)
 }
+
+export const i18n = series(i18nExtract, i18nGenerate)
