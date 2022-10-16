@@ -68,23 +68,20 @@
         {
             "id": "Tray ready.",
             "message": "Tray ready.",
-            "translation": "Tray ready.",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": "托盘已就绪。",
+            "translatorComment": "Copied from source."
         },
         {
             "id": "Starting...",
             "message": "Starting...",
-            "translation": "Starting...",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": "正在启动…",
+            "translatorComment": "Copied from source."
         },
         {
             "id": "failed to get result, response is nil",
             "message": "failed to get result, response is nil",
-            "translation": "failed to get result, response is nil",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": "获取结果失败，响应为 nil",
+            "translatorComment": "Copied from source."
         },
         {
             "id": "failed to parse result {Response}: response type '{Type}' is not '{TypeResponseResult}': {Err}",
@@ -193,30 +190,26 @@
         {
             "id": "Open",
             "message": "Open",
-            "translation": "Open",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": "打开",
+            "translatorComment": "Copied from source."
         },
         {
             "id": "Start",
             "message": "Start",
-            "translation": "Start",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": "启动",
+            "translatorComment": "Copied from source."
         },
         {
             "id": "Restart",
             "message": "Restart",
-            "translation": "Restart",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": "重启",
+            "translatorComment": "Copied from source."
         },
         {
             "id": "Stop",
             "message": "Stop",
-            "translation": "Stop",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": "停止",
+            "translatorComment": "Copied from source."
         },
         {
             "id": "Opening instance {Name}",
@@ -237,9 +230,8 @@
         {
             "id": "Rebuilding tray",
             "message": "Rebuilding tray",
-            "translation": "Rebuilding tray",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": "正在重建托盘",
+            "translatorComment": "Copied from source."
         },
         {
             "id": "Starting instance {Name}",
@@ -292,86 +284,74 @@
         {
             "id": "Koishi Desktop",
             "message": "Koishi Desktop",
-            "translation": "Koishi Desktop",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": "Koishi 桌面",
+            "translatorComment": "Copied from source."
         },
         {
             "id": "Advanced",
             "message": "Advanced",
-            "translation": "Advanced",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": "高级",
+            "translatorComment": "Copied from source."
         },
         {
             "id": "Refresh",
             "message": "Refresh",
-            "translation": "Refresh",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": "刷新",
+            "translatorComment": "Copied from source."
         },
         {
             "id": "Start Daemon",
             "message": "Start Daemon",
-            "translation": "Start Daemon",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": "启动服务",
+            "translatorComment": "Copied from source."
         },
         {
             "id": "Stop Daemon",
             "message": "Stop Daemon",
-            "translation": "Stop Daemon",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": "停止服务",
+            "translatorComment": "Copied from source."
         },
         {
             "id": "Kill Daemon",
             "message": "Kill Daemon",
-            "translation": "Kill Daemon",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": "强制结束服务",
+            "translatorComment": "Copied from source."
         },
         {
             "id": "Stop and Exit",
             "message": "Stop and Exit",
-            "translation": "Stop and Exit",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": "停止并退出",
+            "translatorComment": "Copied from source."
         },
         {
             "id": "Hide",
             "message": "Hide",
-            "translation": "Hide",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": "隐藏",
+            "translatorComment": "Copied from source."
         },
         {
             "id": "Starting daemon",
             "message": "Starting daemon",
-            "translation": "Starting daemon",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": "正在启动服务",
+            "translatorComment": "Copied from source."
         },
         {
             "id": "Stopping daemon",
             "message": "Stopping daemon",
-            "translation": "Stopping daemon",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": "正在停止服务",
+            "translatorComment": "Copied from source."
         },
         {
             "id": "Killing daemon",
             "message": "Killing daemon",
-            "translation": "Killing daemon",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": "正在强制结束服务",
+            "translatorComment": "Copied from source."
         },
         {
             "id": "Exiting systray",
             "message": "Exiting systray",
-            "translation": "Exiting systray",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": "正在退出 systray",
+            "translatorComment": "Copied from source."
         },
         {
             "id": "Starting these instances:\n{Start__}",
@@ -512,9 +492,8 @@
         {
             "id": "Shutting down DaemonProcess.",
             "message": "Shutting down DaemonProcess.",
-            "translation": "Shutting down DaemonProcess.",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": "正在结束 DaemonProcess。",
+            "translatorComment": "Copied from source."
         }
     ]
 }
