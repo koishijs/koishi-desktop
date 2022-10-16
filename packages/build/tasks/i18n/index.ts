@@ -31,8 +31,8 @@ export const i18nGenerate = async () => {
     dir('root')
   )
 
-  const catalog = (await fs.readFile(pathCatalog)).toString()
-  catalog.replace('package ', 'package main')
+  let catalog = (await fs.readFile(pathCatalog)).toString()
+  catalog = catalog.replace('package ', 'package main')
   await fs.writeFile(pathCatalog, catalog)
 }
 
