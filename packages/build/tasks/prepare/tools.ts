@@ -49,4 +49,4 @@ export const prepareTools =
         prepareToolsGoText,
         prepareToolsRcedit
       )
-    : parallel(prepareToolsGolangCILint)
+    : parallel(prepareToolsGolangCILint, prepareToolsGoText)
