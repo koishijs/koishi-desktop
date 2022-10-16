@@ -23,3 +23,6 @@ indent_size = 4
 
 [{Dockerfile,*.dockerfile}]
 indent_size = 4
+
+[*.gotext.json]
+indent_size = 4
