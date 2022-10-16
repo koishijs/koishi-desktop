@@ -111,9 +111,9 @@
             "fuzzy": true
         },
         {
-            "id": "failed to parse result {Response}: {Err}",
-            "message": "failed to parse result {Response}: {Err}",
-            "translation": "failed to parse result {Response}: {Err}",
+            "id": "failed to parse response {Response}: {Err}",
+            "message": "failed to parse response {Response}: {Err}",
+            "translation": "failed to parse response {Response}: {Err}",
             "translatorComment": "Copied from source.",
             "placeholders": [
                 {
@@ -148,6 +148,31 @@
                     "underlyingType": "any",
                     "argNum": 1,
                     "expr": "result.Data"
+                }
+            ],
+            "fuzzy": true
+        },
+        {
+            "id": "failed to parse result {Result}: {Err}",
+            "message": "failed to parse result {Result}: {Err}",
+            "translation": "failed to parse result {Result}: {Err}",
+            "translatorComment": "Copied from source.",
+            "placeholders": [
+                {
+                    "id": "Result",
+                    "string": "%#+[1]v",
+                    "type": "gopkg.ilharper.com/koi/core/god/proto.Result",
+                    "underlyingType": "struct{Code uint16 \"json:\\\"code\\\" mapstructure:\\\"code\\\"\"; Data any \"json:\\\"data\\\" mapstructure:\\\"data\\\"\"}",
+                    "argNum": 1,
+                    "expr": "result"
+                },
+                {
+                    "id": "Err",
+                    "string": "%[2]v",
+                    "type": "error",
+                    "underlyingType": "interface{Error() string}",
+                    "argNum": 2,
+                    "expr": "err"
                 }
             ],
             "fuzzy": true
