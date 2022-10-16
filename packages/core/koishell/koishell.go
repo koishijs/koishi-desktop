@@ -154,17 +154,12 @@ func (shell *KoiShell) exec(arg any) (map[string]any, error) {
 }
 
 func (shell *KoiShell) Shutdown() error {
-	l := do.MustInvoke[*logger.Logger](shell.i)
-
-	l.Debug("Shutting down DaemonProcess.")
-
 	shell.mutex.Lock()
 
 	for _, cmd := range shell.reg {
 		if cmd != nil {
 			err := killdren.Stop(cmd)
 			if err != nil {
-				l.Debugf("failed to gracefully stop KoiShell %d: %v. Trying kill", cmd.Process.Pid, err)
 				_ = killdren.Kill(cmd)
 			}
 		}

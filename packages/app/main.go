@@ -99,10 +99,7 @@ func main() {
 				once.Do(func() {
 					sig := s1
 					l.Debug(p.Sprintf("Received signal %s. Gracefully shutting down", sig))
-					err := i.Shutdown()
-					if err != nil {
-						l.Error(p.Sprintf("failed to gracefully shutdown: %v", err))
-					}
+					_ = i.Shutdown()
 					l.Close()
 					wg.Wait()
 					os.Exit(0)
@@ -112,9 +109,7 @@ func main() {
 	}()
 
 	err := do.MustInvoke[*cli.App](i).Run(args)
-	if shutdownErr := i.Shutdown(); shutdownErr != nil {
-		l.Error(p.Sprintf("failed to gracefully shutdown: %v", err))
-	}
+	_ = i.Shutdown()
 	l.Close()
 	wg.Wait()
 	if err != nil {

@@ -191,18 +191,12 @@ func (daemonProc *DaemonProcess) stopIntl(name string) error {
 }
 
 func (daemonProc *DaemonProcess) Shutdown() error {
-	l := do.MustInvoke[*logger.Logger](daemonProc.i)
-	p := do.MustInvoke[*message.Printer](daemonProc.i)
-
-	l.Debug(p.Sprintf("Shutting down DaemonProcess."))
-
 	daemonProc.mutex.Lock()
 
 	for _, dp := range daemonProc.reg {
 		if dp != nil {
 			err := dp.koiProc.Stop()
 			if err != nil {
-				l.Debug(p.Sprintf("failed to gracefully stop process %d: %v. Trying kill", dp.koiProc.Pid(), err))
 				_ = dp.koiProc.Kill()
 			}
 		}
