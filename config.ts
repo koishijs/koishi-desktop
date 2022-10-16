@@ -28,6 +28,7 @@ export const versionAppimagetool = '13'
 
 export const versionToolsVersioninfo = 'v1.4.0'
 export const versionToolsGolangCILint = 'v1.49.0'
+export const versionToolsGoText = 'v0.3.8'
 export const versionToolsRcedit = 'v1.1.1'
 export const versionToolsWix = '311'
 

@@ -9,6 +9,7 @@ import { resolve } from 'path'
  */
 const buildPaths = {
   root: './',
+  locales: './locales/',
 
   packages: 'packages/',
   src: 'packages/app/',

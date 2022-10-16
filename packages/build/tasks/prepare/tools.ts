@@ -3,6 +3,7 @@ import { info } from 'gulplog'
 import {
   sourceGitHub,
   versionToolsGolangCILint,
+  versionToolsGoText,
   versionToolsRcedit,
   versionToolsVersioninfo,
 } from '../../utils/config'
@@ -24,6 +25,11 @@ export const prepareToolsGolangCILint = buildPrepareTool(
   versionToolsGolangCILint
 )
 
+export const prepareToolsGoText = buildPrepareTool(
+  'golang.org/x/text/cmd/gotext',
+  versionToolsGoText
+)
+
 export const prepareToolsRcedit = async () => {
   const src = `${sourceGitHub}/electron/rcedit/releases/download/${versionToolsRcedit}/rcedit-x64.exe`
   const destFile = 'rcedit.exe'
@@ -40,6 +46,7 @@ export const prepareTools =
     ? parallel(
         prepareToolsVersioninfo,
         prepareToolsGolangCILint,
+        prepareToolsGoText,
         prepareToolsRcedit
       )
     : parallel(prepareToolsGolangCILint)
