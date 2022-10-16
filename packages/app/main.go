@@ -55,7 +55,7 @@ func main() {
 	receiver.Register(consoleTarget)
 	l.Register(consoleTarget)
 
-	l.Infof("Koishi Desktop v%s", util.AppVersion)
+	l.Info(p.Sprintf("Koishi Desktop v%s", util.AppVersion))
 
 	noConsole := false
 
@@ -75,7 +75,7 @@ func main() {
 	if noConsole {
 		hideConsoleErr := hideconsole.HideConsole()
 		if hideConsoleErr != nil {
-			l.Warnf("Failed to hide console: %v", hideConsoleErr)
+			l.Warn(p.Sprintf("Failed to hide console: %v", hideConsoleErr))
 		}
 	}
 
@@ -98,10 +98,10 @@ func main() {
 			go func(s1 os.Signal) {
 				once.Do(func() {
 					sig := s1
-					l.Debugf("Received signal %s. Gracefully shutting down", sig)
+					l.Debug(p.Sprintf("Received signal %s. Gracefully shutting down", sig))
 					err := i.Shutdown()
 					if err != nil {
-						l.Errorf("failed to gracefully shutdown: %s", err)
+						l.Error(p.Sprintf("failed to gracefully shutdown: %v", err))
 					}
 					l.Close()
 					wg.Wait()
@@ -113,7 +113,7 @@ func main() {
 
 	runErr := do.MustInvoke[*cli.App](i).Run(args)
 	if shutdownErr := i.Shutdown(); shutdownErr != nil {
-		l.Errorf("failed to gracefully shutdown: %s", runErr)
+		l.Error(p.Sprintf("failed to gracefully shutdown: %v", runErr))
 	}
 	l.Close()
 	wg.Wait()

@@ -8,6 +8,7 @@ import (
 	"sync"
 
 	"github.com/samber/do"
+	"golang.org/x/text/message"
 	"gopkg.ilharper.com/koi/core/koiconfig"
 	"gopkg.ilharper.com/koi/core/logger"
 	"gopkg.ilharper.com/koi/core/proc"
@@ -55,12 +56,13 @@ func (daemonProc *DaemonProcess) Init() error {
 	var err error
 
 	l := do.MustInvoke[*logger.Logger](daemonProc.i)
+	p := do.MustInvoke[*message.Printer](daemonProc.i)
 	cfg, err := do.Invoke[*koiconfig.Config](daemonProc.i)
 	if err != nil {
 		return err
 	}
 
-	l.Infof("Starting these instances:\n%s", strings.Join(cfg.Data.Start, ", "))
+	l.Info(p.Sprintf("Starting these instances:\n%s", strings.Join(cfg.Data.Start, ", ")))
 
 	daemonProc.mutex.Lock()
 	defer daemonProc.mutex.Unlock()
@@ -73,14 +75,14 @@ func (daemonProc *DaemonProcess) Init() error {
 			continue
 		}
 		if !exists {
-			l.Warnf("Instance %s doesn't exist. Skipped.", name)
+			l.Warn(p.Sprintf("Instance %s doesn't exist. Skipped.", name))
 
 			continue
 		}
 
 		err = daemonProc.startIntl(name)
 		if err != nil {
-			l.Warnf("Failed to start %s: %s", name, err.Error())
+			l.Warn(p.Sprintf("Failed to start %s: %v", name, err))
 		}
 	}
 
@@ -105,6 +107,7 @@ func (daemonProc *DaemonProcess) Start(name string) error {
 // Must ensure lock before calling this method.
 func (daemonProc *DaemonProcess) startIntl(name string) error {
 	l := do.MustInvoke[*logger.Logger](daemonProc.i)
+	p := do.MustInvoke[*message.Printer](daemonProc.i)
 	cfg := do.MustInvoke[*koiconfig.Config](daemonProc.i)
 
 	index := daemonProc.getIndex(name)
@@ -131,7 +134,7 @@ func (daemonProc *DaemonProcess) startIntl(name string) error {
 			if strings.Contains(msg, " server listening at ") {
 				listen := msg[strings.Index(msg, "http"):]                     //nolint:gocritic
 				listen = listen[:strings.Index(listen, strutil.ColorStartCtr)] //nolint:gocritic
-				l.Debugf("Parsed %s.", listen)
+				l.Debug(p.Sprintf("Parsed %s.", listen))
 				dp.listen = listen
 				webview.Open(daemonProc.i, name, listen)
 			}
@@ -142,9 +145,9 @@ func (daemonProc *DaemonProcess) startIntl(name string) error {
 	go func() {
 		err := dp.koiProc.Run()
 		if err == nil {
-			l.Infof("Instance %s exited.", name)
+			l.Info(p.Sprintf("Instance %s exited.", name))
 		} else {
-			l.Warnf("Instance %s exited with: %s", name, err.Error())
+			l.Warn(p.Sprintf("Instance %s exited with: %v", name, err))
 		}
 
 		defer daemonProc.wg.Done()
@@ -175,10 +178,11 @@ func (daemonProc *DaemonProcess) Stop(name string) error {
 // Must ensure lock before calling this method.
 func (daemonProc *DaemonProcess) stopIntl(name string) error {
 	l := do.MustInvoke[*logger.Logger](daemonProc.i)
+	p := do.MustInvoke[*message.Printer](daemonProc.i)
 
 	dp := daemonProc.reg[daemonProc.nameReg[name]]
 	if err := dp.koiProc.Stop(); err != nil {
-		l.Debugf("failed to gracefully stop process %d: %v. Trying kill", dp.koiProc.Pid(), err)
+		l.Debug(p.Sprintf("failed to gracefully stop process %d: %v. Trying kill", dp.koiProc.Pid(), err))
 
 		return dp.koiProc.Kill() //nolint:wrapcheck
 	}
@@ -188,8 +192,9 @@ func (daemonProc *DaemonProcess) stopIntl(name string) error {
 
 func (daemonProc *DaemonProcess) Shutdown() error {
 	l := do.MustInvoke[*logger.Logger](daemonProc.i)
+	p := do.MustInvoke[*message.Printer](daemonProc.i)
 
-	l.Debug("Shutting down DaemonProcess.")
+	l.Debug(p.Sprint("Shutting down DaemonProcess."))
 
 	daemonProc.mutex.Lock()
 
@@ -197,7 +202,7 @@ func (daemonProc *DaemonProcess) Shutdown() error {
 		if dp != nil {
 			err := dp.koiProc.Stop()
 			if err != nil {
-				l.Debugf("failed to gracefully stop process %d: %v. Trying kill", dp.koiProc.Pid(), err)
+				l.Debug(p.Sprintf("failed to gracefully stop process %d: %v. Trying kill", dp.koiProc.Pid(), err))
 				_ = dp.koiProc.Kill()
 			}
 		}

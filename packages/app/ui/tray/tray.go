@@ -7,6 +7,7 @@ import (
 	"fyne.io/systray"
 	"github.com/mitchellh/mapstructure"
 	"github.com/samber/do"
+	"golang.org/x/text/message"
 	"gopkg.ilharper.com/koi/app/util"
 	"gopkg.ilharper.com/koi/core/god/proto"
 	"gopkg.ilharper.com/koi/core/koicmd"
@@ -42,8 +43,9 @@ func (tray *TrayDaemon) Run() error {
 
 func (tray *TrayDaemon) onReady() {
 	l := do.MustInvoke[*logger.Logger](tray.i)
+	p := do.MustInvoke[*message.Printer](tray.i)
 
-	l.Debug("Tray ready.")
+	l.Debug(p.Sprint("Tray ready."))
 
 	// systray.SetTitle("Koishi")
 	if runtime.GOOS != "windows" {
@@ -51,7 +53,7 @@ func (tray *TrayDaemon) onReady() {
 	}
 	systray.SetTemplateIcon(icon.Koishi, icon.Koishi)
 
-	mStarting := systray.AddMenuItem("Starting...", "")
+	mStarting := systray.AddMenuItem(p.Sprint("Starting..."), "")
 	mStarting.Disable()
 	tray.chanReg = append(tray.chanReg, mStarting.ClickedCh)
 
@@ -68,6 +70,7 @@ func (tray *TrayDaemon) rebuild() {
 	var err error
 
 	l := do.MustInvoke[*logger.Logger](tray.i)
+	p := do.MustInvoke[*message.Printer](tray.i)
 
 	conn, err := tray.manager.Available()
 	if err != nil {
@@ -95,20 +98,20 @@ func (tray *TrayDaemon) rebuild() {
 	var result proto.Result
 	response := <-respC
 	if response == nil {
-		l.Error("failed to get result, response is nil")
+		l.Error(p.Sprint("failed to get result, response is nil"))
 
 		return
 	}
 
 	if response.Type != proto.TypeResponseResult {
-		l.Errorf("failed to parse result %#+v: response type '%s' is not '%s': %v", response, response.Type, proto.TypeResponseResult, err)
+		l.Error(p.Sprintf("failed to parse result %#+v: response type '%s' is not '%s': %v", response, response.Type, proto.TypeResponseResult, err))
 
 		return
 	}
 
 	err = mapstructure.Decode(response.Data, &result)
 	if err != nil {
-		l.Errorf("failed to parse result %#+v: %v", response, err)
+		l.Error(p.Sprintf("failed to parse result %#+v: %v", response, err))
 
 		return
 	}
@@ -116,7 +119,7 @@ func (tray *TrayDaemon) rebuild() {
 	if result.Code != 0 {
 		s, ok := result.Data.(string)
 		if !ok {
-			l.Errorf("result data %#+v is not string", result.Data)
+			l.Error(p.Sprintf("result data %#+v is not string", result.Data))
 
 			return
 		}
@@ -128,7 +131,7 @@ func (tray *TrayDaemon) rebuild() {
 	var resultPs koicmd.ResultPs
 	err = mapstructure.Decode(result.Data, &resultPs)
 	if err != nil {
-		l.Errorf("failed to parse result %#+v: %v", result, err)
+		l.Error(p.Sprintf("failed to parse result %#+v: %v", result, err))
 
 		return
 	}
@@ -152,13 +155,13 @@ func (tray *TrayDaemon) rebuild() {
 	for _, instance := range instances {
 		// Add menu items for each instance.
 		m := systray.AddMenuItem(instance.Name, instance.Name)
-		mOpen := m.AddSubMenuItem("Open", "Open")
+		mOpen := m.AddSubMenuItem(p.Sprint("Open"), p.Sprint("Open"))
 		mOpen.SetTemplateIcon(icon.Open, icon.Open)
-		mStart := m.AddSubMenuItem("Start", "Start")
+		mStart := m.AddSubMenuItem(p.Sprint("Start"), p.Sprint("Start"))
 		mStart.SetTemplateIcon(icon.Start, icon.Start)
-		mRestart := m.AddSubMenuItem("Restart", "Restart")
+		mRestart := m.AddSubMenuItem(p.Sprint("Restart"), p.Sprint("Restart"))
 		mRestart.SetTemplateIcon(icon.Restart, icon.Restart)
-		mStop := m.AddSubMenuItem("Stop", "Stop")
+		mStop := m.AddSubMenuItem(p.Sprint("Stop"), p.Sprint("Stop"))
 		mStop.SetTemplateIcon(icon.Stop, icon.Stop)
 		if instance.Running {
 			mStart.Disable()
@@ -180,7 +183,7 @@ func (tray *TrayDaemon) rebuild() {
 					break
 				}
 
-				l.Debugf("Opening instance %s", name)
+				l.Debug(p.Sprintf("Opening instance %s", name))
 
 				conn, err := tray.manager.Available()
 				if err != nil {
@@ -205,14 +208,14 @@ func (tray *TrayDaemon) rebuild() {
 				for {
 					response := <-respC
 					if response == nil {
-						l.Error("failed to get result, response is nil")
+						l.Error(p.Sprint("failed to get result, response is nil"))
 
 						break
 					}
 					if response.Type == proto.TypeResponseResult {
 						err = mapstructure.Decode(response.Data, &result)
 						if err != nil {
-							l.Errorf("failed to parse result %#+v: %v", response, err)
+							l.Error(p.Sprintf("failed to parse result %#+v: %v", response, err))
 
 							break
 						}
@@ -225,7 +228,7 @@ func (tray *TrayDaemon) rebuild() {
 				if result.Code != 0 {
 					s, ok := result.Data.(string)
 					if !ok {
-						l.Errorf("result data %#+v is not string", result.Data)
+						l.Error(p.Sprintf("result data %#+v is not string", result.Data))
 
 						continue
 					}
@@ -236,7 +239,7 @@ func (tray *TrayDaemon) rebuild() {
 				}
 
 				<-time.After(refreshWaitDuration)
-				l.Debug("Rebuilding tray")
+				l.Debug(p.Sprint("Rebuilding tray"))
 				tray.rebuild()
 			}
 		}(instance.Name)
@@ -248,7 +251,7 @@ func (tray *TrayDaemon) rebuild() {
 					break
 				}
 
-				l.Debugf("Starting instance %s", name)
+				l.Debug(p.Sprintf("Starting instance %s", name))
 
 				conn, err := tray.manager.Available()
 				if err != nil {
@@ -273,14 +276,14 @@ func (tray *TrayDaemon) rebuild() {
 				for {
 					response := <-respC
 					if response == nil {
-						l.Error("failed to get result, response is nil")
+						l.Error(p.Sprint("failed to get result, response is nil"))
 
 						break
 					}
 					if response.Type == proto.TypeResponseResult {
 						err = mapstructure.Decode(response.Data, &result)
 						if err != nil {
-							l.Errorf("failed to parse result %#+v: %v", response, err)
+							l.Error(p.Sprintf("failed to parse result %#+v: %v", response, err))
 
 							break
 						}
@@ -293,7 +296,7 @@ func (tray *TrayDaemon) rebuild() {
 				if result.Code != 0 {
 					s, ok := result.Data.(string)
 					if !ok {
-						l.Errorf("result data %#+v is not string", result.Data)
+						l.Error(p.Sprintf("result data %#+v is not string", result.Data))
 
 						continue
 					}
@@ -304,7 +307,7 @@ func (tray *TrayDaemon) rebuild() {
 				}
 
 				<-time.After(refreshWaitDuration)
-				l.Debug("Rebuilding tray")
+				l.Debug(p.Sprint("Rebuilding tray"))
 				tray.rebuild()
 			}
 		}(instance.Name)
@@ -316,7 +319,7 @@ func (tray *TrayDaemon) rebuild() {
 					break
 				}
 
-				l.Debugf("Stopping instance %s", name)
+				l.Debug(p.Sprintf("Stopping instance %s", name))
 
 				conn, err := tray.manager.Available()
 				if err != nil {
@@ -341,14 +344,14 @@ func (tray *TrayDaemon) rebuild() {
 				for {
 					response := <-respC
 					if response == nil {
-						l.Error("failed to get result, response is nil")
+						l.Error(p.Sprint("failed to get result, response is nil"))
 
 						break
 					}
 					if response.Type == proto.TypeResponseResult {
 						err = mapstructure.Decode(response.Data, &result)
 						if err != nil {
-							l.Errorf("failed to parse result %#+v: %v", response, err)
+							l.Error(p.Sprintf("failed to parse result %#+v: %v", response, err))
 
 							break
 						}
@@ -361,7 +364,7 @@ func (tray *TrayDaemon) rebuild() {
 				if result.Code != 0 {
 					s, ok := result.Data.(string)
 					if !ok {
-						l.Errorf("result data %#+v is not string", result.Data)
+						l.Error(p.Sprintf("result data %#+v is not string", result.Data))
 
 						continue
 					}
@@ -372,7 +375,7 @@ func (tray *TrayDaemon) rebuild() {
 				}
 
 				<-time.After(refreshWaitDuration)
-				l.Debug("Rebuilding tray")
+				l.Debug(p.Sprint("Rebuilding tray"))
 				tray.rebuild()
 			}
 		}(instance.Name)
@@ -384,7 +387,7 @@ func (tray *TrayDaemon) rebuild() {
 					break
 				}
 
-				l.Debugf("Restarting instance %s", name)
+				l.Debug(p.Sprintf("Restarting instance %s", name))
 
 				conn, err := tray.manager.Available()
 				if err != nil {
@@ -409,14 +412,14 @@ func (tray *TrayDaemon) rebuild() {
 				for {
 					response := <-respC
 					if response == nil {
-						l.Error("failed to get result, response is nil")
+						l.Error(p.Sprint("failed to get result, response is nil"))
 
 						break
 					}
 					if response.Type == proto.TypeResponseResult {
 						err = mapstructure.Decode(response.Data, &result)
 						if err != nil {
-							l.Errorf("failed to parse result %#+v: %v", response, err)
+							l.Error(p.Sprintf("failed to parse result %#+v: %v", response, err))
 
 							break
 						}
@@ -429,7 +432,7 @@ func (tray *TrayDaemon) rebuild() {
 				if result.Code != 0 {
 					s, ok := result.Data.(string)
 					if !ok {
-						l.Errorf("result data %#+v is not string", result.Data)
+						l.Error(p.Sprintf("result data %#+v is not string", result.Data))
 
 						continue
 					}
@@ -440,7 +443,7 @@ func (tray *TrayDaemon) rebuild() {
 				}
 
 				<-time.After(refreshWaitDuration)
-				l.Debug("Rebuilding tray")
+				l.Debug(p.Sprint("Rebuilding tray"))
 				tray.rebuild()
 			}
 		}(instance.Name)
@@ -451,7 +454,9 @@ func (tray *TrayDaemon) rebuild() {
 }
 
 func (tray *TrayDaemon) addItemsBefore() {
-	mTitle := systray.AddMenuItem("Koishi Desktop", "")
+	p := do.MustInvoke[*message.Printer](tray.i)
+
+	mTitle := systray.AddMenuItem(p.Sprint("Koishi Desktop"), "")
 	mTitle.Disable()
 	mTitle.SetTemplateIcon(icon.Koishi, icon.Koishi)
 	version := "v" + util.AppVersion
@@ -464,19 +469,20 @@ func (tray *TrayDaemon) addItemsBefore() {
 
 func (tray *TrayDaemon) addItemsAfter() {
 	l := do.MustInvoke[*logger.Logger](tray.i)
+	p := do.MustInvoke[*message.Printer](tray.i)
 
-	mAdvanced := systray.AddMenuItem("Advanced", "")
-	mRefresh := mAdvanced.AddSubMenuItem("Refresh", "")
+	mAdvanced := systray.AddMenuItem(p.Sprint("Advanced"), "")
+	mRefresh := mAdvanced.AddSubMenuItem(p.Sprint("Refresh"), "")
 	mRefresh.SetTemplateIcon(icon.Restart, icon.Restart)
-	mStartDaemon := mAdvanced.AddSubMenuItem("Start Daemon", "")
+	mStartDaemon := mAdvanced.AddSubMenuItem(p.Sprint("Start Daemon"), "")
 	mStartDaemon.SetTemplateIcon(icon.Start, icon.Start)
-	mStopDaemon := mAdvanced.AddSubMenuItem("Stop Daemon", "")
+	mStopDaemon := mAdvanced.AddSubMenuItem(p.Sprint("Stop Daemon"), "")
 	mStopDaemon.SetTemplateIcon(icon.Stop, icon.Stop)
-	mKillDaemon := mAdvanced.AddSubMenuItem("Kill Daemon", "")
+	mKillDaemon := mAdvanced.AddSubMenuItem(p.Sprint("Kill Daemon"), "")
 	mKillDaemon.SetTemplateIcon(icon.Kill, icon.Kill)
-	mExit := mAdvanced.AddSubMenuItem("Stop and Exit", "")
+	mExit := mAdvanced.AddSubMenuItem(p.Sprint("Stop and Exit"), "")
 	mExit.SetTemplateIcon(icon.Exit, icon.Exit)
-	mQuit := systray.AddMenuItem("Hide", "")
+	mQuit := systray.AddMenuItem(p.Sprint("Hide"), "")
 	mQuit.SetTemplateIcon(icon.Hide, icon.Hide)
 
 	tray.chanReg = append(tray.chanReg, mAdvanced.ClickedCh)
@@ -493,7 +499,7 @@ func (tray *TrayDaemon) addItemsAfter() {
 			if !ok {
 				break
 			}
-			l.Debug("Rebuilding tray")
+			l.Debug(p.Sprint("Rebuilding tray"))
 			tray.rebuild()
 		}
 	}()
@@ -504,14 +510,14 @@ func (tray *TrayDaemon) addItemsAfter() {
 			if !ok {
 				break
 			}
-			l.Debug("Starting daemon")
+			l.Debug(p.Sprint("Starting daemon"))
 			err := tray.manager.Start(true)
 			if err != nil {
 				l.Error(err)
 
 				continue
 			}
-			l.Debug("Rebuilding tray")
+			l.Debug(p.Sprint("Rebuilding tray"))
 			tray.rebuild()
 		}
 	}()
@@ -522,9 +528,9 @@ func (tray *TrayDaemon) addItemsAfter() {
 			if !ok {
 				break
 			}
-			l.Debug("Stopping daemon")
+			l.Debug(p.Sprint("Stopping daemon"))
 			tray.manager.Stop()
-			l.Debug("Rebuilding tray")
+			l.Debug(p.Sprint("Rebuilding tray"))
 			tray.rebuild()
 		}
 	}()
@@ -535,9 +541,9 @@ func (tray *TrayDaemon) addItemsAfter() {
 			if !ok {
 				break
 			}
-			l.Debug("Killing daemon")
+			l.Debug(p.Sprint("Killing daemon"))
 			tray.manager.Kill()
-			l.Debug("Rebuilding tray")
+			l.Debug(p.Sprint("Rebuilding tray"))
 			tray.rebuild()
 		}
 	}()
@@ -548,9 +554,9 @@ func (tray *TrayDaemon) addItemsAfter() {
 			if !ok {
 				break
 			}
-			l.Debug("Stopping daemon")
+			l.Debug(p.Sprint("Stopping daemon"))
 			tray.manager.Stop()
-			l.Debug("Exiting systray")
+			l.Debug(p.Sprint("Exiting systray"))
 			systray.Quit()
 		}
 	}()
@@ -558,7 +564,7 @@ func (tray *TrayDaemon) addItemsAfter() {
 	go func() {
 		_, ok := <-mQuit.ClickedCh
 		if ok {
-			l.Debug("Exiting systray")
+			l.Debug(p.Sprint("Exiting systray"))
 			systray.Quit()
 		}
 	}()
