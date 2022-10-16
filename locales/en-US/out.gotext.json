@@ -53,23 +53,6 @@
             "fuzzy": true
         },
         {
-            "id": "failed to gracefully shutdown: {Err}",
-            "message": "failed to gracefully shutdown: {Err}",
-            "translation": "failed to gracefully shutdown: {Err}",
-            "translatorComment": "Copied from source.",
-            "placeholders": [
-                {
-                    "id": "Err",
-                    "string": "%[1]v",
-                    "type": "error",
-                    "underlyingType": "interface{Error() string}",
-                    "argNum": 1,
-                    "expr": "err"
-                }
-            ],
-            "fuzzy": true
-        },
-        {
             "id": "Tray ready.",
             "message": "Tray ready.",
             "translation": "Tray ready.",
@@ -526,13 +509,6 @@
                     "expr": "err"
                 }
             ],
-            "fuzzy": true
-        },
-        {
-            "id": "Shutting down DaemonProcess.",
-            "message": "Shutting down DaemonProcess.",
-            "translation": "Shutting down DaemonProcess.",
-            "translatorComment": "Copied from source.",
             "fuzzy": true
         }
     ]

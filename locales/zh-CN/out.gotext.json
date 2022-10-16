@@ -50,22 +50,6 @@
             ]
         },
         {
-            "id": "failed to gracefully shutdown: {Err}",
-            "message": "failed to gracefully shutdown: {Err}",
-            "translation": "平滑关闭失败：{Err}",
-            "translatorComment": "Copied from source.",
-            "placeholders": [
-                {
-                    "id": "Err",
-                    "string": "%[1]v",
-                    "type": "error",
-                    "underlyingType": "interface{Error() string}",
-                    "argNum": 1,
-                    "expr": "err"
-                }
-            ]
-        },
-        {
             "id": "Tray ready.",
             "message": "Tray ready.",
             "translation": "托盘已就绪。",
@@ -488,12 +472,6 @@
                     "expr": "err"
                 }
             ]
-        },
-        {
-            "id": "Shutting down DaemonProcess.",
-            "message": "Shutting down DaemonProcess.",
-            "translation": "正在结束 DaemonProcess。",
-            "translatorComment": "Copied from source."
         }
     ]
 }
