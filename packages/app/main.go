@@ -6,8 +6,11 @@ import (
 	"sync"
 	"syscall"
 
+	"github.com/cloudfoundry/jibber_jabber"
 	"github.com/samber/do"
 	"github.com/urfave/cli/v2"
+	"golang.org/x/text/language"
+	"golang.org/x/text/message"
 	"gopkg.ilharper.com/koi/app/koicli"
 	"gopkg.ilharper.com/koi/app/util"
 	"gopkg.ilharper.com/koi/core/logger"
@@ -17,6 +20,13 @@ import (
 )
 
 func main() {
+	lang, _ := jibber_jabber.DetectIETF()
+	if lang == "" {
+		lang = "en-US"
+	}
+	langTag := language.MustParse(lang)
+	p := message.NewPrinter(langTag)
+
 	l, _ := logger.BuildNewLogger(0)(nil)
 
 	i := do.NewWithOpts(&do.InjectorOpts{
@@ -26,6 +36,9 @@ func main() {
 	})
 
 	do.ProvideNamedValue(i, coreUtil.ServiceAppVersion, util.AppVersion)
+
+	do.ProvideValue(i, langTag)
+	do.ProvideValue(i, p)
 
 	wg := &sync.WaitGroup{}
 	do.ProvideValue(i, wg)
