@@ -21,10 +21,10 @@ import (
 
 func main() {
 	lang, _ := jibber_jabber.DetectIETF()
-	if lang == "" {
-		lang = "en-US"
+	langTag, langTagErr := language.Parse(lang)
+	if langTagErr != nil {
+		langTag = language.MustParse("en-US")
 	}
-	langTag := language.MustParse(lang)
 	p := message.NewPrinter(langTag)
 
 	l, _ := logger.BuildNewLogger(0)(nil)
