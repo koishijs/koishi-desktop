@@ -1,6 +1,8 @@
 package koicmd
 
 import (
+	"time"
+
 	"github.com/samber/do"
 	"gopkg.ilharper.com/koi/core/god/daemonproc"
 	"gopkg.ilharper.com/koi/core/god/proto"
@@ -32,6 +34,8 @@ func koiCmdRestart(i *do.Injector) *proto.Response {
 		if err != nil {
 			return proto.NewErrorResult(koierr.NewErrInternalError(err))
 		}
+
+		<-time.After(2 * time.Second)
 
 		l.Infof("Starting instance %s...", instance)
 
