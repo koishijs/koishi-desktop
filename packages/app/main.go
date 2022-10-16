@@ -111,13 +111,13 @@ func main() {
 		}
 	}()
 
-	runErr := do.MustInvoke[*cli.App](i).Run(args)
+	err := do.MustInvoke[*cli.App](i).Run(args)
 	if shutdownErr := i.Shutdown(); shutdownErr != nil {
-		l.Error(p.Sprintf("failed to gracefully shutdown: %v", runErr))
+		l.Error(p.Sprintf("failed to gracefully shutdown: %v", err))
 	}
 	l.Close()
 	wg.Wait()
-	if runErr != nil {
+	if err != nil {
 		os.Exit(1)
 	}
 }
