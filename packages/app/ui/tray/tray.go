@@ -111,7 +111,7 @@ func (tray *TrayDaemon) rebuild() {
 
 	err = mapstructure.Decode(response.Data, &result)
 	if err != nil {
-		l.Error(p.Sprintf("failed to parse result %#+v: %v", response, err))
+		l.Error(p.Sprintf("failed to parse response %#+v: %v", response, err))
 
 		return
 	}
@@ -215,7 +215,7 @@ func (tray *TrayDaemon) rebuild() {
 					if response.Type == proto.TypeResponseResult {
 						err = mapstructure.Decode(response.Data, &result)
 						if err != nil {
-							l.Error(p.Sprintf("failed to parse result %#+v: %v", response, err))
+							l.Error(p.Sprintf("failed to parse response %#+v: %v", response, err))
 
 							break
 						}
@@ -283,7 +283,7 @@ func (tray *TrayDaemon) rebuild() {
 					if response.Type == proto.TypeResponseResult {
 						err = mapstructure.Decode(response.Data, &result)
 						if err != nil {
-							l.Error(p.Sprintf("failed to parse result %#+v: %v", response, err))
+							l.Error(p.Sprintf("failed to parse response %#+v: %v", response, err))
 
 							break
 						}
@@ -351,7 +351,7 @@ func (tray *TrayDaemon) rebuild() {
 					if response.Type == proto.TypeResponseResult {
 						err = mapstructure.Decode(response.Data, &result)
 						if err != nil {
-							l.Error(p.Sprintf("failed to parse result %#+v: %v", response, err))
+							l.Error(p.Sprintf("failed to parse response %#+v: %v", response, err))
 
 							break
 						}
@@ -419,7 +419,7 @@ func (tray *TrayDaemon) rebuild() {
 					if response.Type == proto.TypeResponseResult {
 						err = mapstructure.Decode(response.Data, &result)
 						if err != nil {
-							l.Error(p.Sprintf("failed to parse result %#+v: %v", response, err))
+							l.Error(p.Sprintf("failed to parse response %#+v: %v", response, err))
 
 							break
 						}

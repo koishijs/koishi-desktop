@@ -78,7 +78,7 @@ func newYarnAction(i *do.Injector) (cli.ActionFunc, error) {
 			if response.Type == proto.TypeResponseResult {
 				err = mapstructure.Decode(response.Data, &result)
 				if err != nil {
-					return fmt.Errorf("failed to parse result %#+v: %w", response, err)
+					return fmt.Errorf("failed to parse response %#+v: %w", response, err)
 				}
 
 				break
