@@ -20,7 +20,10 @@ set(CMAKE_MESSAGE_LOG_LEVEL VERBOSE)
 # Dependencies
 ############################################################
 
+set(JSON_Install OFF CACHE INTERNAL "")
+
 add_subdirectory(../libb64 lib/libb64)
+add_subdirectory(../nlohmann_json lib/json)
 
 ############################################################
 # App
@@ -34,6 +37,7 @@ add_library(shellcomm STATIC
 target_link_libraries(shellcomm
     PRIVATE
         libb64
+        nlohmann_json::nlohmann_json
 )
 
 target_include_directories(shellcomm

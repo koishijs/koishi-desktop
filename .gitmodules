@@ -7,3 +7,6 @@
 [submodule "packages/systray"]
   path = packages/systray
   url = https://github.com/ilharp/systray.git
+[submodule "packages/nlohmann_json"]
+  path = packages/nlohmann_json
+  url = https://github.com/nlohmann/json.git
