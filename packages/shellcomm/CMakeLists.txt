@@ -22,8 +22,8 @@ set(CMAKE_MESSAGE_LOG_LEVEL VERBOSE)
 
 set(JSON_Install OFF CACHE INTERNAL "")
 
-add_subdirectory(../libb64 lib/libb64)
-add_subdirectory(../nlohmann_json lib/json)
+add_subdirectory(../libb64 ../libb64)
+add_subdirectory(../nlohmann_json ../json)
 
 ############################################################
 # App
