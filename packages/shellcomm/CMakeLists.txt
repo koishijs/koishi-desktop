@@ -4,9 +4,9 @@ cmake_minimum_required(VERSION 3.0)
 # Project
 ############################################################
 
-project(koishell
+project(shellcomm
     VERSION 0.1.0
-    DESCRIPTION "Shell for Koishi Desktop."
+    DESCRIPTION "Common utilities for Koishi Desktop Shell."
     HOMEPAGE_URL "https://koishi.chat"
     LANGUAGES C CXX
 )
@@ -20,22 +20,21 @@ set(CMAKE_MESSAGE_LOG_LEVEL VERBOSE)
 # Dependencies
 ############################################################
 
-add_subdirectory(../shellcomm lib/shellcomm)
+add_subdirectory(../libb64 lib/libb64)
 
 ############################################################
 # App
 ############################################################
 
-add_executable(koishell
-    src/main.cpp
+add_library(shellcomm STATIC
 )
 
-target_link_libraries(koishell
+target_link_libraries(shellcomm
     PRIVATE
-        shellcomm
+        libb64
 )
 
-target_include_directories(koishell
+target_include_directories(shellcomm
     PRIVATE
         ${PROJECT_SOURCE_DIR}/include
 )
@@ -44,17 +43,28 @@ target_include_directories(koishell
 # Compile Flags
 ############################################################
 
-target_compile_definitions(koishell
+target_compile_definitions(shellcomm
     PRIVATE
         UNICODE
         _UNICODE
-        WIN32
-        _WIN32
-        WINDOWS
-        _WINDOWS
 )
 
-target_compile_options(koishell
-    PRIVATE
-        /utf-8
-)
+if(MSVC)
+    target_compile_definitions(shellcomm
+        PRIVATE
+            WIN32
+            _WIN32
+            WINDOWS
+            _WINDOWS
+    )
+    target_compile_options(shellcomm
+        PRIVATE
+            /utf-8
+    )
+else()
+    target_compile_options(shellcomm
+        PUBLIC
+            -fexec-charset=UTF-8
+            -finput-charset=UTF-8
+    )
+endif()
