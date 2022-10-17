@@ -1,6 +1,10 @@
 #ifndef _SHELLCOMM_PARSE_
 #define _SHELLCOMM_PARSE_
 
+#include "nlohmann/json.hpp"
+
+using json = nlohmann::json;
+
 namespace shellcomm {
 
 enum mode {
@@ -10,6 +14,7 @@ enum mode {
 
 struct parse_result {
   mode mode;
+  json json;
 };
 
 bool parse(int argc, const char **argv, parse_result *result);
