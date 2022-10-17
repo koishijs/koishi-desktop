@@ -1,6 +1,7 @@
 #ifndef _SHELLCOMM_PARSE_
 #define _SHELLCOMM_PARSE_
 
+#include "b64/decode.h"
 #include "nlohmann/json.hpp"
 
 using json = nlohmann::json;
