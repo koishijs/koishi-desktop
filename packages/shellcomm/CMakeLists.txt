@@ -27,6 +27,8 @@ add_subdirectory(../libb64 lib/libb64)
 ############################################################
 
 add_library(shellcomm STATIC
+    src/logger.cpp
+    src/parse.cpp
 )
 
 target_link_libraries(shellcomm
