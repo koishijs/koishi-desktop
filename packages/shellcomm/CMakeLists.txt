@@ -37,11 +37,15 @@ add_library(shellcomm STATIC
 target_link_libraries(shellcomm
     PRIVATE
         libb64
+)
+
+target_link_libraries(shellcomm
+    PUBLIC
         nlohmann_json::nlohmann_json
 )
 
 target_include_directories(shellcomm
-    PRIVATE
+    PUBLIC
         ${PROJECT_SOURCE_DIR}/include
 )
 
