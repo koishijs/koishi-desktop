@@ -121,7 +121,7 @@ func (daemonProc *DaemonProcess) startIntl(name string) error {
 		koiProc: proc.NewYarnProc(
 			daemonProc.i,
 			deltaCh+uint16(index),
-			[]string{"koishi", "start"},
+			[]string{"start"},
 			filepath.Join(cfg.Computed.DirInstance, name),
 		),
 	}
