@@ -5,12 +5,10 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/goccy/go-json"
 	"github.com/mitchellh/mapstructure"
 	"github.com/samber/do"
 	"github.com/urfave/cli/v2"
 	"gopkg.ilharper.com/koi/core/god/proto"
-	"gopkg.ilharper.com/koi/core/koicmd"
 	"gopkg.ilharper.com/koi/core/koiconfig"
 	"gopkg.ilharper.com/koi/core/logger"
 	"gopkg.ilharper.com/koi/sdk/client"
@@ -88,24 +86,6 @@ func newRestartAction(i *do.Injector) (cli.ActionFunc, error) {
 			return errors.New(s)
 		}
 
-		var resultPs koicmd.ResultPs
-		err = mapstructure.Decode(result.Data, &resultPs)
-		if err != nil {
-			return fmt.Errorf("failed to parse result %#+v: %w", result, err)
-		}
-
-		resultPsInstanceJSON, err := json.Marshal(resultPs)
-		if err != nil {
-			return fmt.Errorf("failed to marshal result %#+v: %w", resultPs, err)
-		}
-
-		fmt.Println(string(resultPsInstanceJSON))
-
-		err = logger.Wait(respC)
-		if err != nil {
-			return fmt.Errorf("failed to process command ps: %w", err)
-		}
-
-		return nil
+		return logger.Wait(respC)
 	}, nil
 }

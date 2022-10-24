@@ -34,5 +34,5 @@ func koiCmdStop(i *do.Injector) *proto.Response {
 		}
 	}
 
-	return koiCmdPs(i)
+	return proto.NewSuccessResult(nil)
 }
