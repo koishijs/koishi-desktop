@@ -42,6 +42,9 @@ func koiCmdYarn(i *do.Injector) *proto.Response {
 		filepath.Join(cfg.Computed.DirInstance, instance),
 	)
 
+	koiProc.Register(do.MustInvoke[*logger.KoiFileTarget](i))
+	koiProc.Register(do.MustInvoke[*logger.ResponseSender](i))
+
 	l.Infof("Running command:\n%#+v\nOn instance: %s", args, instance)
 
 	err = koiProc.Run()
