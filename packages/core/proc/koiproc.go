@@ -7,6 +7,7 @@ import (
 	"os/exec"
 	"path/filepath"
 	"sync"
+	"syscall"
 
 	"github.com/samber/do"
 	"gopkg.ilharper.com/koi/core/logger"
@@ -150,7 +151,7 @@ func (koiProc *KoiProc) Stop() error {
 		return nil
 	}
 
-	err := killdren.Stop(koiProc.cmd)
+	err := killdren.Signal(koiProc.cmd, syscall.SIGINT)
 	if err != nil {
 		return fmt.Errorf("failed to send SIGTERM to process: %w", err)
 	}
