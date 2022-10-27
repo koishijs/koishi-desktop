@@ -55,8 +55,8 @@ class KSWebViewDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
 }
 
 struct KSWebView: View {
-    @StateObject var webViewStore: WebViewStore
-    var url: String
+    @StateObject private var webViewStore: WebViewStore
+    private var url: String
 
     init(_ url: String) {
         self.url = url
