@@ -87,6 +87,7 @@ struct KSWebView: View {
         WebView(webView: webViewStore.webView)
             .onAppear {
                 self.webViewStore.webView.setValue(false, forKey: "drawsBackground")
+                self.webViewStore.webView.configuration.preferences.setValue(true, forKey: "developerExtrasEnabled")
                 self.webViewStore.webView.load(URLRequest(url: URL(string: self.url)!))
             }
     }
