@@ -1,6 +1,7 @@
 import AppKit
 import SwiftUI
 import WebView
+import WebKit
 
 struct KSWebViewOutput: Codable {}
 
@@ -60,11 +61,32 @@ class KSWebViewDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
 }
 
 struct KSWebView: View {
-    @StateObject private var webViewStore = WebViewStore()
+    @StateObject var webViewStore: WebViewStore
     private var url: String
 
     init(_ url: String) {
         self.url = url
+
+        let enhanceURL = Bundle.module.url(forResource: "Resources/userscript", withExtension: "js")!
+        let enhanceData = try! Data(contentsOf: enhanceURL)
+        let enhanceRaw = String(decoding: enhanceData, as: UTF8.self)
+        let userScript = WKUserScript(
+            source: enhanceRaw,
+            injectionTime: .atDocumentEnd,
+            forMainFrameOnly: true
+        )
+        let userContentController = WKUserContentController()
+        userContentController.addUserScript(userScript)
+        let configuration = WKWebViewConfiguration()
+        configuration.userContentController = userContentController
+        _webViewStore = StateObject(
+            wrappedValue: WebViewStore(
+                webView: WKWebView(
+                    frame: .zero,
+                    configuration: configuration
+                )
+            )
+        )
     }
 
     var body: some View {
