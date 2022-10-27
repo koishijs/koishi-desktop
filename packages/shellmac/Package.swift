@@ -14,10 +14,6 @@ let package = Package(
             name: "KoiShell",
             dependencies: [
                 .product(name: "WebView", package: "SwiftUI-WebView"),
-            ],
-            resources: [
-                .process("Resources/enhance.js")
-            ]
-        ),
+            ]),
     ]
 )
