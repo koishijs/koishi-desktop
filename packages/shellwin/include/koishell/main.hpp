@@ -3,6 +3,7 @@
 
 #include <windows.h>
 
+#include "koishell/util/logger.hpp"
 #include "shellcomm/logger.hpp"
 
 int WINAPI wWinMain(
