@@ -2,10 +2,10 @@
 
 #include "shellcomm/logger.hpp"
 
-namespace shellcomm {
+namespace ShellComm {
 
-void log(const char *messages) {
+void Log(const char *messages) {
   std::cerr << messages << std::endl;
 }
 
-} // namespace shellcomm
+} // namespace ShellComm

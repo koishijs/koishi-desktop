@@ -3,10 +3,10 @@
 
 using json = nlohmann::json;
 
-namespace shellcomm {
-bool parse(int argc, const char **argv, parse_result *result) {
+namespace ShellComm {
+bool Parse(int argc, const char **argv, ParseResult *result) {
   if (argc != 2) {
-    log("argc not valid.");
+    Log("argc not valid.");
     return false;
   }
 
@@ -21,17 +21,17 @@ bool parse(int argc, const char **argv, parse_result *result) {
 
   result->json = json::parse(raw_json, nullptr, false);
   if (result->json.is_discarded()) {
-    log("Failed to parse arg.");
+    Log("Failed to parse arg.");
     return false;
   }
 
   std::string mode = result->json["mode"];
   if (mode == "webview") {
-    result->mode = mode::MODE_WEBVIEW;
+    result->mode = Mode::MODE_WEBVIEW;
   } else {
-    result->mode = mode::MODE_UNKNOWN;
+    result->mode = Mode::MODE_UNKNOWN;
   }
 
   return true;
 }
-} // namespace shellcomm
+} // namespace ShellComm

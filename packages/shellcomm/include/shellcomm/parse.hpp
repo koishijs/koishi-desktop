@@ -6,20 +6,20 @@
 
 using json = nlohmann::json;
 
-namespace shellcomm {
+namespace ShellComm {
 
-enum mode {
+enum Mode {
   MODE_UNKNOWN = 0,
   MODE_WEBVIEW = 1
 };
 
-struct parse_result {
-  mode mode;
+struct ParseResult {
+  Mode mode;
   json json;
 };
 
-bool parse(int argc, const char **argv, parse_result *result);
+bool Parse(int argc, const char **argv, ParseResult *result);
 
-} // namespace shellcomm
+} // namespace ShellComm
 
 #endif /* _SHELLCOMM_PARSE_ */

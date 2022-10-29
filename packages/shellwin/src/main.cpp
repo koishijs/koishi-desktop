@@ -9,7 +9,7 @@ int WINAPI wWinMain(
   wchar_t **argv = CommandLineToArgvW(GetCommandLineW(), &argc);
 
   if (argc != 2) {
-    shellcomm::log("argc not valid.");
+    ShellComm::Log("argc not valid.");
     return 1;
   }
 }
