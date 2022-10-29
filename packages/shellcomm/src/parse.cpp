@@ -4,7 +4,7 @@
 using json = nlohmann::json;
 
 namespace ShellComm {
-bool Parse(int argc, const char **argv, ParseResult *result) {
+bool ParseArgv(int argc, const char **argv, ParseResult *result) {
   if (argc != 2) {
     Log("argc not valid.");
     return false;

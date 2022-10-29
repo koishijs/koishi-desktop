@@ -18,7 +18,7 @@ struct ParseResult {
   json json;
 };
 
-bool Parse(int argc, const char **argv, ParseResult *result);
+bool ParseArgv(int argc, const char **argv, ParseResult *result);
 
 } // namespace ShellComm
 
