@@ -27,8 +27,9 @@ add_subdirectory(../shellcomm lib/shellcomm)
 ############################################################
 
 add_executable(koishell
-    src/main.cpp
-    src/util/logger.cpp
+    WIN32
+        src/main.cpp
+        src/util/logger.cpp
 )
 
 target_link_libraries(koishell
