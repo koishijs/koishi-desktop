@@ -4,7 +4,9 @@
 #include <windows.h>
 
 #include "koishell/util/logger.hpp"
+#include "koishell/util/strings.hpp"
 #include "shellcomm/logger.hpp"
+#include "shellcomm/parse.hpp"
 
 int WINAPI wWinMain(
     HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR pCmdLine, int nCmdShow);
