@@ -28,7 +28,7 @@ add_subdirectory(../shellcomm lib/shellcomm)
 
 add_executable(koishell
     src/main.cpp
-    src/logger.cpp
+    src/util/logger.cpp
 )
 
 target_link_libraries(koishell
