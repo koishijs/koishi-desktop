@@ -20,6 +20,8 @@ struct ParseResult {
 
 bool ParseArgv(int argc, const char **argv, ParseResult *result);
 
+bool Parse(const char *arg, ParseResult *result);
+
 } // namespace ShellComm
 
 #endif /* _SHELLCOMM_PARSE_ */
