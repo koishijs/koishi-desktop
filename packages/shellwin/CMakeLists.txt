@@ -30,6 +30,7 @@ add_executable(koishell
     WIN32
         src/main.cpp
         src/util/logger.cpp
+        src/util/strings.cpp
 )
 
 target_link_libraries(koishell
