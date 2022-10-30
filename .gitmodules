@@ -10,3 +10,6 @@
 [submodule "packages/nlohmann_json"]
   path = packages/nlohmann_json
   url = https://github.com/nlohmann/json.git
+[submodule "packages/wil"]
+  path = packages/wil
+  url = https://github.com/microsoft/wil.git
