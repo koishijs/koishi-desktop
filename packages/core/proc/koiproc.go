@@ -153,9 +153,9 @@ func (koiProc *KoiProc) Stop() error {
 	}
 
 	if runtime.GOOS == "windows" {
-		err := killdren.Signal(koiProc.cmd, syscall.SIGTERM)
+		err := killdren.Stop(koiProc.cmd)
 		if err != nil {
-			return fmt.Errorf("failed to send SIGTERM to process: %w", err)
+			return fmt.Errorf("failed to stop process: %w", err)
 		}
 	} else {
 		err := killdren.Signal(koiProc.cmd, syscall.SIGINT)
