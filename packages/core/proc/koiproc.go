@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"os/exec"
 	"path/filepath"
+	"runtime"
 	"sync"
 	"syscall"
 
@@ -151,9 +152,16 @@ func (koiProc *KoiProc) Stop() error {
 		return nil
 	}
 
-	err := killdren.Signal(koiProc.cmd, syscall.SIGINT)
-	if err != nil {
-		return fmt.Errorf("failed to send SIGTERM to process: %w", err)
+	if runtime.GOOS == "windows" {
+		err := killdren.Signal(koiProc.cmd, syscall.SIGTERM)
+		if err != nil {
+			return fmt.Errorf("failed to send SIGTERM to process: %w", err)
+		}
+	} else {
+		err := killdren.Signal(koiProc.cmd, syscall.SIGINT)
+		if err != nil {
+			return fmt.Errorf("failed to send SIGINT to process: %w", err)
+		}
 	}
 
 	return nil
