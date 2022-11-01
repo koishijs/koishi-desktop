@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"os"
 	"os/signal"
 	"sync"
@@ -16,6 +17,7 @@ import (
 	"gopkg.ilharper.com/koi/core/logger"
 	coreUtil "gopkg.ilharper.com/koi/core/util"
 	"gopkg.ilharper.com/koi/core/util/hideconsole"
+	"gopkg.ilharper.com/koi/core/util/setconsoleutf8"
 	"gopkg.ilharper.com/x/rpl"
 )
 
@@ -77,6 +79,11 @@ func main() {
 		if hideConsoleErr != nil {
 			l.Warn(p.Sprintf("Failed to hide console: %v", hideConsoleErr))
 		}
+	}
+
+	consoleUTF8Err := setconsoleutf8.SetConsoleUTF8()
+	if consoleUTF8Err != nil {
+		l.Warn(fmt.Sprintf("Failed to set console codepage to UTF-8: %v", consoleUTF8Err))
 	}
 
 	c := make(chan os.Signal, 1)
