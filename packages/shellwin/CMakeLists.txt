@@ -21,6 +21,7 @@ set(CMAKE_MESSAGE_LOG_LEVEL VERBOSE)
 ############################################################
 
 add_subdirectory(../shellcomm lib/shellcomm)
+add_subdirectory(../wil lib/wil)
 
 ############################################################
 # App
@@ -36,6 +37,7 @@ add_executable(koishell
 target_link_libraries(koishell
     PRIVATE
         shellcomm
+        WIL
 )
 
 target_include_directories(koishell
