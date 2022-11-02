@@ -11,6 +11,7 @@ import (
 	"gopkg.ilharper.com/koi/app/config"
 	"gopkg.ilharper.com/koi/core/koishell"
 	"gopkg.ilharper.com/koi/core/logger"
+	"gopkg.ilharper.com/koi/core/util"
 	"gopkg.ilharper.com/x/rpl"
 )
 
@@ -36,6 +37,7 @@ func newPreAction(i *do.Injector) (cli.BeforeFunc, error) {
 		if err != nil {
 			return fmt.Errorf("failed to get executable: %w", err)
 		}
+		do.ProvideNamedValue(i, util.ServiceExecutable, exe)
 		l.Debugf("Executable: %s", exe)
 		l.Debugf("Command line arguments:\n%#+v", os.Args)
 

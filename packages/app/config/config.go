@@ -12,6 +12,8 @@ import (
 	"github.com/samber/do"
 	"gopkg.ilharper.com/koi/core/koiconfig"
 	"gopkg.ilharper.com/koi/core/logger"
+	"gopkg.ilharper.com/koi/core/proc"
+	"gopkg.ilharper.com/koi/core/util"
 	"gopkg.ilharper.com/koi/core/util/pathutil"
 )
 
@@ -54,6 +56,7 @@ func loadConfigIntl(i *do.Injector, c *koiconfig.Config, path string, recur uint
 	var err error
 
 	l := do.MustInvoke[*logger.Logger](i)
+	exe := do.MustInvokeNamed[string](i, util.ServiceExecutable)
 
 	if recur >= 64 {
 		return fmt.Errorf("infinite redirection detected. Check your koi.config file")
@@ -85,6 +88,36 @@ func loadConfigIntl(i *do.Injector, c *koiconfig.Config, path string, recur uint
 				return fmt.Errorf("failed to resolve user data: %w", uddErr)
 			}
 			redirect = filepath.Join(r, "koi.yml")
+
+			_, rfErr := os.ReadFile(redirect)
+			if rfErr != nil {
+				l.Debugf("Failed to read %s: %v", redirect, rfErr)
+				l.Debug("Trying to unfold.")
+
+				var command string
+				if runtime.GOOS == "windows" {
+					command = "unfold.exe"
+				} else {
+					command = "unfold"
+				}
+
+				koiProc := proc.NewKoiProc(
+					i,
+					2001,
+					r,
+					command,
+					[]string{"ensure"},
+					r,
+				)
+				koiProc.Register(do.MustInvoke[*logger.KoiFileTarget](i))
+
+				runErr := koiProc.Run()
+				if runErr != nil {
+					l.Debugf("Failed to unfold: %v", runErr)
+					l.Debug("Will ignore this error.")
+				}
+			}
+
 			l.Debugf("Redirecting to user data: %s", redirect)
 		}
 
