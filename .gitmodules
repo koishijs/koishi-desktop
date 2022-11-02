@@ -13,3 +13,6 @@
 [submodule "packages/wil"]
   path = packages/wil
   url = https://github.com/microsoft/wil.git
+[submodule "packages/webview2-cmake"]
+  path = packages/webview2-cmake
+  url = https://github.com/ifrstr/webview2-cmake.git

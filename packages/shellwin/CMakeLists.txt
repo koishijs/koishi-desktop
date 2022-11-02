@@ -22,6 +22,7 @@ set(CMAKE_MESSAGE_LOG_LEVEL VERBOSE)
 
 add_subdirectory(../shellcomm lib/shellcomm)
 add_subdirectory(../wil lib/wil)
+add_subdirectory(../webview2-cmake lib/webview2-cmake)
 
 ############################################################
 # App
@@ -38,6 +39,7 @@ target_link_libraries(koishell
     PRIVATE
         shellcomm
         WIL
+        webview2
 )
 
 target_include_directories(koishell
