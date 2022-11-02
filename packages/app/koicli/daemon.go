@@ -13,13 +13,15 @@ import (
 const (
 	serviceCommandDaemon = "gopkg.ilharper.com/koi/app/koicli/command.Daemon"
 
-	serviceActionDaemonPing = "gopkg.ilharper.com/koi/app/koicli/action.DaemonPing"
-	serviceActionDaemonStop = "gopkg.ilharper.com/koi/app/koicli/action.DaemonStop"
-	serviceActionDaemonKill = "gopkg.ilharper.com/koi/app/koicli/action.DaemonKill"
+	serviceActionDaemonPing  = "gopkg.ilharper.com/koi/app/koicli/action.DaemonPing"
+	serviceActionDaemonStart = "gopkg.ilharper.com/koi/app/koicli/action.DaemonStart"
+	serviceActionDaemonStop  = "gopkg.ilharper.com/koi/app/koicli/action.DaemonStop"
+	serviceActionDaemonKill  = "gopkg.ilharper.com/koi/app/koicli/action.DaemonKill"
 )
 
 func newDaemonCommand(i *do.Injector) (*cli.Command, error) {
 	do.ProvideNamed(i, serviceActionDaemonPing, newDaemonPingAction)
+	do.ProvideNamed(i, serviceActionDaemonStart, newDaemonStartAction)
 	do.ProvideNamed(i, serviceActionDaemonStop, newDaemonStopAction)
 	do.ProvideNamed(i, serviceActionDaemonKill, newDaemonKillAction)
 
@@ -31,6 +33,11 @@ func newDaemonCommand(i *do.Injector) (*cli.Command, error) {
 				Name:   "ping",
 				Usage:  "Ping current daemon",
 				Action: do.MustInvokeNamed[cli.ActionFunc](i, serviceActionDaemonPing),
+			},
+			{
+				Name:   "start",
+				Usage:  "Start daemon",
+				Action: do.MustInvokeNamed[cli.ActionFunc](i, serviceActionDaemonStart),
 			},
 			{
 				Name:   "stop",
@@ -66,6 +73,31 @@ func newDaemonPingAction(i *do.Injector) (cli.ActionFunc, error) {
 		}
 
 		l.Successf("PONG at:\n%#+v", conn)
+
+		return nil
+	}, nil
+}
+
+func newDaemonStartAction(i *do.Injector) (cli.ActionFunc, error) {
+	l := do.MustInvoke[*logger.Logger](i)
+
+	return func(c *cli.Context) error {
+		var err error
+
+		l.Debug("Trigger action: daemon start")
+
+		cfg, err := do.Invoke[*koiconfig.Config](i)
+		if err != nil {
+			return err
+		}
+
+		manager := manage.NewKoiManager(cfg.Computed.Exe, cfg.Computed.DirLock)
+		conn, err := manager.Ensure(true)
+		if err != nil {
+			return fmt.Errorf("failed to start daemon: %w", err)
+		}
+
+		l.Successf("Daemon started at:\n%#+v", conn)
 
 		return nil
 	}, nil
