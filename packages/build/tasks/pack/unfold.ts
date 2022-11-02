@@ -23,6 +23,11 @@ export const packUnfoldDataCopy = async () => {
   )
   for (const b of binaries)
     await fs.copyFile(dir('buildPortable', b), dir('buildUnfoldBinary', b))
+
+  await fs.copyFile(
+    dir('buildCache', 'Webview2Setup.exe'),
+    dir('buildUnfoldBinary', 'Webview2Setup.exe')
+  )
 }
 
 export const packUnfoldDataZip = async () => {
