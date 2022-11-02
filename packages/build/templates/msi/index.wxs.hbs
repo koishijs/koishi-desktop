@@ -69,6 +69,21 @@
               KeyPath="yes"
             />
           </Component>
+
+          <Component
+            Id="ComponentConsoleWindow"
+            Guid="C8C6B076-F8DA-4332-AAC2-BE3D6172691D"
+            Win64="yes"
+          >
+            <File Id="FileWebview2Setup" Source="SourceDir\Webview2Setup.exe" />
+            <RegistryValue
+              Root="HKLM"
+              Key="Software\Il Harper\Koishi"
+              Type="string"
+              Value=""
+              KeyPath="yes"
+            />
+          </Component>
         </Directory>
       </Directory>
 
@@ -148,6 +163,18 @@
         <ComponentRef Id="ComponentDirectoryInstall" />
         <ComponentRef Id="ComponentDirectoryProgramMenuFolder" />
       </Feature>
+
+      <Feature
+        Id="FeatureConsoleWindow"
+        Title="Console Window"
+        Description="Powers the Koishi Console window instead of in-browser console."
+        Level="1000"
+        InstallDefault="local"
+        AllowAdvertise="no"
+      >
+        <ComponentRef Id="ComponentConsoleWindow" />
+      </Feature>
+
       <Feature
         Id="FeatureDesktopIcon"
         Title="Desktop Icon"
@@ -172,11 +199,26 @@
       Impersonate="no"
       Return="check"
     />
+
+    <CustomAction
+      Id="CustomActionSetupWebview2"
+      FileKey="FileWebview2Setup"
+      ExeCommand="/silent /install"
+      Execute="deferred"
+      Impersonate="no"
+      Return="check"
+    />
+
     <InstallExecuteSequence>
       <Custom
         Action="CustomActionUnfold"
         After="InstallFiles"
       >NOT Installed</Custom>
+
+      <Custom
+        Action="CustomActionSetupWebview2"
+        After="InstallFiles"
+      >&FeatureConsoleWindow = 3 OR (!FeatureConsoleWindow = 3 AND NOT (Uninstalling OR MSIPATCHREMOVE OR RemovingForUpgrade))</Custom>
     </InstallExecuteSequence>
   </Product>
 </Wix>
