@@ -81,7 +81,7 @@ func main() {
 	err = os.WriteFile(pathConfigRedirect, []byte("redirect: USERDATA"), 0o644)
 	if err != nil {
 		fmt.Printf("Failed to setup redirect: %v\n", err)
-		os.Exit(1)
+		fmt.Println("This is not a bug and unfold will continue.")
 	}
 
 	fmt.Println("Unfold complete.")
