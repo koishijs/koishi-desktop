@@ -28,4 +28,6 @@ int WINAPI wWinMain(
     ShellComm::Log("Unknown mode.");
     return 1;
   }
+
+  return 0;
 }
