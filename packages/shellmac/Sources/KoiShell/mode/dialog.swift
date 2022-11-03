@@ -64,5 +64,5 @@ func ksDialog(_ arg: [String: Any]) {
         exit(EXIT_FAILURE)
     }
 
-    print(try! JSONEncoder().encode(KSDialogOutput(result: 1)).base64EncodedString())
+    print(try! JSONEncoder().encode(KSDialogOutput(result: result)).base64EncodedString())
 }
