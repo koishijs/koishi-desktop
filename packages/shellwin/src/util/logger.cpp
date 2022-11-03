@@ -17,7 +17,7 @@ void LogLastError() {
       nullptr,
       err,
       0,
-      message,
+      (wchar_t *)&message,
       0,
       nullptr);
 
