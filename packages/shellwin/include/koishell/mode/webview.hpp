@@ -23,15 +23,18 @@ class WebViewWindow {
   wil::com_ptr<ICoreWebView2Controller> webviewController;
   wil::com_ptr<ICoreWebView2> webview;
 
+  static LRESULT CALLBACK WndProc(
+      _In_ HWND hWnd,
+      _In_ UINT message,
+      _In_ WPARAM wParam,
+      _In_ LPARAM lParam);
+
 public:
   WebViewWindow(_In_ HINSTANCE hInstance, _In_ int nCmdShow, _In_ json arg);
   int Run();
 };
 
 int RunWebView(_In_ HINSTANCE hInstance, _In_ int nCmdShow, _In_ json arg);
-
-LRESULT CALLBACK WndProcWebView(
-    _In_ HWND hWnd, _In_ UINT message, _In_ WPARAM wParam, _In_ LPARAM lParam);
 
 } // namespace KoiShell
 

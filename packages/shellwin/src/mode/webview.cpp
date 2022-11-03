@@ -13,7 +13,7 @@ WebViewWindow::WebViewWindow(
 int WebViewWindow::Run() {
   wcex.cbSize = sizeof(WNDCLASSEXW);
   wcex.style = CS_HREDRAW | CS_VREDRAW;
-  wcex.lpfnWndProc = WndProcWebView;
+  wcex.lpfnWndProc = WndProc;
   wcex.cbClsExtra = 0;
   wcex.cbWndExtra = 0;
   wcex.hInstance = hInstance;
@@ -54,17 +54,17 @@ int WebViewWindow::Run() {
   return 0;
 }
 
-int RunWebView(_In_ HINSTANCE hInstance, _In_ int nCmdShow, _In_ json arg) {
-  WebViewWindow webviewWindow = WebViewWindow(hInstance, nCmdShow, arg);
-  return webviewWindow.Run();
-}
-
-LRESULT CALLBACK WndProcWebView(
+LRESULT CALLBACK WebViewWindow::WndProc(
     _In_ HWND hWnd, _In_ UINT message, _In_ WPARAM wParam, _In_ LPARAM lParam) {
   switch (message) {
   default:
     return DefWindowProcW(hWnd, message, wParam, lParam);
   }
+}
+
+int RunWebView(_In_ HINSTANCE hInstance, _In_ int nCmdShow, _In_ json arg) {
+  WebViewWindow webviewWindow = WebViewWindow(hInstance, nCmdShow, arg);
+  return webviewWindow.Run();
 }
 
 } // namespace KoiShell
