@@ -3,6 +3,7 @@ import mkdirp from 'mkdirp'
 import fs from 'node:fs/promises'
 import { sleepForMac } from '../../utils/common'
 import { zip } from '../../utils/compress'
+import { exists } from '../../utils/fs'
 import { dir } from '../../utils/path'
 import { exec } from '../../utils/spawn'
 
@@ -24,10 +25,11 @@ export const packUnfoldDataCopy = async () => {
   for (const b of binaries)
     await fs.copyFile(dir('buildPortable', b), dir('buildUnfoldBinary', b))
 
-  await fs.copyFile(
-    dir('buildCache', 'Webview2Setup.exe'),
-    dir('buildUnfoldBinary', 'Webview2Setup.exe')
-  )
+  if (await exists(dir('buildCache', 'Webview2Setup.exe')))
+    await fs.copyFile(
+      dir('buildCache', 'Webview2Setup.exe'),
+      dir('buildUnfoldBinary', 'Webview2Setup.exe')
+    )
 }
 
 export const packUnfoldDataZip = async () => {
