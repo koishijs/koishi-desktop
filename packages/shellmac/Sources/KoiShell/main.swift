@@ -7,12 +7,12 @@ signal(SIGINT, { _ in
 
 NSApplication.shared.setActivationPolicy(.regular)
 
-if CommandLine.arguments.count != 1 {
+if CommandLine.arguments.count != 2 {
     log("argc not valid.")
     exit(EXIT_FAILURE)
 }
 
-let rawEncodedArg = CommandLine.arguments[0]
+let rawEncodedArg = CommandLine.arguments[1]
 guard let rawArg = Data(base64Encoded: rawEncodedArg) else {
     log("Failed to parse encoded arg.")
     exit(EXIT_FAILURE)

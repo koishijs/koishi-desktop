@@ -69,7 +69,7 @@ func (shell *KoiShell) exec(arg any) (map[string]any, error) {
 
 	cmd := &exec.Cmd{
 		Path: shell.path,
-		Args: []string{argB64},
+		Args: []string{shell.path, argB64},
 		Dir:  shell.cwd,
 	}
 	killdren.Set(cmd)
