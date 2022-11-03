@@ -16,6 +16,7 @@ int RunWebView(_In_ HINSTANCE hInstance, _In_ int nCmdShow, _In_ json arg) {
   wcex.hInstance = hInstance;
   wcex.hIcon = LoadIconW(hInstance, IDI_APPLICATION);
   wcex.hCursor = LoadCursorW(hInstance, IDC_ARROW);
+  wcex.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
   wcex.lpszMenuName = nullptr;
   wcex.lpszClassName = KoiShellWebViewClass;
   wcex.hIconSm = LoadIconW(hInstance, IDI_APPLICATION);
