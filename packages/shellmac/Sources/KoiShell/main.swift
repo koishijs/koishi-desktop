@@ -34,6 +34,8 @@ guard let mode = arg["mode"] as? String else {
 switch mode {
 case "webview":
     ksWebView(arg)
+case "dialog":
+    ksDialog(arg)
 default:
     log("Unknown mode: \(mode)")
     exit(EXIT_FAILURE)
