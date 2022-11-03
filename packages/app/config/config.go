@@ -13,7 +13,6 @@ import (
 	"gopkg.ilharper.com/koi/core/koiconfig"
 	"gopkg.ilharper.com/koi/core/logger"
 	"gopkg.ilharper.com/koi/core/proc"
-	"gopkg.ilharper.com/koi/core/util"
 	"gopkg.ilharper.com/koi/core/util/pathutil"
 )
 
@@ -56,7 +55,6 @@ func loadConfigIntl(i *do.Injector, c *koiconfig.Config, path string, recur uint
 	var err error
 
 	l := do.MustInvoke[*logger.Logger](i)
-	exe := do.MustInvokeNamed[string](i, util.ServiceExecutable)
 
 	if recur >= 64 {
 		return fmt.Errorf("infinite redirection detected. Check your koi.config file")
@@ -104,10 +102,10 @@ func loadConfigIntl(i *do.Injector, c *koiconfig.Config, path string, recur uint
 				koiProc := proc.NewKoiProc(
 					i,
 					2001,
-					r,
+					c.Computed.DirExe,
 					command,
 					[]string{"ensure"},
-					r,
+					c.Computed.DirExe,
 				)
 				koiProc.Register(do.MustInvoke[*logger.KoiFileTarget](i))
 
