@@ -3,6 +3,7 @@
 
 #include <windows.h>
 
+#include "koishell/mode/webview.hpp"
 #include "koishell/util/logger.hpp"
 #include "koishell/util/strings.hpp"
 #include "shellcomm/logger.hpp"

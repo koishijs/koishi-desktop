@@ -15,19 +15,17 @@ int WINAPI wWinMain(
     return 1;
   }
 
-  char *arg = KoiShell::WideCharToUTF8(argv[1]);
+  char *rawArg = KoiShell::WideCharToUTF8(argv[1]);
 
   ShellComm::ParseResult parseResult;
-  if (!ShellComm::Parse(arg, &parseResult)) return 1;
-  delete arg;
+  if (!ShellComm::Parse(rawArg, &parseResult)) return 1;
+  delete rawArg;
 
   switch (parseResult.mode) {
   case ShellComm::MODE_WEBVIEW:
-    break;
+    return KoiShell::RunWebView(hInstance, nCmdShow, parseResult.json);
   default:
     ShellComm::Log("Unknown mode.");
     return 1;
   }
-
-  return 0;
 }
