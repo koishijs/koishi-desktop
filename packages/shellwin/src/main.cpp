@@ -6,6 +6,8 @@ int WINAPI wWinMain(
     _In_ PWSTR pCmdLine,
     _In_ int nCmdShow) {
   if (!AttachConsole(ATTACH_PARENT_PROCESS)) return 1;
+  if (!SetConsoleCP(CP_UTF8)) return 1;
+  if (!SetConsoleOutputCP(CP_UTF8)) return 1;
 
   int argc;
   wchar_t **argv = CommandLineToArgvW(GetCommandLineW(), &argc);
