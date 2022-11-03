@@ -2,6 +2,8 @@ import AppKit
 import SwiftUI
 import WebView
 
+struct KSWebViewOutput: Codable {}
+
 func ksWebView(_ arg: [String: Any]) {
     guard let url = arg["url"] as? String else {
         log("Failed to parse url.")
@@ -50,6 +52,10 @@ class KSWebViewDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
     func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
         NSApplication.shared.terminate(self)
         return true
+    }
+
+    func windowWillClose(_ notification: Notification) {
+        print(try! JSONEncoder().encode(KSWebViewOutput()).base64EncodedString())
     }
 }
 
