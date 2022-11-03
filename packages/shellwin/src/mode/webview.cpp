@@ -55,8 +55,8 @@ int WebViewWindow::Run() {
 }
 
 int RunWebView(_In_ HINSTANCE hInstance, _In_ int nCmdShow, _In_ json arg) {
-  WebViewWindow webViewWindow = WebViewWindow(hInstance, nCmdShow, arg);
-  return webViewWindow.Run();
+  WebViewWindow webviewWindow = WebViewWindow(hInstance, nCmdShow, arg);
+  return webviewWindow.Run();
 }
 
 LRESULT CALLBACK WndProcWebView(
