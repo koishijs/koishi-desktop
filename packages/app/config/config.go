@@ -1,9 +1,11 @@
 package config
 
 import (
+	"bufio"
 	"fmt"
 	"io/fs"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"runtime"
 	"strings"
@@ -12,7 +14,7 @@ import (
 	"github.com/samber/do"
 	"gopkg.ilharper.com/koi/core/koiconfig"
 	"gopkg.ilharper.com/koi/core/logger"
-	"gopkg.ilharper.com/koi/core/proc"
+	"gopkg.ilharper.com/koi/core/util/killdren"
 	"gopkg.ilharper.com/koi/core/util/pathutil"
 )
 
@@ -98,18 +100,36 @@ func loadConfigIntl(i *do.Injector, c *koiconfig.Config, path string, recur uint
 				} else {
 					command = "unfold"
 				}
+				cmdPath := filepath.Join(c.Computed.DirExe, command)
 
-				koiProc := proc.NewKoiProc(
-					i,
-					2001,
-					c.Computed.DirExe,
-					command,
-					[]string{"ensure"},
-					c.Computed.DirExe,
-				)
-				koiProc.Register(do.MustInvoke[*logger.KoiFileTarget](i))
+				cmd := &exec.Cmd{
+					Path: cmdPath,
+					Args: []string{cmdPath, "ensure"},
+					Dir:  c.Computed.DirExe,
+				}
+				killdren.Set(cmd)
 
-				runErr := koiProc.Run()
+				// Setup IO pipes
+				stdoutPipe, err := cmd.StdoutPipe()
+				if err != nil {
+					return fmt.Errorf("failed to create stdout pipe: %w", err)
+				}
+
+				go func(scn *bufio.Scanner) {
+					for {
+						if !scn.Scan() {
+							break
+						}
+						scnErr := scn.Err()
+						if scnErr != nil {
+							l.Warn(fmt.Errorf("Scanner error: %w", scnErr))
+						} else {
+							l.Info(scn.Text())
+						}
+					}
+				}(bufio.NewScanner(stdoutPipe))
+
+				runErr := cmd.Run()
 				if runErr != nil {
 					l.Debugf("Failed to unfold: %v", runErr)
 					l.Debug("Will ignore this error.")
