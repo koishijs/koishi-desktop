@@ -11,6 +11,18 @@ using json = nlohmann::json;
 
 namespace KoiShell {
 
+class WebViewWindow {
+  HINSTANCE hInstance;
+  int nCmdShow;
+  json arg;
+
+  WNDCLASSEXW wcex;
+
+public:
+  WebViewWindow(_In_ HINSTANCE hInstance, _In_ int nCmdShow, _In_ json arg);
+  int Run();
+};
+
 int RunWebView(_In_ HINSTANCE hInstance, _In_ int nCmdShow, _In_ json arg);
 
 LRESULT CALLBACK WndProcWebView(

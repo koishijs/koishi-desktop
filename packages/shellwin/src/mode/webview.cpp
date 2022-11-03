@@ -5,9 +5,12 @@ namespace KoiShell {
 const wchar_t *const KoiShellWebViewClass = L"KoiShellWebViewClass";
 const wchar_t *const KoiShellWebViewTitle = L"Koishi";
 
-int RunWebView(_In_ HINSTANCE hInstance, _In_ int nCmdShow, _In_ json arg) {
-  WNDCLASSEXW wcex;
+WebViewWindow::WebViewWindow(
+    _In_ HINSTANCE hInstance, _In_ int nCmdShow, _In_ json arg)
+    : hInstance(hInstance), nCmdShow(nCmdShow), arg(arg) {
+}
 
+int WebViewWindow::Run() {
   wcex.cbSize = sizeof(WNDCLASSEXW);
   wcex.style = CS_HREDRAW | CS_VREDRAW;
   wcex.lpfnWndProc = WndProcWebView;
@@ -49,6 +52,11 @@ int RunWebView(_In_ HINSTANCE hInstance, _In_ int nCmdShow, _In_ json arg) {
   UpdateWindow(hWnd);
 
   return 0;
+}
+
+int RunWebView(_In_ HINSTANCE hInstance, _In_ int nCmdShow, _In_ json arg) {
+  WebViewWindow webViewWindow = WebViewWindow(hInstance, nCmdShow, arg);
+  return webViewWindow.Run();
 }
 
 LRESULT CALLBACK WndProcWebView(
