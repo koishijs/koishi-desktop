@@ -1,10 +1,10 @@
 #include "koishell/main.hpp"
 
 int WINAPI wWinMain(
-    HINSTANCE hInstance,
-    HINSTANCE hPrevInstance,
-    PWSTR pCmdLine,
-    int nCmdShow) {
+    _In_ HINSTANCE hInstance,
+    _In_opt_ HINSTANCE hPrevInstance,
+    _In_ PWSTR pCmdLine,
+    _In_ int nCmdShow) {
   if (!AttachConsole(ATTACH_PARENT_PROCESS)) return 1;
 
   int argc;
