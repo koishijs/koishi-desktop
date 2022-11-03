@@ -51,7 +51,13 @@ int WebViewWindow::Run() {
   ShowWindow(hWnd, nCmdShow);
   UpdateWindow(hWnd);
 
-  return 0;
+  MSG msg;
+  while (GetMessageW(&msg, nullptr, 0, 0)) {
+    TranslateMessage(&msg);
+    DispatchMessageW(&msg);
+  }
+
+  return (int)msg.wParam;
 }
 
 LRESULT CALLBACK WebViewWindow::WndProc(
