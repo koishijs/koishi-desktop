@@ -50,19 +50,42 @@ const buildCompileShellMac = (isRelease: boolean) => async () => {
   await fs.copyFile(path.join(buildPath, 'KoiShell'), distPath)
 }
 
+const buildCompileShellLinux = (isRelease: boolean) => async () => {
+  const conf = isRelease ? 'MinSizeRel' : 'Debug'
+
+  await mkdirp(dir('buildShellLinux'))
+
+  await exec(
+    'cmake',
+    [
+      `-DCMAKE_BUILD_TYPE=${conf}`,
+      '-G',
+      'Unix Makefiles',
+      dir('srcShellLinux'),
+    ],
+    dir('buildShellLinux')
+  )
+
+  await exec(
+    'cmake',
+    [`--build`, '.', '--target', 'koishell'],
+    dir('buildShellLinux')
+  )
+
+  await fs.copyFile(
+    dir('buildShellLinux', 'koishell'),
+    dir('buildPortable', 'koishell')
+  )
+}
+
 const buildCompileShell = () => {
   switch (process.platform) {
     case 'win32':
-      // return buildCompileShellWin(Boolean(process.env.CI))
-      return async () => {
-        /* Ignore */
-      }
+      return buildCompileShellWin(Boolean(process.env.CI))
     case 'darwin':
       return buildCompileShellMac(Boolean(process.env.CI))
     case 'linux':
-      return async () => {
-        /* Ignore */
-      }
+      return buildCompileShellLinux(Boolean(process.env.CI))
     default:
       throw Exceptions.platformNotSupported()
   }
