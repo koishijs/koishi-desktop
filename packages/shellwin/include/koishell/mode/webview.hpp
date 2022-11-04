@@ -14,6 +14,9 @@ using json = nlohmann::json;
 
 namespace KoiShell {
 
+const wchar_t *const KoiShellWebViewClass = L"KoiShellWebViewClass";
+const wchar_t *const KoiShellWebViewTitle = L"Koishi";
+
 class WebViewWindow {
   HINSTANCE hInstance;
   int nCmdShow;

@@ -2,9 +2,6 @@
 
 namespace KoiShell {
 
-const wchar_t *const KoiShellWebViewClass = L"KoiShellWebViewClass";
-const wchar_t *const KoiShellWebViewTitle = L"Koishi";
-
 WebViewWindow::WebViewWindow(
     _In_ HINSTANCE hInstance, _In_ int nCmdShow, _In_ json arg)
     : hInstance(hInstance), nCmdShow(nCmdShow), arg(arg) {
