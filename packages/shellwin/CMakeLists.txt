@@ -40,7 +40,7 @@ target_link_libraries(koishell
     PRIVATE
         shellcomm
         WIL
-        webview2
+        webview2_static
 )
 
 target_include_directories(koishell
