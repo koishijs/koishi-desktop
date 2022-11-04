@@ -215,10 +215,9 @@
         After="InstallFiles"
       >NOT Installed</Custom>
 
-      <Custom
-        Action="CustomActionSetupWebview2"
-        After="InstallFiles"
-      >&FeatureConsoleWindow = 3 OR (!FeatureConsoleWindow = 3 AND NOT (Uninstalling OR MSIPATCHREMOVE OR RemovingForUpgrade))</Custom>
+      <Custom Action="CustomActionSetupWebview2" After="InstallFiles">
+        <![CDATA[&FeatureConsoleWindow = 3 OR (!FeatureConsoleWindow = 3 AND NOT (Uninstalling OR MSIPATCHREMOVE OR RemovingForUpgrade))]]>
+      </Custom>
     </InstallExecuteSequence>
   </Product>
 </Wix>
