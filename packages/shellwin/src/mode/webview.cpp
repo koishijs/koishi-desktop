@@ -65,12 +65,11 @@ LRESULT CALLBACK WebViewWindow::WndProc(
   switch (message) {
   case WM_DESTROY:
     PostQuitMessage(0);
-    break;
+    return 0;
+
   default:
     return DefWindowProcW(hWnd, message, wParam, lParam);
   }
-
-  return 0;
 }
 
 int RunWebView(_In_ HINSTANCE hInstance, _In_ int nCmdShow, _In_ json arg) {
