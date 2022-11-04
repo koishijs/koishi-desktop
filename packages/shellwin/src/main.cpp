@@ -18,6 +18,10 @@ int WINAPI wWinMain(
   }
 
   char *rawArg = KoiShell::WideCharToUTF8(argv[1]);
+  if (!rawArg) {
+    KoiShell::LogWithLastError(L"Failed to convert argv to string.");
+    return 1;
+  }
 
   ShellComm::ParseResult parseResult;
   if (!ShellComm::Parse(rawArg, &parseResult)) return 1;

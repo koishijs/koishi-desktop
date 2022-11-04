@@ -5,7 +5,7 @@
 
 namespace KoiShell {
 
-char *WideCharToUTF8(wchar_t *w);
+char *WideCharToUTF8(_In_ wchar_t *w);
 
 wchar_t *UTF8ToWideChar(_In_ char *s);
 

@@ -2,14 +2,15 @@
 
 namespace KoiShell {
 
-char *WideCharToUTF8(wchar_t *w) {
+char *WideCharToUTF8(_In_ wchar_t *w) {
   int len = WideCharToMultiByte(
       CP_UTF8, WC_ERR_INVALID_CHARS, w, -1, nullptr, 0, nullptr, nullptr);
-  char *result = new char[len + 1];
-  result[len] = 0;
+  if (!len) return nullptr;
+  char *s = new char[len + 1];
+  s[len] = 0;
   WideCharToMultiByte(
       CP_UTF8, WC_ERR_INVALID_CHARS, w, -1, result, len, nullptr, nullptr);
-  return result;
+  return s;
 }
 
 wchar_t *UTF8ToWideChar(_In_ char *s) {
