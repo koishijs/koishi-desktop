@@ -20,6 +20,7 @@ class WebViewWindow {
   json arg;
 
   WNDCLASSEXW wcex;
+  HWND hWnd;
   wil::com_ptr<ICoreWebView2Controller> webviewController;
   wil::com_ptr<ICoreWebView2> webview;
 

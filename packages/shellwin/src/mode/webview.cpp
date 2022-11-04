@@ -29,7 +29,7 @@ int WebViewWindow::Run() {
     return 1;
   }
 
-  HWND hWnd = CreateWindowExW(
+  hWnd = CreateWindowExW(
       WS_EX_OVERLAPPEDWINDOW,
       KoiShellWebViewClass,
       KoiShellWebViewTitle,
