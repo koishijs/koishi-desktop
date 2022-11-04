@@ -81,11 +81,11 @@ const buildCompileShellLinux = (isRelease: boolean) => async () => {
 const buildCompileShell = () => {
   switch (process.platform) {
     case 'win32':
-      return buildCompileShellWin(Boolean(process.env.CI))
+      return buildCompileShellWin(process.env.CI ? true : false)
     case 'darwin':
-      return buildCompileShellMac(Boolean(process.env.CI))
+      return buildCompileShellMac(process.env.CI ? true : false)
     case 'linux':
-      return buildCompileShellLinux(Boolean(process.env.CI))
+      return buildCompileShellLinux(process.env.CI ? true : false)
     default:
       throw Exceptions.platformNotSupported()
   }
