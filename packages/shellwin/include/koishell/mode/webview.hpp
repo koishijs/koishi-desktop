@@ -1,6 +1,7 @@
 #ifndef _KOISHELL_MODE_WEBVIEW_
 #define _KOISHELL_MODE_WEBVIEW_
 
+#include <sstream>
 #include <wil/com.h>
 #include <windows.h>
 #include <wrl.h>
@@ -9,13 +10,14 @@
 #include "nlohmann/json.hpp"
 
 #include "koishell/util/logger.hpp"
+#include "koishell/util/strings.hpp"
 
 using json = nlohmann::json;
 
 namespace KoiShell {
 
 const wchar_t *const KoiShellWebViewClass = L"KoiShellWebViewClass";
-const wchar_t *const KoiShellWebViewTitle = L"Koishi";
+const wchar_t *const KoiShellWebViewTitleSuffix = L" - Koishi";
 
 class WebViewWindow {
   HINSTANCE hInstance;

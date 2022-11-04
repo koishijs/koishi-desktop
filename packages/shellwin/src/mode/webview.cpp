@@ -8,6 +8,23 @@ WebViewWindow::WebViewWindow(
 }
 
 int WebViewWindow::Run() {
+  std::string nameS = arg["nameC"];
+  wchar_t *nameC = KoiShell::UTF8ToWideChar(const_cast<char *>(nameS.c_str()));
+  if (!nameC) {
+    LogWithLastError(L"Failed to parse nameC.");
+    return 1;
+  }
+  std::wostringstream nameStream;
+  nameStream << nameC << KoiShellWebViewTitleSuffix;
+  std::wstring name = nameStream.str();
+
+  std::string urlS = arg["url"];
+  wchar_t *url = KoiShell::UTF8ToWideChar(const_cast<char *>(urlS.c_str()));
+  if (!url) {
+    LogWithLastError(L"Failed to parse url.");
+    return 1;
+  }
+
   wcex.cbSize = sizeof(WNDCLASSEXW);
   wcex.style = CS_HREDRAW | CS_VREDRAW;
   wcex.lpfnWndProc = WndProc;
@@ -29,7 +46,7 @@ int WebViewWindow::Run() {
   hWnd = CreateWindowExW(
       WS_EX_OVERLAPPEDWINDOW,
       KoiShellWebViewClass,
-      KoiShellWebViewTitle,
+      name.c_str(),
       WS_OVERLAPPEDWINDOW,
       CW_USEDEFAULT,
       CW_USEDEFAULT,
@@ -47,6 +64,44 @@ int WebViewWindow::Run() {
 
   ShowWindow(hWnd, nCmdShow);
   UpdateWindow(hWnd);
+
+  CreateCoreWebView2Environment(
+      Microsoft::WRL::Callback<
+          ICoreWebView2CreateCoreWebView2EnvironmentCompletedHandler>(
+          [this,
+           &url](HRESULT result, ICoreWebView2Environment *env) -> HRESULT {
+            env->CreateCoreWebView2Controller(
+                hWnd,
+                Microsoft::WRL::Callback<
+                    ICoreWebView2CreateCoreWebView2ControllerCompletedHandler>(
+                    [this, &url](
+                        HRESULT result,
+                        ICoreWebView2Controller *controller) -> HRESULT {
+                      if (controller) {
+                        webviewController = controller;
+                        webviewController->get_CoreWebView2(&webview);
+                      }
+
+                      wil::com_ptr<ICoreWebView2Settings> settings;
+                      webview->get_Settings(&settings);
+                      settings->put_IsScriptEnabled(1);
+                      settings->put_AreDefaultScriptDialogsEnabled(1);
+                      settings->put_IsWebMessageEnabled(1);
+                      settings->put_AreDevToolsEnabled(1);
+
+                      RECT bounds;
+                      GetClientRect(hWnd, &bounds);
+                      webviewController->put_Bounds(bounds);
+
+                      webview->Navigate(url);
+
+                      return 0;
+                    })
+                    .Get());
+
+            return 0;
+          })
+          .Get());
 
   MSG msg;
   while (GetMessageW(&msg, nullptr, 0, 0)) {
@@ -82,6 +137,13 @@ LRESULT CALLBACK WebViewWindow::WndProc(
   case WM_DESTROY:
     PostQuitMessage(0);
     return 0;
+
+  case WM_SIZE:
+    if (pThis->webviewController) {
+      RECT bounds;
+      GetClientRect(hWnd, &bounds);
+      pThis->webviewController->put_Bounds(bounds);
+    }
 
   default:
     return DefWindowProcW(hWnd, message, wParam, lParam);
