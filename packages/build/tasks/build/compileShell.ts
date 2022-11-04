@@ -28,7 +28,7 @@ const buildCompileShellWin = (isRelease: boolean) => async () => {
   )
 
   await fs.copyFile(
-    dir('buildShellWin', 'koishell.exe'),
+    dir('buildShellWin', `${conf}/koishell.exe`),
     dir('buildPortable', 'koishell.exe')
   )
 }
