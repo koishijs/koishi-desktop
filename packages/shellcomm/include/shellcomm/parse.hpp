@@ -4,7 +4,7 @@
 #include "b64/decode.h"
 #include "nlohmann/json.hpp"
 
-using json = nlohmann::json;
+using njson = nlohmann::json;
 
 namespace ShellComm {
 
@@ -15,7 +15,7 @@ enum Mode {
 
 struct ParseResult {
   Mode mode;
-  json json;
+  njson json;
 };
 
 bool ParseArgv(int argc, const char **argv, ParseResult *result);

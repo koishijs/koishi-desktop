@@ -3,7 +3,7 @@
 namespace KoiShell {
 
 WebViewWindow::WebViewWindow(
-    _In_ HINSTANCE hInstance, _In_ int nCmdShow, _In_ json arg)
+    _In_ HINSTANCE hInstance, _In_ int nCmdShow, _In_ njson arg)
     : hInstance(hInstance), nCmdShow(nCmdShow), arg(arg) {
 }
 
@@ -150,7 +150,7 @@ LRESULT CALLBACK WebViewWindow::WndProc(
   }
 }
 
-int RunWebView(_In_ HINSTANCE hInstance, _In_ int nCmdShow, _In_ json arg) {
+int RunWebView(_In_ HINSTANCE hInstance, _In_ int nCmdShow, _In_ njson arg) {
   WebViewWindow webviewWindow = WebViewWindow(hInstance, nCmdShow, arg);
   return webviewWindow.Run();
 }

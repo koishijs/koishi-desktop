@@ -12,7 +12,7 @@
 #include "koishell/util/logger.hpp"
 #include "koishell/util/strings.hpp"
 
-using json = nlohmann::json;
+using njson = nlohmann::json;
 
 namespace KoiShell {
 
@@ -22,7 +22,7 @@ const wchar_t *const KoiShellWebViewTitleSuffix = L" - Koishi";
 class WebViewWindow {
   HINSTANCE hInstance;
   int nCmdShow;
-  json arg;
+  njson arg;
 
   WNDCLASSEXW wcex;
   HWND hWnd;
@@ -36,11 +36,11 @@ class WebViewWindow {
       _In_ LPARAM lParam);
 
 public:
-  WebViewWindow(_In_ HINSTANCE hInstance, _In_ int nCmdShow, _In_ json arg);
+  WebViewWindow(_In_ HINSTANCE hInstance, _In_ int nCmdShow, _In_ njson arg);
   int Run();
 };
 
-int RunWebView(_In_ HINSTANCE hInstance, _In_ int nCmdShow, _In_ json arg);
+int RunWebView(_In_ HINSTANCE hInstance, _In_ int nCmdShow, _In_ njson arg);
 
 } // namespace KoiShell
 

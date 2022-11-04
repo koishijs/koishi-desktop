@@ -1,7 +1,7 @@
 #include "shellcomm/parse.hpp"
 #include "shellcomm/logger.hpp"
 
-using json = nlohmann::json;
+using njson = nlohmann::json;
 
 namespace ShellComm {
 
@@ -24,7 +24,7 @@ bool Parse(const char *arg, ParseResult *result) {
   cnt = base64::base64_decode_block(arg, b64_len, raw_json, &s);
   *(raw_json + cnt) = 0;
 
-  result->json = json::parse(raw_json, nullptr, false);
+  result->json = njson::parse(raw_json, nullptr, false);
   if (result->json.is_discarded()) {
     Log("Failed to parse arg.");
     return false;
