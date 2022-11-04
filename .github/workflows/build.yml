@@ -38,6 +38,11 @@ jobs:
         with:
           go-version: '>=1.19.0'
 
+      - name: Install Dependencies (macOS)
+        if: ${{ fromJson(matrix.target).goos == 'darwin' }}
+        run: brew install graphicsmagick imagemagick
+        shell: bash
+
       - name: Install Build Package
         run: |
           yarn install --frozen-lockfile
