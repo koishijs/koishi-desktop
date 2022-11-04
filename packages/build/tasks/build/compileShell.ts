@@ -1,3 +1,5 @@
+// https://stackoverflow.com/a/24470998
+
 import { Exceptions } from '../../utils/exceptions'
 import { exec, spawnOutput } from '../../utils/spawn'
 import path from 'node:path'
@@ -6,24 +8,19 @@ import { dir } from '../../utils/path'
 import mkdirp from 'mkdirp'
 
 const buildCompileShellWin = (isRelease: boolean) => async () => {
-  const conf = isRelease ? 'Release' : 'Debug'
+  const conf = isRelease ? 'MinSizeRel' : 'Debug'
 
   await mkdirp(dir('buildShellWin'))
 
   await exec(
     'cmake',
-    [
-      `-DCMAKE_BUILD_TYPE=${conf}`,
-      '-G',
-      'Visual Studio 17 2022',
-      dir('srcShellWin'),
-    ],
+    ['-G', 'Visual Studio 17 2022', dir('srcShellWin')],
     dir('buildShellWin')
   )
 
   await exec(
     'cmake',
-    [`--build`, '.', '--target', 'koishell'],
+    [`--build`, '.', '--target', 'koishell', '--config', conf],
     dir('buildShellWin')
   )
 
@@ -51,7 +48,7 @@ const buildCompileShellMac = (isRelease: boolean) => async () => {
 }
 
 const buildCompileShellLinux = (isRelease: boolean) => async () => {
-  const conf = isRelease ? 'Release' : 'Debug'
+  const conf = isRelease ? 'MinSizeRel' : 'Debug'
 
   await mkdirp(dir('buildShellLinux'))
 
