@@ -6,7 +6,7 @@ import { dir } from '../../utils/path'
 import mkdirp from 'mkdirp'
 
 const buildCompileShellWin = (isRelease: boolean) => async () => {
-  const conf = isRelease ? 'MinSizeRel' : 'Debug'
+  const conf = isRelease ? 'Release' : 'Debug'
 
   await mkdirp(dir('buildShellWin'))
 
@@ -51,7 +51,7 @@ const buildCompileShellMac = (isRelease: boolean) => async () => {
 }
 
 const buildCompileShellLinux = (isRelease: boolean) => async () => {
-  const conf = isRelease ? 'MinSizeRel' : 'Debug'
+  const conf = isRelease ? 'Release' : 'Debug'
 
   await mkdirp(dir('buildShellLinux'))
 
