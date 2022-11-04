@@ -41,7 +41,7 @@ int WebViewWindow::Run() {
       nullptr,
       nullptr,
       hInstance,
-      nullptr);
+      this);
 
   if (!hWnd) {
     LogWithLastError(L"Failed to create window.");
@@ -62,6 +62,25 @@ int WebViewWindow::Run() {
 
 LRESULT CALLBACK WebViewWindow::WndProc(
     _In_ HWND hWnd, _In_ UINT message, _In_ WPARAM wParam, _In_ LPARAM lParam) {
+  WebViewWindow *pThis;
+
+  if (message == WM_NCCREATE) {
+    pThis = static_cast<WebViewWindow *>(
+        reinterpret_cast<CREATESTRUCTW *>(lParam)->lpCreateParams);
+
+    SetLastError(0);
+    if (!SetWindowLongPtrW(
+            hWnd, GWLP_USERDATA, reinterpret_cast<long long>(pThis)))
+      if (GetLastError() != 0) {
+        LogWithLastError(L"Failed to set window user data.");
+        return 0;
+      }
+  } else
+    pThis = reinterpret_cast<WebViewWindow *>(
+        GetWindowLongPtrW(hWnd, GWLP_USERDATA));
+
+  if (!pThis) return DefWindowProcW(hWnd, message, wParam, lParam);
+
   switch (message) {
   case WM_DESTROY:
     PostQuitMessage(0);
