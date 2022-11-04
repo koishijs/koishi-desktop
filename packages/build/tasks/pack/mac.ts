@@ -1,9 +1,12 @@
-import { series } from 'gulp'
+import { parallel, series } from 'gulp'
 import mkdirp from 'mkdirp'
 import { promises as fs } from 'node:fs'
 import { macAppPlist, macPkgDistribution } from '../../templates'
+import { koiVersion } from '../../utils/config'
 import { dir } from '../../utils/path'
-import { exec } from '../../utils/spawn'
+import { exec, tryExec } from '../../utils/spawn'
+
+const appPath = dir('buildMac', 'Koishi.app/')
 
 export const packMacApp = async () => {
   const appInfoPlistPath = dir('buildMac', 'Koishi.app/Contents/Info.plist')
@@ -20,6 +23,14 @@ export const packMacApp = async () => {
   await fs.cp(dir('buildUnfoldBinary'), appMacosPath, { recursive: true })
   await fs.copyFile(dir('buildAssets', 'koishi-app.icns'), appIconPath)
   await fs.writeFile(appInfoPlistPath, macAppPlist)
+}
+
+export const packMacDmg = async () => {
+  await tryExec('yarn', ['create-dmg', appPath, dir('buildMac'), '--overwrite'])
+  await fs.rename(
+    dir('buildMac', `Koishi ${koiVersion}.dmg`),
+    dir('dist', 'koishi.dmg')
+  )
 }
 
 export const packMacPkg = async () => {
@@ -78,4 +89,4 @@ echo "Post-install process finished."
   )
 }
 
-export const packMac = series(packMacApp, packMacPkg)
+export const packMac = series(packMacApp, parallel(packMacDmg, packMacPkg))
