@@ -10,6 +10,7 @@ import (
 
 	"github.com/goccy/go-json"
 	"github.com/samber/do"
+	"gopkg.ilharper.com/koi/core/koiconfig"
 	"gopkg.ilharper.com/koi/core/logger"
 	"gopkg.ilharper.com/koi/core/util/killdren"
 )
@@ -60,6 +61,7 @@ func (shell *KoiShell) exec(arg any) (map[string]any, error) {
 	var err error
 
 	l := do.MustInvoke[*logger.Logger](shell.i)
+	cfg := do.MustInvoke[*koiconfig.Config](i)
 
 	argJson, err := json.Marshal(arg)
 	if err != nil {
@@ -70,7 +72,7 @@ func (shell *KoiShell) exec(arg any) (map[string]any, error) {
 	cmd := &exec.Cmd{
 		Path: shell.path,
 		Args: []string{shell.path, argB64},
-		Dir:  shell.cwd,
+		Dir:  cfg.Computed.DirConfig,
 	}
 	killdren.Set(cmd)
 
