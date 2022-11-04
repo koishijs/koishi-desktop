@@ -1,7 +1,6 @@
 import { series } from 'gulp'
 import mkdirp from 'mkdirp'
 import fs from 'node:fs/promises'
-import { koiVisualElementsManifest } from '../../templates'
 import { sleepForMac } from '../../utils/common'
 import { zip } from '../../utils/compress'
 import { exists } from '../../utils/fs'
@@ -31,15 +30,6 @@ export const packUnfoldDataCopy = async () => {
       dir('buildCache', 'Webview2Setup.exe'),
       dir('buildUnfoldBinary', 'Webview2Setup.exe')
     )
-
-  await fs.writeFile(
-    dir('buildUnfoldBinary', 'koi.VisualElementsManifest.xml'),
-    koiVisualElementsManifest
-  )
-  await fs.copyFile(
-    dir('buildAssets', 'koishi-tile.png'),
-    dir('buildUnfoldBinary', 'koishi.png')
-  )
 }
 
 export const packUnfoldDataZip = async () => {
