@@ -46,7 +46,7 @@ const buildIcons = () =>
     .map((x) => x.slice(0, x.length - 4))
     .filter((x) => !iconsBlacklist.includes(x))
 
-const iconsBlacklist = ['koishi', 'koishi-template']
+const iconsBlacklist = ['koishi', 'koishi-template', 'koishi-tile']
 const icons = buildIcons()
 const iconsWithKoishi = [...icons, ...iconsBlacklist]
 
