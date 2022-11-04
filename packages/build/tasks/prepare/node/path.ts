@@ -5,9 +5,9 @@ import {
   versionYarn,
 } from '../../../utils/config'
 
-export const nameWin = `node-v${versionNode}-win-${process.arch}`
-export const nameMac = `node-v${versionNode}-darwin-${process.arch}`
-export const nameLinux = `node-v${versionNode}-linux-${process.arch}`
+export const nameWin = `node-v${versionNode}-win-x64`
+export const nameMac = `node-v${versionNode}-darwin-x64`
+export const nameLinux = `node-v${versionNode}-linux-x64`
 
 export const srcWin = `${sourceNode}/v${versionNode}/${nameWin}.zip`
 export const srcMac = `${sourceNode}/v${versionNode}/${nameMac}.tar.gz`
