@@ -8,7 +8,7 @@ WebViewWindow::WebViewWindow(
 }
 
 int WebViewWindow::Run() {
-  std::string nameS = arg["nameC"];
+  std::string nameS = arg["name"];
   wchar_t *nameC = KoiShell::UTF8ToWideChar(const_cast<char *>(nameS.c_str()));
   if (!nameC) {
     LogWithLastError(L"Failed to parse nameC.");
