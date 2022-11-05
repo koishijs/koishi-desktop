@@ -1,9 +1,7 @@
 #ifndef _KOISHELL_LOGGER_
 #define _KOISHELL_LOGGER_
 
-#include <iostream>
-#include <wil/result.h>
-#include <windows.h>
+#include "koishell/stdafx.hpp"
 
 namespace KoiShell {
 

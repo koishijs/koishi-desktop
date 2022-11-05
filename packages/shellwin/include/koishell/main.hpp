@@ -1,7 +1,7 @@
 #ifndef _KOISHELL_MAIN_
 #define _KOISHELL_MAIN_
 
-#include <windows.h>
+#include "koishell/stdafx.hpp"
 
 #include "koishell/mode/webview.hpp"
 #include "koishell/util/logger.hpp"

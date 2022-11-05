@@ -1,7 +1,7 @@
 #ifndef _KOISHELL_STRINGS_
 #define _KOISHELL_STRINGS_
 
-#include <windows.h>
+#include "koishell/stdafx.hpp"
 
 namespace KoiShell {
 
