@@ -15,7 +15,8 @@ int WebViewWindow::Run() {
   if (!PathCombineW(udf, cwd, L"home\\WebView2"))
     LogAndFailWithLastError(L"Failed to combine udf.");
   int udfErr = SHCreateDirectoryExW(nullptr, udf, nullptr);
-  if (udfErr) {
+  if (udfErr != ERROR_SUCCESS && udfErr != ERROR_FILE_EXISTS &&
+      udfErr != ERROR_ALREADY_EXISTS) {
     std::wstringstream s;
     s << L"[WinError " << udfErr << "] "
       << L"Failed to create directory for udf.";
