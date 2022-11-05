@@ -4,7 +4,6 @@
 #include <iostream>
 #include <sstream>
 #include <wil/com.h>
-#include <wil/result.h>
 #include <windows.h>
 #include <wrl.h>
 

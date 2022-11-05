@@ -15,7 +15,7 @@ void FailWithLastError() {
       0,
       nullptr);
   std::wcerr << "[WinError " << err << "] " << message << std::endl;
-  FAIL_FAST();
+  ExitProcess(1);
 }
 
 void LogAndFailWithLastError(const wchar_t *messages) {
@@ -25,19 +25,19 @@ void LogAndFailWithLastError(const wchar_t *messages) {
 
 void LogAndFail(const wchar_t *messages) {
   std::wcerr << messages << std::endl;
-  FAIL_FAST();
+  ExitProcess(1);
 }
 
 void LogAndFail(const std::wstring &messages) {
   std::wcerr << messages << std::endl;
-  FAIL_FAST();
+  ExitProcess(1);
 }
 
 // https://github.com/MicrosoftEdge/WebView2Samples/blob/main/SampleApps/WebView2APISample/CheckFailure.cpp
 void CheckFailure(HRESULT hr, const std::wstring &message) {
   if (FAILED(hr)) {
     std::wcerr << "[WinError HRESULT " << hr << "] " << message << std::endl;
-    FAIL_FAST();
+    ExitProcess(1);
   }
 }
 
