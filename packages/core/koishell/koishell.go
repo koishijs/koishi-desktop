@@ -61,7 +61,7 @@ func (shell *KoiShell) exec(arg any) (map[string]any, error) {
 	var err error
 
 	l := do.MustInvoke[*logger.Logger](shell.i)
-	cfg := do.MustInvoke[*koiconfig.Config](i)
+	cfg := do.MustInvoke[*koiconfig.Config](shell.i)
 
 	argJson, err := json.Marshal(arg)
 	if err != nil {
