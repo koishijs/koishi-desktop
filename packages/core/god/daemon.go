@@ -52,7 +52,7 @@ func Daemon(i *do.Injector, startInstances bool) error {
 		// daemon.lock exists
 		pid, aliveErr := checkDaemonAlive(daemonLockPath)
 		if aliveErr == nil {
-			return fmt.Errorf("god daemon running, PID=%d\nCannot start another god daemon when there's already one.\nIf that daemon crashes, use 'koi daemon' to fix it.\nIf you just want to restart daemon, use 'koi daemon restart'", pid)
+			return fmt.Errorf("god daemon running, PID=%d\nCannot start another god daemon when there's already one.\nIf that daemon crashes, use 'koi daemon start' to fix it.\nIf you just want to restart daemon, use 'koi daemon restart'", pid)
 		}
 
 		_ = os.Remove(daemonLockPath)
