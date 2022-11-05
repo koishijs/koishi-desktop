@@ -56,43 +56,51 @@ int WebViewWindow::Run() {
   ShowWindow(hWnd, nCmdShow);
   UpdateWindow(hWnd);
 
-  CreateCoreWebView2Environment(
-      Microsoft::WRL::Callback<
-          ICoreWebView2CreateCoreWebView2EnvironmentCompletedHandler>(
-          [this,
-           &url](HRESULT result, ICoreWebView2Environment *env) -> HRESULT {
-            env->CreateCoreWebView2Controller(
-                hWnd,
-                Microsoft::WRL::Callback<
-                    ICoreWebView2CreateCoreWebView2ControllerCompletedHandler>(
-                    [this, &url](
-                        HRESULT result,
-                        ICoreWebView2Controller *controller) -> HRESULT {
-                      if (controller) {
-                        webviewController = controller;
-                        webviewController->get_CoreWebView2(&webview);
-                      }
+  CheckFailure(
+      CreateCoreWebView2Environment(
+          Microsoft::WRL::Callback<
+              ICoreWebView2CreateCoreWebView2EnvironmentCompletedHandler>(
+              [this,
+               &url](HRESULT result, ICoreWebView2Environment *env) -> HRESULT {
+                CheckFailure(
+                    env->CreateCoreWebView2Controller(
+                        hWnd,
+                        Microsoft::WRL::Callback<
+                            ICoreWebView2CreateCoreWebView2ControllerCompletedHandler>(
+                            [this, &url](
+                                HRESULT result,
+                                ICoreWebView2Controller *controller)
+                                -> HRESULT {
+                              if (controller) {
+                                webviewController = controller;
+                                CheckFailure(
+                                    webviewController->get_CoreWebView2(
+                                        &webview),
+                                    L"Failed to get WebView2.");
+                              }
 
-                      wil::com_ptr<ICoreWebView2Settings> settings;
-                      webview->get_Settings(&settings);
-                      settings->put_IsScriptEnabled(1);
-                      settings->put_AreDefaultScriptDialogsEnabled(1);
-                      settings->put_IsWebMessageEnabled(1);
-                      settings->put_AreDevToolsEnabled(1);
+                              wil::com_ptr<ICoreWebView2Settings> settings;
+                              webview->get_Settings(&settings);
+                              settings->put_IsScriptEnabled(1);
+                              settings->put_AreDefaultScriptDialogsEnabled(1);
+                              settings->put_IsWebMessageEnabled(1);
+                              settings->put_AreDevToolsEnabled(1);
 
-                      RECT bounds;
-                      GetClientRect(hWnd, &bounds);
-                      webviewController->put_Bounds(bounds);
+                              RECT bounds;
+                              GetClientRect(hWnd, &bounds);
+                              webviewController->put_Bounds(bounds);
 
-                      webview->Navigate(url);
+                              webview->Navigate(url);
 
-                      return 0;
-                    })
-                    .Get());
+                              return 0;
+                            })
+                            .Get()),
+                    L"Failed to create WebView2 controller.");
 
-            return 0;
-          })
-          .Get());
+                return 0;
+              })
+              .Get()),
+      L"Failed to create WebView2 environment.");
 
   MSG msg;
   while (GetMessageW(&msg, nullptr, 0, 0)) {
