@@ -34,6 +34,7 @@ add_executable(koishell
         src/util/logger.cpp
         src/util/strings.cpp
         src/mode/webview.cpp
+        src/koishell.rc
 )
 
 target_link_libraries(koishell

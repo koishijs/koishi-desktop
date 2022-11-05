@@ -31,12 +31,14 @@ int WebViewWindow::Run() {
   wcex.cbClsExtra = 0;
   wcex.cbWndExtra = 0;
   wcex.hInstance = hInstance;
-  wcex.hIcon = LoadIconW(hInstance, IDI_APPLICATION);
+  wcex.hIcon = static_cast<HICON>(
+      LoadImageW(hInstance, MAKEINTRESOURCEW(1), IMAGE_ICON, 0, 0, 0));
   wcex.hCursor = LoadCursorW(hInstance, IDC_ARROW);
   wcex.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
   wcex.lpszMenuName = nullptr;
   wcex.lpszClassName = KoiShellWebViewClass;
-  wcex.hIconSm = LoadIconW(hInstance, IDI_APPLICATION);
+  wcex.hIconSm = static_cast<HICON>(
+      LoadImageW(hInstance, MAKEINTRESOURCEW(1), IMAGE_ICON, 0, 0, 0));
 
   if (!RegisterClassExW(&wcex)) {
     LogWithLastError(L"Failed to register window class.");
