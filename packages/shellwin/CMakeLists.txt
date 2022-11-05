@@ -42,6 +42,7 @@ target_link_libraries(koishell
         shellcomm
         WIL
         webview2_static
+        ShLwApi
 )
 
 target_include_directories(koishell

@@ -8,6 +8,20 @@ WebViewWindow::WebViewWindow(
 }
 
 int WebViewWindow::Run() {
+  wchar_t cwd[MAX_PATH];
+  if (!GetCurrentDirectoryW(MAX_PATH, cwd))
+    LogAndFailWithLastError(L"Failed to get cwd.");
+  wchar_t udf[MAX_PATH];
+  if (!PathCombineW(udf, cwd, L"home\\WebView2"))
+    LogAndFailWithLastError(L"Failed to combine udf.");
+  int udfErr = SHCreateDirectoryExW(nullptr, udf, nullptr);
+  if (udfErr) {
+    std::wstringstream s;
+    s << L"[WinError " << udfErr << "] "
+      << L"Failed to create directory for udf.";
+    LogAndFail(s.str());
+  }
+
   std::string nameS = arg["name"];
   wchar_t *nameC = KoiShell::UTF8ToWideChar(const_cast<char *>(nameS.c_str()));
   if (!nameC) LogAndFailWithLastError(L"Failed to parse nameC.");
@@ -56,8 +70,12 @@ int WebViewWindow::Run() {
   ShowWindow(hWnd, nCmdShow);
   UpdateWindow(hWnd);
 
+  auto options = Microsoft::WRL::Make<CoreWebView2EnvironmentOptions>();
   CheckFailure(
-      CreateCoreWebView2Environment(
+      CreateCoreWebView2EnvironmentWithOptions(
+          nullptr,
+          udf,
+          options.Get(),
           Microsoft::WRL::Callback<
               ICoreWebView2CreateCoreWebView2EnvironmentCompletedHandler>(
               [this,
