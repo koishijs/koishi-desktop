@@ -11,6 +11,8 @@ void LogAndFailWithLastError(const wchar_t *messages);
 
 void LogAndFail(const wchar_t *messages);
 
+void LogAndFail(const std::wstring &messages);
+
 void CheckFailure(HRESULT hr, const std::wstring &message = L"Error");
 
 } // namespace KoiShell

@@ -28,6 +28,11 @@ void LogAndFail(const wchar_t *messages) {
   FAIL_FAST();
 }
 
+void LogAndFail(const std::wstring &messages) {
+  std::wcerr << messages << std::endl;
+  FAIL_FAST();
+}
+
 // https://github.com/MicrosoftEdge/WebView2Samples/blob/main/SampleApps/WebView2APISample/CheckFailure.cpp
 void CheckFailure(HRESULT hr, const std::wstring &message) {
   if (FAILED(hr)) {
