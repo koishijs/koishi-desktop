@@ -2,15 +2,9 @@
 
 namespace KoiShell {
 
-void LogW(const wchar_t *messages) {
-  std::wcerr << messages << std::endl;
-}
-
-void LogLastError() {
+void FailWithLastError() {
   wchar_t *message;
-
   unsigned long err = GetLastError();
-
   FormatMessageW(
       FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM |
           FORMAT_MESSAGE_IGNORE_INSERTS,
@@ -20,15 +14,18 @@ void LogLastError() {
       (wchar_t *)&message,
       0,
       nullptr);
-
   std::wcerr << "[WinError " << err << "] " << message << std::endl;
-
-  LocalFree(message);
+  FAIL_FAST();
 }
 
-void LogWithLastError(const wchar_t *messages) {
+void LogAndFailWithLastError(const wchar_t *messages) {
   std::wcerr << messages << L" Last error:" << std::endl;
-  LogLastError();
+  FailWithLastError();
+}
+
+void LogAndFail(const wchar_t *messages) {
+  std::wcerr << messages << std::endl;
+  FAIL_FAST();
 }
 
 // https://github.com/MicrosoftEdge/WebView2Samples/blob/main/SampleApps/WebView2APISample/CheckFailure.cpp

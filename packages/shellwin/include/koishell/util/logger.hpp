@@ -7,11 +7,11 @@
 
 namespace KoiShell {
 
-void LogW(const wchar_t *messages);
+void FailWithLastError();
 
-void LogLastError();
+void LogAndFailWithLastError(const wchar_t *messages);
 
-void LogWithLastError(const wchar_t *messages);
+void LogAndFail(const wchar_t *messages);
 
 void CheckFailure(HRESULT hr, const std::wstring &message = L"Error");
 

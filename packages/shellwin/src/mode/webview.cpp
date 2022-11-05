@@ -10,20 +10,14 @@ WebViewWindow::WebViewWindow(
 int WebViewWindow::Run() {
   std::string nameS = arg["name"];
   wchar_t *nameC = KoiShell::UTF8ToWideChar(const_cast<char *>(nameS.c_str()));
-  if (!nameC) {
-    LogWithLastError(L"Failed to parse nameC.");
-    return 1;
-  }
+  if (!nameC) LogAndFailWithLastError(L"Failed to parse nameC.");
   std::wostringstream nameStream;
   nameStream << nameC << KoiShellWebViewTitleSuffix;
   std::wstring name = nameStream.str();
 
   std::string urlS = arg["url"];
   wchar_t *url = KoiShell::UTF8ToWideChar(const_cast<char *>(urlS.c_str()));
-  if (!url) {
-    LogWithLastError(L"Failed to parse url.");
-    return 1;
-  }
+  if (!url) LogAndFailWithLastError(L"Failed to parse url.");
 
   wcex.cbSize = sizeof(WNDCLASSEXW);
   wcex.style = CS_HREDRAW | CS_VREDRAW;
@@ -40,10 +34,8 @@ int WebViewWindow::Run() {
   wcex.hIconSm = static_cast<HICON>(
       LoadImageW(hInstance, MAKEINTRESOURCEW(1), IMAGE_ICON, 0, 0, 0));
 
-  if (!RegisterClassExW(&wcex)) {
-    LogWithLastError(L"Failed to register window class.");
-    return 1;
-  }
+  if (!RegisterClassExW(&wcex))
+    LogAndFailWithLastError(L"Failed to register window class.");
 
   hWnd = CreateWindowExW(
       WS_EX_OVERLAPPEDWINDOW,
@@ -59,10 +51,7 @@ int WebViewWindow::Run() {
       hInstance,
       this);
 
-  if (!hWnd) {
-    LogWithLastError(L"Failed to create window.");
-    return 1;
-  }
+  if (!hWnd) LogAndFailWithLastError(L"Failed to create window.");
 
   ShowWindow(hWnd, nCmdShow);
   UpdateWindow(hWnd);
@@ -125,10 +114,8 @@ LRESULT CALLBACK WebViewWindow::WndProc(
     SetLastError(0);
     if (!SetWindowLongPtrW(
             hWnd, GWLP_USERDATA, reinterpret_cast<long long>(pThis)))
-      if (GetLastError() != 0) {
-        LogWithLastError(L"Failed to set window user data.");
-        return 0;
-      }
+      if (GetLastError() != 0)
+        LogAndFailWithLastError(L"Failed to set window user data.");
   } else
     pThis = reinterpret_cast<WebViewWindow *>(
         GetWindowLongPtrW(hWnd, GWLP_USERDATA));

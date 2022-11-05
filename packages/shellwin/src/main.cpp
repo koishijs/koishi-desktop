@@ -12,16 +12,11 @@ int WINAPI wWinMain(
   int argc;
   wchar_t **argv = CommandLineToArgvW(GetCommandLineW(), &argc);
 
-  if (argc != 2) {
-    ShellComm::Log("argc not valid.");
-    return 1;
-  }
+  if (argc != 2) KoiShell::LogAndFail(L"argc not valid.");
 
   char *rawArg = KoiShell::WideCharToUTF8(argv[1]);
-  if (!rawArg) {
-    KoiShell::LogWithLastError(L"Failed to convert argv to string.");
-    return 1;
-  }
+  if (!rawArg)
+    KoiShell::LogAndFailWithLastError(L"Failed to convert argv to string.");
 
   ShellComm::ParseResult parseResult;
   if (!ShellComm::Parse(rawArg, &parseResult)) return 1;
@@ -31,7 +26,6 @@ int WINAPI wWinMain(
   case ShellComm::MODE_WEBVIEW:
     return KoiShell::RunWebView(hInstance, nCmdShow, parseResult.json);
   default:
-    ShellComm::Log("Unknown mode.");
-    return 1;
+    KoiShell::LogAndFail(L"Unknown mode.");
   }
 }
