@@ -67,3 +67,7 @@ target_compile_options(koishell
     PRIVATE
         /utf-8
 )
+
+# Support Visual Studio "Edit and Continue"
+target_compile_options(koishell PUBLIC /ZI)
+target_link_options(koishell PUBLIC /INCREMENTAL)
