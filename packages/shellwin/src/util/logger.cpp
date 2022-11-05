@@ -31,4 +31,12 @@ void LogWithLastError(const wchar_t *messages) {
   LogLastError();
 }
 
+// https://github.com/MicrosoftEdge/WebView2Samples/blob/main/SampleApps/WebView2APISample/CheckFailure.cpp
+void CheckFailure(HRESULT hr, const std::wstring &message) {
+  if (FAILED(hr)) {
+    std::wcerr << "[WinError HRESULT " << hr << "] " << message << std::endl;
+    FAIL_FAST();
+  }
+}
+
 } // namespace KoiShell
