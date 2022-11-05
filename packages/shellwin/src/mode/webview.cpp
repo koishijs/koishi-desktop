@@ -146,6 +146,7 @@ LRESULT CALLBACK WebViewWindow::WndProc(
       GetClientRect(hWnd, &bounds);
       pThis->webviewController->put_Bounds(bounds);
     }
+    return 0;
 
   default:
     return DefWindowProcW(hWnd, message, wParam, lParam);
