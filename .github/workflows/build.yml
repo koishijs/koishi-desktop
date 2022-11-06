@@ -31,6 +31,18 @@ jobs:
           submodules: recursive
           fetch-depth: 0
 
+      - name: Draft Release
+        id: tag
+        if: startsWith(github.ref, 'refs/tags/')
+        env:
+          GITHUB_TOKEN: ${{ secrets.ACTIONS_DEPLOY_MODULE_KEY }}
+        run: |
+          VERSION="${GITHUB_REF##refs/tags/}"
+          echo "Found Tag: ${VERSION}"
+          echo "version=${VERSION}" >> $GITHUB_OUTPUT
+          gh release create ${VERSION} -d
+        shell: bash
+
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
@@ -97,3 +109,39 @@ jobs:
         with:
           name: koi-${{ fromJson(matrix.target).rid }}-${{ github.sha }}.zip
           path: build/dist/koishi.zip
+
+      - name: Upload Release Files for Windows
+        if: startsWith(github.ref, 'refs/tags/') && fromJson(matrix.target).goos == 'windows'
+        env:
+          GITHUB_TOKEN: ${{ secrets.ACTIONS_DEPLOY_MODULE_KEY }}
+        run: |
+          mv build/dist/koishi.zip build/dist/koishi-desktop-${{ fromJson(matrix.target).rid }}-${{ steps.tag.outputs.version }}.zip
+          mv build/dist/koishi.msi build/dist/koishi-desktop-${{ fromJson(matrix.target).rid }}-${{ steps.tag.outputs.version }}.msi
+          gh release upload ${{ steps.tag.outputs.version }} \
+          build/dist/koishi-desktop-${{ fromJson(matrix.target).rid }}-${{ steps.tag.outputs.version }}.zip \
+          build/dist/koishi-desktop-${{ fromJson(matrix.target).rid }}-${{ steps.tag.outputs.version }}.msi
+        shell: bash
+
+      - name: Upload Release Files for macOS
+        if: startsWith(github.ref, 'refs/tags/') && fromJson(matrix.target).goos == 'darwin'
+        env:
+          GITHUB_TOKEN: ${{ secrets.ACTIONS_DEPLOY_MODULE_KEY }}
+        run: |
+          mv build/dist/koishi.zip build/dist/koishi-desktop-${{ fromJson(matrix.target).rid }}-${{ steps.tag.outputs.version }}.zip
+          mv build/dist/koishi.dmg build/dist/koishi-desktop-${{ fromJson(matrix.target).rid }}-${{ steps.tag.outputs.version }}.dmg
+          mv build/dist/koishi.pkg build/dist/koishi-desktop-${{ fromJson(matrix.target).rid }}-${{ steps.tag.outputs.version }}.pkg
+          gh release upload ${{ steps.tag.outputs.version }} \
+          build/dist/koishi-desktop-${{ fromJson(matrix.target).rid }}-${{ steps.tag.outputs.version }}.zip \
+          build/dist/koishi-desktop-${{ fromJson(matrix.target).rid }}-${{ steps.tag.outputs.version }}.dmg \
+          build/dist/koishi-desktop-${{ fromJson(matrix.target).rid }}-${{ steps.tag.outputs.version }}.pkg
+        shell: bash
+
+      - name: Upload Release Files for Linux
+        if: startsWith(github.ref, 'refs/tags/') && fromJson(matrix.target).goos == 'linux'
+        env:
+          GITHUB_TOKEN: ${{ secrets.ACTIONS_DEPLOY_MODULE_KEY }}
+        run: |
+          mv build/dist/koishi.zip build/dist/koishi-desktop-${{ fromJson(matrix.target).rid }}-${{ steps.tag.outputs.version }}.zip
+          gh release upload ${{ steps.tag.outputs.version }} \
+          build/dist/koishi-desktop-${{ fromJson(matrix.target).rid }}-${{ steps.tag.outputs.version }}.zip
+        shell: bash
