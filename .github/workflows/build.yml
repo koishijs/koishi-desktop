@@ -53,7 +53,44 @@ jobs:
           yarn gulp ciBuild
         shell: bash
 
-      - uses: actions/upload-artifact@v3
+      - name: Upload zip for Windows
+        if: ${{ fromJson(matrix.target).goos == 'windows' }}
+        uses: actions/upload-artifact@v3
         with:
-          name: koi-dist-${{ fromJson(matrix.target).rid }}-${{ github.sha }}
-          path: build/dist/
+          name: koi-${{ fromJson(matrix.target).rid }}-${{ github.sha }}.zip
+          path: build/dist/koishi.zip
+
+      - name: Upload msi for Windows
+        if: ${{ fromJson(matrix.target).goos == 'windows' }}
+        uses: actions/upload-artifact@v3
+        with:
+          name: koi-${{ fromJson(matrix.target).rid }}-${{ github.sha }}.msi
+          path: build/dist/koishi.msi
+
+      - name: Upload zip for macOS
+        if: ${{ fromJson(matrix.target).goos == 'darwin' }}
+        uses: actions/upload-artifact@v3
+        with:
+          name: koi-${{ fromJson(matrix.target).rid }}-${{ github.sha }}.zip
+          path: build/dist/koishi.zip
+
+      - name: Upload dmg for macOS
+        if: ${{ fromJson(matrix.target).goos == 'darwin' }}
+        uses: actions/upload-artifact@v3
+        with:
+          name: koi-${{ fromJson(matrix.target).rid }}-${{ github.sha }}.dmg
+          path: build/dist/koishi.dmg
+
+      - name: Upload pkg for macOS
+        if: ${{ fromJson(matrix.target).goos == 'darwin' }}
+        uses: actions/upload-artifact@v3
+        with:
+          name: koi-${{ fromJson(matrix.target).rid }}-${{ github.sha }}.pkg
+          path: build/dist/koishi.pkg
+
+      - name: Upload zip for Linux
+        if: ${{ fromJson(matrix.target).goos == 'linux' }}
+        uses: actions/upload-artifact@v3
+        with:
+          name: koi-${{ fromJson(matrix.target).rid }}-${{ github.sha }}.zip
+          path: build/dist/koishi.zip
