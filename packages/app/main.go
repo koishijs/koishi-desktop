@@ -16,9 +16,9 @@ import (
 	"gopkg.ilharper.com/koi/app/util"
 	"gopkg.ilharper.com/koi/core/logger"
 	coreUtil "gopkg.ilharper.com/koi/core/util"
-	"gopkg.ilharper.com/koi/core/util/hideconsole"
-	"gopkg.ilharper.com/koi/core/util/setconsoleutf8"
+	"gopkg.ilharper.com/x/hideconsole"
 	"gopkg.ilharper.com/x/rpl"
+	"gopkg.ilharper.com/x/setconsoleutf8"
 )
 
 func main() {

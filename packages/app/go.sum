@@ -128,8 +128,8 @@ golang.org/x/sys v0.0.0-20210616045830-e2b7044e8c71/go.mod h1:oPkhp1MJrh7nUepCBc
 golang.org/x/sys v0.0.0-20220128215802-99c3d69c2c27/go.mod h1:oPkhp1MJrh7nUepCBck5+mAzfO9JrbApNNgaTdGDITg=
 golang.org/x/sys v0.0.0-20220520151302-bc2c85ada10a/go.mod h1:oPkhp1MJrh7nUepCBck5+mAzfO9JrbApNNgaTdGDITg=
 golang.org/x/sys v0.0.0-20220722155257-8c9f86f7a55f/go.mod h1:oPkhp1MJrh7nUepCBck5+mAzfO9JrbApNNgaTdGDITg=
-golang.org/x/sys v0.0.0-20220728004956-3c1f35247d10 h1:WIoqL4EROvwiPdUtaip4VcDdpZ4kha7wBWZrbVKCIZg=
-golang.org/x/sys v0.0.0-20220728004956-3c1f35247d10/go.mod h1:oPkhp1MJrh7nUepCBck5+mAzfO9JrbApNNgaTdGDITg=
+golang.org/x/sys v0.1.0 h1:kunALQeHf1/185U1i0GOB/fy1IPRDDpuoOOqRReG57U=
+golang.org/x/sys v0.1.0/go.mod h1:oPkhp1MJrh7nUepCBck5+mAzfO9JrbApNNgaTdGDITg=
 golang.org/x/text v0.3.0/go.mod h1:NqM8EUOU14njkJ3fqMW+pc6Ldnwhi/IjpwHt7yyuwOQ=
 golang.org/x/text v0.3.2/go.mod h1:bEr9sfX3Q8Zfm5fL9x+3itogRgK3+ptLWKqgva+5dAk=
 golang.org/x/text v0.3.3/go.mod h1:5Zoc/QRtKVWzQhOtBMvqHzDpF6irO9z98xDceosuGiQ=
@@ -157,10 +157,16 @@ gopkg.ilharper.com/x/browser v1.0.0 h1:9oWk1mlFxmBKxu9xDK4Vp5NPlXXXb2aPQG+uLs+CH
 gopkg.ilharper.com/x/browser v1.0.0/go.mod h1:mA3Hb0QIk0dyb9EABiHGFmLopASY4lzm00y2aMR1PFE=
 gopkg.ilharper.com/x/colette v0.2.0 h1:eJ9Nyr0i28YRqFJg22BmUX7qqwagwMe9FqJoST8nLj0=
 gopkg.ilharper.com/x/colette v0.2.0/go.mod h1:maa00kijpiojqfY5IURkFkItBE/ajA3e9Gx/aDBBoqw=
+gopkg.ilharper.com/x/hideconsole v1.0.0 h1:xuwGp1MguqFFFN3h2hnzPcuVxmbeyayd2KRvP9ujQhU=
+gopkg.ilharper.com/x/hideconsole v1.0.0/go.mod h1:KDNMnArNT6MeKV49fp3va6oYgeGbCWgJXxrar4DYYLE=
 gopkg.ilharper.com/x/isatty v1.0.1 h1:tdoWUKjuvIA/D57JFtLo8JWCF+M1bPw6Wiv8DzcOD+s=
 gopkg.ilharper.com/x/isatty v1.0.1/go.mod h1:Kr3mbYEPfNsY0EtbYhbtfC99Jiex7YE6ulRzlfA/NJI=
+gopkg.ilharper.com/x/killdren v1.0.0 h1:DQ4uf9OgVOT6bzviow31g/oqAs/SW6/QlOlAMDoEpng=
+gopkg.ilharper.com/x/killdren v1.0.0/go.mod h1:PjoLdtnXFQowyD42pJ0pFoyP1SvnpehrUFAZd42u2q0=
 gopkg.ilharper.com/x/rpl v0.2.0 h1:X9w6qD4oYTP/C5gs6RUl8DopGqf1jpWZm7Qk3ecoMKQ=
 gopkg.ilharper.com/x/rpl v0.2.0/go.mod h1:2/B6DQY0yOsMPoP+UzrmoZbkHgu+rkR1KtveXiS8pwk=
+gopkg.ilharper.com/x/setconsoleutf8 v1.0.0 h1:PCYmzZFKBS63O6Fh1EbfeO4rUy62SC8YMMCus+JJ9e4=
+gopkg.ilharper.com/x/setconsoleutf8 v1.0.0/go.mod h1:LIyhj1izHlKqQKgZJUeadPJdLQb7a6kKP8LLSlOlJDY=
 gopkg.ilharper.com/x/supcolor v1.0.0 h1:+JCeatjuGQnCH/faG34s2qBLKEdVWLSZQuFl5ryZTrk=
 gopkg.ilharper.com/x/supcolor v1.0.0/go.mod h1:+KcGL5qgyeGTWOGElVBmtWhPBkvMOklPlG64/tjrDGc=
 gopkg.in/check.v1 v0.0.0-20161208181325-20d25e280405/go.mod h1:Co6ibVJAznAaIkqp8huTwlJQCZ016jof/cbN4VW5Yz0=

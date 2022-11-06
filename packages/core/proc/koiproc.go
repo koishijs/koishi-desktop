@@ -12,7 +12,7 @@ import (
 
 	"github.com/samber/do"
 	"gopkg.ilharper.com/koi/core/logger"
-	"gopkg.ilharper.com/koi/core/util/killdren"
+	"gopkg.ilharper.com/x/killdren"
 	"gopkg.ilharper.com/x/rpl"
 )
 

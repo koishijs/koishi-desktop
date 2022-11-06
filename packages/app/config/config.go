@@ -14,8 +14,8 @@ import (
 	"github.com/samber/do"
 	"gopkg.ilharper.com/koi/core/koiconfig"
 	"gopkg.ilharper.com/koi/core/logger"
-	"gopkg.ilharper.com/koi/core/util/killdren"
 	"gopkg.ilharper.com/koi/core/util/pathutil"
+	"gopkg.ilharper.com/x/killdren"
 )
 
 var defaultConfigData = koiconfig.ConfigData{
