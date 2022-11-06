@@ -31,6 +31,12 @@ jobs:
           submodules: recursive
           fetch-depth: 0
 
+      - name: Cache Build Caches
+        uses: actions/cache@v3
+        with:
+          path: build/caches/
+          key: koi-${{ runner.os }}-${{ hashFiles('config.ts') }}
+
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
