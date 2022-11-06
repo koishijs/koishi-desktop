@@ -33,7 +33,7 @@ jobs:
 
       - name: Draft Release
         id: tag
-        if: startsWith(github.ref, 'refs/tags/')
+        if: fromJson(matrix.target).goos == 'linux' && startsWith(github.ref, 'refs/tags/')
         env:
           GITHUB_TOKEN: ${{ secrets.ACTIONS_DEPLOY_MODULE_KEY }}
         run: |
