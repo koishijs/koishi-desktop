@@ -31,16 +31,21 @@ jobs:
           submodules: recursive
           fetch-depth: 0
 
-      - name: Draft Release
+      - name: Prepare Tag
         id: tag
-        if: fromJson(matrix.target).goos == 'linux' && startsWith(github.ref, 'refs/tags/')
-        env:
-          GITHUB_TOKEN: ${{ secrets.ACTIONS_DEPLOY_MODULE_KEY }}
+        if: startsWith(github.ref, 'refs/tags/')
         run: |
           VERSION="${GITHUB_REF##refs/tags/}"
           echo "Found Tag: ${VERSION}"
           echo "version=${VERSION}" >> $GITHUB_OUTPUT
-          gh release create ${VERSION} -d
+        shell: bash
+
+      - name: Draft Release
+        if: fromJson(matrix.target).goos == 'linux' && startsWith(github.ref, 'refs/tags/')
+        env:
+          GITHUB_TOKEN: ${{ secrets.ACTIONS_DEPLOY_MODULE_KEY }}
+        run: |
+          gh release create ${{ steps.tag.outputs.version }} -d
         shell: bash
 
       - name: Cache Build Caches
