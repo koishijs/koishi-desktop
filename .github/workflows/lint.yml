@@ -35,15 +35,18 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '18'
+          cache: yarn
 
       - name: Setup Go
         uses: actions/setup-go@v3
         with:
           go-version: '>=1.19.0'
+          cache: true
+          cache-dependency-path: config.ts
 
       - name: Install Build Package
         run: |
-          yarn
+          yarn install --frozen-lockfile
         shell: bash
 
       - name: Lint
