@@ -33,7 +33,7 @@ jobs:
         run: |
           VERSION="${GITHUB_REF##refs/tags/}"
           echo "Found Tag: ${VERSION}"
-          echo "::set-output name=version::${VERSION}"
+          echo "version=${VERSION}" >> $GITHUB_OUTPUT
 
       - name: Deploy gopkg
         uses: peaceiris/actions-gh-pages@v3
