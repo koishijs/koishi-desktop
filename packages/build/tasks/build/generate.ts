@@ -41,15 +41,15 @@ export const generateVisualElementsManifest = async () => {
 }
 
 export const generate = series(
-  parallel(
-    generateKoiConfig,
-    generateKoiVersionInfo,
-    generateKoiManifest,
-    generateKoiShellResources,
-    generateKoiShellManifest,
-    process.platform === 'win32'
-      ? series(generateAssets, generateVisualElementsManifest)
-      : generateAssets
-  ),
+  process.platform === 'win32'
+    ? parallel(
+        generateKoiConfig,
+        generateKoiVersionInfo,
+        generateKoiManifest,
+        generateKoiShellResources,
+        generateKoiShellManifest,
+        series(generateAssets, generateVisualElementsManifest)
+      )
+    : parallel(generateKoiConfig, generateAssets),
   i18nGenerate
 )
