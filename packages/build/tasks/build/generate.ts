@@ -1,6 +1,11 @@
 import { parallel, series } from 'gulp'
 import fs from 'node:fs/promises'
-import { koiConfig, koiManifest, koiVersionInfo } from '../../templates'
+import {
+  koiConfig,
+  koiManifest,
+  koiShellResources,
+  koiVersionInfo,
+} from '../../templates'
 import { dir } from '../../utils/path'
 import { i18nGenerate } from '../i18n'
 import { generateAssets } from './assets'
@@ -13,6 +18,9 @@ export const generateKoiVersionInfo = () =>
 
 export const generateKoiManifest = () =>
   fs.writeFile(dir('src', 'koi.exe.manifest'), koiManifest)
+
+export const generateKoiShellResources = () =>
+  fs.writeFile(dir('srcShellWin', 'src/koishell.rc'), koiShellResources)
 
 export const generateVisualElementsManifest = async () => {
   await fs.copyFile(
@@ -30,6 +38,7 @@ export const generate = series(
     generateKoiConfig,
     generateKoiVersionInfo,
     generateKoiManifest,
+    generateKoiShellResources,
     process.platform === 'win32'
       ? series(generateAssets, generateVisualElementsManifest)
       : generateAssets
