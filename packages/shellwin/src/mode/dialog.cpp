@@ -79,13 +79,14 @@ int RunDialog(_In_ HINSTANCE hInstance, _In_ njson arg) {
 
   int result = 0;
   long success = TaskDialogIndirect(&dlg, &result, nullptr, nullptr);
+  result -= 9;
   if (success) {
     std::wstringstream s;
     s << L"[WinError " << success << "] " << L"Failed to process task dialog.";
     LogAndFail(s.str());
   }
 
-  std::cout << "{\"result\":" << result - 9 << '}' << std::endl;
+  std::cout << "{\"result\":" << ((result > 0 && result <= buttonCount) ? result : 2) << '}' << std::endl;
 
   return 0;
 }
