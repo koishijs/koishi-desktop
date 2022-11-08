@@ -190,6 +190,7 @@ func (shell *KoiShell) About() {
 
 	_, err := shell.exec(map[string]any{
 		"mode":        "dialog",
+		"title":       "about",
 		"style":       "info",
 		"text1":       "Koishi Desktop",
 		"text2":       fmt.Sprintf("v%s", util.AppVersion),
