@@ -25,6 +25,8 @@ int WINAPI wWinMain(
   switch (parseResult.mode) {
   case ShellComm::MODE_WEBVIEW:
     return KoiShell::RunWebView(hInstance, nCmdShow, parseResult.json);
+  case ShellComm::MODE_DIALOG:
+    return KoiShell::RunDialog(hInstance, parseResult.json);
   default:
     KoiShell::LogAndFail(L"Unknown mode.");
   }

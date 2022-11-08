@@ -3,6 +3,7 @@
 
 #include "koishell/stdafx.hpp"
 
+#include "koishell/mode/dialog.hpp"
 #include "koishell/mode/webview.hpp"
 #include "koishell/util/logger.hpp"
 #include "koishell/util/strings.hpp"

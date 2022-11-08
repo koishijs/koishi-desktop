@@ -33,6 +33,8 @@ bool Parse(const char *arg, ParseResult *result) {
   std::string mode = result->json["mode"];
   if (mode == "webview") {
     result->mode = Mode::MODE_WEBVIEW;
+  } else if (mode == "dialog") {
+    result->mode = Mode::MODE_DIALOG;
   } else {
     result->mode = Mode::MODE_UNKNOWN;
   }

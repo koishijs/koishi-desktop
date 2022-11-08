@@ -10,7 +10,8 @@ namespace ShellComm {
 
 enum Mode {
   MODE_UNKNOWN = 0,
-  MODE_WEBVIEW = 1
+  MODE_WEBVIEW = 1,
+  MODE_DIALOG = 2
 };
 
 struct ParseResult {
