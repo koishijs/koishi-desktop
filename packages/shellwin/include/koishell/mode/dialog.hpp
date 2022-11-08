@@ -5,6 +5,7 @@
 
 #include "koishell/util/logger.hpp"
 #include "koishell/util/strings.hpp"
+#include "shellcomm/parse.hpp"
 
 using njson = nlohmann::json;
 

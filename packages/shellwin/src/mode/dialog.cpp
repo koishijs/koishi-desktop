@@ -86,7 +86,10 @@ int RunDialog(_In_ HINSTANCE hInstance, _In_ njson arg) {
     LogAndFail(s.str());
   }
 
-  std::cout << "{\"result\":" << ((result > 0 && result <= buttonCount) ? result : 2) << '}' << std::endl;
+  std::stringstream s;
+  s << "{\"result\":" << ((result > 0 && result <= buttonCount) ? result : 2)
+    << '}';
+  ShellComm::SetOutput(s.str());
 
   return 0;
 }
