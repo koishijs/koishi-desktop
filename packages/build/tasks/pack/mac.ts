@@ -1,4 +1,4 @@
-import { parallel, series } from 'gulp'
+import { series } from 'gulp'
 import mkdirp from 'mkdirp'
 import { promises as fs } from 'node:fs'
 import { macAppPlist, macPkgDistribution } from '../../templates'
@@ -26,6 +26,10 @@ export const packMacApp = async () => {
 }
 
 export const packMacDmg = async () => {
+  await fs.writeFile(
+    dir('buildMac', 'Koishi.app/Contents/MacOS/koi.yml'),
+    'redirect: USERDATA'
+  )
   await tryExec('yarn', ['create-dmg', appPath, dir('buildMac'), '--overwrite'])
   await fs.rename(
     dir('buildMac', `Koishi ${koiVersion}.dmg`),
@@ -89,4 +93,6 @@ echo "Post-install process finished."
   )
 }
 
-export const packMac = series(packMacApp, parallel(packMacDmg, packMacPkg))
+// Series: packMacApp => packMacPkg => packMacDmg
+// packMacDmg writes `koi.yml` to dir('buildMac') so it needs to be executed at last.
+export const packMac = series(packMacApp, packMacPkg, packMacDmg)
