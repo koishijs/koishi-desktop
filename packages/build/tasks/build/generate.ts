@@ -1,11 +1,6 @@
 import { parallel, series } from 'gulp'
 import fs from 'node:fs/promises'
-import {
-  koiConfig,
-  koiManifest,
-  koiVersionInfo,
-  koiVisualElementsManifest,
-} from '../../templates'
+import { koiConfig, koiManifest, koiVersionInfo } from '../../templates'
 import { dir } from '../../utils/path'
 import { i18nGenerate } from '../i18n'
 import { generateAssets } from './assets'
@@ -20,9 +15,9 @@ export const generateKoiManifest = () =>
   fs.writeFile(dir('src', 'koi.exe.manifest'), koiManifest)
 
 export const generateVisualElementsManifest = async () => {
-  await fs.writeFile(
-    dir('buildPortable', 'koi.VisualElementsManifest.xml'),
-    koiVisualElementsManifest
+  await fs.copyFile(
+    dir('templates', 'portable/koi.VisualElementsManifest.xml'),
+    dir('buildPortable', 'koi.VisualElementsManifest.xml')
   )
   await fs.copyFile(
     dir('buildAssets', 'koishi-tile.png'),
