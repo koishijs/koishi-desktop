@@ -1,5 +1,6 @@
 Checks: >
   *,
   -llvmlibc-callee-namespace,
+  -google-runtime-int,
   -cppcoreguidelines-avoid-magic-numbers,
   -readability-magic-numbers
