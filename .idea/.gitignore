@@ -1,3 +1,5 @@
-**
+*
+!*/
+
 !.gitignore
-!runConfigurations/
+!runConfigurations/*.xml
