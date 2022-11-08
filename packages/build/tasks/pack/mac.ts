@@ -59,6 +59,8 @@ echo "Setting chmod for app..."
 sudo chmod -R 755 /Applications/Koishi.app/ || true
 echo "Setting chmod for user data..."
 sudo chmod -R 777 ~/Library/Application\\ Support/Il\\ Harper/Koishi/ || true
+echo "Setting chown for user data..."
+sudo chown -R \${USER}:staff ~/Library/Application\\ Support/Il\\ Harper/Koishi/ || true
 echo "Post-install process finished."
 `.trim()
   )
