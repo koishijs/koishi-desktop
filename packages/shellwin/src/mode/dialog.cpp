@@ -55,7 +55,7 @@ int RunDialog(_In_ HINSTANCE hInstance, _In_ njson arg) {
   dlg.cbSize = sizeof(dlg);
   dlg.hwndParent = nullptr;
   dlg.hInstance = hInstance;
-  dlg.dwFlags = TDF_CAN_BE_MINIMIZED;
+  dlg.dwFlags = TDF_CAN_BE_MINIMIZED | TDF_USE_COMMAND_LINKS;
   dlg.dwCommonButtons = 0;
   dlg.pszWindowTitle = title;
   dlg.pszMainIcon = icon;
