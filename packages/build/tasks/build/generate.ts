@@ -35,7 +35,9 @@ export const generate = series(
     generateKoiConfig,
     generateKoiVersionInfo,
     generateKoiManifest,
-    series(generateAssets, generateVisualElementsManifest)
+    process.platform === 'win32'
+      ? series(generateAssets, generateVisualElementsManifest)
+      : generateAssets
   ),
   i18nGenerate
 )
