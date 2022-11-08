@@ -567,7 +567,7 @@ func (tray *TrayDaemon) addItemsAfter() {
 
 	go func() {
 		for {
-			_, ok := <-mExit.ClickedCh
+			_, ok := <-mAbout.ClickedCh
 			if !ok {
 				break
 			}
