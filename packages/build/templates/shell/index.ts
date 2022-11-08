@@ -6,3 +6,9 @@ import { koiSemver, koiVersion } from '../../utils/config'
 export const koiShellResources = Handlebars.compile(
   fs.readFileSync(path.join(__dirname, 'koishell.rc.hbs')).toString('utf-8')
 )({ koiVersion, koiSemver })
+
+export const koiShellManifest = Handlebars.compile(
+  fs
+    .readFileSync(path.join(__dirname, 'koishell.exe.manifest.hbs'))
+    .toString('utf-8')
+)({ koiSemver })

@@ -35,6 +35,7 @@ add_executable(koishell
         src/util/strings.cpp
         src/mode/webview.cpp
         src/mode/dialog.cpp
+        src/koishell.exe.manifest
         src/koishell.rc
 )
 

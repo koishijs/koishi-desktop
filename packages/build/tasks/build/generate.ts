@@ -3,6 +3,7 @@ import fs from 'node:fs/promises'
 import {
   koiConfig,
   koiManifest,
+  koiShellManifest,
   koiShellResources,
   koiVersionInfo,
 } from '../../templates'
@@ -22,6 +23,12 @@ export const generateKoiManifest = () =>
 export const generateKoiShellResources = () =>
   fs.writeFile(dir('srcShellWin', 'src/koishell.rc'), koiShellResources)
 
+export const generateKoiShellManifest = () =>
+  fs.writeFile(
+    dir('srcShellWin', 'src/koishell.exe.manifest'),
+    koiShellManifest
+  )
+
 export const generateVisualElementsManifest = async () => {
   await fs.copyFile(
     dir('templates', 'portable/koi.VisualElementsManifest.xml'),
@@ -39,6 +46,7 @@ export const generate = series(
     generateKoiVersionInfo,
     generateKoiManifest,
     generateKoiShellResources,
+    generateKoiShellManifest,
     process.platform === 'win32'
       ? series(generateAssets, generateVisualElementsManifest)
       : generateAssets
