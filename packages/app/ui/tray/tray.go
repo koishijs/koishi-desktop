@@ -12,6 +12,7 @@ import (
 	"gopkg.ilharper.com/koi/core/god/proto"
 	"gopkg.ilharper.com/koi/core/koicmd"
 	"gopkg.ilharper.com/koi/core/koiconfig"
+	"gopkg.ilharper.com/koi/core/koishell"
 	"gopkg.ilharper.com/koi/core/logger"
 	"gopkg.ilharper.com/koi/core/ui/icon"
 	"gopkg.ilharper.com/koi/sdk/client"
@@ -470,6 +471,7 @@ func (tray *TrayDaemon) addItemsBefore() {
 func (tray *TrayDaemon) addItemsAfter() {
 	l := do.MustInvoke[*logger.Logger](tray.i)
 	p := do.MustInvoke[*message.Printer](tray.i)
+	shell := do.MustInvoke[*koishell.KoiShell](tray.i)
 
 	mAdvanced := systray.AddMenuItem(p.Sprintf("Advanced"), "")
 	mRefresh := mAdvanced.AddSubMenuItem(p.Sprintf("Refresh"), "")
@@ -482,6 +484,7 @@ func (tray *TrayDaemon) addItemsAfter() {
 	mKillDaemon.SetTemplateIcon(icon.Kill, icon.Kill)
 	mExit := mAdvanced.AddSubMenuItem(p.Sprintf("Stop and Exit"), "")
 	mExit.SetTemplateIcon(icon.Exit, icon.Exit)
+	mAbout := systray.AddMenuItem("About", "")
 	mQuit := systray.AddMenuItem(p.Sprintf("Hide"), "")
 	mQuit.SetTemplateIcon(icon.Hide, icon.Hide)
 
@@ -491,6 +494,7 @@ func (tray *TrayDaemon) addItemsAfter() {
 	tray.chanReg = append(tray.chanReg, mStopDaemon.ClickedCh)
 	tray.chanReg = append(tray.chanReg, mKillDaemon.ClickedCh)
 	tray.chanReg = append(tray.chanReg, mExit.ClickedCh)
+	tray.chanReg = append(tray.chanReg, mAbout.ClickedCh)
 	tray.chanReg = append(tray.chanReg, mQuit.ClickedCh)
 
 	go func() {
@@ -558,6 +562,17 @@ func (tray *TrayDaemon) addItemsAfter() {
 			tray.manager.Stop()
 			l.Debug(p.Sprintf("Exiting systray"))
 			systray.Quit()
+		}
+	}()
+
+	go func() {
+		for {
+			_, ok := <-mExit.ClickedCh
+			if !ok {
+				break
+			}
+			l.Debug("Showing about dialog")
+			shell.About()
 		}
 	}()
 

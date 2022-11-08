@@ -10,6 +10,7 @@ import (
 
 	"github.com/goccy/go-json"
 	"github.com/samber/do"
+	"gopkg.ilharper.com/koi/app/util"
 	"gopkg.ilharper.com/koi/core/koiconfig"
 	"gopkg.ilharper.com/koi/core/logger"
 	"gopkg.ilharper.com/x/killdren"
@@ -182,4 +183,19 @@ func (shell *KoiShell) WebView(name, url string) error {
 	})
 
 	return err
+}
+
+func (shell *KoiShell) About() {
+	l := do.MustInvoke[*logger.Logger](shell.i)
+
+	_, err := shell.exec(map[string]any{
+		"mode":        "dialog",
+		"style":       "info",
+		"text1":       "Koishi Desktop",
+		"text2":       fmt.Sprintf("v%s", util.AppVersion),
+		"buttonCount": 1,
+	})
+	if err != nil {
+		l.Errorf("About dialog error: %v", err)
+	}
 }
