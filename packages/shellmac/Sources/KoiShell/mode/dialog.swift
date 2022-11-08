@@ -45,7 +45,7 @@ func ksDialog(_ arg: [String: Any]) {
             if let button3Text = arg["button3Text"] as? String {
                 alert.addButton(withTitle: button3Text)
             } else {
-                alert.addButton(withTitle: "Don’t Save")
+                alert.addButton(withTitle: "Don't Save")
             }
         }
     }
