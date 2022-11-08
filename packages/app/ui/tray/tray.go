@@ -70,7 +70,7 @@ func (tray *TrayDaemon) onReady() {
 
 func (tray *TrayDaemon) onExit() {
 	l := do.MustInvoke[*logger.Logger](tray.i)
-	wg := do.MustInvoke[sync.WaitGroup](tray.i)
+	wg := do.MustInvoke[*sync.WaitGroup](tray.i)
 
 	_ = tray.i.Shutdown()
 	l.Close()
