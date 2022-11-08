@@ -2,6 +2,7 @@
 #define _SHELLCOMM_PARSE_
 
 #include "b64/decode.h"
+#include "b64/encode.h"
 #include "nlohmann/json.hpp"
 
 using njson = nlohmann::json;
@@ -22,6 +23,8 @@ struct ParseResult {
 bool ParseArgv(int argc, const char **argv, ParseResult *result);
 
 bool Parse(const char *arg, ParseResult *result);
+
+void SetOutput(std::string str);
 
 } // namespace ShellComm
 

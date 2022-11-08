@@ -42,4 +42,25 @@ bool Parse(const char *arg, ParseResult *result) {
   return true;
 }
 
+void SetOutput(std::string str) {
+  const char *input = str.c_str();
+  unsigned long long len = str.length();
+  char *output = new char[len * 4];
+  char *c = output;
+  int cnt = 0;
+  base64::base64_encodestate s;
+
+  base64_init_encodestate(&s);
+  cnt = base64::base64_encode_block(input, len, c, &s);
+  c += cnt;
+  cnt = base64_encode_blockend(c, &s);
+  c += cnt;
+
+  *c = 0;
+
+  std::cout << output << std::endl;
+
+  delete[] output;
+}
+
 } // namespace ShellComm
