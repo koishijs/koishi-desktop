@@ -2,7 +2,8 @@
 <assembly
   xmlns="urn:schemas-microsoft-com:asm.v1"
   xmlns:asmv3="urn:schemas-microsoft-com:asm.v3"
-  xmlns:ws2="http://schemas.microsoft.com/SMI/2016/WindowsSettings"
+  xmlns:ws2016="http://schemas.microsoft.com/SMI/2016/WindowsSettings"
+  xmlns:ws2019="http://schemas.microsoft.com/SMI/2019/WindowsSettings"
   manifestVersion="1.0"
 >
   <assemblyIdentity
@@ -28,7 +29,7 @@
   </compatibility>
   <asmv3:application>
     <asmv3:windowsSettings>
-      <activeCodePage>UTF-8</activeCodePage>
+      <ws2019:activeCodePage>UTF-8</ws2019:activeCodePage>
       <dpiAware
         xmlns="http://schemas.microsoft.com/SMI/2005/WindowsSettings"
       >true/pm</dpiAware>
@@ -38,7 +39,7 @@
       <gdiScaling
         xmlns="http://schemas.microsoft.com/SMI/2017/WindowsSettings"
       >false</gdiScaling>
-      <ws2:longPathAware>false</ws2:longPathAware>
+      <ws2016:longPathAware>false</ws2016:longPathAware>
     </asmv3:windowsSettings>
   </asmv3:application>
   <dependency>
