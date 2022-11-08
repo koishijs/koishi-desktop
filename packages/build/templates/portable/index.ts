@@ -28,9 +28,3 @@ export const koishiManifest = Handlebars.compile(
     .readFileSync(path.join(__dirname, 'koishi.exe.manifest.hbs'))
     .toString('utf-8')
 )({ koiSemver })
-
-export const koiVisualElementsManifest = Handlebars.compile(
-  fs
-    .readFileSync(path.join(__dirname, 'koi.VisualElementsManifest.xml.hbs'))
-    .toString('utf-8')
-)({})
