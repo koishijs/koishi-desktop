@@ -2,6 +2,7 @@ package tray
 
 import (
 	"runtime"
+	"sync"
 	"time"
 
 	"fyne.io/systray"
@@ -37,7 +38,7 @@ func NewTrayDaemon(i *do.Injector) (*TrayDaemon, error) {
 }
 
 func (tray *TrayDaemon) Run() error {
-	systray.Run(tray.onReady, nil)
+	systray.Run(tray.onReady, tray.onExit)
 
 	return nil
 }
@@ -65,6 +66,15 @@ func (tray *TrayDaemon) onReady() {
 	}
 
 	tray.rebuild()
+}
+
+func (tray *TrayDaemon) onExit() {
+	l := do.MustInvoke[*logger.Logger](tray.i)
+	wg := do.MustInvoke[sync.WaitGroup](tray.i)
+
+	_ = tray.i.Shutdown()
+	l.Close()
+	wg.Wait()
 }
 
 func (tray *TrayDaemon) rebuild() {
