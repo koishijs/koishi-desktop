@@ -124,6 +124,13 @@ jobs:
           name: koi-${{ fromJson(matrix.target).rid }}-${{ github.sha }}.zip
           path: build/dist/koishi.zip
 
+      - name: Upload AppImage for Linux
+        if: fromJson(matrix.target).goos == 'linux'
+        uses: actions/upload-artifact@v3
+        with:
+          name: koi-${{ fromJson(matrix.target).rid }}-${{ github.sha }}.AppImage
+          path: build/dist/Koishi.AppImage
+
       - name: Upload Release Files for Windows
         if: startsWith(github.ref, 'refs/tags/') && fromJson(matrix.target).goos == 'windows'
         env:
@@ -156,6 +163,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.ACTIONS_DEPLOY_MODULE_KEY }}
         run: |
           mv build/dist/koishi.zip build/dist/koishi-desktop-${{ fromJson(matrix.target).rid }}-${{ steps.tag.outputs.version }}.zip
+          mv build/dist/Koishi.AppImage build/dist/koishi-desktop-${{ fromJson(matrix.target).rid }}-${{ steps.tag.outputs.version }}.AppImage
           gh release upload ${{ steps.tag.outputs.version }} \
-          build/dist/koishi-desktop-${{ fromJson(matrix.target).rid }}-${{ steps.tag.outputs.version }}.zip
+          build/dist/koishi-desktop-${{ fromJson(matrix.target).rid }}-${{ steps.tag.outputs.version }}.zip \
+          build/dist/koishi-desktop-${{ fromJson(matrix.target).rid }}-${{ steps.tag.outputs.version }}.AppImage
         shell: bash

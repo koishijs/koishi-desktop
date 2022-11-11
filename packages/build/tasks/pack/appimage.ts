@@ -59,7 +59,11 @@ export const packAppImageCopyFiles = parallel(
       dir('buildAssets', 'koishi.svg'),
       path.join(appDirPath, 'chat.koishi.desktop.svg')
     ),
-  () => fs.cp(dir('buildPortable'), appBinaryPath, { recursive: true })
+  series(
+    () => fs.cp(dir('buildUnfoldBinary'), appBinaryPath, { recursive: true }),
+    () =>
+      fs.writeFile(path.join(appBinaryPath, 'koi.yml'), 'redirect: USERDATA')
+  )
 )
 
 export const packAppImageGenerate = () =>
