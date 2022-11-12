@@ -1,6 +1,7 @@
 package tray
 
 import (
+	"os"
 	"runtime"
 	"sync"
 	"time"
@@ -75,6 +76,8 @@ func (tray *TrayDaemon) onExit() {
 	_ = tray.i.Shutdown()
 	l.Close()
 	wg.Wait()
+
+	os.Exit(0)
 }
 
 func (tray *TrayDaemon) rebuild() {
