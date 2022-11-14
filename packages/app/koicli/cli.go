@@ -5,12 +5,14 @@ import (
 
 	"github.com/samber/do"
 	"github.com/urfave/cli/v2"
+	"golang.org/x/text/message"
 	"gopkg.ilharper.com/koi/app/util"
 	"gopkg.ilharper.com/koi/core/logger"
 )
 
 func NewCli(i *do.Injector) (*cli.App, error) {
 	l := do.MustInvoke[*logger.Logger](i)
+	p := do.MustInvoke[*message.Printer](i)
 
 	do.ProvideNamed(i, serviceActionPre, newPreAction)
 	do.ProvideNamed(i, serviceCommandRun, newRunCommand)
@@ -24,8 +26,8 @@ func NewCli(i *do.Injector) (*cli.App, error) {
 	do.ProvideNamed(i, serviceCommandYarn, newYarnCommand)
 
 	return &cli.App{
-		Name:    "Koishi Desktop",
-		Usage:   "Launch Koishi from your desktop.",
+		Name:    p.Sprintf("Koishi Desktop"),
+		Usage:   p.Sprintf("Launch Koishi from your desktop."),
 		Version: fmt.Sprintf("v%s", util.AppVersion),
 		Authors: []*cli.Author{
 			{
@@ -40,19 +42,19 @@ func NewCli(i *do.Injector) (*cli.App, error) {
 		Flags: []cli.Flag{
 			&cli.BoolFlag{
 				Name:  "debug",
-				Usage: "Enable debug mode",
+				Usage: p.Sprintf("Enable debug mode"),
 			},
 
 			&cli.BoolFlag{
 				Name:     "no-console",
-				Usage:    "Do not show console window on Windows",
+				Usage:    p.Sprintf("Do not show console window on Windows"),
 				Required: false,
 				Value:    false,
 			},
 
 			&cli.BoolFlag{
 				Name:     "no-start",
-				Usage:    "Do not start instance(s)",
+				Usage:    p.Sprintf("Do not start instance(s)"),
 				Required: false,
 				Value:    false,
 			},
@@ -76,7 +78,7 @@ func NewCli(i *do.Injector) (*cli.App, error) {
 
 		Before: do.MustInvokeNamed[cli.BeforeFunc](i, serviceActionPre),
 		CommandNotFound: func(context *cli.Context, s string) {
-			l.Errorf("Command not found: %s", s)
+			l.Error(p.Sprintf("Command not found: %s", s))
 		},
 		ExitErrHandler: func(context *cli.Context, err error) {
 			l.Error(err)

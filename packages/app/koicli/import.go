@@ -3,11 +3,11 @@ package koicli
 
 import (
 	"errors"
-	"fmt"
 
 	"github.com/mitchellh/mapstructure"
 	"github.com/samber/do"
 	"github.com/urfave/cli/v2"
+	"golang.org/x/text/message"
 	"gopkg.ilharper.com/koi/core/god/proto"
 	"gopkg.ilharper.com/koi/core/koiconfig"
 	"gopkg.ilharper.com/koi/core/logger"
@@ -21,11 +21,13 @@ const (
 )
 
 func newImportCommand(i *do.Injector) (*cli.Command, error) {
+	p := do.MustInvoke[*message.Printer](i)
+
 	do.ProvideNamed(i, serviceActionImport, newImportAction)
 
 	return &cli.Command{
 		Name:      "import",
-		Usage:     "Import a Koishi Bundle",
+		Usage:     p.Sprintf("Import a Koishi Bundle"),
 		ArgsUsage: "path",
 		Action:    do.MustInvokeNamed[cli.ActionFunc](i, serviceActionImport),
 
@@ -33,12 +35,12 @@ func newImportCommand(i *do.Injector) (*cli.Command, error) {
 			&cli.StringFlag{
 				Name:    "name",
 				Aliases: []string{"n"},
-				Usage:   "Name of the imported instance",
+				Usage:   p.Sprintf("Name of the imported instance"),
 			},
 
 			&cli.BoolFlag{
 				Name:  "force",
-				Usage: "Empty instance directory before creating",
+				Usage: p.Sprintf("Empty instance directory before creating"),
 			},
 		},
 	}, nil
@@ -46,6 +48,7 @@ func newImportCommand(i *do.Injector) (*cli.Command, error) {
 
 func newImportAction(i *do.Injector) (cli.ActionFunc, error) {
 	l := do.MustInvoke[*logger.Logger](i)
+	p := do.MustInvoke[*message.Printer](i)
 
 	return func(c *cli.Context) error {
 		var err error
@@ -63,12 +66,7 @@ func newImportAction(i *do.Injector) (cli.ActionFunc, error) {
 			return err
 		}
 
-		respC, logC, err := client.Import(
-			conn,
-			c.Args().First(),
-			c.String("name"),
-			c.Bool("force"),
-		)
+		respC, logC, err := client.Import(conn, c.Args().First(), c.String("name"), c.Bool("force"))
 		if err != nil {
 			return err
 		}
@@ -79,12 +77,12 @@ func newImportAction(i *do.Injector) (cli.ActionFunc, error) {
 		for {
 			response := <-respC
 			if response == nil {
-				return fmt.Errorf("failed to get result, response is nil")
+				return errors.New(p.Sprintf("failed to get result, response is nil"))
 			}
 			if response.Type == proto.TypeResponseResult {
 				err = mapstructure.Decode(response.Data, &result)
 				if err != nil {
-					return fmt.Errorf("failed to parse response %#+v: %w", response, err)
+					return errors.New(p.Sprintf("failed to parse response %#+v: %v", response, err))
 				}
 
 				break
@@ -95,7 +93,7 @@ func newImportAction(i *do.Injector) (cli.ActionFunc, error) {
 		if result.Code != 0 {
 			s, ok := result.Data.(string)
 			if !ok {
-				return fmt.Errorf("result data %#+v is not string", result.Data)
+				return errors.New(p.Sprintf("result data %#+v is not string", result.Data))
 			}
 
 			return errors.New(s)
