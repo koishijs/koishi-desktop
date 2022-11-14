@@ -50,62 +50,627 @@
             ]
         },
         {
-            "id": "Tray ready.",
-            "message": "Tray ready.",
-            "translation": "托盘已就绪。",
+            "id": "cannot get executable: {Err}",
+            "message": "cannot get executable: {Err}",
+            "translation": "cannot get executable: {Err}",
+            "translatorComment": "Copied from source.",
+            "placeholders": [
+                {
+                    "id": "Err",
+                    "string": "%[1]v",
+                    "type": "error",
+                    "underlyingType": "interface{Error() string}",
+                    "argNum": 1,
+                    "expr": "err"
+                }
+            ],
+            "fuzzy": true
+        },
+        {
+            "id": "infinite redirection detected. Check your koi.config file",
+            "message": "infinite redirection detected. Check your koi.config file",
+            "translation": "infinite redirection detected. Check your koi.config file",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Reading config file: {AbsPath}",
+            "message": "Reading config file: {AbsPath}",
+            "translation": "Reading config file: {AbsPath}",
+            "translatorComment": "Copied from source.",
+            "placeholders": [
+                {
+                    "id": "AbsPath",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "absPath"
+                }
+            ],
+            "fuzzy": true
+        },
+        {
+            "id": "Config dir: {DirConfig}",
+            "message": "Config dir: {DirConfig}",
+            "translation": "Config dir: {DirConfig}",
+            "translatorComment": "Copied from source.",
+            "placeholders": [
+                {
+                    "id": "DirConfig",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "c.Computed.DirConfig"
+                }
+            ],
+            "fuzzy": true
+        },
+        {
+            "id": "failed to read {AbsPath}: {Err}",
+            "message": "failed to read {AbsPath}: {Err}",
+            "translation": "failed to read {AbsPath}: {Err}",
+            "translatorComment": "Copied from source.",
+            "placeholders": [
+                {
+                    "id": "AbsPath",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "absPath"
+                },
+                {
+                    "id": "Err",
+                    "string": "%[2]w",
+                    "type": "error",
+                    "underlyingType": "interface{Error() string}",
+                    "argNum": 2,
+                    "expr": "err"
+                }
+            ],
+            "fuzzy": true
+        },
+        {
+            "id": "Detecting redirect field.",
+            "message": "Detecting redirect field.",
+            "translation": "Detecting redirect field.",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "'redirect' field detected: {Redirect}",
+            "message": "'redirect' field detected: {Redirect}",
+            "translation": "'redirect' field detected: {Redirect}",
+            "translatorComment": "Copied from source.",
+            "placeholders": [
+                {
+                    "id": "Redirect",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "redirect"
+                }
+            ],
+            "fuzzy": true
+        },
+        {
+            "id": "failed to resolve user data: {UddErr}",
+            "message": "failed to resolve user data: {UddErr}",
+            "translation": "failed to resolve user data: {UddErr}",
+            "translatorComment": "Copied from source.",
+            "placeholders": [
+                {
+                    "id": "UddErr",
+                    "string": "%[1]w",
+                    "type": "error",
+                    "underlyingType": "interface{Error() string}",
+                    "argNum": 1,
+                    "expr": "uddErr"
+                }
+            ],
+            "fuzzy": true
+        },
+        {
+            "id": "Failed to read {Redirect}: {RfErr}",
+            "message": "Failed to read {Redirect}: {RfErr}",
+            "translation": "Failed to read {Redirect}: {RfErr}",
+            "translatorComment": "Copied from source.",
+            "placeholders": [
+                {
+                    "id": "Redirect",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "redirect"
+                },
+                {
+                    "id": "RfErr",
+                    "string": "%[2]v",
+                    "type": "error",
+                    "underlyingType": "interface{Error() string}",
+                    "argNum": 2,
+                    "expr": "rfErr"
+                }
+            ],
+            "fuzzy": true
+        },
+        {
+            "id": "Trying to unfold.",
+            "message": "Trying to unfold.",
+            "translation": "Trying to unfold.",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "failed to create stdout pipe: {Err}",
+            "message": "failed to create stdout pipe: {Err}",
+            "translation": "failed to create stdout pipe: {Err}",
+            "translatorComment": "Copied from source.",
+            "placeholders": [
+                {
+                    "id": "Err",
+                    "string": "%[1]v",
+                    "type": "error",
+                    "underlyingType": "interface{Error() string}",
+                    "argNum": 1,
+                    "expr": "err"
+                }
+            ],
+            "fuzzy": true
+        },
+        {
+            "id": "Scanner error: {ScnErr}",
+            "message": "Scanner error: {ScnErr}",
+            "translation": "Scanner error: {ScnErr}",
+            "translatorComment": "Copied from source.",
+            "placeholders": [
+                {
+                    "id": "ScnErr",
+                    "string": "%[1]s",
+                    "type": "error",
+                    "underlyingType": "interface{Error() string}",
+                    "argNum": 1,
+                    "expr": "scnErr"
+                }
+            ],
+            "fuzzy": true
+        },
+        {
+            "id": "Failed to unfold: {RunErr}",
+            "message": "Failed to unfold: {RunErr}",
+            "translation": "Failed to unfold: {RunErr}",
+            "translatorComment": "Copied from source.",
+            "placeholders": [
+                {
+                    "id": "RunErr",
+                    "string": "%[1]v",
+                    "type": "error",
+                    "underlyingType": "interface{Error() string}",
+                    "argNum": 1,
+                    "expr": "runErr"
+                }
+            ],
+            "fuzzy": true
+        },
+        {
+            "id": "Will ignore this error.",
+            "message": "Will ignore this error.",
+            "translation": "Will ignore this error.",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Redirecting to user data: {Redirect}",
+            "message": "Redirecting to user data: {Redirect}",
+            "translation": "Redirecting to user data: {Redirect}",
+            "translatorComment": "Copied from source.",
+            "placeholders": [
+                {
+                    "id": "Redirect",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "redirect"
+                }
+            ],
+            "fuzzy": true
+        },
+        {
+            "id": "Parsing config.",
+            "message": "Parsing config.",
+            "translation": "Parsing config.",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "failed to parse config {AbsPath}: {Err}",
+            "message": "failed to parse config {AbsPath}: {Err}",
+            "translation": "failed to parse config {AbsPath}: {Err}",
+            "translatorComment": "Copied from source.",
+            "placeholders": [
+                {
+                    "id": "AbsPath",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "absPath"
+                },
+                {
+                    "id": "Err",
+                    "string": "%[2]v",
+                    "type": "error",
+                    "underlyingType": "interface{Error() string}",
+                    "argNum": 2,
+                    "expr": "err"
+                }
+            ],
+            "fuzzy": true
+        },
+        {
+            "id": "failed to process postconfig: {Err}",
+            "message": "failed to process postconfig: {Err}",
+            "translation": "failed to process postconfig: {Err}",
+            "translatorComment": "Copied from source.",
+            "placeholders": [
+                {
+                    "id": "Err",
+                    "string": "%[1]v",
+                    "type": "error",
+                    "underlyingType": "interface{Error() string}",
+                    "argNum": 1,
+                    "expr": "err"
+                }
+            ],
+            "fuzzy": true
+        },
+        {
+            "id": "Config parsed successfully.",
+            "message": "Config parsed successfully.",
+            "translation": "Config parsed successfully.",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "failed to process dir data: {Err}",
+            "message": "failed to process dir data: {Err}",
+            "translation": "failed to process dir data: {Err}",
+            "translatorComment": "Copied from source.",
+            "placeholders": [
+                {
+                    "id": "Err",
+                    "string": "%[1]v",
+                    "type": "error",
+                    "underlyingType": "interface{Error() string}",
+                    "argNum": 1,
+                    "expr": "err"
+                }
+            ],
+            "fuzzy": true
+        },
+        {
+            "id": "failed to process dir data/home: {Err}",
+            "message": "failed to process dir data/home: {Err}",
+            "translation": "failed to process dir data/home: {Err}",
+            "translatorComment": "Copied from source.",
+            "placeholders": [
+                {
+                    "id": "Err",
+                    "string": "%[1]v",
+                    "type": "error",
+                    "underlyingType": "interface{Error() string}",
+                    "argNum": 1,
+                    "expr": "err"
+                }
+            ],
+            "fuzzy": true
+        },
+        {
+            "id": "failed to process dir data/node: {Err}",
+            "message": "failed to process dir data/node: {Err}",
+            "translation": "failed to process dir data/node: {Err}",
+            "translatorComment": "Copied from source.",
+            "placeholders": [
+                {
+                    "id": "Err",
+                    "string": "%[1]v",
+                    "type": "error",
+                    "underlyingType": "interface{Error() string}",
+                    "argNum": 1,
+                    "expr": "err"
+                }
+            ],
+            "fuzzy": true
+        },
+        {
+            "id": "failed to process dir node/bin: {Err}",
+            "message": "failed to process dir node/bin: {Err}",
+            "translation": "failed to process dir node/bin: {Err}",
+            "translatorComment": "Copied from source.",
+            "placeholders": [
+                {
+                    "id": "Err",
+                    "string": "%[1]v",
+                    "type": "error",
+                    "underlyingType": "interface{Error() string}",
+                    "argNum": 1,
+                    "expr": "err"
+                }
+            ],
+            "fuzzy": true
+        },
+        {
+            "id": "failed to process dir data/lock: {Err}",
+            "message": "failed to process dir data/lock: {Err}",
+            "translation": "failed to process dir data/lock: {Err}",
+            "translatorComment": "Copied from source.",
+            "placeholders": [
+                {
+                    "id": "Err",
+                    "string": "%[1]v",
+                    "type": "error",
+                    "underlyingType": "interface{Error() string}",
+                    "argNum": 1,
+                    "expr": "err"
+                }
+            ],
+            "fuzzy": true
+        },
+        {
+            "id": "failed to process dir data/tmp: {Err}",
+            "message": "failed to process dir data/tmp: {Err}",
+            "translation": "failed to process dir data/tmp: {Err}",
+            "translatorComment": "Copied from source.",
+            "placeholders": [
+                {
+                    "id": "Err",
+                    "string": "%[1]v",
+                    "type": "error",
+                    "underlyingType": "interface{Error() string}",
+                    "argNum": 1,
+                    "expr": "err"
+                }
+            ],
+            "fuzzy": true
+        },
+        {
+            "id": "failed to process dir data/instances: {Err}",
+            "message": "failed to process dir data/instances: {Err}",
+            "translation": "failed to process dir data/instances: {Err}",
+            "translatorComment": "Copied from source.",
+            "placeholders": [
+                {
+                    "id": "Err",
+                    "string": "%[1]v",
+                    "type": "error",
+                    "underlyingType": "interface{Error() string}",
+                    "argNum": 1,
+                    "expr": "err"
+                }
+            ],
+            "fuzzy": true
+        },
+        {
+            "id": "failed to chmod data folder {Path}: {Err}",
+            "message": "failed to chmod data folder {Path}: {Err}",
+            "translation": "failed to chmod data folder {Path}: {Err}",
+            "translatorComment": "Copied from source.",
+            "placeholders": [
+                {
+                    "id": "Path",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "path"
+                },
+                {
+                    "id": "Err",
+                    "string": "%[2]v",
+                    "type": "error",
+                    "underlyingType": "interface{Error() string}",
+                    "argNum": 2,
+                    "expr": "err"
+                }
+            ],
+            "fuzzy": true
+        },
+        {
+            "id": "Koishi Desktop",
+            "message": "Koishi Desktop",
+            "translation": "Koishi 桌面",
             "translatorComment": "Copied from source."
         },
         {
-            "id": "Starting...",
-            "message": "Starting...",
-            "translation": "正在启动…",
-            "translatorComment": "Copied from source."
+            "id": "Launch Koishi from your desktop.",
+            "message": "Launch Koishi from your desktop.",
+            "translation": "Launch Koishi from your desktop.",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Enable debug mode",
+            "message": "Enable debug mode",
+            "translation": "Enable debug mode",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Do not show console window on Windows",
+            "message": "Do not show console window on Windows",
+            "translation": "Do not show console window on Windows",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Do not start instance(s)",
+            "message": "Do not start instance(s)",
+            "translation": "Do not start instance(s)",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Command not found: {S}",
+            "message": "Command not found: {S}",
+            "translation": "Command not found: {S}",
+            "translatorComment": "Copied from source.",
+            "placeholders": [
+                {
+                    "id": "S",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "s"
+                }
+            ],
+            "fuzzy": true
+        },
+        {
+            "id": "Ping current daemon",
+            "message": "Ping current daemon",
+            "translation": "Ping current daemon",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Start daemon",
+            "message": "Start daemon",
+            "translation": "Start daemon",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Stop all daemons",
+            "message": "Stop all daemons",
+            "translation": "Stop all daemons",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Kill all daemons",
+            "message": "Kill all daemons",
+            "translation": "Kill all daemons",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Trigger action: daemon ping",
+            "message": "Trigger action: daemon ping",
+            "translation": "Trigger action: daemon ping",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "PONG at:\n{Conn}",
+            "message": "PONG at:\n{Conn}",
+            "translation": "PONG at:\n{Conn}",
+            "translatorComment": "Copied from source.",
+            "placeholders": [
+                {
+                    "id": "Conn",
+                    "string": "%#+[1]v",
+                    "type": "*gopkg.ilharper.com/koi/sdk/client.Options",
+                    "underlyingType": "*gopkg.ilharper.com/koi/sdk/client.Options",
+                    "argNum": 1,
+                    "expr": "conn"
+                }
+            ],
+            "fuzzy": true
+        },
+        {
+            "id": "Trigger action: daemon start",
+            "message": "Trigger action: daemon start",
+            "translation": "Trigger action: daemon start",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Daemon started at:\n{Conn}",
+            "message": "Daemon started at:\n{Conn}",
+            "translation": "Daemon started at:\n{Conn}",
+            "translatorComment": "Copied from source.",
+            "placeholders": [
+                {
+                    "id": "Conn",
+                    "string": "%#+[1]v",
+                    "type": "*gopkg.ilharper.com/koi/sdk/client.Options",
+                    "underlyingType": "*gopkg.ilharper.com/koi/sdk/client.Options",
+                    "argNum": 1,
+                    "expr": "conn"
+                }
+            ],
+            "fuzzy": true
+        },
+        {
+            "id": "Trigger action: daemon stop",
+            "message": "Trigger action: daemon stop",
+            "translation": "Trigger action: daemon stop",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "All daemon stopped.",
+            "message": "All daemon stopped.",
+            "translation": "All daemon stopped.",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Trigger action: daemon kill",
+            "message": "Trigger action: daemon kill",
+            "translation": "Trigger action: daemon kill",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "{Killed} Daemon killed.",
+            "message": "{Killed} Daemon killed.",
+            "translation": "{Killed} Daemon killed.",
+            "translatorComment": "Copied from source.",
+            "placeholders": [
+                {
+                    "id": "Killed",
+                    "string": "%[1]d",
+                    "type": "uint16",
+                    "underlyingType": "uint16",
+                    "argNum": 1,
+                    "expr": "killed"
+                }
+            ],
+            "fuzzy": true
+        },
+        {
+            "id": "Import a Koishi Bundle",
+            "message": "Import a Koishi Bundle",
+            "translation": "Import a Koishi Bundle",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Name of the imported instance",
+            "message": "Name of the imported instance",
+            "translation": "Name of the imported instance",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Empty instance directory before creating",
+            "message": "Empty instance directory before creating",
+            "translation": "Empty instance directory before creating",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
         },
         {
             "id": "failed to get result, response is nil",
             "message": "failed to get result, response is nil",
             "translation": "获取结果失败，响应为 nil",
             "translatorComment": "Copied from source."
-        },
-        {
-            "id": "failed to parse result {Response}: response type '{Type}' is not '{TypeResponseResult}': {Err}",
-            "message": "failed to parse result {Response}: response type '{Type}' is not '{TypeResponseResult}': {Err}",
-            "translation": "解析结果 {Response} 失败：响应类型「{Type}」不是「{TypeResponseResult}」：{Err}",
-            "translatorComment": "Copied from source.",
-            "placeholders": [
-                {
-                    "id": "Response",
-                    "string": "%#+[1]v",
-                    "type": "*gopkg.ilharper.com/koi/core/god/proto.Response",
-                    "underlyingType": "*gopkg.ilharper.com/koi/core/god/proto.Response",
-                    "argNum": 1,
-                    "expr": "response"
-                },
-                {
-                    "id": "Type",
-                    "string": "%[2]s",
-                    "type": "string",
-                    "underlyingType": "string",
-                    "argNum": 2,
-                    "expr": "response.Type"
-                },
-                {
-                    "id": "TypeResponseResult",
-                    "string": "%[3]s",
-                    "type": "string",
-                    "underlyingType": "string",
-                    "argNum": 3,
-                    "expr": "proto.TypeResponseResult"
-                },
-                {
-                    "id": "Err",
-                    "string": "%[4]v",
-                    "type": "error",
-                    "underlyingType": "interface{Error() string}",
-                    "argNum": 4,
-                    "expr": "err"
-                }
-            ]
         },
         {
             "id": "failed to parse response {Response}: {Err}",
@@ -148,6 +713,164 @@
             ]
         },
         {
+            "id": "Open Instances",
+            "message": "Open Instances",
+            "translation": "Open Instances",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Trigger action: open",
+            "message": "Trigger action: open",
+            "translation": "Trigger action: open",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Trigger pseudo action: pre",
+            "message": "Trigger pseudo action: pre",
+            "translation": "Trigger pseudo action: pre",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "You're seeing debug output because you have a RPL target running in debug mode. This will not be controlled by --debug flag.",
+            "message": "You're seeing debug output because you have a RPL target running in debug mode. This will not be controlled by --debug flag.",
+            "translation": "You're seeing debug output because you have a RPL target running in debug mode. This will not be controlled by --debug flag.",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "--debug flag detected - debug mode enabled.",
+            "message": "--debug flag detected - debug mode enabled.",
+            "translation": "--debug flag detected - debug mode enabled.",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "PID: {Pid}",
+            "message": "PID: {Pid}",
+            "translation": "PID: {Pid}",
+            "translatorComment": "Copied from source.",
+            "placeholders": [
+                {
+                    "id": "Pid",
+                    "string": "%[1]d",
+                    "type": "int",
+                    "underlyingType": "int",
+                    "argNum": 1,
+                    "expr": "os.Getpid()"
+                }
+            ],
+            "fuzzy": true
+        },
+        {
+            "id": "failed to get executable: {Err}",
+            "message": "failed to get executable: {Err}",
+            "translation": "failed to get executable: {Err}",
+            "translatorComment": "Copied from source.",
+            "placeholders": [
+                {
+                    "id": "Err",
+                    "string": "%[1]v",
+                    "type": "error",
+                    "underlyingType": "interface{Error() string}",
+                    "argNum": 1,
+                    "expr": "err"
+                }
+            ],
+            "fuzzy": true
+        },
+        {
+            "id": "Executable: {Exe}",
+            "message": "Executable: {Exe}",
+            "translation": "Executable: {Exe}",
+            "translatorComment": "Copied from source.",
+            "placeholders": [
+                {
+                    "id": "Exe",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "exe"
+                }
+            ],
+            "fuzzy": true
+        },
+        {
+            "id": "Command line arguments:\n{Args}",
+            "message": "Command line arguments:\n{Args}",
+            "translation": "Command line arguments:\n{Args}",
+            "translatorComment": "Copied from source.",
+            "placeholders": [
+                {
+                    "id": "Args",
+                    "string": "%#+[1]v",
+                    "type": "[]string",
+                    "underlyingType": "[]string",
+                    "argNum": 1,
+                    "expr": "os.Args"
+                }
+            ],
+            "fuzzy": true
+        },
+        {
+            "id": "Show Process Status",
+            "message": "Show Process Status",
+            "translation": "Show Process Status",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Including stopped instances",
+            "message": "Including stopped instances",
+            "translation": "Including stopped instances",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Trigger action: ps",
+            "message": "Trigger action: ps",
+            "translation": "Trigger action: ps",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "failed to get daemon connection: {Err}",
+            "message": "failed to get daemon connection: {Err}",
+            "translation": "failed to get daemon connection: {Err}",
+            "translatorComment": "Copied from source.",
+            "placeholders": [
+                {
+                    "id": "Err",
+                    "string": "%[1]v",
+                    "type": "error",
+                    "underlyingType": "interface{Error() string}",
+                    "argNum": 1,
+                    "expr": "err"
+                }
+            ],
+            "fuzzy": true
+        },
+        {
+            "id": "failed to process command ps: {Err}",
+            "message": "failed to process command ps: {Err}",
+            "translation": "failed to process command ps: {Err}",
+            "translatorComment": "Copied from source.",
+            "placeholders": [
+                {
+                    "id": "Err",
+                    "string": "%[1]v",
+                    "type": "error",
+                    "underlyingType": "interface{Error() string}",
+                    "argNum": 1,
+                    "expr": "err"
+                }
+            ],
+            "fuzzy": true
+        },
+        {
             "id": "failed to parse result {Result}: {Err}",
             "message": "failed to parse result {Result}: {Err}",
             "translation": "解析结果 {Result} 失败：{Err}",
@@ -167,6 +890,205 @@
                     "type": "error",
                     "underlyingType": "interface{Error() string}",
                     "argNum": 2,
+                    "expr": "err"
+                }
+            ]
+        },
+        {
+            "id": "failed to marshal result {ResultPs}: {Err}",
+            "message": "failed to marshal result {ResultPs}: {Err}",
+            "translation": "failed to marshal result {ResultPs}: {Err}",
+            "translatorComment": "Copied from source.",
+            "placeholders": [
+                {
+                    "id": "ResultPs",
+                    "string": "%#+[1]v",
+                    "type": "gopkg.ilharper.com/koi/core/koicmd.ResultPs",
+                    "underlyingType": "struct{Instances []*gopkg.ilharper.com/koi/core/koicmd.ResultPsInstance \"json:\\\"instances\\\" mapstructure:\\\"instances\\\"\"}",
+                    "argNum": 1,
+                    "expr": "resultPs"
+                },
+                {
+                    "id": "Err",
+                    "string": "%[2]v",
+                    "type": "error",
+                    "underlyingType": "interface{Error() string}",
+                    "argNum": 2,
+                    "expr": "err"
+                }
+            ],
+            "fuzzy": true
+        },
+        {
+            "id": "Restart Instances",
+            "message": "Restart Instances",
+            "translation": "Restart Instances",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Trigger action: restart",
+            "message": "Trigger action: restart",
+            "translation": "Trigger action: restart",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Run Koishi Desktop",
+            "message": "Run Koishi Desktop",
+            "translation": "Run Koishi Desktop",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Run daemon",
+            "message": "Run daemon",
+            "translation": "Run daemon",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Run UI",
+            "message": "Run UI",
+            "translation": "Run UI",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Trigger action: run",
+            "message": "Trigger action: run",
+            "translation": "Trigger action: run",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "unknown mode: {Mode}",
+            "message": "unknown mode: {Mode}",
+            "translation": "unknown mode: {Mode}",
+            "translatorComment": "Copied from source.",
+            "placeholders": [
+                {
+                    "id": "Mode",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "cfg.Data.Mode"
+                }
+            ],
+            "fuzzy": true
+        },
+        {
+            "id": "Trigger action: run daemon",
+            "message": "Trigger action: run daemon",
+            "translation": "Trigger action: run daemon",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Trigger action: run ui",
+            "message": "Trigger action: run ui",
+            "translation": "Trigger action: run ui",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Start Instances",
+            "message": "Start Instances",
+            "translation": "Start Instances",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Trigger action: start",
+            "message": "Trigger action: start",
+            "translation": "Trigger action: start",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Stop Instances",
+            "message": "Stop Instances",
+            "translation": "Stop Instances",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Trigger action: stop",
+            "message": "Trigger action: stop",
+            "translation": "Trigger action: stop",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Run Yarn Command on Instance",
+            "message": "Run Yarn Command on Instance",
+            "translation": "Run Yarn Command on Instance",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Target Instance",
+            "message": "Target Instance",
+            "translation": "Target Instance",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Trigger action: yarn",
+            "message": "Trigger action: yarn",
+            "translation": "Trigger action: yarn",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Tray ready.",
+            "message": "Tray ready.",
+            "translation": "托盘已就绪。",
+            "translatorComment": "Copied from source."
+        },
+        {
+            "id": "Starting...",
+            "message": "Starting...",
+            "translation": "正在启动…",
+            "translatorComment": "Copied from source."
+        },
+        {
+            "id": "failed to parse result {Response}: response type '{Type}' is not '{TypeResponseResult}': {Err}",
+            "message": "failed to parse result {Response}: response type '{Type}' is not '{TypeResponseResult}': {Err}",
+            "translation": "解析结果 {Response} 失败：响应类型「{Type}」不是「{TypeResponseResult}」：{Err}",
+            "translatorComment": "Copied from source.",
+            "placeholders": [
+                {
+                    "id": "Response",
+                    "string": "%#+[1]v",
+                    "type": "*gopkg.ilharper.com/koi/core/god/proto.Response",
+                    "underlyingType": "*gopkg.ilharper.com/koi/core/god/proto.Response",
+                    "argNum": 1,
+                    "expr": "response"
+                },
+                {
+                    "id": "Type",
+                    "string": "%[2]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 2,
+                    "expr": "response.Type"
+                },
+                {
+                    "id": "TypeResponseResult",
+                    "string": "%[3]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 3,
+                    "expr": "proto.TypeResponseResult"
+                },
+                {
+                    "id": "Err",
+                    "string": "%[4]v",
+                    "type": "error",
+                    "underlyingType": "interface{Error() string}",
+                    "argNum": 4,
                     "expr": "err"
                 }
             ]
@@ -266,12 +1188,6 @@
             ]
         },
         {
-            "id": "Koishi Desktop",
-            "message": "Koishi Desktop",
-            "translation": "Koishi 桌面",
-            "translatorComment": "Copied from source."
-        },
-        {
             "id": "Advanced",
             "message": "Advanced",
             "translation": "高级",
@@ -308,6 +1224,13 @@
             "translatorComment": "Copied from source."
         },
         {
+            "id": "About",
+            "message": "About",
+            "translation": "About",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
             "id": "Hide",
             "message": "Hide",
             "translation": "隐藏",
@@ -336,6 +1259,13 @@
             "message": "Exiting systray",
             "translation": "正在退出 systray",
             "translatorComment": "Copied from source."
+        },
+        {
+            "id": "Showing about dialog",
+            "message": "Showing about dialog",
+            "translation": "Showing about dialog",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
         },
         {
             "id": "Starting these instances:\n{Start__}",
