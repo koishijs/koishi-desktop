@@ -50,62 +50,533 @@
             ]
         },
         {
-            "id": "Tray ready.",
-            "message": "Tray ready.",
-            "translation": "托盘已就绪。",
+            "id": "cannot get executable: {Err}",
+            "message": "cannot get executable: {Err}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Err",
+                    "string": "%[1]v",
+                    "type": "error",
+                    "underlyingType": "interface{Error() string}",
+                    "argNum": 1,
+                    "expr": "err"
+                }
+            ]
+        },
+        {
+            "id": "infinite redirection detected. Check your koi.config file",
+            "message": "infinite redirection detected. Check your koi.config file",
+            "translation": ""
+        },
+        {
+            "id": "Reading config file: {AbsPath}",
+            "message": "Reading config file: {AbsPath}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "AbsPath",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "absPath"
+                }
+            ]
+        },
+        {
+            "id": "Config dir: {DirConfig}",
+            "message": "Config dir: {DirConfig}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "DirConfig",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "c.Computed.DirConfig"
+                }
+            ]
+        },
+        {
+            "id": "failed to read {AbsPath}: {Err}",
+            "message": "failed to read {AbsPath}: {Err}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "AbsPath",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "absPath"
+                },
+                {
+                    "id": "Err",
+                    "string": "%[2]w",
+                    "type": "error",
+                    "underlyingType": "interface{Error() string}",
+                    "argNum": 2,
+                    "expr": "err"
+                }
+            ]
+        },
+        {
+            "id": "Detecting redirect field.",
+            "message": "Detecting redirect field.",
+            "translation": ""
+        },
+        {
+            "id": "'redirect' field detected: {Redirect}",
+            "message": "'redirect' field detected: {Redirect}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Redirect",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "redirect"
+                }
+            ]
+        },
+        {
+            "id": "failed to resolve user data: {UddErr}",
+            "message": "failed to resolve user data: {UddErr}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "UddErr",
+                    "string": "%[1]w",
+                    "type": "error",
+                    "underlyingType": "interface{Error() string}",
+                    "argNum": 1,
+                    "expr": "uddErr"
+                }
+            ]
+        },
+        {
+            "id": "Failed to read {Redirect}: {RfErr}",
+            "message": "Failed to read {Redirect}: {RfErr}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Redirect",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "redirect"
+                },
+                {
+                    "id": "RfErr",
+                    "string": "%[2]v",
+                    "type": "error",
+                    "underlyingType": "interface{Error() string}",
+                    "argNum": 2,
+                    "expr": "rfErr"
+                }
+            ]
+        },
+        {
+            "id": "Trying to unfold.",
+            "message": "Trying to unfold.",
+            "translation": ""
+        },
+        {
+            "id": "failed to create stdout pipe: {Err}",
+            "message": "failed to create stdout pipe: {Err}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Err",
+                    "string": "%[1]v",
+                    "type": "error",
+                    "underlyingType": "interface{Error() string}",
+                    "argNum": 1,
+                    "expr": "err"
+                }
+            ]
+        },
+        {
+            "id": "Scanner error: {ScnErr}",
+            "message": "Scanner error: {ScnErr}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "ScnErr",
+                    "string": "%[1]s",
+                    "type": "error",
+                    "underlyingType": "interface{Error() string}",
+                    "argNum": 1,
+                    "expr": "scnErr"
+                }
+            ]
+        },
+        {
+            "id": "Failed to unfold: {RunErr}",
+            "message": "Failed to unfold: {RunErr}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "RunErr",
+                    "string": "%[1]v",
+                    "type": "error",
+                    "underlyingType": "interface{Error() string}",
+                    "argNum": 1,
+                    "expr": "runErr"
+                }
+            ]
+        },
+        {
+            "id": "Will ignore this error.",
+            "message": "Will ignore this error.",
+            "translation": ""
+        },
+        {
+            "id": "Redirecting to user data: {Redirect}",
+            "message": "Redirecting to user data: {Redirect}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Redirect",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "redirect"
+                }
+            ]
+        },
+        {
+            "id": "Parsing config.",
+            "message": "Parsing config.",
+            "translation": ""
+        },
+        {
+            "id": "failed to parse config {AbsPath}: {Err}",
+            "message": "failed to parse config {AbsPath}: {Err}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "AbsPath",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "absPath"
+                },
+                {
+                    "id": "Err",
+                    "string": "%[2]v",
+                    "type": "error",
+                    "underlyingType": "interface{Error() string}",
+                    "argNum": 2,
+                    "expr": "err"
+                }
+            ]
+        },
+        {
+            "id": "failed to process postconfig: {Err}",
+            "message": "failed to process postconfig: {Err}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Err",
+                    "string": "%[1]v",
+                    "type": "error",
+                    "underlyingType": "interface{Error() string}",
+                    "argNum": 1,
+                    "expr": "err"
+                }
+            ]
+        },
+        {
+            "id": "Config parsed successfully.",
+            "message": "Config parsed successfully.",
+            "translation": ""
+        },
+        {
+            "id": "failed to process dir data: {Err}",
+            "message": "failed to process dir data: {Err}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Err",
+                    "string": "%[1]v",
+                    "type": "error",
+                    "underlyingType": "interface{Error() string}",
+                    "argNum": 1,
+                    "expr": "err"
+                }
+            ]
+        },
+        {
+            "id": "failed to process dir data/home: {Err}",
+            "message": "failed to process dir data/home: {Err}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Err",
+                    "string": "%[1]v",
+                    "type": "error",
+                    "underlyingType": "interface{Error() string}",
+                    "argNum": 1,
+                    "expr": "err"
+                }
+            ]
+        },
+        {
+            "id": "failed to process dir data/node: {Err}",
+            "message": "failed to process dir data/node: {Err}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Err",
+                    "string": "%[1]v",
+                    "type": "error",
+                    "underlyingType": "interface{Error() string}",
+                    "argNum": 1,
+                    "expr": "err"
+                }
+            ]
+        },
+        {
+            "id": "failed to process dir node/bin: {Err}",
+            "message": "failed to process dir node/bin: {Err}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Err",
+                    "string": "%[1]v",
+                    "type": "error",
+                    "underlyingType": "interface{Error() string}",
+                    "argNum": 1,
+                    "expr": "err"
+                }
+            ]
+        },
+        {
+            "id": "failed to process dir data/lock: {Err}",
+            "message": "failed to process dir data/lock: {Err}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Err",
+                    "string": "%[1]v",
+                    "type": "error",
+                    "underlyingType": "interface{Error() string}",
+                    "argNum": 1,
+                    "expr": "err"
+                }
+            ]
+        },
+        {
+            "id": "failed to process dir data/tmp: {Err}",
+            "message": "failed to process dir data/tmp: {Err}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Err",
+                    "string": "%[1]v",
+                    "type": "error",
+                    "underlyingType": "interface{Error() string}",
+                    "argNum": 1,
+                    "expr": "err"
+                }
+            ]
+        },
+        {
+            "id": "failed to process dir data/instances: {Err}",
+            "message": "failed to process dir data/instances: {Err}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Err",
+                    "string": "%[1]v",
+                    "type": "error",
+                    "underlyingType": "interface{Error() string}",
+                    "argNum": 1,
+                    "expr": "err"
+                }
+            ]
+        },
+        {
+            "id": "failed to chmod data folder {Path}: {Err}",
+            "message": "failed to chmod data folder {Path}: {Err}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Path",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "path"
+                },
+                {
+                    "id": "Err",
+                    "string": "%[2]v",
+                    "type": "error",
+                    "underlyingType": "interface{Error() string}",
+                    "argNum": 2,
+                    "expr": "err"
+                }
+            ]
+        },
+        {
+            "id": "Koishi Desktop",
+            "message": "Koishi Desktop",
+            "translation": "Koishi 桌面",
             "translatorComment": "Copied from source."
         },
         {
-            "id": "Starting...",
-            "message": "Starting...",
-            "translation": "正在启动…",
-            "translatorComment": "Copied from source."
+            "id": "Launch Koishi from your desktop.",
+            "message": "Launch Koishi from your desktop.",
+            "translation": ""
+        },
+        {
+            "id": "Enable debug mode",
+            "message": "Enable debug mode",
+            "translation": ""
+        },
+        {
+            "id": "Do not show console window on Windows",
+            "message": "Do not show console window on Windows",
+            "translation": ""
+        },
+        {
+            "id": "Do not start instance(s)",
+            "message": "Do not start instance(s)",
+            "translation": ""
+        },
+        {
+            "id": "Command not found: {S}",
+            "message": "Command not found: {S}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "S",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "s"
+                }
+            ]
+        },
+        {
+            "id": "Ping current daemon",
+            "message": "Ping current daemon",
+            "translation": ""
+        },
+        {
+            "id": "Start daemon",
+            "message": "Start daemon",
+            "translation": ""
+        },
+        {
+            "id": "Stop all daemons",
+            "message": "Stop all daemons",
+            "translation": ""
+        },
+        {
+            "id": "Kill all daemons",
+            "message": "Kill all daemons",
+            "translation": ""
+        },
+        {
+            "id": "Trigger action: daemon ping",
+            "message": "Trigger action: daemon ping",
+            "translation": ""
+        },
+        {
+            "id": "PONG at:\n{Conn}",
+            "message": "PONG at:\n{Conn}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Conn",
+                    "string": "%#+[1]v",
+                    "type": "*gopkg.ilharper.com/koi/sdk/client.Options",
+                    "underlyingType": "*gopkg.ilharper.com/koi/sdk/client.Options",
+                    "argNum": 1,
+                    "expr": "conn"
+                }
+            ]
+        },
+        {
+            "id": "Trigger action: daemon start",
+            "message": "Trigger action: daemon start",
+            "translation": ""
+        },
+        {
+            "id": "Daemon started at:\n{Conn}",
+            "message": "Daemon started at:\n{Conn}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Conn",
+                    "string": "%#+[1]v",
+                    "type": "*gopkg.ilharper.com/koi/sdk/client.Options",
+                    "underlyingType": "*gopkg.ilharper.com/koi/sdk/client.Options",
+                    "argNum": 1,
+                    "expr": "conn"
+                }
+            ]
+        },
+        {
+            "id": "Trigger action: daemon stop",
+            "message": "Trigger action: daemon stop",
+            "translation": ""
+        },
+        {
+            "id": "All daemon stopped.",
+            "message": "All daemon stopped.",
+            "translation": ""
+        },
+        {
+            "id": "Trigger action: daemon kill",
+            "message": "Trigger action: daemon kill",
+            "translation": ""
+        },
+        {
+            "id": "{Killed} Daemon killed.",
+            "message": "{Killed} Daemon killed.",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Killed",
+                    "string": "%[1]d",
+                    "type": "uint16",
+                    "underlyingType": "uint16",
+                    "argNum": 1,
+                    "expr": "killed"
+                }
+            ]
+        },
+        {
+            "id": "Import a Koishi Bundle",
+            "message": "Import a Koishi Bundle",
+            "translation": ""
+        },
+        {
+            "id": "Name of the imported instance",
+            "message": "Name of the imported instance",
+            "translation": ""
+        },
+        {
+            "id": "Empty instance directory before creating",
+            "message": "Empty instance directory before creating",
+            "translation": ""
         },
         {
             "id": "failed to get result, response is nil",
             "message": "failed to get result, response is nil",
             "translation": "获取结果失败，响应为 nil",
             "translatorComment": "Copied from source."
-        },
-        {
-            "id": "failed to parse result {Response}: response type '{Type}' is not '{TypeResponseResult}': {Err}",
-            "message": "failed to parse result {Response}: response type '{Type}' is not '{TypeResponseResult}': {Err}",
-            "translation": "解析结果 {Response} 失败：响应类型「{Type}」不是「{TypeResponseResult}」：{Err}",
-            "translatorComment": "Copied from source.",
-            "placeholders": [
-                {
-                    "id": "Response",
-                    "string": "%#+[1]v",
-                    "type": "*gopkg.ilharper.com/koi/core/god/proto.Response",
-                    "underlyingType": "*gopkg.ilharper.com/koi/core/god/proto.Response",
-                    "argNum": 1,
-                    "expr": "response"
-                },
-                {
-                    "id": "Type",
-                    "string": "%[2]s",
-                    "type": "string",
-                    "underlyingType": "string",
-                    "argNum": 2,
-                    "expr": "response.Type"
-                },
-                {
-                    "id": "TypeResponseResult",
-                    "string": "%[3]s",
-                    "type": "string",
-                    "underlyingType": "string",
-                    "argNum": 3,
-                    "expr": "proto.TypeResponseResult"
-                },
-                {
-                    "id": "Err",
-                    "string": "%[4]v",
-                    "type": "error",
-                    "underlyingType": "interface{Error() string}",
-                    "argNum": 4,
-                    "expr": "err"
-                }
-            ]
         },
         {
             "id": "failed to parse response {Response}: {Err}",
@@ -148,6 +619,136 @@
             ]
         },
         {
+            "id": "Open Instances",
+            "message": "Open Instances",
+            "translation": ""
+        },
+        {
+            "id": "Trigger action: open",
+            "message": "Trigger action: open",
+            "translation": ""
+        },
+        {
+            "id": "Trigger pseudo action: pre",
+            "message": "Trigger pseudo action: pre",
+            "translation": ""
+        },
+        {
+            "id": "You're seeing debug output because you have a RPL target running in debug mode. This will not be controlled by --debug flag.",
+            "message": "You're seeing debug output because you have a RPL target running in debug mode. This will not be controlled by --debug flag.",
+            "translation": ""
+        },
+        {
+            "id": "--debug flag detected - debug mode enabled.",
+            "message": "--debug flag detected - debug mode enabled.",
+            "translation": ""
+        },
+        {
+            "id": "PID: {Pid}",
+            "message": "PID: {Pid}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Pid",
+                    "string": "%[1]d",
+                    "type": "int",
+                    "underlyingType": "int",
+                    "argNum": 1,
+                    "expr": "os.Getpid()"
+                }
+            ]
+        },
+        {
+            "id": "failed to get executable: {Err}",
+            "message": "failed to get executable: {Err}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Err",
+                    "string": "%[1]v",
+                    "type": "error",
+                    "underlyingType": "interface{Error() string}",
+                    "argNum": 1,
+                    "expr": "err"
+                }
+            ]
+        },
+        {
+            "id": "Executable: {Exe}",
+            "message": "Executable: {Exe}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Exe",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "exe"
+                }
+            ]
+        },
+        {
+            "id": "Command line arguments:\n{Args}",
+            "message": "Command line arguments:\n{Args}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Args",
+                    "string": "%#+[1]v",
+                    "type": "[]string",
+                    "underlyingType": "[]string",
+                    "argNum": 1,
+                    "expr": "os.Args"
+                }
+            ]
+        },
+        {
+            "id": "Show Process Status",
+            "message": "Show Process Status",
+            "translation": ""
+        },
+        {
+            "id": "Including stopped instances",
+            "message": "Including stopped instances",
+            "translation": ""
+        },
+        {
+            "id": "Trigger action: ps",
+            "message": "Trigger action: ps",
+            "translation": ""
+        },
+        {
+            "id": "failed to get daemon connection: {Err}",
+            "message": "failed to get daemon connection: {Err}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Err",
+                    "string": "%[1]v",
+                    "type": "error",
+                    "underlyingType": "interface{Error() string}",
+                    "argNum": 1,
+                    "expr": "err"
+                }
+            ]
+        },
+        {
+            "id": "failed to process command ps: {Err}",
+            "message": "failed to process command ps: {Err}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Err",
+                    "string": "%[1]v",
+                    "type": "error",
+                    "underlyingType": "interface{Error() string}",
+                    "argNum": 1,
+                    "expr": "err"
+                }
+            ]
+        },
+        {
             "id": "failed to parse result {Result}: {Err}",
             "message": "failed to parse result {Result}: {Err}",
             "translation": "解析结果 {Result} 失败：{Err}",
@@ -167,6 +768,171 @@
                     "type": "error",
                     "underlyingType": "interface{Error() string}",
                     "argNum": 2,
+                    "expr": "err"
+                }
+            ]
+        },
+        {
+            "id": "failed to marshal result {ResultPs}: {Err}",
+            "message": "failed to marshal result {ResultPs}: {Err}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "ResultPs",
+                    "string": "%#+[1]v",
+                    "type": "gopkg.ilharper.com/koi/core/koicmd.ResultPs",
+                    "underlyingType": "struct{Instances []*gopkg.ilharper.com/koi/core/koicmd.ResultPsInstance \"json:\\\"instances\\\" mapstructure:\\\"instances\\\"\"}",
+                    "argNum": 1,
+                    "expr": "resultPs"
+                },
+                {
+                    "id": "Err",
+                    "string": "%[2]v",
+                    "type": "error",
+                    "underlyingType": "interface{Error() string}",
+                    "argNum": 2,
+                    "expr": "err"
+                }
+            ]
+        },
+        {
+            "id": "Restart Instances",
+            "message": "Restart Instances",
+            "translation": ""
+        },
+        {
+            "id": "Trigger action: restart",
+            "message": "Trigger action: restart",
+            "translation": ""
+        },
+        {
+            "id": "Run Koishi Desktop",
+            "message": "Run Koishi Desktop",
+            "translation": ""
+        },
+        {
+            "id": "Run daemon",
+            "message": "Run daemon",
+            "translation": ""
+        },
+        {
+            "id": "Run UI",
+            "message": "Run UI",
+            "translation": ""
+        },
+        {
+            "id": "Trigger action: run",
+            "message": "Trigger action: run",
+            "translation": ""
+        },
+        {
+            "id": "unknown mode: {Mode}",
+            "message": "unknown mode: {Mode}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Mode",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "cfg.Data.Mode"
+                }
+            ]
+        },
+        {
+            "id": "Trigger action: run daemon",
+            "message": "Trigger action: run daemon",
+            "translation": ""
+        },
+        {
+            "id": "Trigger action: run ui",
+            "message": "Trigger action: run ui",
+            "translation": ""
+        },
+        {
+            "id": "Start Instances",
+            "message": "Start Instances",
+            "translation": ""
+        },
+        {
+            "id": "Trigger action: start",
+            "message": "Trigger action: start",
+            "translation": ""
+        },
+        {
+            "id": "Stop Instances",
+            "message": "Stop Instances",
+            "translation": ""
+        },
+        {
+            "id": "Trigger action: stop",
+            "message": "Trigger action: stop",
+            "translation": ""
+        },
+        {
+            "id": "Run Yarn Command on Instance",
+            "message": "Run Yarn Command on Instance",
+            "translation": ""
+        },
+        {
+            "id": "Target Instance",
+            "message": "Target Instance",
+            "translation": ""
+        },
+        {
+            "id": "Trigger action: yarn",
+            "message": "Trigger action: yarn",
+            "translation": ""
+        },
+        {
+            "id": "Tray ready.",
+            "message": "Tray ready.",
+            "translation": "托盘已就绪。",
+            "translatorComment": "Copied from source."
+        },
+        {
+            "id": "Starting...",
+            "message": "Starting...",
+            "translation": "正在启动…",
+            "translatorComment": "Copied from source."
+        },
+        {
+            "id": "failed to parse result {Response}: response type '{Type}' is not '{TypeResponseResult}': {Err}",
+            "message": "failed to parse result {Response}: response type '{Type}' is not '{TypeResponseResult}': {Err}",
+            "translation": "解析结果 {Response} 失败：响应类型「{Type}」不是「{TypeResponseResult}」：{Err}",
+            "translatorComment": "Copied from source.",
+            "placeholders": [
+                {
+                    "id": "Response",
+                    "string": "%#+[1]v",
+                    "type": "*gopkg.ilharper.com/koi/core/god/proto.Response",
+                    "underlyingType": "*gopkg.ilharper.com/koi/core/god/proto.Response",
+                    "argNum": 1,
+                    "expr": "response"
+                },
+                {
+                    "id": "Type",
+                    "string": "%[2]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 2,
+                    "expr": "response.Type"
+                },
+                {
+                    "id": "TypeResponseResult",
+                    "string": "%[3]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 3,
+                    "expr": "proto.TypeResponseResult"
+                },
+                {
+                    "id": "Err",
+                    "string": "%[4]v",
+                    "type": "error",
+                    "underlyingType": "interface{Error() string}",
+                    "argNum": 4,
                     "expr": "err"
                 }
             ]
@@ -266,12 +1032,6 @@
             ]
         },
         {
-            "id": "Koishi Desktop",
-            "message": "Koishi Desktop",
-            "translation": "Koishi 桌面",
-            "translatorComment": "Copied from source."
-        },
-        {
             "id": "Advanced",
             "message": "Advanced",
             "translation": "高级",
@@ -308,6 +1068,11 @@
             "translatorComment": "Copied from source."
         },
         {
+            "id": "About",
+            "message": "About",
+            "translation": ""
+        },
+        {
             "id": "Hide",
             "message": "Hide",
             "translation": "隐藏",
@@ -336,6 +1101,11 @@
             "message": "Exiting systray",
             "translation": "正在退出 systray",
             "translatorComment": "Copied from source."
+        },
+        {
+            "id": "Showing about dialog",
+            "message": "Showing about dialog",
+            "translation": ""
         },
         {
             "id": "Starting these instances:\n{Start__}",
