@@ -206,10 +206,7 @@ func (tray *TrayDaemon) rebuild() {
 					continue
 				}
 
-				respC, logC, err := client.Open(
-					conn,
-					[]string{name},
-				)
+				respC, logC, err := client.Open(conn, []string{name})
 				if err != nil {
 					l.Error(err)
 
@@ -274,10 +271,7 @@ func (tray *TrayDaemon) rebuild() {
 					continue
 				}
 
-				respC, logC, err := client.Start(
-					conn,
-					[]string{name},
-				)
+				respC, logC, err := client.Start(conn, []string{name})
 				if err != nil {
 					l.Error(err)
 
@@ -342,10 +336,7 @@ func (tray *TrayDaemon) rebuild() {
 					continue
 				}
 
-				respC, logC, err := client.Stop(
-					conn,
-					[]string{name},
-				)
+				respC, logC, err := client.Stop(conn, []string{name})
 				if err != nil {
 					l.Error(err)
 
@@ -410,10 +401,7 @@ func (tray *TrayDaemon) rebuild() {
 					continue
 				}
 
-				respC, logC, err := client.Restart(
-					conn,
-					[]string{name},
-				)
+				respC, logC, err := client.Restart(conn, []string{name})
 				if err != nil {
 					l.Error(err)
 
@@ -497,7 +485,7 @@ func (tray *TrayDaemon) addItemsAfter() {
 	mKillDaemon.SetTemplateIcon(icon.Kill, icon.Kill)
 	mExit := mAdvanced.AddSubMenuItem(p.Sprintf("Stop and Exit"), "")
 	mExit.SetTemplateIcon(icon.Exit, icon.Exit)
-	mAbout := systray.AddMenuItem("About", "")
+	mAbout := systray.AddMenuItem(p.Sprintf("About"), "")
 	mQuit := systray.AddMenuItem(p.Sprintf("Hide"), "")
 	mQuit.SetTemplateIcon(icon.Hide, icon.Hide)
 
@@ -584,7 +572,7 @@ func (tray *TrayDaemon) addItemsAfter() {
 			if !ok {
 				break
 			}
-			l.Debug("Showing about dialog")
+			l.Debug(p.Sprintf("Showing about dialog"))
 			shell.About()
 		}
 	}()
