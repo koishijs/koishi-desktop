@@ -3,11 +3,11 @@ package koicli
 
 import (
 	"errors"
-	"fmt"
 
 	"github.com/mitchellh/mapstructure"
 	"github.com/samber/do"
 	"github.com/urfave/cli/v2"
+	"golang.org/x/text/message"
 	"gopkg.ilharper.com/koi/core/god/proto"
 	"gopkg.ilharper.com/koi/core/koiconfig"
 	"gopkg.ilharper.com/koi/core/logger"
@@ -21,11 +21,13 @@ const (
 )
 
 func newRestartCommand(i *do.Injector) (*cli.Command, error) {
+	p := do.MustInvoke[*message.Printer](i)
+
 	do.ProvideNamed(i, serviceActionRestart, newRestartAction)
 
 	return &cli.Command{
 		Name:      "restart",
-		Usage:     "Restart Instances",
+		Usage:     p.Sprintf("Restart Instances"),
 		ArgsUsage: "instances",
 		Action:    do.MustInvokeNamed[cli.ActionFunc](i, serviceActionRestart),
 	}, nil
@@ -33,11 +35,12 @@ func newRestartCommand(i *do.Injector) (*cli.Command, error) {
 
 func newRestartAction(i *do.Injector) (cli.ActionFunc, error) {
 	l := do.MustInvoke[*logger.Logger](i)
+	p := do.MustInvoke[*message.Printer](i)
 
 	return func(c *cli.Context) error {
 		var err error
 
-		l.Debug("Trigger action: restart")
+		l.Debug(p.Sprintf("Trigger action: restart"))
 
 		cfg, err := do.Invoke[*koiconfig.Config](i)
 		if err != nil {
@@ -50,10 +53,7 @@ func newRestartAction(i *do.Injector) (cli.ActionFunc, error) {
 			return err
 		}
 
-		respC, logC, err := client.Restart(
-			conn,
-			c.Args().Slice(),
-		)
+		respC, logC, err := client.Restart(conn, c.Args().Slice())
 		if err != nil {
 			return err
 		}
@@ -64,12 +64,12 @@ func newRestartAction(i *do.Injector) (cli.ActionFunc, error) {
 		for {
 			response := <-respC
 			if response == nil {
-				return fmt.Errorf("failed to get result, response is nil")
+				return errors.New(p.Sprintf("failed to get result, response is nil"))
 			}
 			if response.Type == proto.TypeResponseResult {
 				err = mapstructure.Decode(response.Data, &result)
 				if err != nil {
-					return fmt.Errorf("failed to parse response %#+v: %w", response, err)
+					return errors.New(p.Sprintf("failed to parse response %#+v: %v", response, err))
 				}
 
 				break
@@ -80,7 +80,7 @@ func newRestartAction(i *do.Injector) (cli.ActionFunc, error) {
 		if result.Code != 0 {
 			s, ok := result.Data.(string)
 			if !ok {
-				return fmt.Errorf("result data %#+v is not string", result.Data)
+				return errors.New(p.Sprintf("result data %#+v is not string", result.Data))
 			}
 
 			return errors.New(s)
