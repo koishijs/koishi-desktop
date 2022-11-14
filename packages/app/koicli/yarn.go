@@ -3,11 +3,11 @@ package koicli
 
 import (
 	"errors"
-	"fmt"
 
 	"github.com/mitchellh/mapstructure"
 	"github.com/samber/do"
 	"github.com/urfave/cli/v2"
+	"golang.org/x/text/message"
 	"gopkg.ilharper.com/koi/core/god/proto"
 	"gopkg.ilharper.com/koi/core/koiconfig"
 	"gopkg.ilharper.com/koi/core/logger"
@@ -21,11 +21,13 @@ const (
 )
 
 func newYarnCommand(i *do.Injector) (*cli.Command, error) {
+	p := do.MustInvoke[*message.Printer](i)
+
 	do.ProvideNamed(i, serviceActionYarn, newYarnAction)
 
 	return &cli.Command{
 		Name:      "yarn",
-		Usage:     "Run Yarn Command on Instance",
+		Usage:     p.Sprintf("Run Yarn Command on Instance"),
 		ArgsUsage: "args",
 		Action:    do.MustInvokeNamed[cli.ActionFunc](i, serviceActionYarn),
 
@@ -33,7 +35,7 @@ func newYarnCommand(i *do.Injector) (*cli.Command, error) {
 			&cli.StringFlag{
 				Name:    "instance",
 				Aliases: []string{"name", "n"},
-				Usage:   "Target Instance",
+				Usage:   p.Sprintf("Target Instance"),
 			},
 		},
 	}, nil
@@ -41,11 +43,12 @@ func newYarnCommand(i *do.Injector) (*cli.Command, error) {
 
 func newYarnAction(i *do.Injector) (cli.ActionFunc, error) {
 	l := do.MustInvoke[*logger.Logger](i)
+	p := do.MustInvoke[*message.Printer](i)
 
 	return func(c *cli.Context) error {
 		var err error
 
-		l.Debug("Trigger action: yarn")
+		l.Debug(p.Sprintf("Trigger action: yarn"))
 
 		cfg, err := do.Invoke[*koiconfig.Config](i)
 		if err != nil {
@@ -58,11 +61,7 @@ func newYarnAction(i *do.Injector) (cli.ActionFunc, error) {
 			return err
 		}
 
-		respC, logC, err := client.Yarn(
-			conn,
-			c.String("instance"),
-			c.Args().Slice(),
-		)
+		respC, logC, err := client.Yarn(conn, c.String("instance"), c.Args().Slice())
 		if err != nil {
 			return err
 		}
@@ -73,12 +72,12 @@ func newYarnAction(i *do.Injector) (cli.ActionFunc, error) {
 		for {
 			response := <-respC
 			if response == nil {
-				return fmt.Errorf("failed to get result, response is nil")
+				return errors.New(p.Sprintf("failed to get result, response is nil"))
 			}
 			if response.Type == proto.TypeResponseResult {
 				err = mapstructure.Decode(response.Data, &result)
 				if err != nil {
-					return fmt.Errorf("failed to parse response %#+v: %w", response, err)
+					return errors.New(p.Sprintf("failed to parse response %#+v: %v", response, err))
 				}
 
 				break
@@ -89,7 +88,7 @@ func newYarnAction(i *do.Injector) (cli.ActionFunc, error) {
 		if result.Code != 0 {
 			s, ok := result.Data.(string)
 			if !ok {
-				return fmt.Errorf("result data %#+v is not string", result.Data)
+				return errors.New(p.Sprintf("result data %#+v is not string", result.Data))
 			}
 
 			return errors.New(s)
