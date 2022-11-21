@@ -15,7 +15,7 @@ require (
 	gopkg.ilharper.com/x/colette v0.2.0
 	gopkg.ilharper.com/x/killdren v1.0.0
 	gopkg.ilharper.com/x/rpl v0.2.0
-	gopkg.ilharper.com/x/supcolor v1.0.0
+	gopkg.ilharper.com/x/supcolor v1.0.1
 )
 
 require (
@@ -26,5 +26,5 @@ require (
 	github.com/tklauser/numcpus v0.4.0 // indirect
 	github.com/yusufpapurcu/wmi v1.2.2 // indirect
 	golang.org/x/sys v0.2.0 // indirect
-	gopkg.ilharper.com/x/isatty v1.0.1 // indirect
+	gopkg.ilharper.com/x/isatty v1.1.0 // indirect
 )
