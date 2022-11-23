@@ -30,7 +30,7 @@ add_executable(koishell
     src/main.cpp
 )
 
-target_link_libraries(koishell -static)
+target_link_libraries(koishell PUBLIC "-static")
 
 target_link_libraries(koishell
     PRIVATE
