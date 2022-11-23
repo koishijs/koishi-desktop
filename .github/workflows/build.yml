@@ -14,8 +14,8 @@ jobs:
 
       matrix:
         target:
-          - '{"goos":"windows","rid":"win-x64","os":"windows-latest"}'
-          - '{"goos":"linux","rid":"linux-x64","os":"ubuntu-latest"}'
+          - '{"goos":"windows","rid":"win-x64","os":"windows-2022"}'
+          - '{"goos":"linux","rid":"linux-x64","os":"ubuntu-22.04"}'
           - '{"goos":"darwin","rid":"osx-x64","os":"macos-11"}'
 
     runs-on: ${{ fromJson(matrix.target).os }}
