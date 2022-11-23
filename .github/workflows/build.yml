@@ -72,6 +72,13 @@ jobs:
         run: brew install graphicsmagick imagemagick
         shell: bash
 
+      - name: Install Dependencies (Linux)
+        if: fromJson(matrix.target).goos == 'linux'
+        run: |
+          sudo apt update
+          sudo apt install -y fuse libfuse2
+        shell: bash
+
       - name: Install Build Package
         run: |
           yarn install --frozen-lockfile
