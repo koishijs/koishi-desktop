@@ -19,6 +19,7 @@ import (
 	"gopkg.ilharper.com/koi/core/ui/icon"
 	"gopkg.ilharper.com/koi/sdk/client"
 	"gopkg.ilharper.com/koi/sdk/manage"
+	"gopkg.ilharper.com/x/browser"
 )
 
 var refreshWaitDuration = 2 * time.Second
@@ -472,6 +473,7 @@ func (tray *TrayDaemon) addItemsBefore() {
 func (tray *TrayDaemon) addItemsAfter() {
 	l := do.MustInvoke[*logger.Logger](tray.i)
 	p := do.MustInvoke[*message.Printer](tray.i)
+	cfg := do.MustInvoke[*koiconfig.Config](tray.i)
 	shell := do.MustInvoke[*koishell.KoiShell](tray.i)
 
 	mAdvanced := systray.AddMenuItem(p.Sprintf("Advanced"), "")
@@ -483,6 +485,7 @@ func (tray *TrayDaemon) addItemsAfter() {
 	mStopDaemon.SetTemplateIcon(icon.Stop, icon.Stop)
 	mKillDaemon := mAdvanced.AddSubMenuItem(p.Sprintf("Kill Daemon"), "")
 	mKillDaemon.SetTemplateIcon(icon.Kill, icon.Kill)
+	mOpenDataFolder := mAdvanced.AddSubMenuItem(p.Sprintf("Open Data Folder"), "")
 	mExit := mAdvanced.AddSubMenuItem(p.Sprintf("Stop and Exit"), "")
 	mExit.SetTemplateIcon(icon.Exit, icon.Exit)
 	mAbout := systray.AddMenuItem(p.Sprintf("About"), "")
@@ -494,6 +497,7 @@ func (tray *TrayDaemon) addItemsAfter() {
 	tray.chanReg = append(tray.chanReg, mStartDaemon.ClickedCh)
 	tray.chanReg = append(tray.chanReg, mStopDaemon.ClickedCh)
 	tray.chanReg = append(tray.chanReg, mKillDaemon.ClickedCh)
+	tray.chanReg = append(tray.chanReg, mOpenDataFolder.ClickedCh)
 	tray.chanReg = append(tray.chanReg, mExit.ClickedCh)
 	tray.chanReg = append(tray.chanReg, mAbout.ClickedCh)
 	tray.chanReg = append(tray.chanReg, mQuit.ClickedCh)
@@ -550,6 +554,20 @@ func (tray *TrayDaemon) addItemsAfter() {
 			tray.manager.Kill()
 			l.Debug(p.Sprintf("Rebuilding tray"))
 			tray.rebuild()
+		}
+	}()
+
+	go func() {
+		for {
+			_, ok := <-mOpenDataFolder.ClickedCh
+			if !ok {
+				break
+			}
+			l.Debug(p.Sprintf("Opening data folder"))
+			err := browser.OpenURL(cfg.Computed.DirData)
+			if err != nil {
+				l.Error(p.Sprintf("Failed to open data folder: %v", err))
+			}
 		}
 	}()
 
