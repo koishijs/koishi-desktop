@@ -2,7 +2,6 @@ package proc
 
 import (
 	"bufio"
-	"errors"
 	"fmt"
 	"os/exec"
 	"path/filepath"
@@ -16,6 +15,9 @@ import (
 	"gopkg.ilharper.com/x/rpl"
 )
 
+// KoiProc is the Koishi subprocess wrapper for Koishi Desktop.
+// Also, it is an [rpl.Source] for emitting subprocess outputs
+// as [rpl.Log] objects to [rpl.Target] targets.
 type KoiProc struct {
 	i  *do.Injector
 	ch uint16
@@ -59,7 +61,7 @@ func (koiProc *KoiProc) Register(target rpl.Target) {
 }
 
 func (koiProc *KoiProc) Close() {
-	panic(errors.New("no need to call Close(). Channel will close automatically after subprocess dead"))
+	panic("no need to call Close(). Channel will close automatically after subprocess dead")
 }
 
 func (koiProc *KoiProc) Run() error {
@@ -119,6 +121,7 @@ func (koiProc *KoiProc) Run() error {
 			for {
 				if !scn.Scan() {
 					wg.Done()
+
 					break
 				}
 				scnErr := scn.Err()
