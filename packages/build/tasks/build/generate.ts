@@ -52,6 +52,6 @@ export const generate = series(
         generateUserscript,
         series(generateAssets, generateVisualElementsManifest)
       )
-    : parallel(generateKoiConfig, generateAssets),
+    : parallel(generateKoiConfig, generateUserscript, generateAssets),
   i18nGenerate
 )
