@@ -34,6 +34,18 @@ int WebViewWindow::Run() {
   wchar_t *url = KoiShell::UTF8ToWideChar(const_cast<char *>(urlS.c_str()));
   if (!url) LogAndFailWithLastError(L"Failed to parse url.");
 
+  HRSRC userscriptRc =
+      FindResourceW(hInstance, MAKEINTRESOURCEW(102), MAKEINTRESOURCEW(256));
+  HGLOBAL userscriptRcData = LoadResource(hInstance, userscriptRc);
+  unsigned long userscriptSize = SizeofResource(hInstance, userscriptRc);
+  const char *userscriptData =
+      static_cast<const char *>(LockResource(userscriptRcData));
+  char *userscriptS = new char[userscriptSize + 1];
+  memcpy_s(userscriptS, userscriptSize, userscriptData, userscriptSize);
+  userscriptS[userscriptSize] = 0;
+  wchar_t *userscript = KoiShell::UTF8ToWideChar(userscriptS);
+  delete[] userscriptS;
+
   wcex.cbSize = sizeof(WNDCLASSEXW);
   wcex.style = CS_HREDRAW | CS_VREDRAW;
   wcex.lpfnWndProc = WndProc;
@@ -79,14 +91,14 @@ int WebViewWindow::Run() {
           options.Get(),
           Microsoft::WRL::Callback<
               ICoreWebView2CreateCoreWebView2EnvironmentCompletedHandler>(
-              [this,
-               &url](HRESULT result, ICoreWebView2Environment *env) -> HRESULT {
+              [this, &url, &userscript](
+                  HRESULT result, ICoreWebView2Environment *env) -> HRESULT {
                 CheckFailure(
                     env->CreateCoreWebView2Controller(
                         hWnd,
                         Microsoft::WRL::Callback<
                             ICoreWebView2CreateCoreWebView2ControllerCompletedHandler>(
-                            [this, &url](
+                            [this, &url, &userscript](
                                 HRESULT result,
                                 ICoreWebView2Controller *controller)
                                 -> HRESULT {
@@ -104,6 +116,10 @@ int WebViewWindow::Run() {
                               settings->put_AreDefaultScriptDialogsEnabled(1);
                               settings->put_IsWebMessageEnabled(1);
                               settings->put_AreDevToolsEnabled(1);
+
+                              webview->AddScriptToExecuteOnDocumentCreated(
+                                  userscript, nullptr);
+                              delete[] userscript;
 
                               RECT bounds;
                               GetClientRect(hWnd, &bounds);
