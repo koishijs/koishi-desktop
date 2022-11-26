@@ -19,6 +19,7 @@
     "@typescript-eslint/eslint-plugin": "*",
     "@typescript-eslint/parser": "*",
     "chalk": "^4",
+    "esbuild": "^0.14.51",
     "eslint": "*",
     "eslint-config-prettier": "*",
     "eslint-import-resolver-typescript": "*",
