@@ -21,6 +21,7 @@ const buildPaths = {
   srcAssets: 'packages/assets/',
   srcIcon: 'packages/core/ui/icon/',
   srcBuild: 'packages/build/',
+  srcUserscript: 'packages/userscript/',
   templates: 'packages/build/templates/',
 
   build: 'build/',

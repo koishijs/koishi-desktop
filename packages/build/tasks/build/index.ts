@@ -12,5 +12,6 @@ export * from './compile'
 export * from './compileShell'
 export * from './generate'
 export * from './patch'
+export * from './userscript'
 
 export const build = series(generate, compile, patch, boil, cleanTemp)

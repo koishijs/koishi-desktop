@@ -10,6 +10,7 @@ import {
 import { dir } from '../../utils/path'
 import { i18nGenerate } from '../i18n'
 import { generateAssets } from './assets'
+import { generateUserscript } from './userscript'
 
 export const generateKoiConfig = () =>
   fs.writeFile(dir('buildPortable', 'koi.yml'), koiConfig)
@@ -48,6 +49,7 @@ export const generate = series(
         generateKoiManifest,
         generateKoiShellResources,
         generateKoiShellManifest,
+        generateUserscript,
         series(generateAssets, generateVisualElementsManifest)
       )
     : parallel(generateKoiConfig, generateAssets),
