@@ -1,5 +1,7 @@
 import { analyzeMetafile, build } from 'esbuild'
+import fs from 'fs/promises'
 import { info } from 'gulplog'
+import mkdirp from 'mkdirp'
 import { dir } from '../../utils/path'
 
 const defineAgentMap = {
@@ -9,13 +11,16 @@ const defineAgentMap = {
 } as const
 
 export const generateUserscript = async () => {
+  const outfile = dir('buildResources', 'userscript.js')
+
   const result = await build({
     entryPoints: [dir('srcUserscript', 'src/index.ts')],
-    outfile: dir('buildResources', 'userscript.js'),
+    outfile,
 
     define: {
-      DEFINE_AGENT:
-        defineAgentMap[process.platform as keyof typeof defineAgentMap],
+      DEFINE_AGENT: `"${
+        defineAgentMap[process.platform as keyof typeof defineAgentMap]
+      }"`,
     },
 
     bundle: true,
@@ -27,4 +32,13 @@ export const generateUserscript = async () => {
   })
 
   info(await analyzeMetafile(result.metafile))
+
+  if (process.platform === 'darwin') {
+    await mkdirp(dir('srcShellMac', 'Sources/KoiShell/Resources'))
+
+    fs.copyFile(
+      outfile,
+      dir('srcShellMac', 'Sources/KoiShell/Resources/userscript.js')
+    )
+  }
 }
