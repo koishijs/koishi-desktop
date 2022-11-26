@@ -7,7 +7,6 @@
     "skipLibCheck": true,
     "esModuleInterop": true,
     "moduleResolution": "node",
-    "strictBindCallApply": true,
     "strict": true,
   },
   "ts-node": {
