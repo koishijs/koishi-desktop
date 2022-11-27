@@ -19,7 +19,9 @@
     "lib",
     "dist"
   ],
-  "scripts": {},
+  "scripts": {
+    "build:fe": "concurrently -n enhance \"koishi-console build clients/enhance\""
+  },
   "keywords": [
     "chatbot",
     "koishi",

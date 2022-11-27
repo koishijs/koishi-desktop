@@ -7,7 +7,7 @@
     "packages/*"
   ],
   "scripts": {
-    "build": "yakumo build",
+    "build": "concurrently -n pl,fe \"yakumo build\" \"yarn workspace koishi-plugin-desktop build:fe\"",
     "dep": "yakumo upgrade",
     "lint": "eslint --ext .ts --ignore-path .gitignore . --fix"
   },
@@ -26,6 +26,7 @@
     "@typescript-eslint/eslint-plugin": "*",
     "@typescript-eslint/parser": "*",
     "chalk": "^4",
+    "concurrently": "^7",
     "esbuild": "^0.14.51",
     "eslint": "*",
     "eslint-config-prettier": "*",
