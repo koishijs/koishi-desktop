@@ -29,6 +29,8 @@ class WebViewWindow {
       _In_ WPARAM wParam,
       _In_ LPARAM lParam);
 
+  void OnMessage(std::wstring *message);
+
 public:
   WebViewWindow(_In_ HINSTANCE hInstance, _In_ int nCmdShow, _In_ njson arg);
   int Run();

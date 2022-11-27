@@ -121,6 +121,44 @@ int WebViewWindow::Run() {
                                   userscript, nullptr);
                               delete[] userscript;
 
+                              EventRegistrationToken eventRegistrationToken;
+                              CheckFailure(
+                                  webview->add_WebMessageReceived(
+                                      Microsoft::WRL::Callback<
+                                          ICoreWebView2WebMessageReceivedEventHandler>(
+                                          [this](
+                                              ICoreWebView2 * /*sender*/,
+                                              ICoreWebView2WebMessageReceivedEventArgs
+                                                  *args) {
+                                            // Check URI
+                                            wil::unique_cotaskmem_string uriRaw;
+                                            CheckFailure(
+                                                args->get_Source(&uriRaw),
+                                                L"Failed to get webview URI.");
+                                            std::wstring uri = uriRaw.get();
+
+                                            std::wcerr << "URI: " << uri
+                                                       << std::endl;
+
+                                            wil::unique_cotaskmem_string
+                                                messageRaw;
+                                            CheckFailure(
+                                                args->TryGetWebMessageAsString(
+                                                    &messageRaw),
+                                                L"Failed to get webview "
+                                                L"message.");
+                                            std::wstring message =
+                                                messageRaw.get();
+
+                                            OnMessage(&message);
+
+                                            return S_OK;
+                                          })
+                                          .Get(),
+                                      &eventRegistrationToken),
+                                  L"Failed to register webview message "
+                                  L"handler.");
+
                               RECT bounds;
                               GetClientRect(hWnd, &bounds);
                               webviewController->put_Bounds(bounds);
@@ -180,6 +218,16 @@ LRESULT CALLBACK WebViewWindow::WndProc(
 
   default:
     return DefWindowProcW(hWnd, message, wParam, lParam);
+  }
+}
+
+void WebViewWindow::OnMessage(std::wstring *message) {
+  if ((*message) == L"TD") {
+    return;
+  }
+
+  if ((*message) == L"TL") {
+    return;
   }
 }
 
