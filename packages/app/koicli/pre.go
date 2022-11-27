@@ -2,6 +2,7 @@ package koicli
 
 import (
 	"errors"
+	"fmt"
 	"os"
 	"path/filepath"
 	"runtime"
@@ -34,7 +35,7 @@ func newPreAction(i *do.Injector) (cli.BeforeFunc, error) {
 			l.Debug(p.Sprintf("--debug flag detected - debug mode enabled."))
 		}
 
-		l.Debug(p.Sprintf("PID: %d", os.Getpid()))
+		l.Debug(p.Sprintf("PID: %s", fmt.Sprintf("%d", os.Getpid())))
 		exe, err := os.Executable()
 		if err != nil {
 			return errors.New(p.Sprintf("failed to get executable: %v", err))
