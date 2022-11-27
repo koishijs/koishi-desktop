@@ -2,20 +2,45 @@
   "name": "koishi-plugin-desktop",
   "description": "Koishi Desktop support",
   "version": "0.0.1",
+  "author": {
+    "name": "Il Harper",
+    "email": "hi@ilharper.com",
+    "url": "https://ilharper.com"
+  },
+  "license": "MIT",
+  "homepage": "https://koishi.chat",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/koishijs/koishi-desktop.git"
+  },
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
   "files": [
     "lib",
     "dist"
   ],
-  "license": "MIT",
   "scripts": {},
   "keywords": [
     "chatbot",
     "koishi",
-    "plugin"
+    "plugin",
+    "desktop"
   ],
   "peerDependencies": {
     "koishi": "^4.10.3"
+  },
+  "koishi": {
+    "description": {
+      "en": "Koishi Desktop support",
+      "zh": "Koishi 桌面支持"
+    },
+    "service": {
+      "optional": [
+        "console"
+      ]
+    },
+    "locales": [
+      "zh"
+    ]
   }
 }
