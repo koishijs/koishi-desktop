@@ -229,6 +229,10 @@ void WebViewWindow::OnMessage(std::wstring *message) {
   if ((*message) == L"TL") {
     return;
   }
+
+  if ((*message) == L"TR") {
+    return;
+  }
 }
 
 int RunWebView(_In_ HINSTANCE hInstance, _In_ int nCmdShow, _In_ njson arg) {
