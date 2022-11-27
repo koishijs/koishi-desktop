@@ -1,4 +1,5 @@
 import { Context, Schema } from 'koishi'
+import { Enhance } from './plugins'
 
 export const name = 'desktop'
 
@@ -22,6 +23,6 @@ export const Config: Schema<Config> = Schema.intersect([
   }).description('遥测'),
 ])
 
-export function apply(ctx: Context) {
-  // write your plugin here
+export function apply(ctx: Context, config: Config) {
+  if (config.enhance) ctx.plugin(Enhance)
 }
