@@ -3,6 +3,7 @@
   "compilerOptions": {
     "rootDir": "src",
     "outDir": "lib",
+    "noEmit": false,
     "declaration": true,
     "incremental": true,
     "jsx": "react-jsx",
