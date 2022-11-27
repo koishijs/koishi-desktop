@@ -1,0 +1,14 @@
+{
+  "extends": "../../tsconfig",
+  "compilerOptions": {
+    "rootDir": "src",
+    "outDir": "lib",
+    "declaration": true,
+    "incremental": true,
+    "jsx": "react-jsx",
+    "jsxImportSource": "@satorijs/element",
+  },
+  "include": [
+    "src",
+  ],
+}
