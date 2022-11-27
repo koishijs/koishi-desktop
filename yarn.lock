@@ -463,6 +463,15 @@
     cordis "^2.6.0"
     cosmokit "^1.3.3"
 
+"@koishijs/plugin-console@^4.7.0":
+  version "4.7.0"
+  resolved "https://registry.npmjs.org/@koishijs/plugin-console/-/plugin-console-4.7.0.tgz#b1cf855c0c654cf14b24ac39a226a225f3492c94"
+  integrity sha512-B/gn7C57beGlnc/PaNqMAiiKmN0I2062Lc96yAbo+kUa+sleR7P4tOqRZ/Se1vH0WiR3NYCflhupA0EuRpbUzA==
+  dependencies:
+    open "^8.4.0"
+    uuid "^8.3.2"
+    ws "^8.8.1"
+
 "@koishijs/utils@^6.2.5":
   version "6.2.5"
   resolved "https://registry.npmjs.org/@koishijs/utils/-/utils-6.2.5.tgz#3c894316cfc18db46b1a158dbb2adbcb84d7523f"
@@ -548,9 +557,9 @@
     ws "^8.8.1"
 
 "@satorijs/element@^2.1.4":
-  version "2.1.4"
-  resolved "https://registry.npmjs.org/@satorijs/element/-/element-2.1.4.tgz#cda7aea0e29b9d9c32d53ca7ff4c33f360a59aa6"
-  integrity sha512-9Q4+Q5Je3uZlGxCOYedT84Hs9KSRZ/SmgRhP7zK5c7f9lvIaODMrpasFALjxPKqfzujal0BF7k2G3ldK89s71Q==
+  version "2.1.6"
+  resolved "https://registry.npmjs.org/@satorijs/element/-/element-2.1.6.tgz#87ff4b72309e84d02bb4c8bf4c0798f3fceeaa7f"
+  integrity sha512-ROnWE2uLJKG7hTmukqAji3UfNzzMWCAHMKM9UvBi24uKR93rlk9lqcaRIuuPhlQwmbbwrGx3Qf+F0jkiv6LdKw==
   dependencies:
     cosmokit "^1.3.3"
 
@@ -2396,9 +2405,9 @@ ds-store@^0.1.5:
     tn1150 "^0.1.0"
 
 dtsc@^2.2.3:
-  version "2.2.3"
-  resolved "https://registry.npmjs.org/dtsc/-/dtsc-2.2.3.tgz#5699d95d6f5d2805ccd5ff7b39955e6b3d93f873"
-  integrity sha512-ZHCT/8E/hXauL7ZTU6kyFsHI68NdJQGEZxQ6d6vSCfq/XC6Xs7WCgWS9eBDPs/8Vv5CLXa7lxaTn+ZulFHNAEg==
+  version "2.2.4"
+  resolved "https://registry.npmjs.org/dtsc/-/dtsc-2.2.4.tgz#9c694aee9f4a1a73b1058df208144d142744695b"
+  integrity sha512-HVRoWvAbB1oAmzH8/L+/JBtAR3jWS9A5Iq/77Lj4xcQk95e8G/zoTbUsHu7b/d28GWRw6/RvjVdFr/nRtRnvFA==
   dependencies:
     tsconfig-utils "^2.0.4"
 
@@ -6981,6 +6990,11 @@ util-deprecate@^1.0.1, util-deprecate@~1.0.1:
   version "1.0.2"
   resolved "https://registry.npmjs.org/util-deprecate/-/util-deprecate-1.0.2.tgz#450d4dc9fa70de732762fbd2d4a28981419a0ccf"
   integrity sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==
+
+uuid@^8.3.2:
+  version "8.3.2"
+  resolved "https://registry.npmjs.org/uuid/-/uuid-8.3.2.tgz#80d5b5ced271bb9af6c445f21a1a04c606cefbe2"
+  integrity sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg==
 
 v8-compile-cache-lib@^3.0.1:
   version "3.0.1"

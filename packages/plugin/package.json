@@ -27,6 +27,7 @@
     "desktop"
   ],
   "peerDependencies": {
+    "@koishijs/plugin-console": "^4.7.0",
     "koishi": "^4.10.3"
   },
   "koishi": {

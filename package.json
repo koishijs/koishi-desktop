@@ -19,6 +19,7 @@
   },
   "devDependencies": {
     "@koishijs/client": "^4.7.0",
+    "@koishijs/plugin-console": "^4.7.0",
     "@prettier/plugin-xml": "^2.2.0",
     "@types/gulp": "^4",
     "@types/mkdirp": "^1",
