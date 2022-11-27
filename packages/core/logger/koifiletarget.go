@@ -11,6 +11,10 @@ import (
 	"gopkg.ilharper.com/x/rpl"
 )
 
+const (
+	ServiceConsoleTarget = "gopkg.ilharper.com/koi/core/logger.ConsoleTarget"
+)
+
 type KoiFileTarget struct {
 	c     chan *rpl.Log
 	Level int8

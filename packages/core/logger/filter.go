@@ -10,6 +10,10 @@ import (
 	"gopkg.ilharper.com/x/rpl"
 )
 
+const (
+	ServiceRemoteReceiver = "gopkg.ilharper.com/koi/core/logger.RemoteReceiver"
+)
+
 func FilterLog(
 	resp <-chan *proto.Response,
 ) (<-chan *proto.Response, <-chan *rpl.Log) {
@@ -51,7 +55,7 @@ func FilterLog(
 }
 
 func LogChannel(i *do.Injector, logC <-chan *rpl.Log) {
-	receiver := do.MustInvoke[*rpl.Receiver](i)
+	receiver := do.MustInvokeNamed[*rpl.Receiver](i, ServiceRemoteReceiver)
 
 	if logC == nil {
 		panic("koi/core/logger/logchannel: log channel is nil")

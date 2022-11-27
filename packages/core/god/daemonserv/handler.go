@@ -13,6 +13,7 @@ import (
 	"gopkg.ilharper.com/koi/core/koicmd"
 	"gopkg.ilharper.com/koi/core/logger"
 	"gopkg.ilharper.com/koi/core/util/net"
+	"gopkg.ilharper.com/x/rpl"
 )
 
 // Handle request.
@@ -123,7 +124,7 @@ func handleCommand(
 	do.Provide(scopedI, logger.NewResponseSender)
 	l := do.MustInvoke[*logger.Logger](scopedI)
 	// Register Senders
-	l.Register(do.MustInvoke[*logger.KoiFileTarget](scopedI))
+	l.Register(do.MustInvoke[*rpl.Receiver](scopedI))
 	l.Register(do.MustInvoke[*logger.ResponseSender](scopedI))
 
 	// Get command registry

@@ -15,6 +15,7 @@ import (
 	"gopkg.ilharper.com/koi/core/ui/webview"
 	"gopkg.ilharper.com/koi/core/util/instance"
 	"gopkg.ilharper.com/koi/core/util/strutil"
+	"gopkg.ilharper.com/x/rpl"
 )
 
 const deltaCh uint16 = 1000
@@ -127,7 +128,7 @@ func (daemonProc *DaemonProcess) startIntl(name string) error {
 	}
 	daemonProc.reg[index] = dp
 
-	dp.koiProc.Register(do.MustInvoke[*logger.KoiFileTarget](daemonProc.i))
+	dp.koiProc.Register(do.MustInvoke[*rpl.Receiver](daemonProc.i))
 
 	dp.koiProc.HookOutput = func(msg string) {
 		go func() {

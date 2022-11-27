@@ -9,6 +9,7 @@ import (
 	"gopkg.ilharper.com/koi/core/koierr"
 	"gopkg.ilharper.com/koi/core/logger"
 	"gopkg.ilharper.com/koi/core/proc"
+	"gopkg.ilharper.com/x/rpl"
 )
 
 func koiCmdYarn(i *do.Injector) *proto.Response {
@@ -42,7 +43,7 @@ func koiCmdYarn(i *do.Injector) *proto.Response {
 		filepath.Join(cfg.Computed.DirInstance, instance),
 	)
 
-	koiProc.Register(do.MustInvoke[*logger.KoiFileTarget](i))
+	koiProc.Register(do.MustInvoke[*rpl.Receiver](i))
 	koiProc.Register(do.MustInvoke[*logger.ResponseSender](i))
 
 	l.Infof("Running command:\n%#+v\nOn instance: %s", args, instance)

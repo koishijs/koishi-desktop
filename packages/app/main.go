@@ -29,6 +29,7 @@ func main() {
 	}
 	p := message.NewPrinter(langTag)
 
+	// Setup local logger
 	l, _ := logger.BuildNewLogger(0)(nil)
 
 	i := do.NewWithOpts(&do.InjectorOpts{
@@ -36,6 +37,7 @@ func main() {
 			l.Debugf(format, args...)
 		},
 	})
+	do.ProvideValue(i, l)
 
 	do.ProvideNamedValue(i, coreUtil.ServiceAppVersion, util.AppVersion)
 
@@ -45,17 +47,9 @@ func main() {
 	wg := &sync.WaitGroup{}
 	do.ProvideValue(i, wg)
 
-	do.Provide(i, logger.BuildNewKoiFileTarget(os.Stderr))
-	do.ProvideValue(i, l)
-	receiver := rpl.NewReceiver()
-	receiver.ChOffset = 100
-	// Use ProvideValue() here because x/rpl didn't provide a do ctor
-	do.ProvideValue(i, receiver)
-	do.Provide(i, koicli.NewCli)
+	setupLogger(i)
 
-	consoleTarget := do.MustInvoke[*logger.KoiFileTarget](i)
-	receiver.Register(consoleTarget)
-	l.Register(consoleTarget)
+	do.Provide(i, koicli.NewCli)
 
 	l.Info(p.Sprintf("Koishi Desktop v%s", util.AppVersion))
 
@@ -122,4 +116,45 @@ func main() {
 	if err != nil {
 		os.Exit(1)
 	}
+}
+
+func setupLogger(i *do.Injector) {
+	// Get the local logger.
+	l := do.MustInvoke[*logger.Logger](i)
+
+	// Setup local receiver.
+	//
+	// Local receiver is a receiver hub that will receive logs from 2 sources:
+	// - The local logger
+	// - The KoiProc subprocess
+	localReceiver := rpl.NewReceiver()
+
+	// Register local receiver unnamed.
+	//
+	// This way, these RPL sources can be registered:
+	//
+	// - The local logger
+	// - The KoiProc subprocess
+	// - The remote logger (like the logger in daemonserv.scopedI)
+	//
+	// Using:
+	//
+	// source.Register(do.MustInvoke[*rpl.Receiver](i))
+	do.ProvideValue(i, localReceiver)
+
+	// Register local receiver to local logger.
+	l.Register(localReceiver)
+
+	// Setup remote receiver named.
+	remoteReceiver := rpl.NewReceiver()
+	// Set ChOffset to 100.
+	remoteReceiver.ChOffset = 100
+	do.ProvideNamedValue(i, logger.ServiceRemoteReceiver, remoteReceiver)
+
+	// Setup console target named.
+	do.ProvideNamed(i, logger.ServiceConsoleTarget, logger.BuildNewKoiFileTarget(os.Stderr))
+	consoleTarget := do.MustInvokeNamed[*logger.KoiFileTarget](i, logger.ServiceConsoleTarget)
+	// Register console target to receivers.
+	localReceiver.Register(consoleTarget)
+	remoteReceiver.Register(consoleTarget)
 }
