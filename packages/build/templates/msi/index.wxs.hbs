@@ -4,7 +4,7 @@
   <Product
     Id="*"
     Name="Koishi"
-    Manufacturer="Il Harper"
+    Manufacturer="Koishi.js"
     UpgradeCode="02318298-8D9E-4C30-B963-BB0B16F1F126"
     Language="1033"
     Codepage="1252"
@@ -19,7 +19,7 @@
       Platform="x64"
       Description="Koishi Installer"
       Comments="Koishi {{koiVersion}} Installer"
-      Manufacturer="Il Harper"
+      Manufacturer="Koishi.js"
       Languages="1033"
       SummaryCodepage="1252"
     />
@@ -50,7 +50,7 @@
         <Directory Id="DIRECTORYINSTALL" Name="Koishi">
           <Component
             Id="ComponentDirectoryInstall"
-            Guid="7C94CA6D-778B-4CD4-BABB-3E2CDDEE3D6C"
+            Guid="A6FDF231-7868-4122-AC3E-D5C9AC7860A2"
             Win64="yes"
           >
             <RemoveFile
@@ -69,7 +69,7 @@
             />
             <RegistryValue
               Root="HKLM"
-              Key="Software\Il Harper\Koishi"
+              Key="Software\Koishi\Desktop"
               Type="string"
               Value=""
               KeyPath="yes"
@@ -78,13 +78,13 @@
 
           <Component
             Id="ComponentConsoleWindow"
-            Guid="C8C6B076-F8DA-4332-AAC2-BE3D6172691D"
+            Guid="5625446A-2871-438F-AC6D-9BD06EEC2C57"
             Win64="yes"
           >
             <File Id="FileWebview2Setup" Source="SourceDir\Webview2Setup.exe" />
             <RegistryValue
               Root="HKLM"
-              Key="Software\Il Harper\Koishi"
+              Key="Software\Koishi\Desktop"
               Type="string"
               Value=""
               KeyPath="yes"
@@ -97,7 +97,7 @@
         <Directory Id="DirectoryProgramMenuFolder" Name="Koishi">
           <Component
             Id="ComponentDirectoryProgramMenuFolder"
-            Guid="732EF903-8411-4BF3-9FA9-4B36DAC78B7D"
+            Guid="B698D366-9A3E-4B6F-B949-72715301C66A"
             Win64="yes"
           >
             <RemoveFolder
@@ -113,7 +113,7 @@
             />
             <RegistryValue
               Root="HKCU"
-              Key="Software\Il Harper\Koishi"
+              Key="Software\Koishi\Desktop"
               Type="string"
               Value=""
               KeyPath="yes"
@@ -125,7 +125,7 @@
       <Directory Id="DesktopFolder">
         <Component
           Id="ComponentDirectoryDesktopFolder"
-          Guid="B3988140-7A1A-4240-A0E9-315CCBD5193B"
+          Guid="5D9CF49A-FFB6-41E2-AD51-D90CB95A93C2"
           Win64="yes"
         >
           <Shortcut
@@ -137,7 +137,7 @@
           />
           <RegistryValue
             Root="HKCU"
-            Key="Software\Il Harper\Koishi"
+            Key="Software\Koishi\Desktop"
             Type="string"
             Value=""
             KeyPath="yes"
