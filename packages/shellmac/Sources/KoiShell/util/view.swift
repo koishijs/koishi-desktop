@@ -8,7 +8,7 @@ struct VisualEffectBackground: NSViewRepresentable {
     }
 
     func updateNSView(_ nsView: NSVisualEffectView, context: Context) {
-        nsView.material = .fullScreenUI
+        nsView.material = .underWindowBackground
         nsView.blendingMode = .behindWindow
         nsView.isEmphasized = false
     }

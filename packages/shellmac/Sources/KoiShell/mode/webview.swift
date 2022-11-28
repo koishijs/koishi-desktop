@@ -41,6 +41,10 @@ class KSWebViewDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
         )
 
         window.title = "\(self.name) - Koishi"
+        window.titlebarAppearsTransparent = true
+        // window.titleVisibility = .hidden
+        // window.appearance = NSAppearance(named: NSAppearance.Name.vibrantLight)
+        // window.isMovableByWindowBackground = true
         window.center()
         window.setFrameAutosaveName("KSWebView")
         hostingView = NSHostingView(rootView: contentView)
@@ -90,11 +94,21 @@ struct KSWebView: View {
     }
 
     var body: some View {
-        WebView(webView: webViewStore.webView)
-            .onAppear {
-                self.webViewStore.webView.setValue(false, forKey: "drawsBackground")
-                self.webViewStore.webView.configuration.preferences.setValue(true, forKey: "developerExtrasEnabled")
-                self.webViewStore.webView.load(URLRequest(url: URL(string: self.url)!))
+        ZStack {
+            ZStack {}
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .visualEffectBackground()
+                .ignoresSafeArea()
+
+            ZStack {
+                WebView(webView: webViewStore.webView)
+                    .onAppear {
+                        self.webViewStore.webView.setValue(false, forKey: "drawsBackground")
+                        self.webViewStore.webView.configuration.preferences.setValue(true, forKey: "developerExtrasEnabled")
+                        self.webViewStore.webView.load(URLRequest(url: URL(string: self.url)!))
+                    }
+                    .visualEffectBackground()
             }
+        }
     }
 }
