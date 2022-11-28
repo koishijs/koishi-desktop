@@ -26,7 +26,13 @@ declare global {
 
 const enhanceCSS = `
 body, nav.layout-activity {
-  background: transparent !important;
+background: transparent !important;
+}
+div.layout-container {
+clip-path: inset(0 0 round 24px 0 0 0) !important;
+}
+nav.layout-activity {
+border: 0 !important;
 }
 `
 
