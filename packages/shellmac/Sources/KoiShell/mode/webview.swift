@@ -67,7 +67,7 @@ struct KSWebView: View {
     init(_ url: String) {
         self.url = url
 
-        let enhanceURL = Bundle.module.url(forResource: "Resources/userscript", withExtension: "js")!
+        let enhanceURL = Bundle.module.url(forResource: "userscript", withExtension: "js")!
         let enhanceData = try! Data(contentsOf: enhanceURL)
         let enhanceRaw = String(decoding: enhanceData, as: UTF8.self)
         let userScript = WKUserScript(
