@@ -8,7 +8,7 @@ export const using = ['console'] as const
 
 export function apply(ctx: Context) {
   ctx.console.addEntry({
-    dev: resolve(__dirname, '../clients/enhance/client/index.ts'),
-    prod: resolve(__dirname, '../clients/enhance/dist'),
+    dev: resolve(__dirname, '../../clients/enhance/client/index.ts'),
+    prod: resolve(__dirname, '../../clients/enhance/dist'),
   })
 }
