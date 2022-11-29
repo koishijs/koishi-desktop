@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
-<assembly xmlns="urn:schemas-microsoft-com:asm.v1" manifestVersion="1.0">
+<assembly
+  xmlns="urn:schemas-microsoft-com:asm.v1"
+  xmlns:asmv3="urn:schemas-microsoft-com:asm.v3"
+  xmlns:ws2019="http://schemas.microsoft.com/SMI/2019/WindowsSettings"
+  manifestVersion="1.0"
+>
   <assemblyIdentity
     type="win32"
     name="koishi"
@@ -21,4 +26,9 @@
       <supportedOS Id="{35138b9a-5d96-4fbd-8e2d-a2440225f93a}" />
     </application>
   </compatibility>
+  <asmv3:application>
+    <asmv3:windowsSettings>
+      <ws2019:activeCodePage>UTF-8</ws2019:activeCodePage>
+    </asmv3:windowsSettings>
+  </asmv3:application>
 </assembly>
