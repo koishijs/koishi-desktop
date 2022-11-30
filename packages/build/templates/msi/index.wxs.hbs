@@ -47,49 +47,54 @@
 
     <Directory Id="TARGETDIR" Name="SourceDir">
       <Directory Id="ProgramFiles64Folder">
-        <Directory Id="DIRECTORYINSTALL" Name="Koishi">
-          <Component
-            Id="ComponentDirectoryInstall"
-            Guid="A6FDF231-7868-4122-AC3E-D5C9AC7860A2"
-            Win64="yes"
-          >
-            <RemoveFile
-              Id="RemoveFileKoiConfig"
-              Name="koi.yml"
-              On="uninstall"
-            />
-            <RemoveFolder Id="RemoveDirectoryInstall" On="uninstall" />
-            <File Id="FileKoi" Source="SourceDir\koi.exe" />
-            <File Id="FileUnfold" Source="SourceDir\unfold.exe" />
-            <File Id="FileShell" Source="SourceDir\koishell.exe" />
-            <File Id="FileIconPng" Source="SourceDir\koishi.png" />
-            <File
-              Id="FileVisualElementsManifest"
-              Source="SourceDir\koi.VisualElementsManifest.xml"
-            />
-            <RegistryValue
-              Root="HKLM"
-              Key="Software\Koishi\Desktop"
-              Type="string"
-              Value=""
-              KeyPath="yes"
-            />
-          </Component>
+        <Directory Id="DirectoryProgramFilesKoishiFolder" Name="Koishi">
+          <Directory Id="DIRECTORYINSTALL" Name="Desktop">
+            <Component
+              Id="ComponentDirectoryInstall"
+              Guid="A6FDF231-7868-4122-AC3E-D5C9AC7860A2"
+              Win64="yes"
+            >
+              <RemoveFile
+                Id="RemoveFileKoiConfig"
+                Name="koi.yml"
+                On="uninstall"
+              />
+              <RemoveFolder Id="RemoveDirectoryInstall" On="uninstall" />
+              <File Id="FileKoi" Source="SourceDir\koi.exe" />
+              <File Id="FileUnfold" Source="SourceDir\unfold.exe" />
+              <File Id="FileShell" Source="SourceDir\koishell.exe" />
+              <File Id="FileIconPng" Source="SourceDir\koishi.png" />
+              <File
+                Id="FileVisualElementsManifest"
+                Source="SourceDir\koi.VisualElementsManifest.xml"
+              />
+              <RegistryValue
+                Root="HKLM"
+                Key="Software\Koishi\Desktop"
+                Type="string"
+                Value=""
+                KeyPath="yes"
+              />
+            </Component>
 
-          <Component
-            Id="ComponentConsoleWindow"
-            Guid="5625446A-2871-438F-AC6D-9BD06EEC2C57"
-            Win64="yes"
-          >
-            <File Id="FileWebview2Setup" Source="SourceDir\Webview2Setup.exe" />
-            <RegistryValue
-              Root="HKLM"
-              Key="Software\Koishi\Desktop"
-              Type="string"
-              Value=""
-              KeyPath="yes"
-            />
-          </Component>
+            <Component
+              Id="ComponentConsoleWindow"
+              Guid="5625446A-2871-438F-AC6D-9BD06EEC2C57"
+              Win64="yes"
+            >
+              <File
+                Id="FileWebview2Setup"
+                Source="SourceDir\Webview2Setup.exe"
+              />
+              <RegistryValue
+                Root="HKLM"
+                Key="Software\Koishi\Desktop"
+                Type="string"
+                Value=""
+                KeyPath="yes"
+              />
+            </Component>
+          </Directory>
         </Directory>
       </Directory>
 
