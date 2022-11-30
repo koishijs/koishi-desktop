@@ -157,4 +157,12 @@ func setupLogger(i *do.Injector) {
 	// Register console target to receivers.
 	localReceiver.Register(consoleTarget)
 	remoteReceiver.Register(consoleTarget)
+
+	// Register SysLogger to local receiver.
+	sysLogger, err := logger.BuildNewSysLogger()(i)
+	if err != nil {
+		l.Errorf("Failed to create system logger: %v", err)
+	} else {
+		localReceiver.Register(sysLogger)
+	}
 }
