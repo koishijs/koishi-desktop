@@ -49,6 +49,8 @@ const sendTheme = (theme: keyof typeof shellThemeMap) => {
   }
 }
 
+let themeObserver: MutationObserver
+
 const enhance = () => {
   const agent = window.__KOI_SHELL__?.agent
 
@@ -58,11 +60,29 @@ const enhance = () => {
         ? 'dark'
         : 'light'
     )
+
+    themeObserver = new MutationObserver((mutations) => {
+      for (const mutation of mutations) {
+        if (mutation.attributeName === 'class')
+          sendTheme(
+            (mutation.target as HTMLElement).classList.contains('dark')
+              ? 'dark'
+              : 'light'
+          )
+      }
+    })
+    themeObserver.observe(window.document.documentElement, { attributes: true })
   }
 }
 
 const disposeEnhance = () => {
-  sendTheme('reset')
+  const agent = window.__KOI_SHELL__?.agent
+
+  if (agent === 'shellwin' || agent === 'shellmac') {
+    sendTheme('reset')
+
+    themeObserver.disconnect()
+  }
 }
 
 export default (ctx: Context) => {
