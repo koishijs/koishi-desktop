@@ -4,7 +4,7 @@ nav.layout-activity {
 }
 
 div.layout-container {
-  clip-path: inset(0 0 round 24px 0 0 0) !important;
+  clip-path: inset(0 0 round 12px 0 0 0) !important;
 }
 
 nav.layout-activity {
