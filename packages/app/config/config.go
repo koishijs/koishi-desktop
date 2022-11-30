@@ -200,7 +200,7 @@ func postConfig(i *do.Injector, c *koiconfig.Config) error {
 	if err != nil {
 		return errors.New(p.Sprintf("failed to process dir data/instances: %v", err))
 	}
-	c.Computed.DirLog, err = joinAndCreate(i, c.Computed.DirData, "log")
+	c.Computed.DirLog, err = joinAndCreate(i, c.Computed.DirData, "logs")
 	if err != nil {
 		return errors.New(p.Sprintf("failed to process dir data/log: %v", err))
 	}
