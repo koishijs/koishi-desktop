@@ -26,4 +26,5 @@ type ConfigComputed struct {
 	DirLock     string
 	DirTemp     string
 	DirInstance string
+	DirLog      string
 }

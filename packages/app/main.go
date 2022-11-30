@@ -165,4 +165,6 @@ func setupLogger(i *do.Injector) {
 	} else {
 		localReceiver.Register(sysLogger)
 	}
+
+	// FileLogger will be registered later, in the pseudo action pre.
 }

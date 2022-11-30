@@ -46,6 +46,14 @@ func newPreAction(i *do.Injector) (cli.BeforeFunc, error) {
 
 		do.Provide(i, config.BuildLoadConfig("koi.yml"))
 
+		fileLogger, err := logger.BuildNewFileLogger()(i)
+		if err != nil {
+			l.Error(p.Sprintf("failed to build file logger: %v", err))
+		} else {
+			localReceiver := do.MustInvoke[*rpl.Receiver](i)
+			localReceiver.Register(fileLogger)
+		}
+
 		var shellName string
 		if runtime.GOOS == "windows" {
 			shellName = "koishell.exe"
