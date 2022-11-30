@@ -21,24 +21,30 @@ func ksWebView(_ arg: [String: Any]) {
     NSApp.run()
 }
 
-class KSWebViewDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
+class KSWebViewDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, WKScriptMessageHandler {
     var window: NSWindow!
     var hostingView: NSView?
-    var contentView: KSWebView
     let name: String
+    let url: String
+    var appearance: NSAppearance!
+    var initAppearance: NSAppearance!
 
     init(_ url: String, _ name: String) {
-        self.contentView = KSWebView(url)
+        self.url = url
         self.name = name
     }
 
     func applicationDidFinishLaunching(_ notification: Notification) {
+        let contentView = KSWebView(url, self)
+
         window = NSWindow(
             contentRect: NSRect(x: 0, y: 0, width: 1366, height: 768),
             styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView],
             backing: .buffered,
             defer: false
         )
+        appearance = window.appearance
+        initAppearance = window.appearance
 
         window.title = "\(self.name) - Koishi"
         window.titlebarAppearsTransparent = true
@@ -50,6 +56,7 @@ class KSWebViewDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
         hostingView = NSHostingView(rootView: contentView)
         window.contentView = hostingView
         window.delegate = self
+
         window.makeKeyAndOrderFront(nil)
         NSApp.activate(ignoringOtherApps: true)
     }
@@ -62,13 +69,47 @@ class KSWebViewDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
     func windowWillClose(_ notification: Notification) {
         print(try! JSONEncoder().encode(KSWebViewOutput()).base64EncodedString())
     }
+
+    func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
+        guard let msg = message.body as? String else {
+            log("Failed to parse shellmacHandler message \(message.body)")
+            return
+        }
+
+        switch msg {
+        case "TL":
+            appearance = NSAppearance(named: NSAppearance.Name.vibrantLight)
+        case "TD":
+            appearance = NSAppearance(named: NSAppearance.Name.vibrantDark)
+        case "TR":
+            appearance = initAppearance
+        default:
+            break
+        }
+
+        setAppearance()
+    }
+
+    func setAppearance() {
+        window.appearance = appearance
+        window.appearanceSource.appearance = appearance
+        window.invalidateShadow()
+    }
+
+    func windowDidBecomeKey(_ notification: Notification) {
+        setAppearance()
+    }
+
+    func windowDidResignKey(_ notification: Notification) {
+        setAppearance()
+    }
 }
 
 struct KSWebView: View {
     @StateObject var webViewStore: WebViewStore
     private var url: String
 
-    init(_ url: String) {
+    init(_ url: String, _ webViewDelegate: KSWebViewDelegate) {
         self.url = url
 
         let enhanceURL = Bundle.module.url(forResource: "userscript", withExtension: "js")!
@@ -81,6 +122,7 @@ struct KSWebView: View {
         )
         let userContentController = WKUserContentController()
         userContentController.addUserScript(userScript)
+        userContentController.add(webViewDelegate, name: "shellmacHandler")
         let configuration = WKWebViewConfiguration()
         configuration.userContentController = userContentController
         _webViewStore = StateObject(
