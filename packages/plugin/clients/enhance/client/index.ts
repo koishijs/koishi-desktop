@@ -1,6 +1,5 @@
 import { Context } from '@koishijs/client'
-
-const styleSheetId = 'koishell-enhance-stylesheet'
+import './index.css'
 
 declare global {
   interface Window {
@@ -23,18 +22,6 @@ declare global {
     }
   }
 }
-
-const enhanceCSS = `
-body, nav.layout-activity {
-background: transparent !important;
-}
-div.layout-container {
-clip-path: inset(0 0 round 24px 0 0 0) !important;
-}
-nav.layout-activity {
-border: 0 !important;
-}
-`
 
 const shellThemeMap = {
   light: 'TL',
@@ -71,24 +58,11 @@ const enhance = () => {
         ? 'dark'
         : 'light'
     )
-
-    let styleSheet = window.document.getElementById(
-      styleSheetId
-    ) as HTMLStyleElement
-    if (!styleSheet) {
-      styleSheet = document.createElement('style')
-      styleSheet.id = styleSheetId
-      styleSheet.innerHTML = enhanceCSS
-      document.head.appendChild(styleSheet)
-    }
   }
 }
 
 const disposeEnhance = () => {
   sendTheme('reset')
-
-  const styleSheet = window.document.getElementById(styleSheetId)
-  if (styleSheet) window.document.head.removeChild(styleSheet)
 }
 
 export default (ctx: Context) => {
