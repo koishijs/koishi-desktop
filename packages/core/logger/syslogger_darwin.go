@@ -21,8 +21,6 @@ func BuildNewSysLogger() func(i *do.Injector) (*SysLogger, error) {
 
 		wg := do.MustInvoke[*sync.WaitGroup](i)
 
-		adapter := newColorAdapter(nil)
-
 		home, err := homedir.Dir()
 		if err != nil {
 			return nil, fmt.Errorf("failed to get home directory: %w", err)
@@ -33,6 +31,8 @@ func BuildNewSysLogger() func(i *do.Injector) (*SysLogger, error) {
 		if err != nil {
 			return nil, fmt.Errorf("failed to open log file: %w", err)
 		}
+
+		adapter := newColorAdapter(nil)
 
 		sysLogger := &SysLogger{
 			c: make(chan *rpl.Log),

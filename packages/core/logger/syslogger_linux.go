@@ -19,12 +19,12 @@ func BuildNewSysLogger() func(i *do.Injector) (*SysLogger, error) {
 
 		wg := do.MustInvoke[*sync.WaitGroup](i)
 
-		adapter := newColorAdapter(nil)
-
 		l, err := syslog.New(syslog.LOG_INFO|syslog.LOG_USER, logName)
 		if err != nil {
 			return nil, fmt.Errorf("failed to create syslog logger: %w", err)
 		}
+
+		adapter := newColorAdapter(nil)
 
 		sysLogger := &SysLogger{
 			c: make(chan *rpl.Log),

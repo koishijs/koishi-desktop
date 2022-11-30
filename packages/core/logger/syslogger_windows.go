@@ -19,8 +19,6 @@ func BuildNewSysLogger() func(i *do.Injector) (*SysLogger, error) {
 
 		wg := do.MustInvoke[*sync.WaitGroup](i)
 
-		adapter := newColorAdapter(nil)
-
 		err = eventlog.InstallAsEventCreate(
 			logName,
 			eventlog.Info,
@@ -33,6 +31,8 @@ func BuildNewSysLogger() func(i *do.Injector) (*SysLogger, error) {
 		if err != nil {
 			return nil, fmt.Errorf("failed to open event log: %w", err)
 		}
+
+		adapter := newColorAdapter(nil)
 
 		sysLogger := &SysLogger{
 			c: make(chan *rpl.Log),
