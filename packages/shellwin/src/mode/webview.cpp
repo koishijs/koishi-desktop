@@ -98,6 +98,12 @@ int WebViewWindow::Run() {
       DWMWINDOWATTRIBUTE::DWMWA_WINDOW_CORNER_PREFERENCE,
       &dwmCornerPreference,
       sizeof(dwmCornerPreference));
+  int dwmMica = 1;
+  DwmSetWindowAttribute(
+      hWnd,
+      1029, // DWMWINDOWATTRIBUTE::DWMWA_MICA
+      &dwmMica,
+      sizeof(dwmMica));
   unsigned int dwmSystemBackdropType =
       2; // DWM_SYSTEMBACKDROP_TYPE::DWMSBT_MAINWINDOW
   DwmSetWindowAttribute(
