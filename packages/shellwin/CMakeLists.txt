@@ -46,6 +46,7 @@ target_link_libraries(koishell
         webview2_static
         ShLwApi
         ComCtl32
+        dwmapi
 )
 
 target_include_directories(koishell

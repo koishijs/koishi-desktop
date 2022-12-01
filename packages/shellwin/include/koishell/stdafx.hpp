@@ -9,6 +9,7 @@
 
 #include <ShlObj_core.h>
 #include <Shlwapi.h>
+#include <dwmapi.h>
 
 #include "WebView2.h"
 #include "WebView2EnvironmentOptions.h"

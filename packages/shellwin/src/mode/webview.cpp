@@ -83,6 +83,15 @@ int WebViewWindow::Run() {
   ShowWindow(hWnd, nCmdShow);
   UpdateWindow(hWnd);
 
+  MARGINS dwmExtendFrameIntoClientAreaMargins = {-1};
+  DwmExtendFrameIntoClientArea(hWnd, &dwmExtendFrameIntoClientAreaMargins);
+  int dwmUseDarkMode = 0;
+  DwmSetWindowAttribute(
+      hWnd,
+      DWMWINDOWATTRIBUTE::DWMWA_USE_IMMERSIVE_DARK_MODE,
+      &dwmUseDarkMode,
+      sizeof(dwmUseDarkMode));
+
   auto options = Microsoft::WRL::Make<CoreWebView2EnvironmentOptions>();
   CheckFailure(
       CreateCoreWebView2EnvironmentWithOptions(
@@ -222,15 +231,24 @@ LRESULT CALLBACK WebViewWindow::WndProc(
 }
 
 void WebViewWindow::OnMessage(std::wstring *message) {
+  int dwmUseDarkMode;
   if ((*message) == L"TD") {
+    dwmUseDarkMode = 1;
+    DwmSetWindowAttribute(
+        hWnd,
+        DWMWINDOWATTRIBUTE::DWMWA_USE_IMMERSIVE_DARK_MODE,
+        &dwmUseDarkMode,
+        sizeof(dwmUseDarkMode));
     return;
   }
 
-  if ((*message) == L"TL") {
-    return;
-  }
-
-  if ((*message) == L"TR") {
+  if ((*message) == L"TL" || (*message) == L"TR") {
+    dwmUseDarkMode = 0;
+    DwmSetWindowAttribute(
+        hWnd,
+        DWMWINDOWATTRIBUTE::DWMWA_USE_IMMERSIVE_DARK_MODE,
+        &dwmUseDarkMode,
+        sizeof(dwmUseDarkMode));
     return;
   }
 }
