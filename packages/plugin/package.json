@@ -17,7 +17,7 @@
   "typings": "lib/index.d.ts",
   "files": [
     "lib",
-    "dist"
+    "clients/*/dist"
   ],
   "scripts": {
     "build:fe": "concurrently -n enhance \"koishi-console build clients/enhance\""
