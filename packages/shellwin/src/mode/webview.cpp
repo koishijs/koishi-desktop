@@ -146,9 +146,6 @@ int WebViewWindow::Run() {
                                                 L"Failed to get webview URI.");
                                             std::wstring uri = uriRaw.get();
 
-                                            std::wcerr << "URI: " << uri
-                                                       << std::endl;
-
                                             wil::unique_cotaskmem_string
                                                 messageRaw;
                                             CheckFailure(
