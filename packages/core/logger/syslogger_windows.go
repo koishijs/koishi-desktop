@@ -45,7 +45,7 @@ func BuildNewSysLogger() func(i *do.Injector) (*SysLogger, error) {
 				_ = e.Close()
 			}()
 
-			eid := 1
+			var eid uint32 = 1
 
 			for {
 				log := <-sysLogger.c
