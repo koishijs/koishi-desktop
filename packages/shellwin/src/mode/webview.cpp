@@ -55,7 +55,8 @@ int WebViewWindow::Run() {
   wcex.hIcon = static_cast<HICON>(
       LoadImageW(hInstance, MAKEINTRESOURCEW(101), IMAGE_ICON, 0, 0, 0));
   wcex.hCursor = LoadCursorW(hInstance, IDC_ARROW);
-  wcex.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
+  // wcex.hbrBackground = static_cast<HBRUSH>(GetStockObject(NULL_BRUSH));
+  wcex.hbrBackground = static_cast<HBRUSH>(GetStockObject(BLACK_BRUSH));
   wcex.lpszMenuName = nullptr;
   wcex.lpszClassName = KoiShellWebViewClass;
   wcex.hIconSm = static_cast<HICON>(
@@ -91,6 +92,25 @@ int WebViewWindow::Run() {
       DWMWINDOWATTRIBUTE::DWMWA_USE_IMMERSIVE_DARK_MODE,
       &dwmUseDarkMode,
       sizeof(dwmUseDarkMode));
+  unsigned int dwmCornerPreference = DWM_WINDOW_CORNER_PREFERENCE::DWMWCP_ROUND;
+  DwmSetWindowAttribute(
+      hWnd,
+      DWMWINDOWATTRIBUTE::DWMWA_WINDOW_CORNER_PREFERENCE,
+      &dwmCornerPreference,
+      sizeof(dwmCornerPreference));
+  unsigned int dwmSystemBackdropType =
+      2; // DWM_SYSTEMBACKDROP_TYPE::DWMSBT_MAINWINDOW
+  DwmSetWindowAttribute(
+      hWnd,
+      38, // DWMWINDOWATTRIBUTE::DWMWA_SYSTEMBACKDROP_TYPE
+      &dwmSystemBackdropType,
+      sizeof(dwmSystemBackdropType));
+  dwmSystemBackdropType = 4; // DWM_SYSTEMBACKDROP_TYPE::DWMSBT_TABBEDWINDOW
+  DwmSetWindowAttribute(
+      hWnd,
+      38, // DWMWINDOWATTRIBUTE::DWMWA_SYSTEMBACKDROP_TYPE
+      &dwmSystemBackdropType,
+      sizeof(dwmSystemBackdropType));
 
   auto options = Microsoft::WRL::Make<CoreWebView2EnvironmentOptions>();
   CheckFailure(
@@ -118,6 +138,14 @@ int WebViewWindow::Run() {
                                         &webview),
                                     L"Failed to get WebView2.");
                               }
+
+                              wil::com_ptr<ICoreWebView2Controller2>
+                                  controller2 =
+                                      webviewController
+                                          .query<ICoreWebView2Controller2>();
+                              CheckFailure(
+                                  controller2->put_DefaultBackgroundColor({}),
+                                  L"Failed to set transparent background.");
 
                               wil::com_ptr<ICoreWebView2Settings> settings;
                               webview->get_Settings(&settings);
