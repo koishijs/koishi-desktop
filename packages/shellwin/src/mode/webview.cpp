@@ -12,7 +12,7 @@ int WebViewWindow::Run() {
   if (!GetCurrentDirectoryW(MAX_PATH, cwd))
     LogAndFailWithLastError(L"Failed to get cwd.");
   wchar_t udf[MAX_PATH];
-  if (!PathCombineW(udf, cwd, L"home\\WebView2"))
+  if (!PathCombineW(udf, cwd, L"data\\home\\WebView2"))
     LogAndFailWithLastError(L"Failed to combine udf.");
   int udfErr = SHCreateDirectoryExW(nullptr, udf, nullptr);
   if (udfErr != ERROR_SUCCESS && udfErr != ERROR_FILE_EXISTS &&
