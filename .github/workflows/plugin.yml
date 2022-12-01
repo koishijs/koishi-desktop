@@ -1,0 +1,41 @@
+name: Build Plugin
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          submodules: recursive
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: yarn
+
+      - name: Install Build Package
+        run: |
+          yarn install --frozen-lockfile
+        shell: bash
+
+      - name: Build Package
+        run: |
+          yarn build
+          yarn workspace koishi-plugin-desktop pack --filename koishi-plugin-desktop.tgz
+        shell: bash
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: koishi-plugin-desktop-${{ github.sha }}
+          path: packages/plugin/koishi-plugin-desktop.tgz
