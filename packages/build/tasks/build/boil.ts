@@ -1,8 +1,9 @@
+import { sleep } from '../../utils/common'
 import { dir } from '../../utils/path'
 import { exec } from '../../utils/spawn'
 
-export const boil = () =>
-  exec(
+export const boil = async () => {
+  await exec(
     process.platform === 'win32' ? 'koi' : './koi',
     [
       'import',
@@ -13,3 +14,6 @@ export const boil = () =>
     ],
     dir('buildPortable')
   )
+
+  await sleep()
+}

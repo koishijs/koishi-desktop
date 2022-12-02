@@ -1,4 +1,5 @@
 import { info } from 'gulplog'
+import { sleep } from '../utils/common'
 import { exists } from '../utils/fs'
 import { dir } from '../utils/path'
 import { exec } from '../utils/spawn'
@@ -17,6 +18,8 @@ export const stop = async () => {
     dir('buildPortable')
   )
 
+  await sleep()
+
   info('Remaining process stopped.')
 }
 
@@ -33,6 +36,8 @@ export const kill = async () => {
     ['daemon', 'kill'],
     dir('buildPortable')
   )
+
+  await sleep()
 
   info('Remaining process killed.')
 }
