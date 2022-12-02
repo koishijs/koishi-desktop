@@ -149,6 +149,26 @@
           />
         </Component>
       </Directory>
+
+      <Component
+        Id="ComponentEventLog"
+        Guid="63968502-B437-4F77-8D8B-5DBFF8F2E17E"
+        Win64="yes"
+      >
+        <RegistryKey
+          Root="HKLM"
+          Key="SYSTEM\CurrentControlSet\Services\EventLog\Application\Koishi"
+          Action="createAndRemoveOnUninstall"
+        >
+          <RegistryValue Type="integer" Name="CustomSource" Value="1" />
+          <RegistryValue Type="integer" Name="TypesSupported" Value="4" />
+          <RegistryValue
+            Type="expandable"
+            Name="EventMessageFile"
+            Value="%SystemRoot%\System32\EventCreate.exe"
+          />
+        </RegistryKey>
+      </Component>
     </Directory>
 
     <Feature
@@ -176,6 +196,17 @@
       </Feature>
 
       <Feature
+        Id="FeatureDesktopIcon"
+        Title="Desktop Icon"
+        Description="Add a shortcut of Koishi on desktop."
+        Level="1000"
+        InstallDefault="local"
+        AllowAdvertise="no"
+      >
+        <ComponentRef Id="ComponentDirectoryDesktopFolder" />
+      </Feature>
+
+      <Feature
         Id="FeatureConsoleWindow"
         Title="Console Window"
         Description="Powers the Koishi Console window instead of in-browser console."
@@ -187,14 +218,14 @@
       </Feature>
 
       <Feature
-        Id="FeatureDesktopIcon"
-        Title="Desktop Icon"
-        Description="Add a shortcut of Koishi on desktop."
-        Level="1000"
+        Id="FeatureEventLog"
+        Title="Event Log"
+        Description="Install Koishi as an event log source."
+        Level="1"
         InstallDefault="local"
         AllowAdvertise="no"
       >
-        <ComponentRef Id="ComponentDirectoryDesktopFolder" />
+        <ComponentRef Id="ComponentEventLog" />
       </Feature>
     </Feature>
 
