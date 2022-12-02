@@ -38,6 +38,7 @@ class KSWebViewDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, WKSc
         let enhanceURL = Bundle.module.url(forResource: "userscript", withExtension: "js")!
         let enhanceData = try! Data(contentsOf: enhanceURL)
         let enhanceRaw = String(decoding: enhanceData, as: UTF8.self)
+            .replacingOccurrences(of: "KOISHELL_RUNTIME_SUPPORTS", with: "['enhance']")
         let userScript = WKUserScript(
             source: enhanceRaw,
             injectionTime: .atDocumentEnd,
