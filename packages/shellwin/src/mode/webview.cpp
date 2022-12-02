@@ -8,6 +8,16 @@ WebViewWindow::WebViewWindow(
 }
 
 int WebViewWindow::Run() {
+  OSVERSIONINFOEXW osvi;
+  memset(&osvi, 0, sizeof(OSVERSIONINFOEXW));
+  osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFOEXW);
+  if (!GetVersionExW(reinterpret_cast<LPOSVERSIONINFOW>(&osvi)))
+    LogAndFailWithLastError(L"Failed to get OS version info.");
+
+  bool supportsEnhance =
+      osvi.dwBuildNumber >= 10240; // Prevent Aero Glass extends
+  bool supportsDocumentedImmersiveDarkMode = osvi.dwBuildNumber >= 19041;
+
   wchar_t cwd[MAX_PATH];
   if (!GetCurrentDirectoryW(MAX_PATH, cwd))
     LogAndFailWithLastError(L"Failed to get cwd.");
@@ -43,8 +53,14 @@ int WebViewWindow::Run() {
   char *userscriptS = new char[userscriptSize + 1];
   memcpy_s(userscriptS, userscriptSize, userscriptData, userscriptSize);
   userscriptS[userscriptSize] = 0;
-  wchar_t *userscript = KoiShell::UTF8ToWideChar(userscriptS);
+  wchar_t *userscriptW = KoiShell::UTF8ToWideChar(userscriptS);
   delete[] userscriptS;
+  std::wstring userscript = std::wstring(userscriptW);
+  delete[] userscriptW;
+  userscript.replace(
+      userscript.find(L"KOISHELL_RUNTIME_SUPPORTS"),
+      25,
+      supportsEnhance ? L"['enhance']" : L"[]");
 
   wcex.cbSize = sizeof(WNDCLASSEXW);
   wcex.style = CS_HREDRAW | CS_VREDRAW;
@@ -84,40 +100,47 @@ int WebViewWindow::Run() {
   ShowWindow(hWnd, nCmdShow);
   UpdateWindow(hWnd);
 
-  MARGINS dwmExtendFrameIntoClientAreaMargins = {-1};
-  DwmExtendFrameIntoClientArea(hWnd, &dwmExtendFrameIntoClientAreaMargins);
-  int dwmUseDarkMode = 0;
-  DwmSetWindowAttribute(
-      hWnd,
-      20, // DWMWINDOWATTRIBUTE::DWMWA_USE_IMMERSIVE_DARK_MODE
-      &dwmUseDarkMode,
-      sizeof(dwmUseDarkMode));
-  unsigned int dwmCornerPreference =
-      2; // DWM_WINDOW_CORNER_PREFERENCE::DWMWCP_ROUND
-  DwmSetWindowAttribute(
-      hWnd,
-      33, // DWMWINDOWATTRIBUTE::DWMWA_WINDOW_CORNER_PREFERENCE
-      &dwmCornerPreference,
-      sizeof(dwmCornerPreference));
-  int dwmMica = 1;
-  DwmSetWindowAttribute(
-      hWnd,
-      1029, // DWMWINDOWATTRIBUTE::DWMWA_MICA
-      &dwmMica,
-      sizeof(dwmMica));
-  unsigned int dwmSystemBackdropType =
-      2; // DWM_SYSTEMBACKDROP_TYPE::DWMSBT_MAINWINDOW
-  DwmSetWindowAttribute(
-      hWnd,
-      38, // DWMWINDOWATTRIBUTE::DWMWA_SYSTEMBACKDROP_TYPE
-      &dwmSystemBackdropType,
-      sizeof(dwmSystemBackdropType));
-  dwmSystemBackdropType = 4; // DWM_SYSTEMBACKDROP_TYPE::DWMSBT_TABBEDWINDOW
-  DwmSetWindowAttribute(
-      hWnd,
-      38, // DWMWINDOWATTRIBUTE::DWMWA_SYSTEMBACKDROP_TYPE
-      &dwmSystemBackdropType,
-      sizeof(dwmSystemBackdropType));
+  if (supportsEnhance) {
+    MARGINS dwmExtendFrameIntoClientAreaMargins = {-1};
+    DwmExtendFrameIntoClientArea(hWnd, &dwmExtendFrameIntoClientAreaMargins);
+    int dwmUseDarkMode = 0;
+    DwmSetWindowAttribute(
+        hWnd,
+        supportsDocumentedImmersiveDarkMode
+            ? 20
+            :   // DWMWINDOWATTRIBUTE::DWMWA_USE_IMMERSIVE_DARK_MODE
+                // = 20 (starting from 19041)
+            19, // DWMWINDOWATTRIBUTE::DWMWA_USE_IMMERSIVE_DARK_MODE
+                // = 19 (before 19041)
+        &dwmUseDarkMode,
+        sizeof(dwmUseDarkMode));
+    unsigned int dwmCornerPreference =
+        2; // DWM_WINDOW_CORNER_PREFERENCE::DWMWCP_ROUND
+    DwmSetWindowAttribute(
+        hWnd,
+        33, // DWMWINDOWATTRIBUTE::DWMWA_WINDOW_CORNER_PREFERENCE
+        &dwmCornerPreference,
+        sizeof(dwmCornerPreference));
+    int dwmMica = 1;
+    DwmSetWindowAttribute(
+        hWnd,
+        1029, // DWMWINDOWATTRIBUTE::DWMWA_MICA
+        &dwmMica,
+        sizeof(dwmMica));
+    unsigned int dwmSystemBackdropType =
+        2; // DWM_SYSTEMBACKDROP_TYPE::DWMSBT_MAINWINDOW
+    DwmSetWindowAttribute(
+        hWnd,
+        38, // DWMWINDOWATTRIBUTE::DWMWA_SYSTEMBACKDROP_TYPE
+        &dwmSystemBackdropType,
+        sizeof(dwmSystemBackdropType));
+    dwmSystemBackdropType = 4; // DWM_SYSTEMBACKDROP_TYPE::DWMSBT_TABBEDWINDOW
+    DwmSetWindowAttribute(
+        hWnd,
+        38, // DWMWINDOWATTRIBUTE::DWMWA_SYSTEMBACKDROP_TYPE
+        &dwmSystemBackdropType,
+        sizeof(dwmSystemBackdropType));
+  }
 
   auto options = Microsoft::WRL::Make<CoreWebView2EnvironmentOptions>();
   CheckFailure(
