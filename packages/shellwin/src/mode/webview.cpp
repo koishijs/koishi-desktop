@@ -185,8 +185,7 @@ int WebViewWindow::Run() {
                               settings->put_AreDevToolsEnabled(1);
 
                               webview->AddScriptToExecuteOnDocumentCreated(
-                                  userscript, nullptr);
-                              delete[] userscript;
+                                  userscript.c_str(), nullptr);
 
                               EventRegistrationToken eventRegistrationToken;
                               CheckFailure(
