@@ -1,9 +1,11 @@
+import { series } from 'gulp'
 import { sleep } from '../../utils/common'
 import { dir } from '../../utils/path'
 import { exec } from '../../utils/spawn'
+import { stop } from '../stop'
 
-export const boil = async () => {
-  await exec(
+const boilIntl = () =>
+  exec(
     process.platform === 'win32' ? 'koi' : './koi',
     [
       'import',
@@ -15,5 +17,9 @@ export const boil = async () => {
     dir('buildPortable')
   )
 
-  await sleep()
-}
+export const boil = series(
+  boilIntl,
+  // Intended to have daemon started after boil, so stop it.
+  stop,
+  sleep
+)
