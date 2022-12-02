@@ -1,14 +1,20 @@
 package tray
 
 import (
+	"errors"
+	"fmt"
+	"io/fs"
 	"os"
+	"path/filepath"
 	"runtime"
 	"sync"
 	"time"
 
 	"fyne.io/systray"
+	"github.com/goccy/go-json"
 	"github.com/mitchellh/mapstructure"
 	"github.com/samber/do"
+	"github.com/shirou/gopsutil/v3/process"
 	"golang.org/x/text/message"
 	"gopkg.ilharper.com/koi/app/util"
 	"gopkg.ilharper.com/koi/core/god/proto"
@@ -23,6 +29,10 @@ import (
 )
 
 var refreshWaitDuration = 2 * time.Second
+
+type TrayLock struct {
+	Pid int `json:"pid" mapstructure:"pid"`
+}
 
 type TrayDaemon struct { //nolint:golint
 	i       *do.Injector
@@ -40,6 +50,58 @@ func NewTrayDaemon(i *do.Injector) (*TrayDaemon, error) {
 }
 
 func (tray *TrayDaemon) Run() error {
+	var err error
+
+	l := do.MustInvoke[*logger.Logger](tray.i)
+	cfg := do.MustInvoke[*koiconfig.Config](tray.i)
+	shell := do.MustInvoke[*koishell.KoiShell](tray.i)
+
+	// Tray mutex
+	trayLockPath := filepath.Join(cfg.Computed.DirLock, "tray.lock")
+	_, err = os.Stat(trayLockPath)
+	if err != nil && (!(errors.Is(err, fs.ErrNotExist))) {
+		return fmt.Errorf("failed to stat %s: %w", trayLockPath, err)
+	}
+	if err == nil {
+		// tray.lock exists
+		pid, aliveErr := checkTrayAlive(trayLockPath)
+		if aliveErr == nil {
+			go shell.AlreadyRunning()
+			return fmt.Errorf("tray running, PID=%d", pid)
+		}
+
+		_ = os.Remove(trayLockPath)
+	}
+
+	do.Provide(tray.i, NewTrayUnlocker)
+
+	// tray.lock does not exist. Writing
+	l.Debug("Writing tray.lock...")
+	lock, err := os.OpenFile(
+		trayLockPath,
+		os.O_WRONLY|os.O_CREATE|os.O_EXCL, // Must create new file and write only
+		0o444,                             // -r--r--r--
+	)
+	if err != nil {
+		return fmt.Errorf("failed to create %s: %w", trayLockPath, err)
+	}
+
+	trayLock := &TrayLock{
+		Pid: os.Getpid(),
+	}
+	trayLockJSON, err := json.Marshal(trayLock)
+	if err != nil {
+		return fmt.Errorf("failed to generate tray lock data: %w", err)
+	}
+	_, err = lock.Write(trayLockJSON)
+	if err != nil {
+		return fmt.Errorf("failed to write tray lock data: %w", err)
+	}
+	err = lock.Close()
+	if err != nil {
+		return fmt.Errorf("failed to close tray lock: %w", err)
+	}
+
 	systray.Run(tray.onReady, tray.onExit)
 
 	return nil
@@ -602,4 +664,36 @@ func (tray *TrayDaemon) addItemsAfter() {
 			systray.Quit()
 		}
 	}()
+}
+
+func checkTrayAlive(lockPath string) (int32, error) {
+	var err error
+
+	lockFile, err := os.ReadFile(lockPath)
+	if err != nil {
+		return 0, fmt.Errorf("failed to read %s: %w", lockPath, err)
+	}
+
+	var lock TrayLock
+	err = json.Unmarshal(lockFile, &lock)
+	if err != nil {
+		return 0, fmt.Errorf("failed to parse %s: %w", lockPath, err)
+	}
+
+	pid := int32(lock.Pid)
+	proc, err := process.NewProcess(pid)
+	if err != nil {
+		return 0, fmt.Errorf("failed to get process %d: %w", pid, err)
+	}
+
+	isRunning, err := proc.IsRunning()
+	if err != nil {
+		return 0, fmt.Errorf("failed to get process %d state: %w", pid, err)
+	}
+
+	if !isRunning {
+		return 0, fmt.Errorf("process %d is not running", pid)
+	}
+
+	return pid, nil
 }

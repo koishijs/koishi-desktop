@@ -200,3 +200,19 @@ func (shell *KoiShell) About() {
 		l.Errorf("About dialog error: %v", err)
 	}
 }
+
+func (shell *KoiShell) AlreadyRunning() {
+	l := do.MustInvoke[*logger.Logger](shell.i)
+
+	_, err := shell.exec(map[string]any{
+		"mode":        "dialog",
+		"title":       "Already Running",
+		"style":       "info",
+		"text1":       "Koishi is already running.",
+		"text2":       "You can find the Koishi icon from notification area. Tap the Koishi icon to perform action.",
+		"buttonCount": 1,
+	})
+	if err != nil {
+		l.Errorf("About dialog error: %v", err)
+	}
+}
