@@ -653,7 +653,7 @@ func (tray *TrayDaemon) addItemsAfter() {
 				break
 			}
 			l.Debug(p.Sprintf("Showing about dialog"))
-			shell.About()
+			go shell.About()
 		}
 	}()
 
