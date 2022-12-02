@@ -89,13 +89,14 @@ int WebViewWindow::Run() {
   int dwmUseDarkMode = 0;
   DwmSetWindowAttribute(
       hWnd,
-      DWMWINDOWATTRIBUTE::DWMWA_USE_IMMERSIVE_DARK_MODE,
+      20, // DWMWINDOWATTRIBUTE::DWMWA_USE_IMMERSIVE_DARK_MODE
       &dwmUseDarkMode,
       sizeof(dwmUseDarkMode));
-  unsigned int dwmCornerPreference = DWM_WINDOW_CORNER_PREFERENCE::DWMWCP_ROUND;
+  unsigned int dwmCornerPreference =
+      2; // DWM_WINDOW_CORNER_PREFERENCE::DWMWCP_ROUND
   DwmSetWindowAttribute(
       hWnd,
-      DWMWINDOWATTRIBUTE::DWMWA_WINDOW_CORNER_PREFERENCE,
+      33, // DWMWINDOWATTRIBUTE::DWMWA_WINDOW_CORNER_PREFERENCE
       &dwmCornerPreference,
       sizeof(dwmCornerPreference));
   int dwmMica = 1;
