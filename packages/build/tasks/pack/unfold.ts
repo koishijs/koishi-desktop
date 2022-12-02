@@ -1,7 +1,7 @@
 import { series } from 'gulp'
 import mkdirp from 'mkdirp'
 import fs from 'node:fs/promises'
-import { sleepForMac } from '../../utils/common'
+import { sleep } from '../../utils/common'
 import { zip } from '../../utils/compress'
 import { exists } from '../../utils/fs'
 import { dir } from '../../utils/path'
@@ -34,7 +34,7 @@ export const packUnfoldDataCopy = async () => {
 
 export const packUnfoldDataZip = async () => {
   await zip(dir('buildUnfoldData'), dir('srcUnfold', 'portabledata.zip'))
-  await sleepForMac()
+  await sleep()
 }
 
 export const compileUnfoldDebug = () =>

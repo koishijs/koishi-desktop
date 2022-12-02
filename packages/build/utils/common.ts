@@ -1,4 +1,4 @@
-export const sleep = (ms: number): Promise<void> =>
+const sleepIntl = (ms: number): Promise<void> =>
   new Promise((resolve) => setTimeout(resolve, ms))
 
-export const sleepForMac = () => sleep(2000)
+export const sleep = () => sleepIntl(2000)
