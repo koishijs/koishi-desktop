@@ -4,10 +4,12 @@ declare global {
   }
 
   const DEFINE_AGENT: string
+  const DEFINE_SUPPORTS: string[]
 }
 
 interface KoiShell {
   agent?: string
+  supports?: string[]
 }
 
 function ensureKoiShell() {
@@ -16,6 +18,7 @@ function ensureKoiShell() {
 
   const koiShell = window.__KOI_SHELL__ as KoiShell
   koiShell.agent = DEFINE_AGENT
+  koiShell.supports = DEFINE_SUPPORTS
 }
 
 setInterval(ensureKoiShell, 10000)

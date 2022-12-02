@@ -21,6 +21,7 @@ export const generateUserscript = async () => {
       DEFINE_AGENT: `"${
         defineAgentMap[process.platform as keyof typeof defineAgentMap]
       }"`,
+      DEFINE_SUPPORTS: 'KOISHELL_RUNTIME_SUPPORTS',
     },
 
     bundle: true,
