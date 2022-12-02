@@ -2,8 +2,9 @@ import { Context } from '@koishijs/client'
 
 declare global {
   interface Window {
-    __KOI_SHELL__: {
-      agent: string
+    __KOI_SHELL__?: {
+      agent?: string
+      supports?: string[]
     }
 
     chrome: {
@@ -84,51 +85,51 @@ const sendTheme = (theme: keyof typeof shellThemeMap) => {
 
 let themeObserver: MutationObserver
 
+const supportsEnhance = () =>
+  Array.isArray(window.__KOI_SHELL__?.supports) &&
+  window.__KOI_SHELL__.supports.includes('enhance')
+
 const enhance = () => {
-  const agent = window.__KOI_SHELL__?.agent
+  if (!supportsEnhance()) return
 
-  if (agent === 'shellwin' || agent === 'shellmac') {
-    sendTheme(
-      window.document.documentElement.classList.contains('dark')
-        ? 'dark'
-        : 'light'
-    )
+  sendTheme(
+    window.document.documentElement.classList.contains('dark')
+      ? 'dark'
+      : 'light'
+  )
 
-    themeObserver = new MutationObserver((mutations) => {
-      for (const mutation of mutations) {
-        if (mutation.attributeName === 'class')
-          sendTheme(
-            (mutation.target as HTMLElement).classList.contains('dark')
-              ? 'dark'
-              : 'light'
-          )
-      }
-    })
-    themeObserver.observe(window.document.documentElement, { attributes: true })
-
-    let styleSheet = window.document.getElementById(
-      styleSheetId
-    ) as HTMLStyleElement
-    if (!styleSheet) {
-      styleSheet = document.createElement('style')
-      styleSheet.id = styleSheetId
-      styleSheet.innerHTML = enhanceCSS
-      document.head.appendChild(styleSheet)
+  themeObserver = new MutationObserver((mutations) => {
+    for (const mutation of mutations) {
+      if (mutation.attributeName === 'class')
+        sendTheme(
+          (mutation.target as HTMLElement).classList.contains('dark')
+            ? 'dark'
+            : 'light'
+        )
     }
+  })
+  themeObserver.observe(window.document.documentElement, { attributes: true })
+
+  let styleSheet = window.document.getElementById(
+    styleSheetId
+  ) as HTMLStyleElement
+  if (!styleSheet) {
+    styleSheet = document.createElement('style')
+    styleSheet.id = styleSheetId
+    styleSheet.innerHTML = enhanceCSS
+    document.head.appendChild(styleSheet)
   }
 }
 
 const disposeEnhance = () => {
-  const agent = window.__KOI_SHELL__?.agent
+  if (!supportsEnhance()) return
 
-  if (agent === 'shellwin' || agent === 'shellmac') {
-    sendTheme('reset')
+  sendTheme('reset')
 
-    themeObserver.disconnect()
+  themeObserver.disconnect()
 
-    const styleSheet = window.document.getElementById(styleSheetId)
-    if (styleSheet) window.document.head.removeChild(styleSheet)
-  }
+  const styleSheet = window.document.getElementById(styleSheetId)
+  if (styleSheet) window.document.head.removeChild(styleSheet)
 }
 
 export default (ctx: Context) => {
