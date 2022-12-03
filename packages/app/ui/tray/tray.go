@@ -67,7 +67,7 @@ func (tray *TrayDaemon) Run() error {
 		// tray.lock exists
 		pid, aliveErr := checkTrayAlive(trayLockPath)
 		if aliveErr == nil {
-			go shell.AlreadyRunning()
+			shell.AlreadyRunning()
 			return fmt.Errorf("tray running, PID=%d", pid)
 		}
 

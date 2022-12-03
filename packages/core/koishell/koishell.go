@@ -213,6 +213,6 @@ func (shell *KoiShell) AlreadyRunning() {
 		"buttonCount": 1,
 	})
 	if err != nil {
-		l.Errorf("About dialog error: %v", err)
+		l.Errorf("Already running dialog error: %v", err)
 	}
 }
