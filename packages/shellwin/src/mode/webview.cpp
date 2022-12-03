@@ -15,8 +15,8 @@ int WebViewWindow::Run() {
     LogAndFailWithLastError(L"Failed to get OS version info.");
 
   bool supportsEnhance =
-      osvi.dwBuildNumber >= 10240; // Prevent Aero Glass extends
-  bool supportsDocumentedImmersiveDarkMode = osvi.dwBuildNumber >= 19041;
+      osvi.dwBuildNumber >= 17763; // Prevent Aero Glass extends
+  bool supportsDocumentedImmersiveDarkMode = osvi.dwBuildNumber >= 18985;
 
   wchar_t cwd[MAX_PATH];
   if (!GetCurrentDirectoryW(MAX_PATH, cwd))
@@ -109,9 +109,9 @@ int WebViewWindow::Run() {
         supportsDocumentedImmersiveDarkMode
             ? 20
             :   // DWMWINDOWATTRIBUTE::DWMWA_USE_IMMERSIVE_DARK_MODE
-                // = 20 (starting from 19041)
+                // = 20 (starting from 18985)
             19, // DWMWINDOWATTRIBUTE::DWMWA_USE_IMMERSIVE_DARK_MODE
-                // = 19 (before 19041)
+                // = 19 (before 18985)
         &dwmUseDarkMode,
         sizeof(dwmUseDarkMode));
     unsigned int dwmCornerPreference =
