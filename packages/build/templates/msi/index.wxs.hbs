@@ -78,6 +78,24 @@
             </Component>
 
             <Component
+              Id="ComponentPuppeteerSupport"
+              Guid="25275292-80F1-43FA-8A7B-A082F234E177"
+              Win64="yes"
+            >
+              <File
+                Id="FileMicrosoftEdgeSetup"
+                Source="SourceDir\MicrosoftEdgeSetup.exe"
+              />
+              <RegistryValue
+                Root="HKLM"
+                Key="Software\Koishi\Desktop"
+                Type="string"
+                Value=""
+                KeyPath="yes"
+              />
+            </Component>
+
+            <Component
               Id="ComponentConsoleWindow"
               Guid="5625446A-2871-438F-AC6D-9BD06EEC2C57"
               Win64="yes"
@@ -207,6 +225,17 @@
       </Feature>
 
       <Feature
+        Id="FeaturePuppeteerSupport"
+        Title="Puppeteer Support"
+        Description="Powers the Koishi Puppeteer plugin to render web pages into images."
+        Level="1"
+        InstallDefault="local"
+        AllowAdvertise="no"
+      >
+        <ComponentRef Id="ComponentPuppeteerSupport" />
+      </Feature>
+
+      <Feature
         Id="FeatureConsoleWindow"
         Title="Console Window"
         Description="Powers the Koishi Console window instead of in-browser console."
@@ -243,6 +272,15 @@
     />
 
     <CustomAction
+      Id="CustomActionSetupMicrosoftEdge"
+      FileKey="FileMicrosoftEdgeSetup"
+      ExeCommand="/silent /install"
+      Execute="deferred"
+      Impersonate="no"
+      Return="check"
+    />
+
+    <CustomAction
       Id="CustomActionSetupWebview2"
       FileKey="FileWebview2Setup"
       ExeCommand="/silent /install"
@@ -256,6 +294,10 @@
         Action="CustomActionUnfold"
         After="InstallFiles"
       >NOT Installed</Custom>
+
+      <Custom Action="CustomActionSetupMicrosoftEdge" After="InstallFiles">
+        <![CDATA[&FeaturePuppeteerSupport = 3]]>
+      </Custom>
 
       <Custom Action="CustomActionSetupWebview2" After="InstallFiles">
         <![CDATA[&FeatureConsoleWindow = 3]]>

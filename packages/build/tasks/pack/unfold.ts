@@ -25,6 +25,11 @@ export const packUnfoldDataCopy = async () => {
   for (const b of binaries)
     await fs.copyFile(dir('buildPortable', b), dir('buildUnfoldBinary', b))
 
+  if (await exists(dir('buildCache', 'MicrosoftEdgeSetup.exe')))
+    await fs.copyFile(
+      dir('buildCache', 'MicrosoftEdgeSetup.exe'),
+      dir('buildUnfoldBinary', 'MicrosoftEdgeSetup.exe')
+    )
   if (await exists(dir('buildCache', 'Webview2Setup.exe')))
     await fs.copyFile(
       dir('buildCache', 'Webview2Setup.exe'),
