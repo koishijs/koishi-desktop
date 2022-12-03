@@ -15,17 +15,12 @@ type SysLogger struct {
 
 func BuildNewSysLogger() func(i *do.Injector) (*SysLogger, error) {
 	return func(i *do.Injector) (*SysLogger, error) {
-		var err error
-
 		wg := do.MustInvoke[*sync.WaitGroup](i)
 
-		err = eventlog.InstallAsEventCreate(
+		_ = eventlog.InstallAsEventCreate(
 			logName,
 			eventlog.Info,
 		)
-		if err != nil {
-			return nil, fmt.Errorf("failed to execute EventCreate: %w", err)
-		}
 
 		e, err := eventlog.Open(logName)
 		if err != nil {
