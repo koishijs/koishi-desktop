@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io/fs"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"runtime"
 	"sync"
@@ -548,6 +549,7 @@ func (tray *TrayDaemon) addItemsAfter() {
 	mKillDaemon := mAdvanced.AddSubMenuItem(p.Sprintf("Kill Daemon"), "")
 	mKillDaemon.SetTemplateIcon(icon.Kill, icon.Kill)
 	mOpenDataFolder := mAdvanced.AddSubMenuItem(p.Sprintf("Open Data Folder"), "")
+	mOpenTerminal := mAdvanced.AddSubMenuItem(p.Sprintf("Open Terminal"), "")
 	mExit := mAdvanced.AddSubMenuItem(p.Sprintf("Stop and Exit"), "")
 	mExit.SetTemplateIcon(icon.Exit, icon.Exit)
 	mAbout := systray.AddMenuItem(p.Sprintf("About"), "")
@@ -560,6 +562,7 @@ func (tray *TrayDaemon) addItemsAfter() {
 	tray.chanReg = append(tray.chanReg, mStopDaemon.ClickedCh)
 	tray.chanReg = append(tray.chanReg, mKillDaemon.ClickedCh)
 	tray.chanReg = append(tray.chanReg, mOpenDataFolder.ClickedCh)
+	tray.chanReg = append(tray.chanReg, mOpenTerminal.ClickedCh)
 	tray.chanReg = append(tray.chanReg, mExit.ClickedCh)
 	tray.chanReg = append(tray.chanReg, mAbout.ClickedCh)
 	tray.chanReg = append(tray.chanReg, mQuit.ClickedCh)
@@ -629,6 +632,53 @@ func (tray *TrayDaemon) addItemsAfter() {
 			err := browser.OpenURL(cfg.Computed.DirData)
 			if err != nil {
 				l.Error(p.Sprintf("Failed to open data folder: %v", err))
+			}
+		}
+	}()
+
+	go func() {
+		for {
+			_, ok := <-mOpenTerminal.ClickedCh
+			if !ok {
+				break
+			}
+			l.Debug(p.Sprintf("Opening terminal"))
+
+			var err error
+
+			exe, err := os.Executable()
+			if err != nil {
+				l.Error(p.Sprintf("Failed to get executable: %v", err))
+				continue
+			}
+			dirExe := filepath.Dir(exe)
+			println(dirExe)
+
+			var cmd *exec.Cmd
+			if runtime.GOOS == "windows" {
+				cmd = exec.Command(
+					os.Getenv("COMSPEC"),
+					"/C",
+					"START",
+					"Koishi Desktop Terminal",
+					"/D",
+					dirExe,
+					"cmd", // Use "cmd" here
+					"/K",
+					"echo Koishi Desktop Terminal - You can start running koi command here.",
+				)
+			} else {
+				cmd = exec.Command(
+					"open",
+					"-a",
+					"Terminal",
+					dirExe,
+				)
+			}
+
+			err = cmd.Run()
+			if err != nil {
+				l.Error(p.Sprintf("Failed to open terminal: %v", err))
 			}
 		}
 	}()
