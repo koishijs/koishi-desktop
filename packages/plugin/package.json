@@ -1,7 +1,7 @@
 {
   "name": "koishi-plugin-desktop",
   "description": "Koishi Desktop support",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "author": {
     "name": "Il Harper",
     "email": "hi@ilharper.com",
