@@ -9,7 +9,7 @@
 
 ## 截图
 
-![Screenshot 1](https://raw.githubusercontent.com/koishijs/koishi-desktop/assets/screenshot1.png)
+![Screenshot 1](https://raw.githubusercontent.com/koishijs/koishi-desktop/master/assets/screenshot1.png)
 
 ## 建设中
 
