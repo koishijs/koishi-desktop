@@ -40,8 +40,6 @@ func BuildNewSysLogger() func(i *do.Injector) (*SysLogger, error) {
 				_ = e.Close()
 			}()
 
-			var eid uint32 = 1
-
 			for {
 				log := <-sysLogger.c
 				if log == nil {
@@ -49,12 +47,7 @@ func BuildNewSysLogger() func(i *do.Injector) (*SysLogger, error) {
 				}
 
 				entry := fmt.Sprintf("%04d|%01d|%s", log.Ch, log.Level, adapter.adaptColor(log.Value))
-				_ = e.Info(eid, entry)
-
-				eid++
-				if eid == 1000 {
-					eid = 1
-				}
+				_ = e.Info(1, entry)
 			}
 		}()
 
