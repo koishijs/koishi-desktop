@@ -5,6 +5,7 @@ import fs from 'node:fs/promises'
 import path from 'node:path'
 import { v4 as uuid } from 'uuid'
 import { msiWxsHbs } from '../../templates'
+import { sleep } from '../../utils/common'
 import { koiSemver, koiVersion } from '../../utils/config'
 import { dir } from '../../utils/path'
 import { exec2 } from '../../utils/spawn'
@@ -150,6 +151,8 @@ const buildPackMsi = (lang: Lang) => async () => {
     ],
     dir('buildMsi')
   )
+
+  await sleep()
 }
 
 const pathNeutralMsi = dir('buildMsi', 'koishi.msi')
