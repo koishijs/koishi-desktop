@@ -23,7 +23,9 @@ export const packUnfoldDataCopy = async () => {
     (x) => x !== 'data' && x !== 'koi.yml'
   )
   for (const b of binaries)
-    await fs.copyFile(dir('buildPortable', b), dir('buildUnfoldBinary', b))
+    await fs.cp(dir('buildPortable', b), dir('buildUnfoldBinary', b), {
+      recursive: true,
+    })
 
   if (await exists(dir('buildCache', 'MicrosoftEdgeSetup.exe')))
     await fs.copyFile(
