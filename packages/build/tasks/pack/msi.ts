@@ -2,60 +2,75 @@ import { parallel, series } from 'gulp'
 import { info } from 'gulplog'
 import mkdirp from 'mkdirp'
 import fs from 'node:fs/promises'
+import path from 'node:path'
+import { v4 as uuid } from 'uuid'
 import { msiWxsHbs } from '../../templates'
 import { koiSemver, koiVersion } from '../../utils/config'
 import { dir } from '../../utils/path'
-import { exec } from '../../utils/spawn'
-import path from 'node:path'
+import { exec2 } from '../../utils/spawn'
 
-const dirVarients = dir('buildMsi', 'varients/')
-const pathNeutralMsi = dir('buildMsi', 'koishi.msi')
+const productGuid = uuid().toUpperCase()
+
+const pathWiLangId = path.join(
+  process.env['PROGRAMFILES(X86)']!,
+  '/Windows Kits/10/bin/10.0.22000.0/x64/wilangid.vbs'
+)
+const pathWiSubStg = path.join(
+  process.env['PROGRAMFILES(X86)']!,
+  '/Windows Kits/10/bin/10.0.22000.0/x64/wisubstg.vbs'
+)
+const pathMsiTran = path.join(
+  process.env['PROGRAMFILES(X86)']!,
+  '/Windows Kits/10/bin/10.0.22000.0/x86/MsiTran.exe'
+)
 
 const langFilenameRegexp = /WixUI_.*\.wxl/i
 
 // https://learn.microsoft.com/ja-jp/windows-hardware/manufacture/desktop/available-language-packs-for-windows
 const langs = [
-  { lcid: '1025', locale: 'ar-SA', codepage: '1256' },
-  { lcid: '1026', locale: 'bg-BG', codepage: '1251' },
-  { lcid: '1027', locale: 'ca-ES', codepage: '1252' },
-  { lcid: '1029', locale: 'cs-CZ', codepage: '1250' },
-  { lcid: '1030', locale: 'da-DK', codepage: '1252' },
-  { lcid: '1031', locale: 'de-de', codepage: '1252' },
-  { lcid: '1032', locale: 'el-GR', codepage: '1253' },
-  { lcid: '1033', locale: 'en-us', codepage: '1252' },
-  { lcid: '3082', locale: 'es-es', codepage: '1252' },
-  { lcid: '1061', locale: 'et-EE', codepage: '1257' },
-  { lcid: '1035', locale: 'fi-FI', codepage: '1252' },
-  { lcid: '1036', locale: 'fr-fr', codepage: '1252' },
-  { lcid: '1037', locale: 'he-IL', codepage: '1255' },
-  { lcid: '1081', locale: 'hi-IN', codepage: /* '0' 0????? */ '1252' },
-  { lcid: '1050', locale: 'hr-HR', codepage: '1250' },
-  { lcid: '1038', locale: 'hu-HU', codepage: '1250' },
-  { lcid: '1040', locale: 'it-it', codepage: '1252' },
-  { lcid: '1041', locale: 'ja-jp', codepage: '932' },
-  { lcid: '1087', locale: 'kk-KZ', codepage: '1251' },
-  { lcid: '1042', locale: 'ko-KR', codepage: '949' },
-  { lcid: '1063', locale: 'lt-LT', codepage: '1257' },
-  { lcid: '1062', locale: 'lv-LV', codepage: '1257' },
-  { lcid: '1044', locale: 'nb-NO', codepage: '1252' },
-  { lcid: '1043', locale: 'nl-NL', codepage: '1252' },
-  { lcid: '1045', locale: 'pl-pl', codepage: '1250' },
-  { lcid: '1046', locale: 'pt-BR', codepage: '1252' },
-  { lcid: '2070', locale: 'pt-PT', codepage: '1252' },
-  { lcid: '1048', locale: 'ro-RO', codepage: '1250' },
-  { lcid: '1049', locale: 'ru-ru', codepage: '1251' },
-  { lcid: '1051', locale: 'sk-SK', codepage: '1250' },
-  { lcid: '1060', locale: 'sl-SI', codepage: '1250' },
-  { lcid: '1052', locale: 'sq-AL', codepage: '1252' },
-  { lcid: '2074', locale: 'sr-Latn-CS', codepage: '1250' },
-  { lcid: '1053', locale: 'sv-SE', codepage: '1252' },
-  { lcid: '1054', locale: 'th-TH', codepage: '874' },
-  { lcid: '1055', locale: 'tr-TR', codepage: '1254' },
-  { lcid: '1058', locale: 'uk-UA', codepage: '1251' },
+  // { lcid: '1025', locale: 'ar-SA', codepage: '1256' },
+  // { lcid: '1026', locale: 'bg-BG', codepage: '1251' },
+  // { lcid: '1027', locale: 'ca-ES', codepage: '1252' },
+  // { lcid: '1029', locale: 'cs-CZ', codepage: '1250' },
+  // { lcid: '1030', locale: 'da-DK', codepage: '1252' },
+  // { lcid: '1031', locale: 'de-DE', codepage: '1252' },
+  // { lcid: '1032', locale: 'el-GR', codepage: '1253' },
+  { lcid: '1033', locale: 'en-US', codepage: '1252' },
+  // { lcid: '3082', locale: 'es-ES', codepage: '1252' },
+  // { lcid: '1061', locale: 'et-EE', codepage: '1257' },
+  // { lcid: '1035', locale: 'fi-FI', codepage: '1252' },
+  { lcid: '1036', locale: 'fr-FR', codepage: '1252' },
+  // { lcid: '1037', locale: 'he-IL', codepage: '1255' },
+  // { lcid: '1081', locale: 'hi-IN', codepage: /* '0' 0????? */ '1252' },
+  // { lcid: '1050', locale: 'hr-HR', codepage: '1250' },
+  // { lcid: '1038', locale: 'hu-HU', codepage: '1250' },
+  // { lcid: '1040', locale: 'it-IT', codepage: '1252' },
+  { lcid: '1041', locale: 'ja-JP', codepage: '932' },
+  // { lcid: '1087', locale: 'kk-KZ', codepage: '1251' },
+  // { lcid: '1042', locale: 'ko-KR', codepage: '949' },
+  // { lcid: '1063', locale: 'lt-LT', codepage: '1257' },
+  // { lcid: '1062', locale: 'lv-LV', codepage: '1257' },
+  // { lcid: '1044', locale: 'nb-NO', codepage: '1252' },
+  // { lcid: '1043', locale: 'nl-NL', codepage: '1252' },
+  // { lcid: '1045', locale: 'pl-PL', codepage: '1250' },
+  // { lcid: '1046', locale: 'pt-BR', codepage: '1252' },
+  // { lcid: '2070', locale: 'pt-PT', codepage: '1252' },
+  // { lcid: '1048', locale: 'ro-RO', codepage: '1250' },
+  // { lcid: '1049', locale: 'ru-RU', codepage: '1251' },
+  // { lcid: '1051', locale: 'sk-SK', codepage: '1250' },
+  // { lcid: '1060', locale: 'sl-SI', codepage: '1250' },
+  // { lcid: '1052', locale: 'sq-AL', codepage: '1252' },
+  // { lcid: '2074', locale: 'sr-Latn-CS', codepage: '1250' },
+  // { lcid: '1053', locale: 'sv-SE', codepage: '1252' },
+  // { lcid: '1054', locale: 'th-TH', codepage: '874' },
+  // { lcid: '1055', locale: 'tr-TR', codepage: '1254' },
+  // { lcid: '1058', locale: 'uk-UA', codepage: '1251' },
   { lcid: '2052', locale: 'zh-CN', codepage: '936' },
   { lcid: '3076', locale: 'zh-HK', codepage: '950' },
   { lcid: '1028', locale: 'zh-TW', codepage: '950' },
 ] as const
+
+const varientLangs = langs.filter((x) => x.lcid !== '1033')
 
 type Lang = typeof langs[number]
 
@@ -85,18 +100,7 @@ export const packMsiGenerateLangs = async () => {
   info(result)
 }
 
-export const packMsiMkdir = () => mkdirp(dirVarients)
-
-export const packMsiIndex = () =>
-  fs.writeFile(
-    dir('buildMsi', 'index.wxs'),
-    msiWxsHbs({
-      koiVersion,
-      koiSemver,
-      iconPath: dir('buildAssets', 'koishi.ico'),
-      languages: langs.map((x) => x.lcid).join(),
-    })
-  )
+export const packMsiMkdir = () => mkdirp(dir('buildMsi'))
 
 export const packMsiFiles = async () => {
   const dirSource = dir('buildMsi', 'SourceDir/')
@@ -104,15 +108,30 @@ export const packMsiFiles = async () => {
   await fs.cp(dir('buildUnfoldBinary'), dirSource, { recursive: true })
 }
 
-export const packMsiCandle = () =>
-  exec(
+const buildPackMsi = (lang: Lang) => async () => {
+  const pathWxs = dir('buildMsi', `${lang.lcid}.wxs`)
+  const pathWixobj = dir('buildMsi', `${lang.lcid}.wixobj`)
+  const pathMsi = dir('buildMsi', `${lang.lcid}.msi`)
+
+  await fs.writeFile(
+    pathWxs,
+    msiWxsHbs({
+      koiVersion,
+      koiSemver,
+      iconPath: dir('buildAssets', 'koishi.ico'),
+      productGuid,
+      language: lang.lcid,
+      codepage: lang.codepage,
+    })
+  )
+
+  await exec2(
     dir('buildVendor', 'wix/candle.exe'),
-    ['-nologo', 'index.wxs'],
+    ['-nologo', pathWxs],
     dir('buildMsi')
   )
 
-export const packMsiLight = () =>
-  exec(
+  await exec2(
     dir('buildVendor', 'wix/light.exe'),
     [
       '-nologo',
@@ -120,56 +139,69 @@ export const packMsiLight = () =>
       '-sice:ICE69',
       '-spdb',
       '-out',
-      pathNeutralMsi,
+      pathMsi,
+      `-cultures:${lang.locale.toLowerCase()}`,
       '-ext',
       'WixUIExtension',
-      'index.wixobj',
+      pathWixobj,
     ],
     dir('buildMsi')
   )
+}
+
+const pathNeutralMsi = dir('buildMsi', 'koishi.msi')
+
+export const packMsiCopyNeutral = () =>
+  fs.copyFile(dir('buildMsi', '1033.msi'), pathNeutralMsi)
 
 const buildPackMsiTrans = (lang: Lang) => async () => {
-  const pathVarientMsi = path.join(dirVarients, `${lang.lcid}.msi`)
-  const pathMst = path.join(dirVarients, `${lang.lcid}.mst`)
+  const pathMsi = dir('buildMsi', `${lang.lcid}.msi`)
+  const pathMst = dir('buildMsi', `${lang.lcid}.mst`)
 
-  await fs.copyFile(pathNeutralMsi, pathVarientMsi)
-
-  await exec(
+  await exec2(
     'cscript',
-    ['wilangid.vbs', pathVarientMsi, 'Product', lang.lcid],
-    dirVarients
+    [pathWiLangId, pathMsi, 'Product', lang.lcid],
+    dir('buildMsi')
   )
 
-  await exec(
-    'MsiTran.exe',
-    ['-g', pathNeutralMsi, pathVarientMsi, pathMst],
-    dirVarients
+  await exec2(
+    pathMsiTran,
+    ['-g', pathNeutralMsi, pathMsi, pathMst],
+    dir('buildMsi')
   )
 }
 
 const buildPackMsiSubstorage = (lang: Lang) => async () => {
-  const pathMst = path.join(dirVarients, `${lang.lcid}.mst`)
+  const pathMst = dir('buildMsi', `${lang.lcid}.mst`)
 
-  await exec(
+  await exec2(
     'cscript',
-    ['wisubstg.vbs', pathNeutralMsi, pathMst, lang.lcid],
-    dirVarients
+    [pathWiSubStg, pathNeutralMsi, pathMst, lang.lcid],
+    dir('buildMsi')
   )
 }
 
+export const packMsiWriteLangIds = () =>
+  exec2(
+    'cscript',
+    [pathWiLangId, pathNeutralMsi, 'Package', langs.map((x) => x.lcid).join()],
+    dir('buildMsi')
+  )
+
 export const packMsiListStorage = () =>
-  exec('cscript', ['wisubstg.vbs', pathNeutralMsi], dirVarients)
+  exec2('cscript', [pathWiSubStg, pathNeutralMsi], dir('buildMsi'))
 
 export const packMsiCopyDist = () =>
   fs.copyFile(pathNeutralMsi, dir('dist', 'koishi.msi'))
 
 export const packMsi = series(
   packMsiMkdir,
-  parallel(packMsiIndex, packMsiFiles),
-  packMsiCandle,
-  packMsiLight,
-  parallel(langs.map(buildPackMsiTrans)),
-  series(langs.map(buildPackMsiSubstorage)),
+  packMsiFiles,
+  parallel(langs.map(buildPackMsi)),
+  packMsiCopyNeutral,
+  parallel(varientLangs.map(buildPackMsiTrans)),
+  series(varientLangs.map(buildPackMsiSubstorage)),
+  packMsiWriteLangIds,
   packMsiListStorage,
   packMsiCopyDist
 )

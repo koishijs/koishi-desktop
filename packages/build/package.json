@@ -15,13 +15,15 @@
     "lzma-native": "^8",
     "node-stream-zip": "^1.15.0",
     "sharp": "~0.30.7",
-    "tar": "^6"
+    "tar": "^6",
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
     "@types/archiver": "^5.3.1",
     "@types/cross-spawn": "^6",
     "@types/lzma-native": "^4",
-    "@types/tar": "^6"
+    "@types/tar": "^6",
+    "@types/uuid": "^9.0.0"
   },
   "optionalDependencies": {
     "create-dmg": "^5.4.0"

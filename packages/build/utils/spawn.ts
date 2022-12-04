@@ -87,6 +87,30 @@ export async function exec(
   }
 }
 
+export async function exec2(
+  command: string,
+  args?: ReadonlyArray<string>,
+  cwd?: string,
+  options?: execa.SyncOptions
+): Promise<void> {
+  const parsedArgs = args ?? []
+  const parsedCwd = cwd ?? dir('root')
+  const parsedOptions: execa.SyncOptions = Object.assign<
+    execa.SyncOptions,
+    execa.SyncOptions,
+    execa.SyncOptions | undefined
+  >({}, { stdio: 'inherit', shell: false, cwd: parsedCwd }, options)
+  const child = execa(command, parsedArgs, parsedOptions)
+  const result = await new Promise<number>((resolve) => {
+    child.on('close', resolve)
+  })
+  if (result) {
+    throw new Error(
+      `'${child.spawnargs.join(' ')}' exited with error code: ${result}`
+    )
+  }
+}
+
 export async function tryExec(
   command: string,
   args?: ReadonlyArray<string>,

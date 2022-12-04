@@ -2,12 +2,12 @@
 <?xml-model href="../../../../build/vendor/wix/doc/wix.xsd"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
   <Product
-    Id="*"
+    Id="{{productGuid}}"
     Name="Koishi"
     Manufacturer="Koishi.js"
     UpgradeCode="02318298-8D9E-4C30-B963-BB0B16F1F126"
-    Language="1033"
-    Codepage="1252"
+    Language="{{language}}"
+    Codepage="{{codepage}}"
     Version="{{koiSemver.major}}.{{koiSemver.minor}}.{{koiSemver.patch}}"
   >
     <Package
@@ -20,8 +20,8 @@
       Description="Koishi Installer"
       Comments="Koishi {{koiVersion}} Installer"
       Manufacturer="Koishi.js"
-      Languages="{{languages}}"
-      SummaryCodepage="1252"
+      Languages="{{language}}"
+      SummaryCodepage="{{codepage}}"
     />
 
     <Icon Id="Icon.exe" SourceFile="{{{iconPath}}}" />
