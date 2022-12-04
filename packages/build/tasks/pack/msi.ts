@@ -5,7 +5,6 @@ import fs from 'node:fs/promises'
 import path from 'node:path'
 import { v4 as uuid } from 'uuid'
 import { msiWxsHbs } from '../../templates'
-import { sleep } from '../../utils/common'
 import { koiSemver, koiVersion } from '../../utils/config'
 import { dir } from '../../utils/path'
 import { exec2 } from '../../utils/spawn'
@@ -22,11 +21,11 @@ const getPathWiSubStg = () =>
     process.env['PROGRAMFILES(X86)']!,
     '/Windows Kits/10/bin/10.0.22000.0/x64/wisubstg.vbs'
   )
-const getPathMsiTran = () =>
-  path.join(
-    process.env['PROGRAMFILES(X86)']!,
-    '/Windows Kits/10/bin/10.0.22000.0/x86/MsiTran.exe'
-  )
+// const getPathMsiTran = () =>
+//   path.join(
+//     process.env['PROGRAMFILES(X86)']!,
+//     '/Windows Kits/10/bin/10.0.22000.0/x86/MsiTran.exe'
+//   )
 
 const langFilenameRegexp = /WixUI_.*\.wxl/i
 
@@ -151,8 +150,6 @@ const buildPackMsi = (lang: Lang) => async () => {
     ],
     dir('buildMsi')
   )
-
-  await sleep()
 }
 
 const pathNeutralMsi = dir('buildMsi', 'koishi.msi')
@@ -164,15 +161,21 @@ const buildPackMsiTrans = (lang: Lang) => async () => {
   const pathMsi = dir('buildMsi', `${lang.lcid}.msi`)
   const pathMst = dir('buildMsi', `${lang.lcid}.mst`)
 
-  await exec2(
-    'cscript',
-    [getPathWiLangId(), pathMsi, 'Product', lang.lcid],
-    dir('buildMsi')
-  )
+  // await exec2(
+  //   'cscript',
+  //   [getPathWiLangId(), pathMsi, 'Product', lang.lcid],
+  //   dir('buildMsi')
+  // )
+
+  // await exec2(
+  //   getPathMsiTran(),
+  //   ['-g', pathNeutralMsi, pathMsi, pathMst],
+  //   dir('buildMsi')
+  // )
 
   await exec2(
-    getPathMsiTran(),
-    ['-g', pathNeutralMsi, pathMsi, pathMst],
+    dir('buildVendor', 'wix/torch.exe'),
+    ['-t', 'language', pathNeutralMsi, pathMsi, '-out', pathMst],
     dir('buildMsi')
   )
 }
