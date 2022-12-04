@@ -23,6 +23,8 @@ class WebViewWindow {
   wil::com_ptr<ICoreWebView2Controller> webviewController;
   wil::com_ptr<ICoreWebView2> webview;
 
+  unsigned char supports;
+
   static LRESULT CALLBACK WndProc(
       _In_ HWND hWnd,
       _In_ UINT message,

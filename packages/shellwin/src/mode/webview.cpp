@@ -4,7 +4,7 @@ namespace KoiShell {
 
 WebViewWindow::WebViewWindow(
     _In_ HINSTANCE hInstance, _In_ int nCmdShow, _In_ njson arg)
-    : hInstance(hInstance), nCmdShow(nCmdShow), arg(arg) {
+    : hInstance(hInstance), nCmdShow(nCmdShow), arg(arg), supports(0) {
 }
 
 int WebViewWindow::Run() {
@@ -14,9 +14,8 @@ int WebViewWindow::Run() {
   if (!GetVersionExW(reinterpret_cast<LPOSVERSIONINFOW>(&osvi)))
     LogAndFailWithLastError(L"Failed to get OS version info.");
 
-  bool supportsEnhance =
-      osvi.dwBuildNumber >= 17763; // Prevent Aero Glass extends
-  bool supportsDocumentedImmersiveDarkMode = osvi.dwBuildNumber >= 18985;
+  if (osvi.dwBuildNumber >= 17763) supports++; // Prevent Aero Glass extends
+  if (osvi.dwBuildNumber >= 18985) supports++;
 
   wchar_t cwd[MAX_PATH];
   if (!GetCurrentDirectoryW(MAX_PATH, cwd))
@@ -60,7 +59,7 @@ int WebViewWindow::Run() {
   userscript.replace(
       userscript.find(L"KOISHELL_RUNTIME_SUPPORTS"),
       25,
-      supportsEnhance ? L"['enhance']" : L"[]");
+      supports ? L"['enhance']" : L"[]");
 
   wcex.cbSize = sizeof(WNDCLASSEXW);
   wcex.style = CS_HREDRAW | CS_VREDRAW;
@@ -99,48 +98,6 @@ int WebViewWindow::Run() {
 
   ShowWindow(hWnd, nCmdShow);
   UpdateWindow(hWnd);
-
-  if (supportsEnhance) {
-    MARGINS dwmExtendFrameIntoClientAreaMargins = {-1};
-    DwmExtendFrameIntoClientArea(hWnd, &dwmExtendFrameIntoClientAreaMargins);
-    int dwmUseDarkMode = 0;
-    DwmSetWindowAttribute(
-        hWnd,
-        supportsDocumentedImmersiveDarkMode
-            ? 20
-            :   // DWMWINDOWATTRIBUTE::DWMWA_USE_IMMERSIVE_DARK_MODE
-                // = 20 (starting from 18985)
-            19, // DWMWINDOWATTRIBUTE::DWMWA_USE_IMMERSIVE_DARK_MODE
-                // = 19 (before 18985)
-        &dwmUseDarkMode,
-        sizeof(dwmUseDarkMode));
-    unsigned int dwmCornerPreference =
-        2; // DWM_WINDOW_CORNER_PREFERENCE::DWMWCP_ROUND
-    DwmSetWindowAttribute(
-        hWnd,
-        33, // DWMWINDOWATTRIBUTE::DWMWA_WINDOW_CORNER_PREFERENCE
-        &dwmCornerPreference,
-        sizeof(dwmCornerPreference));
-    int dwmMica = 1;
-    DwmSetWindowAttribute(
-        hWnd,
-        1029, // DWMWINDOWATTRIBUTE::DWMWA_MICA
-        &dwmMica,
-        sizeof(dwmMica));
-    unsigned int dwmSystemBackdropType =
-        2; // DWM_SYSTEMBACKDROP_TYPE::DWMSBT_MAINWINDOW
-    DwmSetWindowAttribute(
-        hWnd,
-        38, // DWMWINDOWATTRIBUTE::DWMWA_SYSTEMBACKDROP_TYPE
-        &dwmSystemBackdropType,
-        sizeof(dwmSystemBackdropType));
-    dwmSystemBackdropType = 4; // DWM_SYSTEMBACKDROP_TYPE::DWMSBT_TABBEDWINDOW
-    DwmSetWindowAttribute(
-        hWnd,
-        38, // DWMWINDOWATTRIBUTE::DWMWA_SYSTEMBACKDROP_TYPE
-        &dwmSystemBackdropType,
-        sizeof(dwmSystemBackdropType));
-  }
 
   auto options = Microsoft::WRL::Make<CoreWebView2EnvironmentOptions>();
   CheckFailure(
@@ -267,6 +224,51 @@ LRESULT CALLBACK WebViewWindow::WndProc(
   if (!pThis) return DefWindowProcW(hWnd, message, wParam, lParam);
 
   switch (message) {
+  case WM_CREATE:
+    if (pThis->supports) {
+      MARGINS dwmExtendFrameIntoClientAreaMargins = {-1};
+      DwmExtendFrameIntoClientArea(hWnd, &dwmExtendFrameIntoClientAreaMargins);
+      int dwmUseDarkMode = 0;
+      DwmSetWindowAttribute(
+          hWnd,
+          pThis->supports == 2
+              ? 20
+              :   // DWMWINDOWATTRIBUTE::DWMWA_USE_IMMERSIVE_DARK_MODE
+                  // = 20 (starting from 18985)
+              19, // DWMWINDOWATTRIBUTE::DWMWA_USE_IMMERSIVE_DARK_MODE
+                  // = 19 (before 18985)
+          &dwmUseDarkMode,
+          sizeof(dwmUseDarkMode));
+      unsigned int dwmCornerPreference =
+          2; // DWM_WINDOW_CORNER_PREFERENCE::DWMWCP_ROUND
+      DwmSetWindowAttribute(
+          hWnd,
+          33, // DWMWINDOWATTRIBUTE::DWMWA_WINDOW_CORNER_PREFERENCE
+          &dwmCornerPreference,
+          sizeof(dwmCornerPreference));
+      int dwmMica = 1;
+      DwmSetWindowAttribute(
+          hWnd,
+          1029, // DWMWINDOWATTRIBUTE::DWMWA_MICA
+          &dwmMica,
+          sizeof(dwmMica));
+      unsigned int dwmSystemBackdropType =
+          2; // DWM_SYSTEMBACKDROP_TYPE::DWMSBT_MAINWINDOW
+      DwmSetWindowAttribute(
+          hWnd,
+          38, // DWMWINDOWATTRIBUTE::DWMWA_SYSTEMBACKDROP_TYPE
+          &dwmSystemBackdropType,
+          sizeof(dwmSystemBackdropType));
+      dwmSystemBackdropType = 4; // DWM_SYSTEMBACKDROP_TYPE::DWMSBT_TABBEDWINDOW
+      DwmSetWindowAttribute(
+          hWnd,
+          38, // DWMWINDOWATTRIBUTE::DWMWA_SYSTEMBACKDROP_TYPE
+          &dwmSystemBackdropType,
+          sizeof(dwmSystemBackdropType));
+    }
+
+    return 0;
+
   case WM_DESTROY:
     PostQuitMessage(0);
     return 0;
