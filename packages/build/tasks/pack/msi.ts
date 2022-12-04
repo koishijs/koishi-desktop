@@ -9,20 +9,23 @@ import { koiSemver, koiVersion } from '../../utils/config'
 import { dir } from '../../utils/path'
 import { exec2 } from '../../utils/spawn'
 
-const productGuid = uuid().toUpperCase()
+const buildProductGuid = () => uuid().toUpperCase()
 
-const pathWiLangId = path.join(
-  process.env['PROGRAMFILES(X86)']!,
-  '/Windows Kits/10/bin/10.0.22000.0/x64/wilangid.vbs'
-)
-const pathWiSubStg = path.join(
-  process.env['PROGRAMFILES(X86)']!,
-  '/Windows Kits/10/bin/10.0.22000.0/x64/wisubstg.vbs'
-)
-const pathMsiTran = path.join(
-  process.env['PROGRAMFILES(X86)']!,
-  '/Windows Kits/10/bin/10.0.22000.0/x86/MsiTran.exe'
-)
+const getPathWiLangId = () =>
+  path.join(
+    process.env['PROGRAMFILES(X86)']!,
+    '/Windows Kits/10/bin/10.0.22000.0/x64/wilangid.vbs'
+  )
+const getPathWiSubStg = () =>
+  path.join(
+    process.env['PROGRAMFILES(X86)']!,
+    '/Windows Kits/10/bin/10.0.22000.0/x64/wisubstg.vbs'
+  )
+const getPathMsiTran = () =>
+  path.join(
+    process.env['PROGRAMFILES(X86)']!,
+    '/Windows Kits/10/bin/10.0.22000.0/x86/MsiTran.exe'
+  )
 
 const langFilenameRegexp = /WixUI_.*\.wxl/i
 
@@ -119,7 +122,7 @@ const buildPackMsi = (lang: Lang) => async () => {
       koiVersion,
       koiSemver,
       iconPath: dir('buildAssets', 'koishi.ico'),
-      productGuid,
+      productGuid: buildProductGuid(),
       language: lang.lcid,
       codepage: lang.codepage,
     })
@@ -160,12 +163,12 @@ const buildPackMsiTrans = (lang: Lang) => async () => {
 
   await exec2(
     'cscript',
-    [pathWiLangId, pathMsi, 'Product', lang.lcid],
+    [getPathWiLangId(), pathMsi, 'Product', lang.lcid],
     dir('buildMsi')
   )
 
   await exec2(
-    pathMsiTran,
+    getPathMsiTran(),
     ['-g', pathNeutralMsi, pathMsi, pathMst],
     dir('buildMsi')
   )
@@ -176,7 +179,7 @@ const buildPackMsiSubstorage = (lang: Lang) => async () => {
 
   await exec2(
     'cscript',
-    [pathWiSubStg, pathNeutralMsi, pathMst, lang.lcid],
+    [getPathWiSubStg(), pathNeutralMsi, pathMst, lang.lcid],
     dir('buildMsi')
   )
 }
@@ -184,12 +187,17 @@ const buildPackMsiSubstorage = (lang: Lang) => async () => {
 export const packMsiWriteLangIds = () =>
   exec2(
     'cscript',
-    [pathWiLangId, pathNeutralMsi, 'Package', langs.map((x) => x.lcid).join()],
+    [
+      getPathWiLangId(),
+      pathNeutralMsi,
+      'Package',
+      langs.map((x) => x.lcid).join(),
+    ],
     dir('buildMsi')
   )
 
 export const packMsiListStorage = () =>
-  exec2('cscript', [pathWiSubStg, pathNeutralMsi], dir('buildMsi'))
+  exec2('cscript', [getPathWiSubStg(), pathNeutralMsi], dir('buildMsi'))
 
 export const packMsiCopyDist = () =>
   fs.copyFile(pathNeutralMsi, dir('dist', 'koishi.msi'))
