@@ -1,11 +1,15 @@
 <div align="center">
-  <a href="https://koishi.js.org/manual/starter/desktop.html" target="_blank">
-    <img width="160" src="https://koishi.js.org/koishi.png" alt="logo">
+  <a href="https://koishi.chat/manual/starter/" target="_blank">
+    <img width="160" src="https://koishi.chat/logo.png" alt="logo">
   </a>
-  <h1 id="koishi"><a href="https://koishi.js.org/manual/starter/desktop.html" target="_blank">Koishi Desktop</a></h1>
-  <p>Launch Koishi from your desktop.</p>
+  <h1 id="koishi"><a href="https://koishi.chat/manual/starter/" target="_blank">Koishi 桌面</a></h1>
+  <p>从桌面启动 Koishi。</p>
 
 </div>
+
+## 截图
+
+![Screenshot 1](https://raw.githubusercontent.com/koishijs/koishi-desktop/assets/screenshot1.png)
 
 ## 建设中
 
