@@ -144,16 +144,16 @@ class KSWebViewDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, WKSc
         let goLogsMenuItem = goMenu.addItem(withTitle: "Logs", action: #selector(goLogs), keyEquivalent: "6")
         // goLogsMenuItem.image = NSImage(named: NSImage.homeTemplateName)
 
-        let instanceMenuItem = mainMenu.addItem(withTitle: name, action: nil, keyEquivalent: "")
-        let instanceMenu = NSMenu(title: name)
-        instanceMenuItem.submenu = instanceMenu
-        instanceMenu.addItem(withTitle: "URL: \(url)", action: nil, keyEquivalent: "")
-
         let windowMenuItem = mainMenu.addItem(withTitle: "Window", action: nil, keyEquivalent: "")
         let windowMenu = NSMenu(title: "Window")
         populateWindowMenu(windowMenu)
         windowMenuItem.submenu = windowMenu
         NSApp.windowsMenu = windowMenu
+
+        let instanceMenuItem = mainMenu.addItem(withTitle: name, action: nil, keyEquivalent: "")
+        let instanceMenu = NSMenu(title: name)
+        instanceMenuItem.submenu = instanceMenu
+        instanceMenu.addItem(withTitle: "URL: \(url)", action: nil, keyEquivalent: "")
 
         let helpMenuItem = mainMenu.addItem(withTitle: "Help", action: nil, keyEquivalent: "")
         let helpMenu = NSMenu(title: "Help")
