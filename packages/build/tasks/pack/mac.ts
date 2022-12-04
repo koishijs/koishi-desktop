@@ -21,6 +21,10 @@ export const packMacApp = async () => {
   await mkdirp(appResourcesPath)
 
   await fs.cp(dir('buildUnfoldBinary'), appMacosPath, { recursive: true })
+  await fs.rename(
+    dir('buildMac', 'Koishi.app/Contents/MacOS/KoiShell_KoiShell.bundle'),
+    dir('buildMac', 'Koishi.app/KoiShell_KoiShell.bundle')
+  )
   await fs.copyFile(dir('buildAssets', 'koishi-app.icns'), appIconPath)
   await fs.writeFile(appInfoPlistPath, macAppPlist)
 }

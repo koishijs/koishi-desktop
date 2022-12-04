@@ -33,6 +33,7 @@ const buildCompileShellWin = (isRelease: boolean) => async () => {
 const buildCompileShellMac = (isRelease: boolean) => async () => {
   const conf = isRelease ? 'release' : 'debug'
   const distPath = dir('buildPortable', 'koishell')
+  const distBundlePath = dir('buildPortable', 'KoiShell_KoiShell.bundle')
 
   await fs.rm(distPath, { force: true })
 
@@ -45,6 +46,10 @@ const buildCompileShellMac = (isRelease: boolean) => async () => {
   await exec('swift', ['build', '-c', conf], dir('srcShellMac'))
 
   await fs.copyFile(path.join(buildPath, 'KoiShell'), distPath)
+  await fs.copyFile(
+    path.join(buildPath, 'KoiShell_KoiShell.bundle'),
+    distBundlePath
+  )
 }
 
 const buildCompileShellLinux = (isRelease: boolean) => async () => {
