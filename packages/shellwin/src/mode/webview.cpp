@@ -15,7 +15,9 @@ int WebViewWindow::Run() {
     LogAndFailWithLastError(L"Failed to get OS version info.");
 
   if (osvi.dwBuildNumber >= 17763) supports++; // Prevent Aero Glass extends
-  if (osvi.dwBuildNumber >= 18985) supports++;
+  if (osvi.dwBuildNumber >= 18985) supports++; // Supports immersive dark mode
+  if (osvi.dwBuildNumber >= 22000) supports++; // Supports Mica
+  if (osvi.dwBuildNumber >= 22523) supports++; // Supports Mica Tabbed
 
   wchar_t cwd[MAX_PATH];
   if (!GetCurrentDirectoryW(MAX_PATH, cwd))
@@ -231,7 +233,7 @@ LRESULT CALLBACK WebViewWindow::WndProc(
       int dwmUseDarkMode = 0;
       DwmSetWindowAttribute(
           hWnd,
-          pThis->supports == 2
+          pThis->supports >= 2
               ? 20
               :   // DWMWINDOWATTRIBUTE::DWMWA_USE_IMMERSIVE_DARK_MODE
                   // = 20 (starting from 18985)
@@ -253,13 +255,9 @@ LRESULT CALLBACK WebViewWindow::WndProc(
           &dwmMica,
           sizeof(dwmMica));
       unsigned int dwmSystemBackdropType =
-          2; // DWM_SYSTEMBACKDROP_TYPE::DWMSBT_MAINWINDOW
-      DwmSetWindowAttribute(
-          hWnd,
-          38, // DWMWINDOWATTRIBUTE::DWMWA_SYSTEMBACKDROP_TYPE
-          &dwmSystemBackdropType,
-          sizeof(dwmSystemBackdropType));
-      dwmSystemBackdropType = 4; // DWM_SYSTEMBACKDROP_TYPE::DWMSBT_TABBEDWINDOW
+          pThis->supports >= 4
+              ? 4
+              : 2; // DWM_SYSTEMBACKDROP_TYPE::DWMSBT_MAINWINDOW
       DwmSetWindowAttribute(
           hWnd,
           38, // DWMWINDOWATTRIBUTE::DWMWA_SYSTEMBACKDROP_TYPE
