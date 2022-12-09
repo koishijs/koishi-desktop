@@ -52,7 +52,7 @@
         {
             "id": "cannot get executable: {Err}",
             "message": "cannot get executable: {Err}",
-            "translation": "cannot get executable: {Err}",
+            "translation": "无法获取可执行文件：{Err}",
             "translatorComment": "Copied from source.",
             "placeholders": [
                 {
@@ -63,20 +63,18 @@
                     "argNum": 1,
                     "expr": "err"
                 }
-            ],
-            "fuzzy": true
+            ]
         },
         {
             "id": "infinite redirection detected. Check your koi.config file",
             "message": "infinite redirection detected. Check your koi.config file",
-            "translation": "infinite redirection detected. Check your koi.config file",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": "检测到无限重定向。检查你的 koi.config 文件",
+            "translatorComment": "Copied from source."
         },
         {
             "id": "Reading config file: {AbsPath}",
             "message": "Reading config file: {AbsPath}",
-            "translation": "Reading config file: {AbsPath}",
+            "translation": "读取配置文件：{AbsPath}",
             "translatorComment": "Copied from source.",
             "placeholders": [
                 {
@@ -87,13 +85,12 @@
                     "argNum": 1,
                     "expr": "absPath"
                 }
-            ],
-            "fuzzy": true
+            ]
         },
         {
             "id": "Config dir: {DirConfig}",
             "message": "Config dir: {DirConfig}",
-            "translation": "Config dir: {DirConfig}",
+            "translation": "配置目录：{DirConfig}",
             "translatorComment": "Copied from source.",
             "placeholders": [
                 {
@@ -104,8 +101,7 @@
                     "argNum": 1,
                     "expr": "c.Computed.DirConfig"
                 }
-            ],
-            "fuzzy": true
+            ]
         },
         {
             "id": "failed to read {AbsPath}: {Err}",
@@ -201,9 +197,8 @@
         {
             "id": "Trying to unfold.",
             "message": "Trying to unfold.",
-            "translation": "Trying to unfold.",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": "尝试展开。",
+            "translatorComment": "Copied from source."
         },
         {
             "id": "failed to create stdout pipe: {Err}",
@@ -259,9 +254,8 @@
         {
             "id": "Will ignore this error.",
             "message": "Will ignore this error.",
-            "translation": "Will ignore this error.",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": "将忽略此错误。",
+            "translatorComment": "Copied from source."
         },
         {
             "id": "Redirecting to user data: {Redirect}",
@@ -489,9 +483,8 @@
         {
             "id": "Launch Koishi from your desktop.",
             "message": "Launch Koishi from your desktop.",
-            "translation": "Launch Koishi from your desktop.",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": "从桌面启动 Koishi。",
+            "translatorComment": "Copied from source."
         },
         {
             "id": "Enable debug mode",
@@ -715,9 +708,8 @@
         {
             "id": "Open Instances",
             "message": "Open Instances",
-            "translation": "Open Instances",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": "打开实例",
+            "translatorComment": "Copied from source."
         },
         {
             "id": "Trigger action: open",
@@ -784,7 +776,7 @@
         {
             "id": "Executable: {Exe}",
             "message": "Executable: {Exe}",
-            "translation": "Executable: {Exe}",
+            "translation": "可执行文件：{Exe}",
             "translatorComment": "Copied from source.",
             "placeholders": [
                 {
@@ -795,8 +787,7 @@
                     "argNum": 1,
                     "expr": "exe"
                 }
-            ],
-            "fuzzy": true
+            ]
         },
         {
             "id": "Command line arguments:\n{Args}",
@@ -1226,9 +1217,8 @@
         {
             "id": "About",
             "message": "About",
-            "translation": "About",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": "关于",
+            "translatorComment": "Copied from source."
         },
         {
             "id": "Hide",
@@ -1263,9 +1253,8 @@
         {
             "id": "Showing about dialog",
             "message": "Showing about dialog",
-            "translation": "Showing about dialog",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": "显示关于对话框",
+            "translatorComment": "Copied from source."
         },
         {
             "id": "Starting these instances:\n{Start__}",
