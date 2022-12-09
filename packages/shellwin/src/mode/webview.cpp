@@ -72,7 +72,7 @@ int WebViewWindow::Run() {
   wcex.hIcon = static_cast<HICON>(
       LoadImageW(hInstance, MAKEINTRESOURCEW(101), IMAGE_ICON, 0, 0, 0));
   wcex.hCursor = LoadCursorW(hInstance, IDC_ARROW);
-  // wcex.hbrBackground = static_cast<HBRUSH>(GetStockObject(NULL_BRUSH));
+  // Why?
   wcex.hbrBackground = static_cast<HBRUSH>(GetStockObject(BLACK_BRUSH));
   wcex.lpszMenuName = nullptr;
   wcex.lpszClassName = KoiShellWebViewClass;
