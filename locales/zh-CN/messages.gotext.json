@@ -830,7 +830,7 @@
         {
             "id": "failed to get daemon connection: {Err}",
             "message": "failed to get daemon connection: {Err}",
-            "translation": "failed to get daemon connection: {Err}",
+            "translation": "获取服务连接失败：{Err}",
             "translatorComment": "Copied from source.",
             "placeholders": [
                 {
@@ -841,13 +841,12 @@
                     "argNum": 1,
                     "expr": "err"
                 }
-            ],
-            "fuzzy": true
+            ]
         },
         {
             "id": "failed to process command ps: {Err}",
             "message": "failed to process command ps: {Err}",
-            "translation": "failed to process command ps: {Err}",
+            "translation": "处理命令 ps 失败：{Err}",
             "translatorComment": "Copied from source.",
             "placeholders": [
                 {
@@ -858,8 +857,7 @@
                     "argNum": 1,
                     "expr": "err"
                 }
-            ],
-            "fuzzy": true
+            ]
         },
         {
             "id": "failed to parse result {Result}: {Err}",
@@ -888,7 +886,7 @@
         {
             "id": "failed to marshal result {ResultPs}: {Err}",
             "message": "failed to marshal result {ResultPs}: {Err}",
-            "translation": "failed to marshal result {ResultPs}: {Err}",
+            "translation": "序列化结果 {ResultPs} 失败：{Err}",
             "translatorComment": "Copied from source.",
             "placeholders": [
                 {
@@ -907,22 +905,19 @@
                     "argNum": 2,
                     "expr": "err"
                 }
-            ],
-            "fuzzy": true
+            ]
         },
         {
             "id": "Restart Instances",
             "message": "Restart Instances",
-            "translation": "Restart Instances",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": "重启实例",
+            "translatorComment": "Copied from source."
         },
         {
             "id": "Trigger action: restart",
             "message": "Trigger action: restart",
-            "translation": "Trigger action: restart",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": "触发操作：重启",
+            "translatorComment": "Copied from source."
         },
         {
             "id": "Run Koishi Desktop",
@@ -948,14 +943,13 @@
         {
             "id": "Trigger action: run",
             "message": "Trigger action: run",
-            "translation": "Trigger action: run",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": "触发操作：运行",
+            "translatorComment": "Copied from source."
         },
         {
             "id": "unknown mode: {Mode}",
             "message": "unknown mode: {Mode}",
-            "translation": "unknown mode: {Mode}",
+            "translation": "未知模式：{Mode}",
             "translatorComment": "Copied from source.",
             "placeholders": [
                 {
@@ -966,71 +960,61 @@
                     "argNum": 1,
                     "expr": "cfg.Data.Mode"
                 }
-            ],
-            "fuzzy": true
+            ]
         },
         {
             "id": "Trigger action: run daemon",
             "message": "Trigger action: run daemon",
-            "translation": "Trigger action: run daemon",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": "触发操作：运行服务",
+            "translatorComment": "Copied from source."
         },
         {
             "id": "Trigger action: run ui",
             "message": "Trigger action: run ui",
-            "translation": "Trigger action: run ui",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": "触发操作：运行用户界面",
+            "translatorComment": "Copied from source."
         },
         {
             "id": "Start Instances",
             "message": "Start Instances",
-            "translation": "Start Instances",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": "启动实例",
+            "translatorComment": "Copied from source."
         },
         {
             "id": "Trigger action: start",
             "message": "Trigger action: start",
-            "translation": "Trigger action: start",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": "触发操作：启动",
+            "translatorComment": "Copied from source."
         },
         {
             "id": "Stop Instances",
             "message": "Stop Instances",
-            "translation": "Stop Instances",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": "停止实例",
+            "translatorComment": "Copied from source."
         },
         {
             "id": "Trigger action: stop",
             "message": "Trigger action: stop",
-            "translation": "Trigger action: stop",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": "触发操作：停止",
+            "translatorComment": "Copied from source."
         },
         {
             "id": "Run Yarn Command on Instance",
             "message": "Run Yarn Command on Instance",
-            "translation": "Run Yarn Command on Instance",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": "在实例上运行 Yarn 命令",
+            "translatorComment": "Copied from source."
         },
         {
             "id": "Target Instance",
             "message": "Target Instance",
-            "translation": "Target Instance",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": "目标实例",
+            "translatorComment": "Copied from source."
         },
         {
             "id": "Trigger action: yarn",
             "message": "Trigger action: yarn",
-            "translation": "Trigger action: yarn",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": "触发操作：yarn",
+            "translatorComment": "Copied from source."
         },
         {
             "id": "Tray ready.",
