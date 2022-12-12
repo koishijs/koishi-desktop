@@ -106,7 +106,7 @@
         {
             "id": "failed to read {AbsPath}: {Err}",
             "message": "failed to read {AbsPath}: {Err}",
-            "translation": "failed to read {AbsPath}: {Err}",
+            "translation": "读取 {AbsPath} 失败：{Err}",
             "translatorComment": "Copied from source.",
             "placeholders": [
                 {
@@ -125,20 +125,18 @@
                     "argNum": 2,
                     "expr": "err"
                 }
-            ],
-            "fuzzy": true
+            ]
         },
         {
             "id": "Detecting redirect field.",
             "message": "Detecting redirect field.",
-            "translation": "Detecting redirect field.",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": "检测重定向字段。",
+            "translatorComment": "Copied from source."
         },
         {
             "id": "'redirect' field detected: {Redirect}",
             "message": "'redirect' field detected: {Redirect}",
-            "translation": "'redirect' field detected: {Redirect}",
+            "translation": "检测到「redirect」字段：{Redirect}",
             "translatorComment": "Copied from source.",
             "placeholders": [
                 {
@@ -149,13 +147,12 @@
                     "argNum": 1,
                     "expr": "redirect"
                 }
-            ],
-            "fuzzy": true
+            ]
         },
         {
             "id": "failed to resolve user data: {UddErr}",
             "message": "failed to resolve user data: {UddErr}",
-            "translation": "failed to resolve user data: {UddErr}",
+            "translation": "解析用户数据失败：{UddErr}",
             "translatorComment": "Copied from source.",
             "placeholders": [
                 {
@@ -166,8 +163,7 @@
                     "argNum": 1,
                     "expr": "uddErr"
                 }
-            ],
-            "fuzzy": true
+            ]
         },
         {
             "id": "Failed to read {Redirect}: {RfErr}",
