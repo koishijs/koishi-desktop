@@ -168,7 +168,7 @@
         {
             "id": "Failed to read {Redirect}: {RfErr}",
             "message": "Failed to read {Redirect}: {RfErr}",
-            "translation": "Failed to read {Redirect}: {RfErr}",
+            "translation": "读取 {Redirect} 失败：{RfErr}",
             "translatorComment": "Copied from source.",
             "placeholders": [
                 {
@@ -187,8 +187,7 @@
                     "argNum": 2,
                     "expr": "rfErr"
                 }
-            ],
-            "fuzzy": true
+            ]
         },
         {
             "id": "Trying to unfold.",
@@ -199,7 +198,7 @@
         {
             "id": "failed to create stdout pipe: {Err}",
             "message": "failed to create stdout pipe: {Err}",
-            "translation": "failed to create stdout pipe: {Err}",
+            "translation": "创建标准输出管道失败：{Err}",
             "translatorComment": "Copied from source.",
             "placeholders": [
                 {
@@ -210,8 +209,7 @@
                     "argNum": 1,
                     "expr": "err"
                 }
-            ],
-            "fuzzy": true
+            ]
         },
         {
             "id": "Scanner error: {ScnErr}",
