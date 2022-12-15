@@ -214,7 +214,7 @@
         {
             "id": "Scanner error: {ScnErr}",
             "message": "Scanner error: {ScnErr}",
-            "translation": "Scanner error: {ScnErr}",
+            "translation": "扫描器错误：{ScnErr}",
             "translatorComment": "Copied from source.",
             "placeholders": [
                 {
@@ -225,13 +225,12 @@
                     "argNum": 1,
                     "expr": "scnErr"
                 }
-            ],
-            "fuzzy": true
+            ]
         },
         {
             "id": "Failed to unfold: {RunErr}",
             "message": "Failed to unfold: {RunErr}",
-            "translation": "Failed to unfold: {RunErr}",
+            "translation": "展开失败：{RunErr}",
             "translatorComment": "Copied from source.",
             "placeholders": [
                 {
@@ -242,8 +241,7 @@
                     "argNum": 1,
                     "expr": "runErr"
                 }
-            ],
-            "fuzzy": true
+            ]
         },
         {
             "id": "Will ignore this error.",
