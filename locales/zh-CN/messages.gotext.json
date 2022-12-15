@@ -252,7 +252,7 @@
         {
             "id": "Redirecting to user data: {Redirect}",
             "message": "Redirecting to user data: {Redirect}",
-            "translation": "Redirecting to user data: {Redirect}",
+            "translation": "重定向到用户数据：{Redirect}",
             "translatorComment": "Copied from source.",
             "placeholders": [
                 {
@@ -263,20 +263,18 @@
                     "argNum": 1,
                     "expr": "redirect"
                 }
-            ],
-            "fuzzy": true
+            ]
         },
         {
             "id": "Parsing config.",
             "message": "Parsing config.",
-            "translation": "Parsing config.",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": "解析配置。",
+            "translatorComment": "Copied from source."
         },
         {
             "id": "failed to parse config {AbsPath}: {Err}",
             "message": "failed to parse config {AbsPath}: {Err}",
-            "translation": "failed to parse config {AbsPath}: {Err}",
+            "translation": "解析配置 {AbsPath} 失败：{Err}",
             "translatorComment": "Copied from source.",
             "placeholders": [
                 {
@@ -295,13 +293,12 @@
                     "argNum": 2,
                     "expr": "err"
                 }
-            ],
-            "fuzzy": true
+            ]
         },
         {
             "id": "failed to process postconfig: {Err}",
             "message": "failed to process postconfig: {Err}",
-            "translation": "failed to process postconfig: {Err}",
+            "translation": "处理后配置失败：{Err}",
             "translatorComment": "Copied from source.",
             "placeholders": [
                 {
@@ -312,20 +309,18 @@
                     "argNum": 1,
                     "expr": "err"
                 }
-            ],
-            "fuzzy": true
+            ]
         },
         {
             "id": "Config parsed successfully.",
             "message": "Config parsed successfully.",
-            "translation": "Config parsed successfully.",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": "配置解析成功。",
+            "translatorComment": "Copied from source."
         },
         {
             "id": "failed to process dir data: {Err}",
             "message": "failed to process dir data: {Err}",
-            "translation": "failed to process dir data: {Err}",
+            "translation": "处理目录 data 失败：{Err}",
             "translatorComment": "Copied from source.",
             "placeholders": [
                 {
@@ -336,8 +331,7 @@
                     "argNum": 1,
                     "expr": "err"
                 }
-            ],
-            "fuzzy": true
+            ]
         },
         {
             "id": "failed to process dir data/home: {Err}",
