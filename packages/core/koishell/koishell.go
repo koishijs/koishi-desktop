@@ -58,6 +58,8 @@ func (shell *KoiShell) getIndex(cmd *exec.Cmd) uint8 {
 	}
 }
 
+// exec starts a KoiShell process, waits to exit,
+// and returns the execution result.
 func (shell *KoiShell) exec(arg any) (map[string]any, error) {
 	var err error
 
@@ -156,6 +158,57 @@ func (shell *KoiShell) exec(arg any) (map[string]any, error) {
 	return out, nil
 }
 
+// start a [KoiShell] process
+// and return its [*exec.Cmd].
+//
+// One of [*exec.Cmd] and [error] must be nil.
+func (shell *KoiShell) start(arg any) (*exec.Cmd, error) {
+	var err error
+
+	l := do.MustInvoke[*logger.Logger](shell.i)
+	cfg := do.MustInvoke[*koiconfig.Config](shell.i)
+
+	argJson, err := json.Marshal(arg)
+	if err != nil {
+		return nil, fmt.Errorf("failed to marshal arg %#+v: %w", arg, err)
+	}
+	argB64 := base64.StdEncoding.EncodeToString(argJson)
+
+	cmd := &exec.Cmd{
+		Path: shell.path,
+		Args: []string{shell.path, argB64},
+		Dir:  cfg.Computed.DirConfig,
+	}
+	killdren.Set(cmd)
+
+	stderrPipe, err := cmd.StderrPipe()
+	if err != nil {
+		return nil, fmt.Errorf("failed to create stderr pipe: %w", err)
+	}
+
+	go func(scn *bufio.Scanner) {
+		for {
+			if !scn.Scan() {
+				break
+			}
+			scnErr := scn.Err()
+			if scnErr != nil {
+				l.Warn(fmt.Errorf("KoiShell scanner error: %w", scnErr))
+			} else {
+				l.Error(scn.Text())
+			}
+		}
+	}(bufio.NewScanner(stderrPipe))
+
+	l.Debugf("Starting KoiShell process.\narg: %#+v\nargJson: %s\nargB64: %s", arg, argJson, argB64)
+	err = cmd.Start()
+	if err != nil {
+		return nil, fmt.Errorf("failed to start KoiShell: %w", err)
+	}
+
+	return cmd, nil
+}
+
 func (shell *KoiShell) Shutdown() error {
 	shell.mutex.Lock()
 
@@ -175,14 +228,12 @@ func (shell *KoiShell) Shutdown() error {
 	return nil
 }
 
-func (shell *KoiShell) WebView(name, url string) error {
-	_, err := shell.exec(map[string]string{
+func (shell *KoiShell) WebView(name, url string) (*exec.Cmd, error) {
+	return shell.start(map[string]string{
 		"mode": "webview",
 		"name": name,
 		"url":  url,
 	})
-
-	return err
 }
 
 func (shell *KoiShell) About() {

@@ -1,6 +1,7 @@
 package webview
 
 import (
+	"os/exec"
 	"strings"
 	"sync/atomic"
 	"time"
@@ -12,11 +13,7 @@ import (
 	"gopkg.ilharper.com/x/browser"
 )
 
-func run(
-	i *do.Injector,
-	name string,
-	listen string,
-) bool {
+func run(i *do.Injector, name string, listen string, ) (*exec.Cmd, bool) {
 	var success atomic.Bool
 
 	l := do.MustInvoke[*logger.Logger](i)
@@ -27,21 +24,17 @@ func run(
 		success.Store(true)
 	}()
 
-	err := shell.WebView(name, listen)
+	cmd, err := shell.WebView(name, listen)
 	if err != nil {
 		l.Errorf("WebView error: %v", err)
 
-		return success.Load()
+		return /* cmd is always nil here */ nil, success.Load()
 	}
 
-	return true
+	return cmd, true
 }
 
-func Open(
-	i *do.Injector,
-	name string,
-	listen string,
-) {
+func Open(i *do.Injector, name string, listen string, ) *exec.Cmd {
 	l := do.MustInvoke[*logger.Logger](i)
 	cfg := do.MustInvoke[*koiconfig.Config](i)
 
@@ -49,39 +42,32 @@ func Open(
 
 	switch cfg.Data.Open {
 	case "auto":
-		l.Debugf(
-			"Running webview for instance %s: %s",
-			name,
-			listen,
-		)
-		go func() {
-			success := run(i, name, listen)
-			if !success {
+		l.Debugf("Running webview for instance %s: %s", name, listen)
+		cmd, success := run(i, name, listen)
+		if !success {
+			go func() {
 				l.Debugf("Failed to launch integrated webview. Fallback to external.")
 				err := browser.OpenURL(listen)
 				if err != nil {
 					l.Warnf("cannot open browser: %s", err.Error())
 				}
+			}()
+		}
+		return cmd
+	case "integrated":
+		l.Debugf("Running webview for instance %s: %s", name, listen)
+		cmd, _ := run(i, name, listen)
+		return cmd
+	case "external":
+		l.Debugf("Running webview for instance %s: %s", name, listen)
+		go func() {
+			err := browser.OpenURL(listen)
+			if err != nil {
+				l.Warnf("cannot open browser: %s", err.Error())
 			}
 		}()
-	case "integrated":
-		l.Debugf(
-			"Running webview for instance %s: %s",
-			name,
-			listen,
-		)
-		go func() {
-			run(i, name, listen)
-		}()
-	case "external":
-		l.Debugf(
-			"Running webview for instance %s: %s",
-			name,
-			listen,
-		)
-		err := browser.OpenURL(listen)
-		if err != nil {
-			l.Warnf("cannot open browser: %s", err.Error())
-		}
+		return nil
+	default:
+		return nil
 	}
 }

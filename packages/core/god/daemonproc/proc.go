@@ -3,6 +3,7 @@ package daemonproc
 import (
 	"errors"
 	"fmt"
+	"os/exec"
 	"path/filepath"
 	"strings"
 	"sync"
@@ -22,9 +23,12 @@ const deltaCh uint16 = 1000
 
 var ErrAlreadyStarted = errors.New("instance already started")
 
-type dProc struct {
+type DProc struct {
 	koiProc *proc.KoiProc
-	listen  string
+	Listen  string
+
+	wvProcessRegLock sync.Mutex
+	wvProcessReg     []*exec.Cmd
 }
 
 type DProcMeta struct {
@@ -42,7 +46,7 @@ type DaemonProcess struct {
 
 	i *do.Injector
 
-	reg     [256]*dProc
+	reg     [256]*DProc
 	nameReg map[string]uint8
 }
 
@@ -118,37 +122,56 @@ func (daemonProc *DaemonProcess) startIntl(name string) error {
 		return ErrAlreadyStarted
 	}
 
-	dp = &dProc{
-		koiProc: proc.NewYarnProc(
-			daemonProc.i,
-			deltaCh+uint16(index),
-			[]string{"start"},
-			filepath.Join(cfg.Computed.DirInstance, name),
-		),
-	}
+	dp = &DProc{}
 	daemonProc.reg[index] = dp
-
-	dp.koiProc.Register(do.MustInvoke[*rpl.Receiver](daemonProc.i))
-
-	dp.koiProc.HookOutput = func(msg string) {
-		go func() {
-			if strings.Contains(msg, " server listening at ") {
-				listen := msg[strings.Index(msg, "http"):]                     //nolint:gocritic
-				listen = listen[:strings.Index(listen, strutil.ColorStartCtr)] //nolint:gocritic
-				l.Debug(p.Sprintf("Parsed %s.", listen))
-				dp.listen = listen
-				webview.Open(daemonProc.i, name, listen)
-			}
-		}()
-	}
 
 	daemonProc.wg.Add(1)
 	go func() {
-		err := dp.koiProc.Run()
-		if err == nil {
-			l.Info(p.Sprintf("Instance %s exited.", name))
-		} else {
-			l.Warn(p.Sprintf("Instance %s exited with: %v", name, err))
+		for {
+			dp.koiProc = proc.NewYarnProc(
+				daemonProc.i,
+				deltaCh+uint16(index),
+				[]string{"start"},
+				filepath.Join(cfg.Computed.DirInstance, name),
+			)
+
+			dp.koiProc.Register(do.MustInvoke[*rpl.Receiver](daemonProc.i))
+			dp.koiProc.HookOutput = func(msg string) {
+				go func() {
+					if strings.Contains(msg, " server listening at ") {
+						listen := msg[strings.Index(msg, "http"):]                     //nolint:gocritic
+						listen = listen[:strings.Index(listen, strutil.ColorStartCtr)] //nolint:gocritic
+						l.Debug(p.Sprintf("Parsed %s.", listen))
+						dp.Listen = listen
+						dp.wvProcessRegLock.Lock()
+						if len(dp.wvProcessReg) == 0 {
+							cmd := webview.Open(daemonProc.i, name, listen)
+							if cmd != nil {
+								dp.wvProcessReg = append(dp.wvProcessReg, cmd)
+							}
+						}
+						dp.wvProcessRegLock.Unlock()
+					}
+				}()
+			}
+
+			err := dp.koiProc.Run()
+
+			if exitErr, ok := err.(*exec.ExitError); ok {
+				if exitErr.ExitCode() == 52 {
+					l.Info(p.Sprintf("Instance %s exited with code restart (52). Restarting.", name))
+				} else {
+					l.Warn(p.Sprintf("Instance %s exited with: %v.", name, exitErr))
+				}
+			} else if err != nil {
+				l.Warn(p.Sprintf("Instance %s exited: %v.", name, err))
+
+				break
+			} else {
+				l.Info(p.Sprintf("Instance %s exited.", name))
+
+				break
+			}
 		}
 
 		defer daemonProc.wg.Done()
@@ -226,21 +249,6 @@ func (daemonProc *DaemonProcess) getIndex(name string) uint8 {
 	return index
 }
 
-// GetPid find and return PID of instance.
-//
-// Returns 0 if instance is not running.
-func (daemonProc *DaemonProcess) GetPid(name string) int {
-	daemonProc.mutex.Lock()
-	defer daemonProc.mutex.Unlock()
-
-	dp := daemonProc.reg[daemonProc.getIndex(name)]
-	if dp == nil {
-		return 0
-	}
-
-	return dp.koiProc.Pid()
-}
-
 // GetMeta find and return meta info of instance.
 //
 // Returns nil if instance is not running.
@@ -255,6 +263,24 @@ func (daemonProc *DaemonProcess) GetMeta(name string) *DProcMeta {
 
 	return &DProcMeta{
 		Pid:    dp.koiProc.Pid(),
-		Listen: dp.listen,
+		Listen: dp.Listen,
 	}
+}
+
+func (daemonProc *DaemonProcess) GetDProc(name string) *DProc {
+	daemonProc.mutex.Lock()
+	defer daemonProc.mutex.Unlock()
+
+	return daemonProc.reg[daemonProc.getIndex(name)]
+}
+
+func (dp *DProc) AddWebViewProcess(cmd *exec.Cmd) {
+	if cmd == nil {
+		return
+	}
+
+	dp.wvProcessRegLock.Lock()
+	defer dp.wvProcessRegLock.Unlock()
+
+	dp.wvProcessReg = append(dp.wvProcessReg, cmd)
 }

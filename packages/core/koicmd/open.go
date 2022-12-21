@@ -29,12 +29,12 @@ func koiCmdOpen(i *do.Injector) *proto.Response {
 
 		l.Infof("Opening instance %s...", instance)
 
-		meta := daemonProc.GetMeta(instance)
-		if meta == nil {
+		dp := daemonProc.GetDProc(instance)
+		if dp == nil {
 			return proto.NewErrorResult(koierr.NewErrInternalError(fmt.Errorf("cannot get meta of instance %s", instance)))
 		}
 
-		webview.Open(i, instance, meta.Listen)
+		dp.AddWebViewProcess(webview.Open(i, instance, dp.Listen))
 	}
 
 	return proto.NewSuccessResult(nil)
