@@ -16,6 +16,7 @@ import (
 	"gopkg.ilharper.com/koi/core/ui/webview"
 	"gopkg.ilharper.com/koi/core/util/instance"
 	"gopkg.ilharper.com/koi/core/util/strutil"
+	"gopkg.ilharper.com/x/killdren"
 	"gopkg.ilharper.com/x/rpl"
 )
 
@@ -162,6 +163,8 @@ func (daemonProc *DaemonProcess) startIntl(name string) error {
 					l.Info(p.Sprintf("Instance %s exited with code restart (52). Restarting.", name))
 				} else {
 					l.Warn(p.Sprintf("Instance %s exited with: %v.", name, exitErr))
+
+					break
 				}
 			} else if err != nil {
 				l.Warn(p.Sprintf("Instance %s exited: %v.", name, err))
@@ -173,6 +176,21 @@ func (daemonProc *DaemonProcess) startIntl(name string) error {
 				break
 			}
 		}
+
+		dp.wvProcessRegLock.Lock()
+		for _, wvProcess := range dp.wvProcessReg {
+			err := killdren.Stop(wvProcess)
+			if err == nil {
+				continue
+			}
+			l.Debug(p.Sprintf("Failed to gracefully stop KoiShell WebView process %d: %v. Trying kill.", wvProcess.Process.Pid, err))
+			err = nil
+			err = killdren.Kill(wvProcess)
+			if err != nil {
+				l.Debug(p.Sprintf("Failed to kill KoiShell WebView process %d: %v.", wvProcess.Process.Pid, err))
+			}
+		}
+		dp.wvProcessRegLock.Unlock()
 
 		defer daemonProc.wg.Done()
 		daemonProc.mutex.Lock()
