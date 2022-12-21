@@ -29,15 +29,10 @@ func main() {
 	}
 	p := message.NewPrinter(langTag)
 
-	// Setup local logger
-	l, _ := logger.BuildNewLogger(0)(nil)
+	i := do.New()
 
-	i := do.NewWithOpts(&do.InjectorOpts{
-		Logf: func(format string, args ...any) {
-			l.Debugf(format, args...)
-		},
-	})
-	do.ProvideValue(i, l)
+	do.Provide(i, logger.BuildNewLogger(0))
+	l := do.MustInvoke[*logger.Logger](i)
 
 	do.ProvideNamedValue(i, coreUtil.ServiceAppVersion, util.AppVersion)
 
