@@ -54,6 +54,7 @@ func (tray *TrayDaemon) Run() error {
 	var err error
 
 	l := do.MustInvoke[*logger.Logger](tray.i)
+	p := do.MustInvoke[*message.Printer](tray.i)
 	cfg := do.MustInvoke[*koiconfig.Config](tray.i)
 	shell := do.MustInvoke[*koishell.KoiShell](tray.i)
 
@@ -77,7 +78,7 @@ func (tray *TrayDaemon) Run() error {
 	do.Provide(tray.i, NewTrayUnlocker)
 
 	// tray.lock does not exist. Writing
-	l.Debug("Writing tray.lock...")
+	l.Debug(p.Sprintf("Writing tray.lock..."))
 	lock, err := os.OpenFile(
 		trayLockPath,
 		os.O_WRONLY|os.O_CREATE|os.O_EXCL, // Must create new file and write only

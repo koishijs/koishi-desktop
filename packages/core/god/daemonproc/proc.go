@@ -22,8 +22,6 @@ import (
 
 const deltaCh uint16 = 1000
 
-var ErrAlreadyStarted = errors.New("instance already started")
-
 type DProc struct {
 	koiProc *proc.KoiProc
 	Listen  string
@@ -120,7 +118,7 @@ func (daemonProc *DaemonProcess) startIntl(name string) error {
 
 	dp := daemonProc.reg[index]
 	if dp != nil {
-		return ErrAlreadyStarted
+		return errors.New(p.Sprintf("instance already started"))
 	}
 
 	dp = &DProc{}

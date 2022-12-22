@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"os"
 	"os/signal"
 	"sync"
@@ -72,7 +71,7 @@ func main() {
 
 	consoleUTF8Err := setconsoleutf8.SetConsoleUTF8()
 	if consoleUTF8Err != nil {
-		l.Warn(fmt.Sprintf("Failed to set console codepage to UTF-8: %v", consoleUTF8Err))
+		l.Warn(p.Sprintf("Failed to set console codepage to UTF-8: %v", consoleUTF8Err))
 	}
 
 	c := make(chan os.Signal, 1)
@@ -114,6 +113,8 @@ func main() {
 }
 
 func setupLogger(i *do.Injector) {
+	p := do.MustInvoke[*message.Printer](i)
+
 	// Get the local logger.
 	l := do.MustInvoke[*logger.Logger](i)
 
@@ -156,7 +157,7 @@ func setupLogger(i *do.Injector) {
 	// Register SysLogger to local receiver.
 	sysLogger, err := logger.BuildNewSysLogger()(i)
 	if err != nil {
-		l.Errorf("Failed to create system logger: %v", err)
+		l.Error(p.Sprintf("Failed to create system logger: %v", err))
 	} else {
 		localReceiver.Register(sysLogger)
 	}

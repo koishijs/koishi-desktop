@@ -13,6 +13,7 @@ import (
 	"github.com/goccy/go-json"
 	"github.com/samber/do"
 	"github.com/shirou/gopsutil/v3/process"
+	"golang.org/x/text/message"
 	"gopkg.ilharper.com/koi/core/god/daemonproc"
 	"gopkg.ilharper.com/koi/core/god/daemonserv"
 	"gopkg.ilharper.com/koi/core/god/daemonunlk"
@@ -36,6 +37,8 @@ type DaemonLock struct {
 // and run during the whole lifecycle.
 func Daemon(i *do.Injector, startInstances bool) error {
 	var err error
+
+	p := do.MustInvoke[*message.Printer](i)
 
 	cfg, err := do.Invoke[*koiconfig.Config](i)
 	if err != nil {
@@ -87,7 +90,7 @@ func Daemon(i *do.Injector, startInstances bool) error {
 	}
 
 	// daemon.lock does not exist. Writing
-	l.Debug("Writing daemon.lock...")
+	l.Debug(p.Sprintf("Writing daemon.lock..."))
 	lock, err := os.OpenFile(
 		daemonLockPath,
 		os.O_WRONLY|os.O_CREATE|os.O_EXCL, // Must create new file and write only
@@ -131,7 +134,7 @@ func Daemon(i *do.Injector, startInstances bool) error {
 		WriteTimeout:      3 * time.Second,
 	}
 	do.ProvideValue(i, server)
-	l.Debug("Serving daemon...")
+	l.Debug(p.Sprintf("Serving daemon..."))
 	err = server.Serve(listener)
 	if !(errors.Is(err, http.ErrServerClosed)) {
 		return fmt.Errorf("daemon closed: %w", err)

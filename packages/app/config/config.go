@@ -67,7 +67,7 @@ func loadConfigIntl(i *do.Injector, c *koiconfig.Config, path string, recur uint
 		return errors.New(p.Sprintf("infinite redirection detected. Check your koi.config file"))
 	}
 
-	l.Debugf("Loading config: %s", path)
+	l.Debug(p.Sprintf("Loading config: %s", path))
 
 	absPath := path
 	if !filepath.IsAbs(absPath) {
