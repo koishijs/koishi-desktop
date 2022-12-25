@@ -546,7 +546,7 @@
         {
             "id": "PONG at:\n{Conn}",
             "message": "PONG at:\n{Conn}",
-            "translation": "PONG at:\n{Conn}",
+            "translation": "PONG 于：\n{Conn}",
             "translatorComment": "Copied from source.",
             "placeholders": [
                 {
@@ -557,20 +557,18 @@
                     "argNum": 1,
                     "expr": "conn"
                 }
-            ],
-            "fuzzy": true
+            ]
         },
         {
             "id": "Trigger action: daemon start",
             "message": "Trigger action: daemon start",
-            "translation": "Trigger action: daemon start",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": "触发操作：服务启动",
+            "translatorComment": "Copied from source."
         },
         {
             "id": "Daemon started at:\n{Conn}",
             "message": "Daemon started at:\n{Conn}",
-            "translation": "Daemon started at:\n{Conn}",
+            "translation": "守护进程启动于：\n{Conn}",
             "translatorComment": "Copied from source.",
             "placeholders": [
                 {
@@ -581,34 +579,30 @@
                     "argNum": 1,
                     "expr": "conn"
                 }
-            ],
-            "fuzzy": true
+            ]
         },
         {
             "id": "Trigger action: daemon stop",
             "message": "Trigger action: daemon stop",
-            "translation": "Trigger action: daemon stop",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": "触发操作：服务停止",
+            "translatorComment": "Copied from source."
         },
         {
             "id": "All daemon stopped.",
             "message": "All daemon stopped.",
-            "translation": "All daemon stopped.",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": "所有服务都已停止。",
+            "translatorComment": "Copied from source."
         },
         {
             "id": "Trigger action: daemon kill",
             "message": "Trigger action: daemon kill",
-            "translation": "Trigger action: daemon kill",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": "触发操作：服务强制停止",
+            "translatorComment": "Copied from source."
         },
         {
             "id": "{Killed} Daemon killed.",
             "message": "{Killed} Daemon killed.",
-            "translation": "{Killed} Daemon killed.",
+            "translation": "{Killed} 服务强制停止。",
             "translatorComment": "Copied from source.",
             "placeholders": [
                 {
@@ -619,15 +613,13 @@
                     "argNum": 1,
                     "expr": "killed"
                 }
-            ],
-            "fuzzy": true
+            ]
         },
         {
             "id": "Import a Koishi Bundle",
             "message": "Import a Koishi Bundle",
-            "translation": "Import a Koishi Bundle",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": "导入 Koishi 整合包",
+            "translatorComment": "Copied from source."
         },
         {
             "id": "Name of the imported instance",
