@@ -520,16 +520,14 @@
         {
             "id": "Start daemon",
             "message": "Start daemon",
-            "translation": "Start daemon",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": "启动服务",
+            "translatorComment": "Copied from source."
         },
         {
             "id": "Stop all daemons",
             "message": "Stop all daemons",
-            "translation": "Stop all daemons",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": "停止所有服务",
+            "translatorComment": "Copied from source."
         },
         {
             "id": "Kill all daemons",
