@@ -1,8 +1,20 @@
+import del from 'del'
+import { series } from 'gulp'
 import { info } from 'gulplog'
-import { sleep } from '../utils/common'
-import { exists } from '../utils/fs'
-import { dir } from '../utils/path'
-import { exec } from '../utils/spawn'
+import { sleep } from '../../utils/common'
+import { exists } from '../../utils/fs'
+import { dir } from '../../utils/path'
+import { exec } from '../../utils/spawn'
+
+export const cleanTemp = async () => {
+  const dirs = [
+    dir('buildPortableData', 'home'),
+    dir('buildPortableData', 'lock'),
+    dir('buildPortableData', 'logs'),
+    dir('buildPortableData', 'tmp'),
+  ]
+  for (const d of dirs) await del(d)
+}
 
 export const stop = async () => {
   if (
@@ -22,6 +34,8 @@ export const stop = async () => {
 
   info('Remaining process stopped.')
 }
+
+export const stopAndClean = series(stop, cleanTemp)
 
 export const kill = async () => {
   if (

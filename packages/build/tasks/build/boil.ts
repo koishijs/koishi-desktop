@@ -2,7 +2,7 @@ import { series } from 'gulp'
 import { sleep } from '../../utils/common'
 import { dir } from '../../utils/path'
 import { exec } from '../../utils/spawn'
-import { stop } from '../stop'
+import { stopAndClean } from './stop'
 
 const boilIntl = () =>
   exec(
@@ -20,6 +20,6 @@ const boilIntl = () =>
 export const boil = series(
   boilIntl,
   // Intended to have daemon started after boil, so stop it.
-  stop,
+  stopAndClean,
   sleep
 )
