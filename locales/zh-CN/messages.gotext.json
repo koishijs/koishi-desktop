@@ -539,9 +539,8 @@
         {
             "id": "Trigger action: daemon ping",
             "message": "Trigger action: daemon ping",
-            "translation": "Trigger action: daemon ping",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": "触发操作：服务 ping",
+            "translatorComment": "Copied from source."
         },
         {
             "id": "PONG at:\n{Conn}",
@@ -690,35 +689,31 @@
         {
             "id": "Trigger action: open",
             "message": "Trigger action: open",
-            "translation": "Trigger action: open",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": "触发操作：打开",
+            "translatorComment": "Copied from source."
         },
         {
             "id": "Trigger pseudo action: pre",
             "message": "Trigger pseudo action: pre",
-            "translation": "Trigger pseudo action: pre",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": "触发伪操作：预处理",
+            "translatorComment": "Copied from source."
         },
         {
             "id": "You're seeing debug output because you have a RPL target running in debug mode. This will not be controlled by --debug flag.",
             "message": "You're seeing debug output because you have a RPL target running in debug mode. This will not be controlled by --debug flag.",
-            "translation": "You're seeing debug output because you have a RPL target running in debug mode. This will not be controlled by --debug flag.",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": "你将看到调试输出，因为你有一个运行在调试模式下的 RPL 目标。这将不会被 --debug 标志控制。",
+            "translatorComment": "Copied from source."
         },
         {
             "id": "--debug flag detected - debug mode enabled.",
             "message": "--debug flag detected - debug mode enabled.",
-            "translation": "--debug flag detected - debug mode enabled.",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": "检测到 --debug 标志 - 启用调试模式。",
+            "translatorComment": "Copied from source."
         },
         {
             "id": "PID: {Pid}",
             "message": "PID: {Pid}",
-            "translation": "PID: {Pid}",
+            "translation": "进程 ID：{Pid}",
             "translatorComment": "Copied from source.",
             "placeholders": [
                 {
@@ -729,8 +724,7 @@
                     "argNum": 1,
                     "expr": "os.Getpid()"
                 }
-            ],
-            "fuzzy": true
+            ]
         },
         {
             "id": "failed to get executable: {Err}",
@@ -785,16 +779,14 @@
         {
             "id": "Show Process Status",
             "message": "Show Process Status",
-            "translation": "Show Process Status",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": "显示进程状态",
+            "translatorComment": "Copied from source."
         },
         {
             "id": "Including stopped instances",
             "message": "Including stopped instances",
-            "translation": "Including stopped instances",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": "包括停止的实例",
+            "translatorComment": "Copied from source."
         },
         {
             "id": "Trigger action: ps",
