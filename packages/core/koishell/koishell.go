@@ -206,6 +206,16 @@ func (shell *KoiShell) start(arg any) (*exec.Cmd, error) {
 		return nil, fmt.Errorf("failed to start KoiShell: %w", err)
 	}
 
+	go func() {
+		waitErr := cmd.Wait()
+
+		if waitErr != nil {
+			l.Debugf("KoiShell exited with error: %v", err)
+		} else {
+			l.Debugf("KoiShell successfully exited.")
+		}
+	}()
+
 	return cmd, nil
 }
 
