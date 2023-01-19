@@ -475,28 +475,25 @@
         {
             "id": "Enable debug mode",
             "message": "Enable debug mode",
-            "translation": "Enable debug mode",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": "启用调试模式",
+            "translatorComment": "Copied from source."
         },
         {
             "id": "Do not show console window on Windows",
             "message": "Do not show console window on Windows",
-            "translation": "Do not show console window on Windows",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": "不在 Windows 上显示控制台窗口",
+            "translatorComment": "Copied from source."
         },
         {
             "id": "Do not start instance(s)",
             "message": "Do not start instance(s)",
-            "translation": "Do not start instance(s)",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": "不启动实例",
+            "translatorComment": "Copied from source."
         },
         {
             "id": "Command not found: {S}",
             "message": "Command not found: {S}",
-            "translation": "Command not found: {S}",
+            "translation": "找不到命令：{S}",
             "translatorComment": "Copied from source.",
             "placeholders": [
                 {
@@ -507,15 +504,13 @@
                     "argNum": 1,
                     "expr": "s"
                 }
-            ],
-            "fuzzy": true
+            ]
         },
         {
             "id": "Ping current daemon",
             "message": "Ping current daemon",
-            "translation": "Ping current daemon",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": "ping 当前服务",
+            "translatorComment": "Copied from source."
         },
         {
             "id": "Start daemon",
@@ -532,9 +527,8 @@
         {
             "id": "Kill all daemons",
             "message": "Kill all daemons",
-            "translation": "Kill all daemons",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": "强制结束所有服务",
+            "translatorComment": "Copied from source."
         },
         {
             "id": "Trigger action: daemon ping",
@@ -623,9 +617,8 @@
         {
             "id": "Name of the imported instance",
             "message": "Name of the imported instance",
-            "translation": "Name of the imported instance",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": "导入的实例名称",
+            "translatorComment": "Copied from source."
         },
         {
             "id": "Empty instance directory before creating",
