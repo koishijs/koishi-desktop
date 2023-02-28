@@ -883,23 +883,20 @@
         {
             "id": "Run Koishi Desktop",
             "message": "Run Koishi Desktop",
-            "translation": "Run Koishi Desktop",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": "运行 Koishi 桌面",
+            "translatorComment": "Copied from source."
         },
         {
             "id": "Run daemon",
             "message": "Run daemon",
-            "translation": "Run daemon",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": "运行服务",
+            "translatorComment": "Copied from source."
         },
         {
             "id": "Run UI",
             "message": "Run UI",
-            "translation": "Run UI",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": "运行用户界面",
+            "translatorComment": "Copied from source."
         },
         {
             "id": "Trigger action: run",
