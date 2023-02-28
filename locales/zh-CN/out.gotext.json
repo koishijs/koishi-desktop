@@ -34,6 +34,21 @@
             ]
         },
         {
+            "id": "Failed to set console codepage to UTF-8: {ConsoleUTF8Err}",
+            "message": "Failed to set console codepage to UTF-8: {ConsoleUTF8Err}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "ConsoleUTF8Err",
+                    "string": "%[1]v",
+                    "type": "error",
+                    "underlyingType": "interface{Error() string}",
+                    "argNum": 1,
+                    "expr": "consoleUTF8Err"
+                }
+            ]
+        },
+        {
             "id": "Received signal {Sig}. Gracefully shutting down",
             "message": "Received signal {Sig}. Gracefully shutting down",
             "translation": "收到信号 {Sig}。正在平滑关闭",
@@ -50,9 +65,25 @@
             ]
         },
         {
+            "id": "Failed to create system logger: {Err}",
+            "message": "Failed to create system logger: {Err}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Err",
+                    "string": "%[1]v",
+                    "type": "error",
+                    "underlyingType": "interface{Error() string}",
+                    "argNum": 1,
+                    "expr": "err"
+                }
+            ]
+        },
+        {
             "id": "cannot get executable: {Err}",
             "message": "cannot get executable: {Err}",
-            "translation": "",
+            "translation": "无法获取可执行文件：{Err}",
+            "translatorComment": "Copied from source.",
             "placeholders": [
                 {
                     "id": "Err",
@@ -67,12 +98,29 @@
         {
             "id": "infinite redirection detected. Check your koi.config file",
             "message": "infinite redirection detected. Check your koi.config file",
-            "translation": ""
+            "translation": "检测到无限重定向。检查你的 koi.config 文件",
+            "translatorComment": "Copied from source."
+        },
+        {
+            "id": "Loading config: {Path}",
+            "message": "Loading config: {Path}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Path",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "path"
+                }
+            ]
         },
         {
             "id": "Reading config file: {AbsPath}",
             "message": "Reading config file: {AbsPath}",
-            "translation": "",
+            "translation": "读取配置文件：{AbsPath}",
+            "translatorComment": "Copied from source.",
             "placeholders": [
                 {
                     "id": "AbsPath",
@@ -87,7 +135,8 @@
         {
             "id": "Config dir: {DirConfig}",
             "message": "Config dir: {DirConfig}",
-            "translation": "",
+            "translation": "配置目录：{DirConfig}",
+            "translatorComment": "Copied from source.",
             "placeholders": [
                 {
                     "id": "DirConfig",
@@ -102,7 +151,8 @@
         {
             "id": "failed to read {AbsPath}: {Err}",
             "message": "failed to read {AbsPath}: {Err}",
-            "translation": "",
+            "translation": "读取 {AbsPath} 失败：{Err}",
+            "translatorComment": "Copied from source.",
             "placeholders": [
                 {
                     "id": "AbsPath",
@@ -125,12 +175,14 @@
         {
             "id": "Detecting redirect field.",
             "message": "Detecting redirect field.",
-            "translation": ""
+            "translation": "检测重定向字段。",
+            "translatorComment": "Copied from source."
         },
         {
             "id": "'redirect' field detected: {Redirect}",
             "message": "'redirect' field detected: {Redirect}",
-            "translation": "",
+            "translation": "检测到「redirect」字段：{Redirect}",
+            "translatorComment": "Copied from source.",
             "placeholders": [
                 {
                     "id": "Redirect",
@@ -145,7 +197,8 @@
         {
             "id": "failed to resolve user data: {UddErr}",
             "message": "failed to resolve user data: {UddErr}",
-            "translation": "",
+            "translation": "解析用户数据失败：{UddErr}",
+            "translatorComment": "Copied from source.",
             "placeholders": [
                 {
                     "id": "UddErr",
@@ -160,7 +213,8 @@
         {
             "id": "Failed to read {Redirect}: {RfErr}",
             "message": "Failed to read {Redirect}: {RfErr}",
-            "translation": "",
+            "translation": "读取 {Redirect} 失败：{RfErr}",
+            "translatorComment": "Copied from source.",
             "placeholders": [
                 {
                     "id": "Redirect",
@@ -183,12 +237,14 @@
         {
             "id": "Trying to unfold.",
             "message": "Trying to unfold.",
-            "translation": ""
+            "translation": "尝试展开。",
+            "translatorComment": "Copied from source."
         },
         {
             "id": "failed to create stdout pipe: {Err}",
             "message": "failed to create stdout pipe: {Err}",
-            "translation": "",
+            "translation": "创建标准输出管道失败：{Err}",
+            "translatorComment": "Copied from source.",
             "placeholders": [
                 {
                     "id": "Err",
@@ -203,7 +259,8 @@
         {
             "id": "Scanner error: {ScnErr}",
             "message": "Scanner error: {ScnErr}",
-            "translation": "",
+            "translation": "扫描器错误：{ScnErr}",
+            "translatorComment": "Copied from source.",
             "placeholders": [
                 {
                     "id": "ScnErr",
@@ -218,7 +275,8 @@
         {
             "id": "Failed to unfold: {RunErr}",
             "message": "Failed to unfold: {RunErr}",
-            "translation": "",
+            "translation": "展开失败：{RunErr}",
+            "translatorComment": "Copied from source.",
             "placeholders": [
                 {
                     "id": "RunErr",
@@ -233,12 +291,14 @@
         {
             "id": "Will ignore this error.",
             "message": "Will ignore this error.",
-            "translation": ""
+            "translation": "将忽略此错误。",
+            "translatorComment": "Copied from source."
         },
         {
             "id": "Redirecting to user data: {Redirect}",
             "message": "Redirecting to user data: {Redirect}",
-            "translation": "",
+            "translation": "重定向到用户数据：{Redirect}",
+            "translatorComment": "Copied from source.",
             "placeholders": [
                 {
                     "id": "Redirect",
@@ -253,12 +313,14 @@
         {
             "id": "Parsing config.",
             "message": "Parsing config.",
-            "translation": ""
+            "translation": "解析配置。",
+            "translatorComment": "Copied from source."
         },
         {
             "id": "failed to parse config {AbsPath}: {Err}",
             "message": "failed to parse config {AbsPath}: {Err}",
-            "translation": "",
+            "translation": "解析配置 {AbsPath} 失败：{Err}",
+            "translatorComment": "Copied from source.",
             "placeholders": [
                 {
                     "id": "AbsPath",
@@ -281,7 +343,8 @@
         {
             "id": "failed to process postconfig: {Err}",
             "message": "failed to process postconfig: {Err}",
-            "translation": "",
+            "translation": "处理后配置失败：{Err}",
+            "translatorComment": "Copied from source.",
             "placeholders": [
                 {
                     "id": "Err",
@@ -296,12 +359,14 @@
         {
             "id": "Config parsed successfully.",
             "message": "Config parsed successfully.",
-            "translation": ""
+            "translation": "配置解析成功。",
+            "translatorComment": "Copied from source."
         },
         {
             "id": "failed to process dir data: {Err}",
             "message": "failed to process dir data: {Err}",
-            "translation": "",
+            "translation": "处理目录 data 失败：{Err}",
+            "translatorComment": "Copied from source.",
             "placeholders": [
                 {
                     "id": "Err",
@@ -316,7 +381,8 @@
         {
             "id": "failed to process dir data/home: {Err}",
             "message": "failed to process dir data/home: {Err}",
-            "translation": "",
+            "translation": "failed to process dir data/home: {Err}",
+            "translatorComment": "Copied from source.",
             "placeholders": [
                 {
                     "id": "Err",
@@ -326,12 +392,14 @@
                     "argNum": 1,
                     "expr": "err"
                 }
-            ]
+            ],
+            "fuzzy": true
         },
         {
             "id": "failed to process dir data/node: {Err}",
             "message": "failed to process dir data/node: {Err}",
-            "translation": "",
+            "translation": "failed to process dir data/node: {Err}",
+            "translatorComment": "Copied from source.",
             "placeholders": [
                 {
                     "id": "Err",
@@ -341,12 +409,14 @@
                     "argNum": 1,
                     "expr": "err"
                 }
-            ]
+            ],
+            "fuzzy": true
         },
         {
             "id": "failed to process dir node/bin: {Err}",
             "message": "failed to process dir node/bin: {Err}",
-            "translation": "",
+            "translation": "failed to process dir node/bin: {Err}",
+            "translatorComment": "Copied from source.",
             "placeholders": [
                 {
                     "id": "Err",
@@ -356,12 +426,14 @@
                     "argNum": 1,
                     "expr": "err"
                 }
-            ]
+            ],
+            "fuzzy": true
         },
         {
             "id": "failed to process dir data/lock: {Err}",
             "message": "failed to process dir data/lock: {Err}",
-            "translation": "",
+            "translation": "failed to process dir data/lock: {Err}",
+            "translatorComment": "Copied from source.",
             "placeholders": [
                 {
                     "id": "Err",
@@ -371,12 +443,14 @@
                     "argNum": 1,
                     "expr": "err"
                 }
-            ]
+            ],
+            "fuzzy": true
         },
         {
             "id": "failed to process dir data/tmp: {Err}",
             "message": "failed to process dir data/tmp: {Err}",
-            "translation": "",
+            "translation": "failed to process dir data/tmp: {Err}",
+            "translatorComment": "Copied from source.",
             "placeholders": [
                 {
                     "id": "Err",
@@ -386,11 +460,29 @@
                     "argNum": 1,
                     "expr": "err"
                 }
-            ]
+            ],
+            "fuzzy": true
         },
         {
             "id": "failed to process dir data/instances: {Err}",
             "message": "failed to process dir data/instances: {Err}",
+            "translation": "failed to process dir data/instances: {Err}",
+            "translatorComment": "Copied from source.",
+            "placeholders": [
+                {
+                    "id": "Err",
+                    "string": "%[1]v",
+                    "type": "error",
+                    "underlyingType": "interface{Error() string}",
+                    "argNum": 1,
+                    "expr": "err"
+                }
+            ],
+            "fuzzy": true
+        },
+        {
+            "id": "failed to process dir data/log: {Err}",
+            "message": "failed to process dir data/log: {Err}",
             "translation": "",
             "placeholders": [
                 {
@@ -406,7 +498,8 @@
         {
             "id": "failed to chmod data folder {Path}: {Err}",
             "message": "failed to chmod data folder {Path}: {Err}",
-            "translation": "",
+            "translation": "failed to chmod data folder {Path}: {Err}",
+            "translatorComment": "Copied from source.",
             "placeholders": [
                 {
                     "id": "Path",
@@ -424,7 +517,8 @@
                     "argNum": 2,
                     "expr": "err"
                 }
-            ]
+            ],
+            "fuzzy": true
         },
         {
             "id": "Koishi Desktop",
@@ -435,27 +529,32 @@
         {
             "id": "Launch Koishi from your desktop.",
             "message": "Launch Koishi from your desktop.",
-            "translation": ""
+            "translation": "从桌面启动 Koishi。",
+            "translatorComment": "Copied from source."
         },
         {
             "id": "Enable debug mode",
             "message": "Enable debug mode",
-            "translation": ""
+            "translation": "启用调试模式",
+            "translatorComment": "Copied from source."
         },
         {
             "id": "Do not show console window on Windows",
             "message": "Do not show console window on Windows",
-            "translation": ""
+            "translation": "不在 Windows 上显示控制台窗口",
+            "translatorComment": "Copied from source."
         },
         {
             "id": "Do not start instance(s)",
             "message": "Do not start instance(s)",
-            "translation": ""
+            "translation": "不启动实例",
+            "translatorComment": "Copied from source."
         },
         {
             "id": "Command not found: {S}",
             "message": "Command not found: {S}",
-            "translation": "",
+            "translation": "找不到命令：{S}",
+            "translatorComment": "Copied from source.",
             "placeholders": [
                 {
                     "id": "S",
@@ -470,32 +569,38 @@
         {
             "id": "Ping current daemon",
             "message": "Ping current daemon",
-            "translation": ""
+            "translation": "ping 当前服务",
+            "translatorComment": "Copied from source."
         },
         {
             "id": "Start daemon",
             "message": "Start daemon",
-            "translation": ""
+            "translation": "启动服务",
+            "translatorComment": "Copied from source."
         },
         {
             "id": "Stop all daemons",
             "message": "Stop all daemons",
-            "translation": ""
+            "translation": "停止所有服务",
+            "translatorComment": "Copied from source."
         },
         {
             "id": "Kill all daemons",
             "message": "Kill all daemons",
-            "translation": ""
+            "translation": "强制结束所有服务",
+            "translatorComment": "Copied from source."
         },
         {
             "id": "Trigger action: daemon ping",
             "message": "Trigger action: daemon ping",
-            "translation": ""
+            "translation": "触发操作：服务 ping",
+            "translatorComment": "Copied from source."
         },
         {
             "id": "PONG at:\n{Conn}",
             "message": "PONG at:\n{Conn}",
-            "translation": "",
+            "translation": "PONG 于：\n{Conn}",
+            "translatorComment": "Copied from source.",
             "placeholders": [
                 {
                     "id": "Conn",
@@ -510,12 +615,14 @@
         {
             "id": "Trigger action: daemon start",
             "message": "Trigger action: daemon start",
-            "translation": ""
+            "translation": "触发操作：服务启动",
+            "translatorComment": "Copied from source."
         },
         {
             "id": "Daemon started at:\n{Conn}",
             "message": "Daemon started at:\n{Conn}",
-            "translation": "",
+            "translation": "守护进程启动于：\n{Conn}",
+            "translatorComment": "Copied from source.",
             "placeholders": [
                 {
                     "id": "Conn",
@@ -530,22 +637,26 @@
         {
             "id": "Trigger action: daemon stop",
             "message": "Trigger action: daemon stop",
-            "translation": ""
+            "translation": "触发操作：服务停止",
+            "translatorComment": "Copied from source."
         },
         {
             "id": "All daemon stopped.",
             "message": "All daemon stopped.",
-            "translation": ""
+            "translation": "所有服务都已停止。",
+            "translatorComment": "Copied from source."
         },
         {
             "id": "Trigger action: daemon kill",
             "message": "Trigger action: daemon kill",
-            "translation": ""
+            "translation": "触发操作：服务强制停止",
+            "translatorComment": "Copied from source."
         },
         {
             "id": "{Killed} Daemon killed.",
             "message": "{Killed} Daemon killed.",
-            "translation": "",
+            "translation": "{Killed} 服务强制停止。",
+            "translatorComment": "Copied from source.",
             "placeholders": [
                 {
                     "id": "Killed",
@@ -560,16 +671,25 @@
         {
             "id": "Import a Koishi Bundle",
             "message": "Import a Koishi Bundle",
-            "translation": ""
+            "translation": "导入 Koishi 整合包",
+            "translatorComment": "Copied from source."
         },
         {
             "id": "Name of the imported instance",
             "message": "Name of the imported instance",
-            "translation": ""
+            "translation": "导入的实例名称",
+            "translatorComment": "Copied from source."
         },
         {
             "id": "Empty instance directory before creating",
             "message": "Empty instance directory before creating",
+            "translation": "Empty instance directory before creating",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Trigger action: import",
+            "message": "Trigger action: import",
             "translation": ""
         },
         {
@@ -621,47 +741,53 @@
         {
             "id": "Open Instances",
             "message": "Open Instances",
-            "translation": ""
+            "translation": "打开实例",
+            "translatorComment": "Copied from source."
         },
         {
             "id": "Trigger action: open",
             "message": "Trigger action: open",
-            "translation": ""
+            "translation": "触发操作：打开",
+            "translatorComment": "Copied from source."
         },
         {
             "id": "Trigger pseudo action: pre",
             "message": "Trigger pseudo action: pre",
-            "translation": ""
+            "translation": "触发伪操作：预处理",
+            "translatorComment": "Copied from source."
         },
         {
-            "id": "You're seeing debug output because you have a RPL target running in debug mode. This will not be controlled by --debug flag.",
-            "message": "You're seeing debug output because you have a RPL target running in debug mode. This will not be controlled by --debug flag.",
+            "id": "You're seeing debug output because this RPL target is running in debug mode (which is normal for syslog). This will not be controlled by --debug flag.",
+            "message": "You're seeing debug output because this RPL target is running in debug mode (which is normal for syslog). This will not be controlled by --debug flag.",
             "translation": ""
         },
         {
             "id": "--debug flag detected - debug mode enabled.",
             "message": "--debug flag detected - debug mode enabled.",
-            "translation": ""
+            "translation": "检测到 --debug 标志 - 启用调试模式。",
+            "translatorComment": "Copied from source."
         },
         {
             "id": "PID: {Pid}",
             "message": "PID: {Pid}",
-            "translation": "",
+            "translation": "进程 ID：{Pid}",
+            "translatorComment": "Copied from source.",
             "placeholders": [
                 {
                     "id": "Pid",
-                    "string": "%[1]d",
-                    "type": "int",
-                    "underlyingType": "int",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
                     "argNum": 1,
-                    "expr": "os.Getpid()"
+                    "expr": "fmt.Sprintf(\"%d\", os.Getpid())"
                 }
             ]
         },
         {
             "id": "failed to get executable: {Err}",
             "message": "failed to get executable: {Err}",
-            "translation": "",
+            "translation": "failed to get executable: {Err}",
+            "translatorComment": "Copied from source.",
             "placeholders": [
                 {
                     "id": "Err",
@@ -671,12 +797,14 @@
                     "argNum": 1,
                     "expr": "err"
                 }
-            ]
+            ],
+            "fuzzy": true
         },
         {
             "id": "Executable: {Exe}",
             "message": "Executable: {Exe}",
-            "translation": "",
+            "translation": "可执行文件：{Exe}",
+            "translatorComment": "Copied from source.",
             "placeholders": [
                 {
                     "id": "Exe",
@@ -691,7 +819,8 @@
         {
             "id": "Command line arguments:\n{Args}",
             "message": "Command line arguments:\n{Args}",
-            "translation": "",
+            "translation": "Command line arguments:\n{Args}",
+            "translatorComment": "Copied from source.",
             "placeholders": [
                 {
                     "id": "Args",
@@ -701,27 +830,48 @@
                     "argNum": 1,
                     "expr": "os.Args"
                 }
+            ],
+            "fuzzy": true
+        },
+        {
+            "id": "failed to build file logger: {Err}",
+            "message": "failed to build file logger: {Err}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Err",
+                    "string": "%[1]v",
+                    "type": "error",
+                    "underlyingType": "interface{Error() string}",
+                    "argNum": 1,
+                    "expr": "err"
+                }
             ]
         },
         {
             "id": "Show Process Status",
             "message": "Show Process Status",
-            "translation": ""
+            "translation": "显示进程状态",
+            "translatorComment": "Copied from source."
         },
         {
             "id": "Including stopped instances",
             "message": "Including stopped instances",
-            "translation": ""
+            "translation": "包括停止的实例",
+            "translatorComment": "Copied from source."
         },
         {
             "id": "Trigger action: ps",
             "message": "Trigger action: ps",
-            "translation": ""
+            "translation": "Trigger action: ps",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
         },
         {
             "id": "failed to get daemon connection: {Err}",
             "message": "failed to get daemon connection: {Err}",
-            "translation": "",
+            "translation": "获取服务连接失败：{Err}",
+            "translatorComment": "Copied from source.",
             "placeholders": [
                 {
                     "id": "Err",
@@ -736,7 +886,8 @@
         {
             "id": "failed to process command ps: {Err}",
             "message": "failed to process command ps: {Err}",
-            "translation": "",
+            "translation": "处理命令 ps 失败：{Err}",
+            "translatorComment": "Copied from source.",
             "placeholders": [
                 {
                     "id": "Err",
@@ -775,7 +926,8 @@
         {
             "id": "failed to marshal result {ResultPs}: {Err}",
             "message": "failed to marshal result {ResultPs}: {Err}",
-            "translation": "",
+            "translation": "序列化结果 {ResultPs} 失败：{Err}",
+            "translatorComment": "Copied from source.",
             "placeholders": [
                 {
                     "id": "ResultPs",
@@ -798,37 +950,44 @@
         {
             "id": "Restart Instances",
             "message": "Restart Instances",
-            "translation": ""
+            "translation": "重启实例",
+            "translatorComment": "Copied from source."
         },
         {
             "id": "Trigger action: restart",
             "message": "Trigger action: restart",
-            "translation": ""
+            "translation": "触发操作：重启",
+            "translatorComment": "Copied from source."
         },
         {
             "id": "Run Koishi Desktop",
             "message": "Run Koishi Desktop",
-            "translation": ""
+            "translation": "运行 Koishi 桌面",
+            "translatorComment": "Copied from source."
         },
         {
             "id": "Run daemon",
             "message": "Run daemon",
-            "translation": ""
+            "translation": "运行服务",
+            "translatorComment": "Copied from source."
         },
         {
             "id": "Run UI",
             "message": "Run UI",
-            "translation": ""
+            "translation": "运行用户界面",
+            "translatorComment": "Copied from source."
         },
         {
             "id": "Trigger action: run",
             "message": "Trigger action: run",
-            "translation": ""
+            "translation": "触发操作：运行",
+            "translatorComment": "Copied from source."
         },
         {
             "id": "unknown mode: {Mode}",
             "message": "unknown mode: {Mode}",
-            "translation": "",
+            "translation": "未知模式：{Mode}",
+            "translatorComment": "Copied from source.",
             "placeholders": [
                 {
                     "id": "Mode",
@@ -843,46 +1002,60 @@
         {
             "id": "Trigger action: run daemon",
             "message": "Trigger action: run daemon",
-            "translation": ""
+            "translation": "触发操作：运行服务",
+            "translatorComment": "Copied from source."
         },
         {
             "id": "Trigger action: run ui",
             "message": "Trigger action: run ui",
-            "translation": ""
+            "translation": "触发操作：运行用户界面",
+            "translatorComment": "Copied from source."
         },
         {
             "id": "Start Instances",
             "message": "Start Instances",
-            "translation": ""
+            "translation": "启动实例",
+            "translatorComment": "Copied from source."
         },
         {
             "id": "Trigger action: start",
             "message": "Trigger action: start",
-            "translation": ""
+            "translation": "触发操作：启动",
+            "translatorComment": "Copied from source."
         },
         {
             "id": "Stop Instances",
             "message": "Stop Instances",
-            "translation": ""
+            "translation": "停止实例",
+            "translatorComment": "Copied from source."
         },
         {
             "id": "Trigger action: stop",
             "message": "Trigger action: stop",
-            "translation": ""
+            "translation": "触发操作：停止",
+            "translatorComment": "Copied from source."
         },
         {
             "id": "Run Yarn Command on Instance",
             "message": "Run Yarn Command on Instance",
-            "translation": ""
+            "translation": "在实例上运行 Yarn 命令",
+            "translatorComment": "Copied from source."
         },
         {
             "id": "Target Instance",
             "message": "Target Instance",
-            "translation": ""
+            "translation": "目标实例",
+            "translatorComment": "Copied from source."
         },
         {
             "id": "Trigger action: yarn",
             "message": "Trigger action: yarn",
+            "translation": "触发操作：yarn",
+            "translatorComment": "Copied from source."
+        },
+        {
+            "id": "Writing tray.lock...",
+            "message": "Writing tray.lock...",
             "translation": ""
         },
         {
@@ -1062,6 +1235,16 @@
             "translatorComment": "Copied from source."
         },
         {
+            "id": "Open Data Folder",
+            "message": "Open Data Folder",
+            "translation": ""
+        },
+        {
+            "id": "Open Terminal",
+            "message": "Open Terminal",
+            "translation": ""
+        },
+        {
             "id": "Stop and Exit",
             "message": "Stop and Exit",
             "translation": "停止并退出",
@@ -1070,7 +1253,8 @@
         {
             "id": "About",
             "message": "About",
-            "translation": ""
+            "translation": "关于",
+            "translatorComment": "Copied from source."
         },
         {
             "id": "Hide",
@@ -1097,6 +1281,61 @@
             "translatorComment": "Copied from source."
         },
         {
+            "id": "Opening data folder",
+            "message": "Opening data folder",
+            "translation": ""
+        },
+        {
+            "id": "Failed to open data folder: {Err}",
+            "message": "Failed to open data folder: {Err}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Err",
+                    "string": "%[1]v",
+                    "type": "error",
+                    "underlyingType": "interface{Error() string}",
+                    "argNum": 1,
+                    "expr": "err"
+                }
+            ]
+        },
+        {
+            "id": "Opening terminal",
+            "message": "Opening terminal",
+            "translation": ""
+        },
+        {
+            "id": "Failed to get executable: {Err}",
+            "message": "Failed to get executable: {Err}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Err",
+                    "string": "%[1]v",
+                    "type": "error",
+                    "underlyingType": "interface{Error() string}",
+                    "argNum": 1,
+                    "expr": "err"
+                }
+            ]
+        },
+        {
+            "id": "Failed to open terminal: {Err}",
+            "message": "Failed to open terminal: {Err}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Err",
+                    "string": "%[1]v",
+                    "type": "error",
+                    "underlyingType": "interface{Error() string}",
+                    "argNum": 1,
+                    "expr": "err"
+                }
+            ]
+        },
+        {
             "id": "Exiting systray",
             "message": "Exiting systray",
             "translation": "正在退出 systray",
@@ -1105,6 +1344,17 @@
         {
             "id": "Showing about dialog",
             "message": "Showing about dialog",
+            "translation": "显示关于对话框",
+            "translatorComment": "Copied from source."
+        },
+        {
+            "id": "Writing daemon.lock...",
+            "message": "Writing daemon.lock...",
+            "translation": ""
+        },
+        {
+            "id": "Serving daemon...",
+            "message": "Serving daemon...",
             "translation": ""
         },
         {
@@ -1164,6 +1414,11 @@
             ]
         },
         {
+            "id": "instance already started",
+            "message": "instance already started",
+            "translation": ""
+        },
+        {
             "id": "Parsed {Listen}.",
             "message": "Parsed {Listen}.",
             "translation": "已解析到 {Listen}。",
@@ -1176,6 +1431,67 @@
                     "underlyingType": "string",
                     "argNum": 1,
                     "expr": "listen"
+                }
+            ]
+        },
+        {
+            "id": "Instance {Name} exited with code restart (52). Restarting.",
+            "message": "Instance {Name} exited with code restart (52). Restarting.",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Name",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "name"
+                }
+            ]
+        },
+        {
+            "id": "Instance {Name} exited with: {ExitErr}.",
+            "message": "Instance {Name} exited with: {ExitErr}.",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Name",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "name"
+                },
+                {
+                    "id": "ExitErr",
+                    "string": "%[2]v",
+                    "type": "*os/exec.ExitError",
+                    "underlyingType": "*os/exec.ExitError",
+                    "argNum": 2,
+                    "expr": "exitErr"
+                }
+            ]
+        },
+        {
+            "id": "Instance {Name} exited: {Err}.",
+            "message": "Instance {Name} exited: {Err}.",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Name",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "name"
+                },
+                {
+                    "id": "Err",
+                    "string": "%[2]v",
+                    "type": "error",
+                    "underlyingType": "interface{Error() string}",
+                    "argNum": 2,
+                    "expr": "err"
                 }
             ]
         },
@@ -1196,18 +1512,40 @@
             ]
         },
         {
-            "id": "Instance {Name} exited with: {Err}",
-            "message": "Instance {Name} exited with: {Err}",
-            "translation": "实例 {Name} 退出：{Err}",
-            "translatorComment": "Copied from source.",
+            "id": "Failed to gracefully stop KoiShell WebView process {Pid}: {Err}. Trying kill.",
+            "message": "Failed to gracefully stop KoiShell WebView process {Pid}: {Err}. Trying kill.",
+            "translation": "",
             "placeholders": [
                 {
-                    "id": "Name",
-                    "string": "%[1]s",
-                    "type": "string",
-                    "underlyingType": "string",
+                    "id": "Pid",
+                    "string": "%[1]d",
+                    "type": "int",
+                    "underlyingType": "int",
                     "argNum": 1,
-                    "expr": "name"
+                    "expr": "wvProcess.Process.Pid"
+                },
+                {
+                    "id": "Err",
+                    "string": "%[2]v",
+                    "type": "error",
+                    "underlyingType": "interface{Error() string}",
+                    "argNum": 2,
+                    "expr": "err"
+                }
+            ]
+        },
+        {
+            "id": "Failed to kill KoiShell WebView process {Pid}: {Err}.",
+            "message": "Failed to kill KoiShell WebView process {Pid}: {Err}.",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Pid",
+                    "string": "%[1]d",
+                    "type": "int",
+                    "underlyingType": "int",
+                    "argNum": 1,
+                    "expr": "wvProcess.Process.Pid"
                 },
                 {
                     "id": "Err",
