@@ -36,7 +36,7 @@
         {
             "id": "Failed to set console codepage to UTF-8: {ConsoleUTF8Err}",
             "message": "Failed to set console codepage to UTF-8: {ConsoleUTF8Err}",
-            "translation": "Failed to set console codepage to UTF-8: {ConsoleUTF8Err}",
+            "translation": "设置控制台代码页为 UTF-8 失败：{ConsoleUTF8Err}",
             "translatorComment": "Copied from source.",
             "placeholders": [
                 {
@@ -47,8 +47,7 @@
                     "argNum": 1,
                     "expr": "consoleUTF8Err"
                 }
-            ],
-            "fuzzy": true
+            ]
         },
         {
             "id": "Received signal {Sig}. Gracefully shutting down",
@@ -69,7 +68,7 @@
         {
             "id": "Failed to create system logger: {Err}",
             "message": "Failed to create system logger: {Err}",
-            "translation": "Failed to create system logger: {Err}",
+            "translation": "创建系统日志失败：{Err}",
             "translatorComment": "Copied from source.",
             "placeholders": [
                 {
@@ -80,8 +79,7 @@
                     "argNum": 1,
                     "expr": "err"
                 }
-            ],
-            "fuzzy": true
+            ]
         },
         {
             "id": "cannot get executable: {Err}",
@@ -108,7 +106,7 @@
         {
             "id": "Loading config: {Path}",
             "message": "Loading config: {Path}",
-            "translation": "Loading config: {Path}",
+            "translation": "加载配置：{Path}",
             "translatorComment": "Copied from source.",
             "placeholders": [
                 {
@@ -119,8 +117,7 @@
                     "argNum": 1,
                     "expr": "path"
                 }
-            ],
-            "fuzzy": true
+            ]
         },
         {
             "id": "Reading config file: {AbsPath}",
@@ -1330,7 +1327,7 @@
         {
             "id": "Failed to get executable: {Err}",
             "message": "Failed to get executable: {Err}",
-            "translation": "Failed to get executable: {Err}",
+            "translation": "获取可执行文件失败：{Err}",
             "translatorComment": "Copied from source.",
             "placeholders": [
                 {
@@ -1341,13 +1338,12 @@
                     "argNum": 1,
                     "expr": "err"
                 }
-            ],
-            "fuzzy": true
+            ]
         },
         {
             "id": "Failed to open terminal: {Err}",
             "message": "Failed to open terminal: {Err}",
-            "translation": "Failed to open terminal: {Err}",
+            "translation": "打开终端失败：{Err}",
             "translatorComment": "Copied from source.",
             "placeholders": [
                 {
@@ -1358,8 +1354,7 @@
                     "argNum": 1,
                     "expr": "err"
                 }
-            ],
-            "fuzzy": true
+            ]
         },
         {
             "id": "Exiting systray",
