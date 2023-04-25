@@ -1,26 +1,44 @@
-import { parallel, series } from 'gulp'
+import { parallel } from 'gulp'
+import { mkdir } from 'node:fs/promises'
+import { dir } from '../../utils/path'
 import { prepareAppimagetool } from './appimagetool'
 import { prepareBoilerplate } from './boilerplate'
 import { prepareEdge } from './edge'
-import { prepareFolder } from './folder'
 import { prepareGoMod } from './gomod'
 import { prepareNode } from './node'
 import { prepareTools } from './tools'
 import { prepareWix } from './wix'
 
+export * from './appimagetool'
 export * from './boilerplate'
-export * from './folder'
+export * from './edge'
 export * from './gomod'
 export * from './node'
 export * from './tools'
 export * from './wix'
-export * from './appimagetool'
-export * from './edge'
 
 export const prepare = parallel(
+  () =>
+    mkdir(dir('buildAssets'), {
+      recursive: true,
+    }),
+  () =>
+    mkdir(dir('buildVendor'), {
+      recursive: true,
+    }),
+  () =>
+    mkdir(dir('buildResources'), {
+      recursive: true,
+    }),
+  () =>
+    mkdir(dir('dist'), {
+      recursive: true,
+    }),
+
   prepareTools,
   prepareGoMod,
-  series(prepareFolder, parallel(prepareNode, prepareBoilerplate)),
+  prepareNode,
+  prepareBoilerplate,
   prepareEdge,
   prepareAppimagetool,
   prepareWix
