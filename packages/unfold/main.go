@@ -55,7 +55,7 @@ func main() {
 		_, err := os.Stat(pathConfig)
 
 		if errors.Is(err, fs.ErrNotExist) {
-			fmt.Println("User data does not exist. Trying migrate legacy user data.")
+			fmt.Println("User data does not exist. Trying to migrate legacy user data.")
 
 			if migrate(folderData) {
 				fmt.Println("Migration completed. Extracting only node.")
@@ -99,8 +99,8 @@ func help() {
 "unfold" for Koishi Desktop
 
 Available modes:
-ensure      - Ensure user data folder exists. Used for installation.
-reset-data  - Reset user data folder.
-reset-all   - Reset all data and config.
+	ensure      - Ensure user data folder exists. Used for installation.
+	reset-data  - Reset user data folder.
+	reset-all   - Reset all data and config.
 `)
 }
