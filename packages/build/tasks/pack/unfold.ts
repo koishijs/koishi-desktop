@@ -11,22 +11,28 @@ export const packUnfoldDataCopy = async () => {
   await mkdirp(dir('buildUnfoldData', 'data'))
   await mkdirp(dir('buildUnfoldBinary'))
 
+  // Copy all data to unfold 'data' folder
   await fs.cp(dir('buildPortableData'), dir('buildUnfoldData', 'data'), {
     recursive: true,
   })
+
+  // Copy koi.yml to unfold root folder
   await fs.copyFile(
     dir('buildPortable', 'koi.yml'),
     dir('buildUnfoldData', 'koi.yml')
   )
 
+  // Collect all binaries
   const binaries = (await fs.readdir(dir('buildPortable'))).filter(
     (x) => x !== 'data' && x !== 'koi.yml'
   )
+  // And copy them to binary folder
   for (const b of binaries)
     await fs.cp(dir('buildPortable', b), dir('buildUnfoldBinary', b), {
       recursive: true,
     })
 
+  // Copy Edge/WV2 setup for Windows
   if (await exists(dir('buildCache', 'MicrosoftEdgeSetup.exe')))
     await fs.copyFile(
       dir('buildCache', 'MicrosoftEdgeSetup.exe'),
