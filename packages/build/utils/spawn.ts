@@ -67,32 +67,6 @@ export async function exec(
   cwd?: string,
   options?: execa.SyncOptions
 ): Promise<void> {
-  const parsedArgs = (args ?? []).map((x) =>
-    process.platform === 'win32' ? `"${x}"` : `'${x}'`
-  )
-  const parsedCwd = cwd ?? dir('root')
-  const parsedOptions: execa.SyncOptions = Object.assign<
-    execa.SyncOptions,
-    execa.SyncOptions,
-    execa.SyncOptions | undefined
-  >({}, { stdio: 'inherit', shell: true, cwd: parsedCwd }, options)
-  const child = execa(command, parsedArgs, parsedOptions)
-  const result = await new Promise<number>((resolve) => {
-    child.on('close', resolve)
-  })
-  if (result) {
-    throw new Error(
-      `'${child.spawnargs.join(' ')}' exited with error code: ${result}`
-    )
-  }
-}
-
-export async function exec2(
-  command: string,
-  args?: ReadonlyArray<string>,
-  cwd?: string,
-  options?: execa.SyncOptions
-): Promise<void> {
   const parsedArgs = args ?? []
   const parsedCwd = cwd ?? dir('root')
   const parsedOptions: execa.SyncOptions = Object.assign<
@@ -118,7 +92,7 @@ export async function tryExec(
   options?: execa.SyncOptions
 ): Promise<void> {
   try {
-    await exec2(command, args, cwd, options)
+    await exec(command, args, cwd, options)
   } catch (e: unknown) {
     error(e)
   }

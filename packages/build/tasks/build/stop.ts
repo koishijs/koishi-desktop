@@ -4,7 +4,7 @@ import { info } from 'gulplog'
 import { sleep } from '../../utils/common'
 import { exists } from '../../utils/fs'
 import { dir } from '../../utils/path'
-import { exec2 } from '../../utils/spawn'
+import { exec } from '../../utils/spawn'
 
 export const cleanTemp = async () => {
   const dirs = [
@@ -24,7 +24,7 @@ export const stop = async () => {
   )
     return
 
-  await exec2(
+  await exec(
     process.platform === 'win32' ? 'koi' : './koi',
     ['daemon', 'stop'],
     dir('buildPortable')
@@ -45,7 +45,7 @@ export const kill = async () => {
   )
     return
 
-  await exec2(
+  await exec(
     process.platform === 'win32' ? 'koi' : './koi',
     ['daemon', 'kill'],
     dir('buildPortable')

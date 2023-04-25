@@ -7,7 +7,7 @@ import { v4 as uuid } from 'uuid'
 import { msiWxsHbs } from '../../templates'
 import { koiSemver, koiVersion } from '../../utils/config'
 import { dir } from '../../utils/path'
-import { exec2 } from '../../utils/spawn'
+import { exec } from '../../utils/spawn'
 
 const buildProductGuid = () => uuid().toUpperCase()
 
@@ -75,7 +75,7 @@ const langs = [
 
 const varientLangs = langs.filter((x) => x.lcid !== '1033')
 
-type Lang = typeof langs[number]
+type Lang = (typeof langs)[number]
 
 export const packMsiGenerateLangs = async () => {
   const dirWixlib = dir(
@@ -128,13 +128,13 @@ const buildPackMsi = (lang: Lang) => async () => {
     })
   )
 
-  await exec2(
+  await exec(
     dir('buildVendor', 'wix/candle.exe'),
     ['-nologo', pathWxs],
     dir('buildMsi')
   )
 
-  await exec2(
+  await exec(
     dir('buildVendor', 'wix/light.exe'),
     [
       '-nologo',
@@ -173,7 +173,7 @@ const buildPackMsiTrans = (lang: Lang) => async () => {
   //   dir('buildMsi')
   // )
 
-  await exec2(
+  await exec(
     dir('buildVendor', 'wix/torch.exe'),
     ['-t', 'language', pathNeutralMsi, pathMsi, '-out', pathMst],
     dir('buildMsi')
@@ -183,7 +183,7 @@ const buildPackMsiTrans = (lang: Lang) => async () => {
 const buildPackMsiSubstorage = (lang: Lang) => async () => {
   const pathMst = dir('buildMsi', `${lang.lcid}.mst`)
 
-  await exec2(
+  await exec(
     'cscript',
     [getPathWiSubStg(), pathNeutralMsi, pathMst, lang.lcid],
     dir('buildMsi')
@@ -191,7 +191,7 @@ const buildPackMsiSubstorage = (lang: Lang) => async () => {
 }
 
 export const packMsiWriteLangIds = () =>
-  exec2(
+  exec(
     'cscript',
     [
       getPathWiLangId(),
@@ -203,7 +203,7 @@ export const packMsiWriteLangIds = () =>
   )
 
 export const packMsiListStorage = () =>
-  exec2('cscript', [getPathWiSubStg(), pathNeutralMsi], dir('buildMsi'))
+  exec('cscript', [getPathWiSubStg(), pathNeutralMsi], dir('buildMsi'))
 
 export const packMsiCopyDist = () =>
   fs.copyFile(pathNeutralMsi, dir('dist', 'koishi.msi'))

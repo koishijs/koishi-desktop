@@ -4,7 +4,7 @@ import fs from 'node:fs/promises'
 import path from 'node:path'
 import { linuxAppImageDesktop } from '../../templates/linux'
 import { dir } from '../../utils/path'
-import { exec2 } from '../../utils/spawn'
+import { exec } from '../../utils/spawn'
 
 const appDirPath = dir('buildLinux', 'Koishi.AppDir/')
 const appBinaryPath = path.join(appDirPath, 'usr/bin/')
@@ -67,7 +67,7 @@ export const packAppImageCopyFiles = parallel(
 )
 
 export const packAppImageGenerate = () =>
-  exec2(
+  exec(
     dir('buildCache', 'appimagetool.AppImage'),
     [appDirPath],
     dir('buildLinux'),

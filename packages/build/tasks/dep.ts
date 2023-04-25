@@ -1,7 +1,7 @@
 import fs from 'fs/promises'
 import { eachModule } from '../utils/module'
 import { dir } from '../utils/path'
-import { exec2 } from '../utils/spawn'
+import { exec } from '../utils/spawn'
 
 export const buildDep = (pkg: string) => async () => {
   const dirGoMod = dir('root', `packages/${pkg}/go.mod`)
@@ -9,7 +9,7 @@ export const buildDep = (pkg: string) => async () => {
     dirGoMod,
     (await fs.readFile(dirGoMod)).toString().split('\n').slice(0, 4).join('\n')
   )
-  await exec2('go', ['mod', 'tidy', '-e', '-v'], dir('root', `packages/${pkg}`))
+  await exec('go', ['mod', 'tidy', '-e', '-v'], dir('root', `packages/${pkg}`))
 }
 
 export const dep = () => eachModule(buildDep)

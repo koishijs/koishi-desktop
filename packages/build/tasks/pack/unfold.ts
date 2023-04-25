@@ -5,7 +5,7 @@ import { sleep } from '../../utils/common'
 import { zip } from '../../utils/compress'
 import { exists } from '../../utils/fs'
 import { dir } from '../../utils/path'
-import { exec2 } from '../../utils/spawn'
+import { exec } from '../../utils/spawn'
 
 export const packUnfoldDataCopy = async () => {
   await mkdirp(dir('buildUnfoldData', 'data'))
@@ -45,7 +45,7 @@ export const packUnfoldDataZip = async () => {
 }
 
 export const compileUnfoldDebug = () =>
-  exec2(
+  exec(
     'go',
     [
       'build',
@@ -61,7 +61,7 @@ export const compileUnfoldDebug = () =>
   )
 
 export const compileUnfoldRelease = () =>
-  exec2(
+  exec(
     'go',
     [
       'build',

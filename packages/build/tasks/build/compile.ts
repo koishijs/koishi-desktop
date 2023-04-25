@@ -2,14 +2,14 @@ import { parallel, series } from 'gulp'
 import { koiVersion } from '../../utils/config'
 import { Exceptions } from '../../utils/exceptions'
 import { dir } from '../../utils/path'
-import { exec2 } from '../../utils/spawn'
+import { exec } from '../../utils/spawn'
 import { compileShell } from './compileShell'
 
 export const compileVersioninfo = () =>
-  exec2('goversioninfo', ['-64'], dir('src'))
+  exec('goversioninfo', ['-64'], dir('src'))
 
 export const compileAppDebug = () =>
-  exec2(
+  exec(
     'go',
     [
       'build',
@@ -22,7 +22,7 @@ export const compileAppDebug = () =>
   )
 
 export const compileAppRelease = () =>
-  exec2(
+  exec(
     'go',
     [
       'build',

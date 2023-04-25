@@ -4,7 +4,7 @@ import { promises as fs } from 'node:fs'
 import { macAppPlist, macPkgDistribution } from '../../templates'
 import { koiVersion } from '../../utils/config'
 import { dir } from '../../utils/path'
-import { exec2, tryExec } from '../../utils/spawn'
+import { exec, tryExec } from '../../utils/spawn'
 
 const appPath = dir('buildMac', 'Koishi.app/')
 
@@ -51,7 +51,7 @@ export const packMacPkg = async () => {
   await fs.copyFile(dir('templates', 'mac/postinstall.sh'), postinstallPath)
   await fs.chmod(postinstallPath, 0o755)
 
-  await exec2(
+  await exec(
     'pkgbuild',
     [
       '--identifier',
@@ -67,7 +67,7 @@ export const packMacPkg = async () => {
     dir('buildMac')
   )
 
-  await exec2(
+  await exec(
     'productbuild',
     [
       '--distribution',

@@ -1,11 +1,11 @@
 import { series } from 'gulp'
 import { sleep } from '../../utils/common'
 import { dir } from '../../utils/path'
-import { exec2 } from '../../utils/spawn'
+import { exec } from '../../utils/spawn'
 import { stopAndClean } from './stop'
 
 const boilIntl = () =>
-  exec2(
+  exec(
     process.platform === 'win32' ? 'koi' : './koi',
     [
       'import',

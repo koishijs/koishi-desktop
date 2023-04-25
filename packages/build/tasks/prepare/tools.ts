@@ -10,10 +10,10 @@ import {
 import { exists } from '../../utils/fs'
 import { download } from '../../utils/net'
 import { dir } from '../../utils/path'
-import { exec2 } from '../../utils/spawn'
+import { exec } from '../../utils/spawn'
 
 const buildPrepareTool = (name: string, version: string) => () =>
-  exec2('go', ['install', `${name}@${version}`])
+  exec('go', ['install', `${name}@${version}`])
 
 export const prepareToolsVersioninfo = buildPrepareTool(
   'github.com/josephspurrier/goversioninfo/cmd/goversioninfo',
