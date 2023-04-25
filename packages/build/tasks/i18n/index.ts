@@ -2,10 +2,10 @@ import del from 'del'
 import { series } from 'gulp'
 import fs from 'node:fs/promises'
 import { dir } from '../../utils/path'
-import { exec, tryExec } from '../../utils/spawn'
+import { exec2, tryExec } from '../../utils/spawn'
 
 export const i18nExtract = () =>
-  exec(
+  exec2(
     'gotext',
     ['extract', '--lang=en-US,zh-CN', 'gopkg.ilharper.com/...'],
     dir('root')

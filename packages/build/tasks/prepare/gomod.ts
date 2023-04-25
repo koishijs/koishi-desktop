@@ -1,9 +1,9 @@
 import { eachModule } from '../../utils/module'
 import { dir } from '../../utils/path'
-import { exec } from '../../utils/spawn'
+import { exec2 } from '../../utils/spawn'
 
 export const buildPrepareGoMod = (pkg: string) => async () => {
-  await exec('go', ['mod', 'download'], dir('root', `packages/${pkg}`))
+  await exec2('go', ['mod', 'download'], dir('root', `packages/${pkg}`))
 }
 
 /**

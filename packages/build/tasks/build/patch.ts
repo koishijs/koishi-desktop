@@ -2,7 +2,7 @@ import * as fs from 'node:fs'
 import { koishiManifest } from '../../templates'
 import { koishiVersionStrings } from '../../utils/config'
 import { dir } from '../../utils/path'
-import { exec } from '../../utils/spawn'
+import { exec2 } from '../../utils/spawn'
 
 export const patchNodeRcedit = async () => {
   const koishiManifestPath = dir('buildCache', 'koishi.exe.manifest')
@@ -24,7 +24,7 @@ export const patchNodeRcedit = async () => {
     args.push('--set-version-string', x, koishiVersionStrings[x])
   })
 
-  await exec('rcedit.exe', args, dir('buildCache'))
+  await exec2('rcedit', args, dir('buildCache'))
 
   // Change subsystem to GUI
   // https://learn.microsoft.com/windows/win32/api/winnt/ns-winnt-image_optional_header64

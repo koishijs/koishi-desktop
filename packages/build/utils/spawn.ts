@@ -118,7 +118,7 @@ export async function tryExec(
   options?: execa.SyncOptions
 ): Promise<void> {
   try {
-    await exec(command, args, cwd, options)
+    await exec2(command, args, cwd, options)
   } catch (e: unknown) {
     error(e)
   }

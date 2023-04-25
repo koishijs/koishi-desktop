@@ -1,24 +1,24 @@
 // https://stackoverflow.com/a/24470998
 
-import { Exceptions } from '../../utils/exceptions'
-import { exec, spawnOutput } from '../../utils/spawn'
-import path from 'node:path'
-import fs from 'node:fs/promises'
-import { dir } from '../../utils/path'
 import mkdirp from 'mkdirp'
+import fs from 'node:fs/promises'
+import path from 'node:path'
+import { Exceptions } from '../../utils/exceptions'
+import { dir } from '../../utils/path'
+import { exec2, spawnOutput } from '../../utils/spawn'
 
 const buildCompileShellWin = (isRelease: boolean) => async () => {
   const conf = isRelease ? 'MinSizeRel' : 'Debug'
 
   await mkdirp(dir('buildShellWin'))
 
-  await exec(
+  await exec2(
     'cmake',
     ['-G', 'Visual Studio 17 2022', dir('srcShellWin')],
     dir('buildShellWin')
   )
 
-  await exec(
+  await exec2(
     'cmake',
     [`--build`, '.', '--target', 'koishell', '--config', conf],
     dir('buildShellWin')
@@ -43,7 +43,7 @@ const buildCompileShellMac = (isRelease: boolean) => async () => {
     })
   ).trim()
 
-  await exec('swift', ['build', '-c', conf], dir('srcShellMac'))
+  await exec2('swift', ['build', '-c', conf], dir('srcShellMac'))
 
   await fs.copyFile(path.join(buildPath, 'KoiShell'), distPath)
   await mkdirp(distBundlePath)
@@ -59,7 +59,7 @@ const buildCompileShellLinux = (isRelease: boolean) => async () => {
 
   await mkdirp(dir('buildShellLinux'))
 
-  await exec(
+  await exec2(
     'cmake',
     [
       `-DCMAKE_BUILD_TYPE=${conf}`,
@@ -70,7 +70,7 @@ const buildCompileShellLinux = (isRelease: boolean) => async () => {
     dir('buildShellLinux')
   )
 
-  await exec(
+  await exec2(
     'cmake',
     [`--build`, '.', '--target', 'koishell'],
     dir('buildShellLinux')

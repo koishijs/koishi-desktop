@@ -1,5 +1,4 @@
 import { dir } from '../utils/path'
-import { exec } from '../utils/spawn'
+import { exec2 } from '../utils/spawn'
 
-export const startApp = () =>
-  exec(process.platform === 'win32' ? 'koi' : './koi', [], dir('buildPortable'))
+export const startApp = () => exec2('koi', [], dir('buildPortable'))

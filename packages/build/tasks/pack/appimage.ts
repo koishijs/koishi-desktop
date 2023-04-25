@@ -1,10 +1,10 @@
 import { parallel, series } from 'gulp'
 import mkdirp from 'mkdirp'
-import { dir } from '../../utils/path'
-import path from 'node:path'
 import fs from 'node:fs/promises'
-import { exec } from '../../utils/spawn'
+import path from 'node:path'
 import { linuxAppImageDesktop } from '../../templates/linux'
+import { dir } from '../../utils/path'
+import { exec2 } from '../../utils/spawn'
 
 const appDirPath = dir('buildLinux', 'Koishi.AppDir/')
 const appBinaryPath = path.join(appDirPath, 'usr/bin/')
@@ -67,7 +67,7 @@ export const packAppImageCopyFiles = parallel(
 )
 
 export const packAppImageGenerate = () =>
-  exec(
+  exec2(
     dir('buildCache', 'appimagetool.AppImage'),
     [appDirPath],
     dir('buildLinux'),
