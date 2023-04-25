@@ -6,7 +6,7 @@ import { stopAndClean } from './stop'
 
 const boilIntl = () =>
   exec2(
-    'koi',
+    process.platform === 'win32' ? 'koi' : './koi',
     [
       'import',
       '--name',

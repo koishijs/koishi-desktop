@@ -24,7 +24,11 @@ export const stop = async () => {
   )
     return
 
-  await exec2('koi', ['daemon', 'stop'], dir('buildPortable'))
+  await exec2(
+    process.platform === 'win32' ? 'koi' : './koi',
+    ['daemon', 'stop'],
+    dir('buildPortable')
+  )
 
   await sleep()
 
@@ -41,7 +45,11 @@ export const kill = async () => {
   )
     return
 
-  await exec2('koi', ['daemon', 'kill'], dir('buildPortable'))
+  await exec2(
+    process.platform === 'win32' ? 'koi' : './koi',
+    ['daemon', 'kill'],
+    dir('buildPortable')
+  )
 
   await sleep()
 
