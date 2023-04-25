@@ -18,7 +18,7 @@ func NewNodeProc(
 	return NewKoiProc(
 		i,
 		ch,
-		cfg.Computed.DirNodeExe,
+		cfg.Computed.DirBin,
 		"koishi",
 		command,
 		cwd,
@@ -36,7 +36,7 @@ func NewYarnProc(
 	return NewNodeProc(
 		i,
 		ch,
-		append([]string{filepath.Join(cfg.Computed.DirNodeExe, "yarn.cjs")}, command...),
+		append([]string{filepath.Join(cfg.Computed.DirBin, "yarn.cjs")}, command...),
 		cwd,
 	)
 }

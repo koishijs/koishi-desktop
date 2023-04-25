@@ -77,6 +77,17 @@
               />
             </Component>
 
+            <Directory Id="DirectoryInstallBinary" Name="bin">
+              <Component
+                Id="ComponentDirectoryInstallBinary"
+                Guid="0D60E066-265D-45C0-BF8C-91EA9C0887B1"
+                Win64="yes"
+              >
+                <File Id="FileNode" Source="SourceDir\bin\koishi.exe" />
+                <File Id="FileYarn" Source="SourceDir\bin\yarn.cjs" />
+              </Component>
+            </Directory>
+
             <Component
               Id="ComponentPuppeteerSupport"
               Guid="25275292-80F1-43FA-8A7B-A082F234E177"
@@ -210,6 +221,7 @@
         AllowAdvertise="no"
       >
         <ComponentRef Id="ComponentDirectoryInstall" />
+        <ComponentRef Id="ComponentDirectoryInstallBinary" />
         <ComponentRef Id="ComponentDirectoryProgramMenuFolder" />
       </Feature>
 

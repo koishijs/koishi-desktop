@@ -6,7 +6,7 @@ import { exec } from '../../utils/spawn'
 
 export const patchNodeRcedit = async () => {
   const koishiManifestPath = dir('buildCache', 'koishi.exe.manifest')
-  const exePath = dir('buildPortableData', 'node/koishi.exe')
+  const exePath = dir('buildPortableBin', 'koishi.exe')
 
   await fs.promises.writeFile(koishiManifestPath, koishiManifest)
 

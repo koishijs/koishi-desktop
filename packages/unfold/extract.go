@@ -14,7 +14,6 @@ import (
 const (
 	EXTRACT_DATA   uint8 = 1 << 0
 	EXTRACT_CONFIG uint8 = 1 << 1
-	EXTRACT_NODE   uint8 = 1 << 2
 )
 
 func extract(dest string, mode uint8) error {
@@ -48,11 +47,6 @@ func extractIntl(dest string, mode uint8, f *zip.File) error {
 	if f.Name == "koi.yml" {
 		if mode&EXTRACT_CONFIG == 0 {
 			fmt.Println("Not extracting config, skip")
-			return nil
-		}
-	} else if strings.HasPrefix(f.Name, "data/node") {
-		if mode&EXTRACT_NODE == 0 {
-			fmt.Println("Not extracting node, skip")
 			return nil
 		}
 	} else {

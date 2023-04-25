@@ -58,23 +58,23 @@ func main() {
 			fmt.Println("User data does not exist. Trying to migrate legacy user data.")
 
 			if migrate(folderData) {
-				fmt.Println("Migration completed. Extracting only node.")
-				extractMode = EXTRACT_NODE
+				fmt.Println("Migration completed. Setting up redirect.")
+				extractMode = 0
 			} else {
 				fmt.Println("Legacy user data not found or migration failed. Extracting all files.")
-				extractMode = EXTRACT_DATA | EXTRACT_CONFIG | EXTRACT_NODE
+				extractMode = EXTRACT_DATA | EXTRACT_CONFIG
 			}
 		} else if err == nil {
-			fmt.Println("User data exists. Extracting only node.")
-			extractMode = EXTRACT_NODE
+			fmt.Println("User data exists. Setting up redirect.")
+			extractMode = 0
 		} else {
 			fmt.Printf("Failed to stat config %s: %v\n", pathConfig, err)
 			os.Exit(1)
 		}
 	} else if mode == "reset-data" {
-		extractMode = EXTRACT_DATA | EXTRACT_NODE
+		extractMode = EXTRACT_DATA
 	} else {
-		extractMode = EXTRACT_DATA | EXTRACT_CONFIG | EXTRACT_NODE
+		extractMode = EXTRACT_DATA | EXTRACT_CONFIG
 	}
 
 	fmt.Printf("Extract mode: %v\n", extractMode)

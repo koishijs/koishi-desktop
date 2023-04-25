@@ -21,8 +21,7 @@ type ConfigComputed struct {
 	DirConfig   string
 	DirData     string
 	DirHome     string
-	DirNode     string
-	DirNodeExe  string
+	DirBin      string
 	DirLock     string
 	DirTemp     string
 	DirInstance string

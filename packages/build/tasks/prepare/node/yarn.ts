@@ -17,10 +17,7 @@ export const prepareNodeYarnDownload = async () => {
 
 export const prepareNodeYarnCopy = async () => {
   const cachedFile = dir('buildCache', destFileYarn)
-  const destFile = dir(
-    'buildPortableData',
-    (process.platform === 'win32' ? 'node/' : 'node/bin/') + destFileYarn
-  )
+  const destFile = dir('buildPortableBin', destFileYarn)
   info('Checking destination cache.')
   if (await exists(destFile)) return
 

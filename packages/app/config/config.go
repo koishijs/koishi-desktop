@@ -168,6 +168,10 @@ func postConfig(i *do.Injector, c *koiconfig.Config) error {
 
 	p := do.MustInvoke[*message.Printer](i)
 
+	c.Computed.DirBin, err = joinAndCreate(i, c.Computed.DirExe, "bin")
+	if err != nil {
+		return errors.New(p.Sprintf("failed to process dir bin: %v", err))
+	}
 	c.Computed.DirData, err = joinAndCreate(i, c.Computed.DirConfig, "data")
 	if err != nil {
 		return errors.New(p.Sprintf("failed to process dir data: %v", err))
@@ -175,18 +179,6 @@ func postConfig(i *do.Injector, c *koiconfig.Config) error {
 	c.Computed.DirHome, err = joinAndCreate(i, c.Computed.DirData, "home")
 	if err != nil {
 		return errors.New(p.Sprintf("failed to process dir data/home: %v", err))
-	}
-	c.Computed.DirNode, err = joinAndCreate(i, c.Computed.DirData, "node")
-	if err != nil {
-		return errors.New(p.Sprintf("failed to process dir data/node: %v", err))
-	}
-	if runtime.GOOS == "windows" {
-		c.Computed.DirNodeExe = c.Computed.DirNode
-	} else {
-		c.Computed.DirNodeExe, err = joinAndCreate(i, c.Computed.DirNode, "bin")
-		if err != nil {
-			return errors.New(p.Sprintf("failed to process dir node/bin: %v", err))
-		}
 	}
 	c.Computed.DirLock, err = joinAndCreate(i, c.Computed.DirData, "lock")
 	if err != nil {

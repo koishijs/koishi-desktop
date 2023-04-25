@@ -31,6 +31,7 @@ const buildPaths = {
   buildResources: 'build/resources/',
 
   buildPortable: 'build/varients/portable/',
+  buildPortableBin: 'build/varients/portable/bin/',
   buildPortableData: 'build/varients/portable/data/',
   buildUnfold: 'build/varients/unfold/',
   buildUnfoldData: 'build/varients/unfold/portabledata/',
