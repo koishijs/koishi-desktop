@@ -81,6 +81,10 @@ func NewCli(i *do.Injector) (*cli.App, error) {
 			l.Error(p.Sprintf("Command not found: %s", s))
 		},
 		ExitErrHandler: func(context *cli.Context, err error) {
+			if err == nil {
+				return
+			}
+
 			l.Error(err)
 		},
 	}, nil
