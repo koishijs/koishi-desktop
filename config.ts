@@ -38,7 +38,7 @@ export const versionToolsWix = '311'
 // These are defaults for koishi-desktop.
 
 export const repoBoilerplate = 'koishijs/boilerplate'
-export const versionBoilerplate = 'v1.6.10'
+export const versionBoilerplate = 'v1.6.11'
 
 /**
  * ID of the default instance.
