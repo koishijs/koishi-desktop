@@ -274,6 +274,27 @@
     <UIRef Id="WixUI_FeatureTree" />
     <UIRef Id="WixUI_ErrorProgressText" />
 
+    <Property Id="PrerequisiteEdgeInstalled">
+      <RegistrySearch
+        Id="RegistrySearchEdgeInstalled"
+        Root="HKLM"
+        Key="SOFTWARE\Microsoft\EdgeUpdate\Clients\{56EB18F8-B008-4CBD-B6D2-8C97FE7E9062}"
+        Name="pv"
+        Type="raw"
+        Win64="no"
+      />
+    </Property>
+    <Property Id="PrerequisiteWvrtInstalled">
+      <RegistrySearch
+        Id="RegistrySearchWvrtInstalled"
+        Root="HKLM"
+        Key="SOFTWARE\Microsoft\EdgeUpdate\Clients\{F3017226-FE2A-4295-8BDF-00C3A9A7E4C5}"
+        Name="pv"
+        Type="raw"
+        Win64="no"
+      />
+    </Property>
+
     <CustomAction
       Id="CustomActionUnfold"
       FileKey="FileUnfold"
@@ -308,11 +329,11 @@
       >NOT Installed</Custom>
 
       <Custom Action="CustomActionSetupMicrosoftEdge" After="InstallFiles">
-        <![CDATA[&FeaturePuppeteerSupport = 3]]>
+        <![CDATA[(&FeaturePuppeteerSupport = 3) AND NOT (PrerequisiteEdgeInstalled)]]>
       </Custom>
 
       <Custom Action="CustomActionSetupWebview2" After="InstallFiles">
-        <![CDATA[&FeatureConsoleWindow = 3]]>
+        <![CDATA[(&FeatureConsoleWindow = 3) AND NOT (PrerequisiteWvrtInstalled)]]>
       </Custom>
     </InstallExecuteSequence>
   </Product>
