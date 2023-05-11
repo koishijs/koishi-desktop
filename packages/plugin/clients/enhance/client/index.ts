@@ -49,7 +49,7 @@ textarea {
   cursor: auto !important;
 }
 
-*:not(input, textarea, .monaco-mouse-cursor-text) {
+*:not(input, textarea, .monaco-mouse-cursor-text, .monaco-mouse-cursor-text *) {
   -webkit-touch-callout: none !important;
   user-select: none !important;
   -webkit-user-select: none !important;
