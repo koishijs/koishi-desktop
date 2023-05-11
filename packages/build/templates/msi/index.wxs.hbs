@@ -274,7 +274,7 @@
     <UIRef Id="WixUI_FeatureTree" />
     <UIRef Id="WixUI_ErrorProgressText" />
 
-    <Property Id="PrerequisiteEdgeInstalled">
+    <Property Id="PREREQUISITEEDGEINSTALLED">
       <RegistrySearch
         Id="RegistrySearchEdgeInstalled"
         Root="HKLM"
@@ -284,7 +284,7 @@
         Win64="no"
       />
     </Property>
-    <Property Id="PrerequisiteWvrtInstalled">
+    <Property Id="PREREQUISITEWVRTINSTALLED">
       <RegistrySearch
         Id="RegistrySearchWvrtInstalled"
         Root="HKLM"
@@ -329,11 +329,11 @@
       >NOT Installed</Custom>
 
       <Custom Action="CustomActionSetupMicrosoftEdge" After="InstallFiles">
-        <![CDATA[(&FeaturePuppeteerSupport = 3) AND NOT (PrerequisiteEdgeInstalled)]]>
+        <![CDATA[(&FeaturePuppeteerSupport = 3) AND NOT (PREREQUISITEEDGEINSTALLED)]]>
       </Custom>
 
       <Custom Action="CustomActionSetupWebview2" After="InstallFiles">
-        <![CDATA[(&FeatureConsoleWindow = 3) AND NOT (PrerequisiteWvrtInstalled)]]>
+        <![CDATA[(&FeatureConsoleWindow = 3) AND NOT (PREREQUISITEWVRTINSTALLED)]]>
       </Custom>
     </InstallExecuteSequence>
   </Product>
