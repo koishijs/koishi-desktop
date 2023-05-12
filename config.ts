@@ -24,6 +24,7 @@ export const versionNode = '16.19.1'
 export const versionYarn = '3.5.0'
 
 export const versionWebView2 = '1.0.1343.22'
+export const versionMSVC = '14.34.31931'
 export const versionAppimagetool = '13'
 
 export const versionToolsVersioninfo = 'v1.4.0'

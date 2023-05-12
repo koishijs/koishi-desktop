@@ -1,9 +1,10 @@
 import { series } from 'gulp'
 import mkdirp from 'mkdirp'
 import fs from 'node:fs/promises'
+import { join } from 'node:path'
 import { sleep } from '../../utils/common'
 import { zip } from '../../utils/compress'
-import { exists } from '../../utils/fs'
+import { versionMSVC } from '../../utils/config'
 import { dir } from '../../utils/path'
 import { exec } from '../../utils/spawn'
 
@@ -32,17 +33,26 @@ export const packUnfoldDataCopy = async () => {
       recursive: true,
     })
 
-  // Copy Edge/WV2 setup for Windows
-  if (await exists(dir('buildCache', 'MicrosoftEdgeSetup.exe')))
+  if (process.platform === 'win32') {
+    // Copy Edge/WV2 setup
     await fs.copyFile(
       dir('buildCache', 'MicrosoftEdgeSetup.exe'),
       dir('buildUnfoldBinary', 'MicrosoftEdgeSetup.exe')
     )
-  if (await exists(dir('buildCache', 'Webview2Setup.exe')))
     await fs.copyFile(
       dir('buildCache', 'Webview2Setup.exe'),
       dir('buildUnfoldBinary', 'Webview2Setup.exe')
     )
+
+    // Copy VCRedist
+    await fs.copyFile(
+      join(
+        process.env['PROGRAMFILES']!,
+        `Microsoft Visual Studio/2022/Enterprise/VC/Redist/MSVC/${versionMSVC}/MergeModules/Microsoft_VC143_CRT_x64.msm`
+      ),
+      dir('buildUnfoldBinary', 'Microsoft_VC143_CRT_x64.msm')
+    )
+  }
 }
 
 export const packUnfoldDataZip = async () => {
