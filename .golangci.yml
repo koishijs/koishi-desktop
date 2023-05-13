@@ -23,6 +23,7 @@ linters:
     - dupl
     - gocyclo
     - maintidx
+    - goconst
 
 linters-settings:
   revive:

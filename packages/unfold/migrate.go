@@ -1,3 +1,4 @@
+//nolint:wrapcheck
 package main
 
 import (
@@ -15,26 +16,31 @@ func migrate(folderData string) bool {
 	ldd, err := legacyUserDataDir()
 	if err != nil {
 		fmt.Printf("Failed to resolve legacy user data directory: %v\n", err)
+
 		return false
 	}
 
 	if ldd == "" {
 		fmt.Println("Legacy user data does not exist. Nothing to migrate.")
+
 		return false
 	}
 
 	_, err = os.Stat(ldd)
 	if errors.Is(err, fs.ErrNotExist) {
 		fmt.Println("Legacy user data does not exist. Nothing to migrate.")
+
 		return false
 	} else if err != nil {
 		fmt.Printf("Failed to check legacy user data directory: %v\n", err)
+
 		return false
 	}
 
 	err = copyDir(ldd, folderData)
 	if err != nil {
 		fmt.Printf("Failed to migrate legacy user data: %v\n", err)
+
 		return false
 	}
 
@@ -44,7 +50,7 @@ func migrate(folderData string) bool {
 func copyDir(src, dst string) error {
 	var err error
 
-	err = os.MkdirAll(dst, 0755)
+	err = os.MkdirAll(dst, 0o755)
 	if err != nil {
 		return err
 	}
@@ -63,7 +69,7 @@ func copyDir(src, dst string) error {
 			return err
 		}
 
-		switch fileInfo.Mode() & os.ModeType {
+		switch fileInfo.Mode() & os.ModeType { //nolint:exhaustive
 		case os.ModeDir:
 			err = copyDir(sourcePath, destPath)
 			if err != nil {

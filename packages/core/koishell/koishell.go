@@ -16,8 +16,6 @@ import (
 	"gopkg.ilharper.com/x/killdren"
 )
 
-const deltaCh uint16 = 3000
-
 type KoiShell struct {
 	i *do.Injector
 

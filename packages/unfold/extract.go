@@ -12,8 +12,8 @@ import (
 )
 
 const (
-	EXTRACT_DATA   uint8 = 1 << 0
-	EXTRACT_CONFIG uint8 = 1 << 1
+	ExtractData   uint8 = 1 << 0
+	ExtractConfig uint8 = 1 << 1
 )
 
 func extract(dest string, mode uint8) error {
@@ -45,13 +45,15 @@ func extractIntl(dest string, mode uint8, f *zip.File) error {
 	fmt.Printf("%s - ", f.Name)
 
 	if f.Name == "koi.yml" {
-		if mode&EXTRACT_CONFIG == 0 {
+		if mode&ExtractConfig == 0 {
 			fmt.Println("Not extracting config, skip")
+
 			return nil
 		}
 	} else {
-		if mode&EXTRACT_DATA == 0 {
+		if mode&ExtractData == 0 {
 			fmt.Println("Not extracting data, skip")
+
 			return nil
 		}
 	}

@@ -1,4 +1,3 @@
-//nolint:typecheck
 package main
 
 import (
@@ -27,11 +26,13 @@ func main() {
 	mode := os.Args[1]
 	if mode == "help" {
 		help()
+
 		return
 	}
 	if mode != "ensure" && mode != "reset-data" && mode != "reset-all" {
 		fmt.Println("Unknown mode.")
 		help()
+
 		os.Exit(1)
 	}
 
@@ -51,10 +52,12 @@ func main() {
 	pathConfig := filepath.Join(folderData, "koi.yml")
 	var extractMode uint8
 
-	if mode == "ensure" {
+	switch mode {
+	case "ensure":
 		_, err := os.Stat(pathConfig)
 
-		if errors.Is(err, fs.ErrNotExist) {
+		switch {
+		case errors.Is(err, fs.ErrNotExist):
 			fmt.Println("User data does not exist. Trying to migrate legacy user data.")
 
 			if migrate(folderData) {
@@ -62,19 +65,19 @@ func main() {
 				extractMode = 0
 			} else {
 				fmt.Println("Legacy user data not found or migration failed. Extracting all files.")
-				extractMode = EXTRACT_DATA | EXTRACT_CONFIG
+				extractMode = ExtractData | ExtractConfig
 			}
-		} else if err == nil {
+		case err == nil:
 			fmt.Println("User data exists. Setting up redirect.")
 			extractMode = 0
-		} else {
+		default:
 			fmt.Printf("Failed to stat config %s: %v\n", pathConfig, err)
 			os.Exit(1)
 		}
-	} else if mode == "reset-data" {
-		extractMode = EXTRACT_DATA
-	} else {
-		extractMode = EXTRACT_DATA | EXTRACT_CONFIG
+	case "reset-data":
+		extractMode = ExtractData
+	default:
+		extractMode = ExtractData | ExtractConfig
 	}
 
 	fmt.Printf("Extract mode: %v\n", extractMode)
@@ -85,7 +88,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	err = os.WriteFile(pathConfigRedirect, []byte("redirect: USERDATA"), 0o644)
+	err = os.WriteFile(pathConfigRedirect, []byte("redirect: USERDATA"), 0o644) //nolint:gosec
 	if err != nil {
 		fmt.Printf("Failed to setup redirect: %v\n", err)
 		fmt.Println("This is not a bug and unfold will continue.")
