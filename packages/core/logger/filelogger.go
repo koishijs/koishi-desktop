@@ -66,7 +66,7 @@ func BuildNewFileLogger() func(i *do.Injector) (*FileLogger, error) {
 		}()
 
 		path := filepath.Join(cfg.Computed.DirLog, fmt.Sprintf("%s.log", date))
-		f, err := os.OpenFile(path, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+		f, err := os.OpenFile(path, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0o644)
 		if err != nil {
 			return nil, fmt.Errorf("failed to open log file: %w", err)
 		}

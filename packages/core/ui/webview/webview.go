@@ -13,7 +13,7 @@ import (
 	"gopkg.ilharper.com/x/browser"
 )
 
-func run(i *do.Injector, name string, listen string, ) (*exec.Cmd, bool) {
+func run(i *do.Injector, name string, listen string) (*exec.Cmd, bool) {
 	var success atomic.Bool
 
 	l := do.MustInvoke[*logger.Logger](i)
@@ -34,7 +34,7 @@ func run(i *do.Injector, name string, listen string, ) (*exec.Cmd, bool) {
 	return cmd, true
 }
 
-func Open(i *do.Injector, name string, listen string, ) *exec.Cmd {
+func Open(i *do.Injector, name string, listen string) *exec.Cmd {
 	l := do.MustInvoke[*logger.Logger](i)
 	cfg := do.MustInvoke[*koiconfig.Config](i)
 

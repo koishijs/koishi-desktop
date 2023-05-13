@@ -64,11 +64,11 @@ func (shell *KoiShell) exec(arg any) (map[string]any, error) {
 	l := do.MustInvoke[*logger.Logger](shell.i)
 	cfg := do.MustInvoke[*koiconfig.Config](shell.i)
 
-	argJson, err := json.Marshal(arg)
+	argJSON, err := json.Marshal(arg)
 	if err != nil {
 		return nil, fmt.Errorf("failed to marshal arg %#+v: %w", arg, err)
 	}
-	argB64 := base64.StdEncoding.EncodeToString(argJson)
+	argB64 := base64.StdEncoding.EncodeToString(argJSON)
 
 	cmd := &exec.Cmd{
 		Path: shell.path,
@@ -122,7 +122,7 @@ func (shell *KoiShell) exec(arg any) (map[string]any, error) {
 	index := shell.getIndex(cmd)
 	shell.wg.Add(1)
 
-	l.Debugf("Starting KoiShell process.\narg: %#+v\nargJson: %s\nargB64: %s", arg, argJson, argB64)
+	l.Debugf("Starting KoiShell process.\narg: %#+v\nargJSON: %s\nargB64: %s", arg, argJSON, argB64)
 	err = cmd.Run()
 
 	shell.wg.Done()
@@ -133,24 +133,24 @@ func (shell *KoiShell) exec(arg any) (map[string]any, error) {
 
 	if err != nil {
 		return nil, fmt.Errorf("KoiShell exited with error: %w", err)
-	} else {
-		l.Debugf("KoiShell successfully exited.")
 	}
+
+	l.Debugf("KoiShell successfully exited.")
 
 	// Parse output
 	if outB64 == "" {
 		return nil, nil
 	}
 
-	outJson, err := base64.StdEncoding.DecodeString(outB64)
+	outJSON, err := base64.StdEncoding.DecodeString(outB64)
 	if err != nil {
 		return nil, fmt.Errorf("failed to decode KoiShell output %s: %w", outB64, err)
 	}
 
 	var out map[string]any
-	err = json.Unmarshal(outJson, &out)
+	err = json.Unmarshal(outJSON, &out)
 	if err != nil {
-		return nil, fmt.Errorf("failed to parse KoiShell output %s: %w", outJson, err)
+		return nil, fmt.Errorf("failed to parse KoiShell output %s: %w", outJSON, err)
 	}
 
 	return out, nil
