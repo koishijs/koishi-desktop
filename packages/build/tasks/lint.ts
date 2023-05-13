@@ -1,3 +1,5 @@
+import { join } from 'node:path'
+import { goEnv } from '../utils/config'
 import { tryEachModule } from '../utils/module'
 import { dir } from '../utils/path'
 import { exec } from '../utils/spawn'
@@ -12,12 +14,17 @@ const buildLintArgs = (pkg: string, fix?: boolean) => {
   return args
 }
 
+const lintCommand = join(
+  dir('buildCache', 'golangci-lint'),
+  goEnv.GOOS === 'windows' ? 'golangci-lint.exe' : 'golangci-lint'
+)
+
 export const lint = () =>
   tryEachModule((pkg) =>
-    exec('golangci-lint', buildLintArgs(pkg), dir('packages', pkg))
+    exec(lintCommand, buildLintArgs(pkg), dir('packages', pkg))
   )
 
 export const lintFix = () =>
   tryEachModule((pkg) =>
-    exec('golangci-lint', buildLintArgs(pkg, true), dir('packages', pkg))
+    exec(lintCommand, buildLintArgs(pkg, true), dir('packages', pkg))
   )

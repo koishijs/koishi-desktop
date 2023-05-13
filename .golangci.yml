@@ -1,4 +1,6 @@
 run:
+  timeout: 360m
+
   skip-dirs:
     - ui/icon
 

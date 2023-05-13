@@ -72,3 +72,8 @@ export const koishiVersionStrings = {
 export const koiVersionStringsJson = JSON.stringify(koiVersionStrings)
 
 //#endregion
+
+export const goEnv = {
+  GOOS: spawnSyncOutput('go', ['env', 'GOOS']),
+  GOARCH: spawnSyncOutput('go', ['env', 'GOARCH']),
+}

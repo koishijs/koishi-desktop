@@ -1,6 +1,14 @@
 import { parallel } from 'gulp'
 import { info } from 'gulplog'
+import mkdirp from 'mkdirp'
+import StreamZip from 'node-stream-zip'
+import { createReadStream } from 'node:fs'
+import { join } from 'node:path'
+import stream from 'node:stream'
+import { promisify } from 'node:util'
+import * as tar from 'tar'
 import {
+  goEnv,
   sourceGitHub,
   versionToolsGolangCILint,
   versionToolsGoText,
@@ -20,10 +28,44 @@ export const prepareToolsVersioninfo = buildPrepareTool(
   versionToolsVersioninfo
 )
 
-export const prepareToolsGolangCILint = buildPrepareTool(
-  'github.com/golangci/golangci-lint/cmd/golangci-lint',
-  versionToolsGolangCILint
-)
+export const prepareToolsGolangCILint = async () => {
+  const isWindows = goEnv.GOOS === 'windows'
+
+  const entryName = `golangci-lint-${versionToolsGolangCILint.slice(1)}-${
+    goEnv.GOOS
+  }-${goEnv.GOARCH}`
+  const src = `${sourceGitHub}/golangci/golangci-lint/releases/download/${versionToolsGolangCILint}/${entryName}.${
+    isWindows ? 'zip' : 'tar.gz'
+  }`
+
+  const destFile = `golangci-lint.${isWindows ? 'zip' : 'tar.gz'}`
+  const destDir = dir('buildCache', 'golangci-lint')
+
+  info('Checking temporary cache.')
+  if (
+    await exists(
+      join(destDir, isWindows ? 'golangci-lint.exe' : 'golangci-lint')
+    )
+  )
+    return
+
+  info('Now downloading golangci-lint.')
+  await download(src, dir('buildCache'), destFile)
+
+  info('Now extracting golangci-lint.')
+  await mkdirp(destDir)
+  if (isWindows) {
+    const zip = new StreamZip.async({ file: dir('buildCache', destFile) })
+    await zip.extract(entryName, dir('buildCache', destDir))
+    await zip.close()
+  } else {
+    await promisify(stream.finished)(
+      createReadStream(dir('buildCache', destFile)).pipe(
+        tar.extract({ cwd: dir('buildCache', destDir), strip: 1 })
+      )
+    )
+  }
+}
 
 export const prepareToolsGoText = buildPrepareTool(
   'golang.org/x/text/cmd/gotext',
