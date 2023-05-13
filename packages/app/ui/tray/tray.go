@@ -3,6 +3,7 @@ package tray
 import (
 	"errors"
 	"fmt"
+	util2 "gopkg.ilharper.com/koi/core/util"
 	"io/fs"
 	"os"
 	"os/exec"
@@ -37,7 +38,7 @@ type TrayLock struct {
 
 type TrayDaemon struct { //nolint:golint
 	i       *do.Injector
-	chanReg []chan struct{}
+	chanReg util2.ChannelRegistry[struct{}]
 	manager *manage.KoiManager
 }
 
@@ -123,7 +124,7 @@ func (tray *TrayDaemon) onReady() {
 
 	mStarting := systray.AddMenuItem(p.Sprintf("Starting..."), "")
 	mStarting.Disable()
-	tray.chanReg = append(tray.chanReg, mStarting.ClickedCh)
+	tray.chanReg.Register(mStarting.ClickedCh)
 
 	tray.addItemsAfter()
 
@@ -154,10 +155,6 @@ func (tray *TrayDaemon) rebuild() {
 	conn, err := tray.manager.Available()
 	if err != nil {
 		systray.ResetMenu()
-		for _, c := range tray.chanReg {
-			close(c)
-		}
-		tray.chanReg = []chan struct{}{}
 		tray.addItemsBefore()
 		systray.AddSeparator()
 		tray.addItemsAfter()
@@ -219,10 +216,6 @@ func (tray *TrayDaemon) rebuild() {
 
 	// Clear all menu items.
 	systray.ResetMenu()
-	for _, c := range tray.chanReg {
-		close(c)
-	}
-	tray.chanReg = []chan struct{}{}
 
 	tray.addItemsBefore()
 
@@ -250,10 +243,10 @@ func (tray *TrayDaemon) rebuild() {
 			mStop.Disable()
 		}
 
-		tray.chanReg = append(tray.chanReg, mOpen.ClickedCh)
-		tray.chanReg = append(tray.chanReg, mStart.ClickedCh)
-		tray.chanReg = append(tray.chanReg, mRestart.ClickedCh)
-		tray.chanReg = append(tray.chanReg, mStop.ClickedCh)
+		tray.chanReg.Register(mOpen.ClickedCh)
+		tray.chanReg.Register(mStart.ClickedCh)
+		tray.chanReg.Register(mRestart.ClickedCh)
+		tray.chanReg.Register(mStop.ClickedCh)
 
 		go func(name string) {
 			for {
@@ -530,8 +523,8 @@ func (tray *TrayDaemon) addItemsBefore() {
 	mVersion := systray.AddMenuItem(version, "")
 	mVersion.Disable()
 
-	tray.chanReg = append(tray.chanReg, mTitle.ClickedCh)
-	tray.chanReg = append(tray.chanReg, mVersion.ClickedCh)
+	tray.chanReg.Register(mTitle.ClickedCh)
+	tray.chanReg.Register(mVersion.ClickedCh)
 }
 
 func (tray *TrayDaemon) addItemsAfter() {
@@ -557,16 +550,16 @@ func (tray *TrayDaemon) addItemsAfter() {
 	mQuit := systray.AddMenuItem(p.Sprintf("Hide"), "")
 	mQuit.SetTemplateIcon(icon.Hide, icon.Hide)
 
-	tray.chanReg = append(tray.chanReg, mAdvanced.ClickedCh)
-	tray.chanReg = append(tray.chanReg, mRefresh.ClickedCh)
-	tray.chanReg = append(tray.chanReg, mStartDaemon.ClickedCh)
-	tray.chanReg = append(tray.chanReg, mStopDaemon.ClickedCh)
-	tray.chanReg = append(tray.chanReg, mKillDaemon.ClickedCh)
-	tray.chanReg = append(tray.chanReg, mOpenDataFolder.ClickedCh)
-	tray.chanReg = append(tray.chanReg, mOpenTerminal.ClickedCh)
-	tray.chanReg = append(tray.chanReg, mExit.ClickedCh)
-	tray.chanReg = append(tray.chanReg, mAbout.ClickedCh)
-	tray.chanReg = append(tray.chanReg, mQuit.ClickedCh)
+	tray.chanReg.Register(mAdvanced.ClickedCh)
+	tray.chanReg.Register(mRefresh.ClickedCh)
+	tray.chanReg.Register(mStartDaemon.ClickedCh)
+	tray.chanReg.Register(mStopDaemon.ClickedCh)
+	tray.chanReg.Register(mKillDaemon.ClickedCh)
+	tray.chanReg.Register(mOpenDataFolder.ClickedCh)
+	tray.chanReg.Register(mOpenTerminal.ClickedCh)
+	tray.chanReg.Register(mExit.ClickedCh)
+	tray.chanReg.Register(mAbout.ClickedCh)
+	tray.chanReg.Register(mQuit.ClickedCh)
 
 	go func() {
 		for {
