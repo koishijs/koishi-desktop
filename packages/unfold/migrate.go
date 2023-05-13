@@ -100,7 +100,7 @@ func copyFile(src, dst string, perm fs.FileMode) error {
 	}
 	defer source.Close()
 
-	destination, err := os.Create(dst)
+	destination, err := os.OpenFile(dst, os.O_RDWR|os.O_CREATE|os.O_TRUNC, perm)
 	if err != nil {
 		return err
 	}
