@@ -14,10 +14,14 @@ int WebViewWindow::Run() {
   if (!GetVersionExW(reinterpret_cast<LPOSVERSIONINFOW>(&osvi)))
     LogAndFailWithLastError(L"Failed to get OS version info.");
 
-  if (osvi.dwBuildNumber >= 17763) supports++; // Prevent Aero Glass extends
-  if (osvi.dwBuildNumber >= 18985) supports++; // Supports immersive dark mode
-  if (osvi.dwBuildNumber >= 22000) supports++; // Supports Mica
-  if (osvi.dwBuildNumber >= 22523) supports++; // Supports Mica Tabbed
+  if (osvi.dwBuildNumber >= 17763)
+    supports++; // Supports Windows 10 immersive dark mode (19), supports = 1
+  if (osvi.dwBuildNumber >= 18985)
+    supports++; // Supports Windows 10 immersive dark mode (20), supports = 2
+  if (osvi.dwBuildNumber >= 22000)
+    supports++; // Supports Windows 11 Mica, supports = 3
+  if (osvi.dwBuildNumber >= 22523)
+    supports++; // Supports Windows 11 Mica Tabbed, supports = 4
 
   wchar_t cwd[MAX_PATH];
   if (!GetCurrentDirectoryW(MAX_PATH, cwd))
@@ -61,7 +65,9 @@ int WebViewWindow::Run() {
   userscript.replace(
       userscript.find(L"KOISHELL_RUNTIME_SUPPORTS"),
       25,
-      supports ? L"['enhance']" : L"[]");
+      supports >= 3 ? L"['enhance', 'enhanceColor']"
+      : supports    ? L"['enhance']"
+                    : L"[]");
 
   wcex.cbSize = sizeof(WNDCLASSEXW);
   wcex.style = CS_HREDRAW | CS_VREDRAW;
@@ -285,25 +291,88 @@ LRESULT CALLBACK WebViewWindow::WndProc(
 }
 
 void WebViewWindow::OnMessage(std::wstring *message) {
-  int dwmUseDarkMode;
-  if ((*message) == L"TD") {
-    dwmUseDarkMode = 1;
-    DwmSetWindowAttribute(
-        hWnd,
-        DWMWINDOWATTRIBUTE::DWMWA_USE_IMMERSIVE_DARK_MODE,
-        &dwmUseDarkMode,
-        sizeof(dwmUseDarkMode));
-    return;
-  }
+  unsigned long long const len = message->length();
 
-  if ((*message) == L"TL" || (*message) == L"TR") {
-    dwmUseDarkMode = 0;
+  if ((*message)[0] == 'T') {
+    // Sync theme
+    int dwmUseDarkMode;
+
+    switch ((*message)[1]) {
+    case 'D':
+      dwmUseDarkMode = 1;
+      DwmSetWindowAttribute(
+          hWnd,
+          supports >= 2 ? 20
+                        : // DWMWINDOWATTRIBUTE::DWMWA_USE_IMMERSIVE_DARK_MODE
+                          // = 20 (starting from 18985)
+              19,         // DWMWINDOWATTRIBUTE::DWMWA_USE_IMMERSIVE_DARK_MODE
+                          // = 19 (before 18985),
+          &dwmUseDarkMode,
+          sizeof(dwmUseDarkMode));
+      break;
+    case 'L':
+      dwmUseDarkMode = 0;
+      DwmSetWindowAttribute(
+          hWnd,
+          supports >= 2 ? 20
+                        : // DWMWINDOWATTRIBUTE::DWMWA_USE_IMMERSIVE_DARK_MODE
+                          // = 20 (starting from 18985)
+              19,         // DWMWINDOWATTRIBUTE::DWMWA_USE_IMMERSIVE_DARK_MODE
+                          // = 19 (before 18985),
+          &dwmUseDarkMode,
+          sizeof(dwmUseDarkMode));
+      break;
+    case 'R':
+      dwmUseDarkMode = 0;
+      DwmSetWindowAttribute(
+          hWnd,
+          supports >= 2 ? 20
+                        : // DWMWINDOWATTRIBUTE::DWMWA_USE_IMMERSIVE_DARK_MODE
+                          // = 20 (starting from 18985)
+              19,         // DWMWINDOWATTRIBUTE::DWMWA_USE_IMMERSIVE_DARK_MODE
+                          // = 19 (before 18985),
+          &dwmUseDarkMode,
+          sizeof(dwmUseDarkMode));
+      break;
+    }
+
+    if (len < 3) return;
+    // Sync theme color
+    unsigned long color;
+
+    // Border
+    color = std::stoul(
+        std::wstring() + (*message)[7] + (*message)[8] + (*message)[5] +
+            (*message)[6] + (*message)[3] + (*message)[4],
+        nullptr,
+        16);
     DwmSetWindowAttribute(
         hWnd,
-        DWMWINDOWATTRIBUTE::DWMWA_USE_IMMERSIVE_DARK_MODE,
-        &dwmUseDarkMode,
-        sizeof(dwmUseDarkMode));
-    return;
+        34, // DWMWINDOWATTRIBUTE::DWMWA_BORDER_COLOR
+        &color,
+        sizeof(color));
+    // Caption
+    color = std::stoul(
+        std::wstring() + (*message)[13] + (*message)[14] + (*message)[11] +
+            (*message)[12] + (*message)[9] + (*message)[10],
+        nullptr,
+        16);
+    DwmSetWindowAttribute(
+        hWnd,
+        35, // DWMWINDOWATTRIBUTE::DWMWA_CAPTION_COLOR
+        &color,
+        sizeof(color));
+    // Caption text
+    color = std::stoul(
+        std::wstring() + (*message)[19] + (*message)[20] + (*message)[17] +
+            (*message)[18] + (*message)[15] + (*message)[16],
+        nullptr,
+        16);
+    DwmSetWindowAttribute(
+        hWnd,
+        36, // DWMWINDOWATTRIBUTE::DWMWA_TEXT_COLOR
+        &color,
+        sizeof(color));
   }
 }
 
