@@ -32,6 +32,12 @@
     "@koishijs/plugin-console": "^5",
     "koishi": "^4.10.3"
   },
+  "devDependencies": {
+    "@koishijs/plugin-console": "^5",
+    "@types/color-string": "^1.5.2",
+    "color-string": "^1.9.1",
+    "koishi": "^4.10.3"
+  },
   "koishi": {
     "description": {
       "en": "Koishi Desktop support",
