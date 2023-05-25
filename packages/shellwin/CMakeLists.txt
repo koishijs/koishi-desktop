@@ -71,11 +71,31 @@ target_compile_definitions(koishell
         _WINDOWS
 )
 
-target_compile_options(koishell
-    PRIVATE
-        /utf-8
-)
+if (MSVC)
+    target_compile_options(koishell
+        PRIVATE
+            /utf-8
+    )
+else()
+    target_compile_options(koishell
+        PRIVATE
+            -fexec-charset=UTF-8
+            -finput-charset=UTF-8
+    )
+endif()
 
+############################################################
 # Support Visual Studio "Edit and Continue"
-target_compile_options(koishell PUBLIC /ZI)
-target_link_options(koishell PUBLIC /INCREMENTAL)
+############################################################
+
+if (CMAKE_GENERATOR MATCHES "Visual Studio")
+    target_compile_options(koishell
+        PRIVATE
+            /ZI
+    )
+
+    target_link_options(koishell
+        PRIVATE
+            /INCREMENTAL
+    )
+endif()
