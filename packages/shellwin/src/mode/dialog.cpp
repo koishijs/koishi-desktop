@@ -3,47 +3,47 @@
 namespace KoiShell {
 
 int RunDialog(_In_ HINSTANCE hInstance, _In_ njson arg) {
-  std::string titleS = arg["title"];
-  wchar_t *title = KoiShell::UTF8ToWideChar(const_cast<char *>(titleS.c_str()));
+  const std::string titleS = arg["title"];
+  wchar_t *title = KoiShell::UTF8ToWideChar(titleS.c_str());
   if (!title) LogAndFailWithLastError(L"Failed to parse title.");
 
-  std::string text1S = arg["text1"];
-  wchar_t *text1 = KoiShell::UTF8ToWideChar(const_cast<char *>(text1S.c_str()));
+  const std::string text1S = arg["text1"];
+  wchar_t *text1 = KoiShell::UTF8ToWideChar(text1S.c_str());
   if (!text1) LogAndFailWithLastError(L"Failed to parse text1.");
 
-  std::string text2S = arg["text2"];
-  wchar_t *text2 = KoiShell::UTF8ToWideChar(const_cast<char *>(text2S.c_str()));
+  const std::string text2S = arg["text2"];
+  wchar_t *text2 = KoiShell::UTF8ToWideChar(text2S.c_str());
   if (!text2) LogAndFailWithLastError(L"Failed to parse text2.");
 
-  unsigned int buttonCount = arg["buttonCount"];
+  const unsigned int buttonCount = arg["buttonCount"];
   TASKDIALOG_BUTTON *buttons = new TASKDIALOG_BUTTON[buttonCount];
 
   if (buttonCount >= 1) {
-    std::string textS = arg.value("button1Text", "OK");
-    wchar_t *text = KoiShell::UTF8ToWideChar(const_cast<char *>(textS.c_str()));
+    const std::string textS = arg.value("button1Text", "OK");
+    wchar_t *text = KoiShell::UTF8ToWideChar(textS.c_str());
     if (!text) LogAndFailWithLastError(L"Failed to parse button1Text.");
     buttons[0].nButtonID = 10;
     buttons[0].pszButtonText = text;
   }
 
   if (buttonCount >= 2) {
-    std::string textS = arg.value("button2Text", "Cancel");
-    wchar_t *text = KoiShell::UTF8ToWideChar(const_cast<char *>(textS.c_str()));
+    const std::string textS = arg.value("button2Text", "Cancel");
+    wchar_t *text = KoiShell::UTF8ToWideChar(textS.c_str());
     if (!text) LogAndFailWithLastError(L"Failed to parse button2Text.");
     buttons[0].nButtonID = 11;
     buttons[0].pszButtonText = text;
   }
 
   if (buttonCount >= 3) {
-    std::string textS = arg.value("button3Text", "Don't Save");
-    wchar_t *text = KoiShell::UTF8ToWideChar(const_cast<char *>(textS.c_str()));
+    const std::string textS = arg.value("button3Text", "Don't Save");
+    wchar_t *text = KoiShell::UTF8ToWideChar(textS.c_str());
     if (!text) LogAndFailWithLastError(L"Failed to parse button3Text.");
     buttons[0].nButtonID = 12;
     buttons[0].pszButtonText = text;
   }
 
   wchar_t *icon;
-  std::string style = arg["style"];
+  const std::string style = arg["style"];
   if (style == "info")
     icon = TD_INFORMATION_ICON;
   else if (style == "warn")
@@ -78,7 +78,7 @@ int RunDialog(_In_ HINSTANCE hInstance, _In_ njson arg) {
   dlg.cxWidth = 0;
 
   int result = 0;
-  long success = TaskDialogIndirect(&dlg, &result, nullptr, nullptr);
+  const long success = TaskDialogIndirect(&dlg, &result, nullptr, nullptr);
   result -= 9;
   if (success) {
     std::wstringstream s;

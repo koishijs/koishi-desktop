@@ -29,7 +29,7 @@ int WebViewWindow::Run() {
   wchar_t udf[MAX_PATH];
   if (!PathCombineW(udf, cwd, L"data\\home\\WebView2"))
     LogAndFailWithLastError(L"Failed to combine udf.");
-  int udfErr = SHCreateDirectoryExW(nullptr, udf, nullptr);
+  const int udfErr = SHCreateDirectoryExW(nullptr, udf, nullptr);
   if (udfErr != ERROR_SUCCESS && udfErr != ERROR_FILE_EXISTS &&
       udfErr != ERROR_ALREADY_EXISTS) {
     std::wstringstream s;
@@ -38,21 +38,21 @@ int WebViewWindow::Run() {
     LogAndFail(s.str());
   }
 
-  std::string nameS = arg["name"];
+  const std::string nameS = arg["name"];
   wchar_t *nameC = KoiShell::UTF8ToWideChar(const_cast<char *>(nameS.c_str()));
   if (!nameC) LogAndFailWithLastError(L"Failed to parse nameC.");
   std::wostringstream nameStream;
   nameStream << nameC << KoiShellWebViewTitleSuffix;
-  std::wstring name = nameStream.str();
+  const std::wstring name = nameStream.str();
 
-  std::string urlS = arg["url"];
-  wchar_t *url = KoiShell::UTF8ToWideChar(const_cast<char *>(urlS.c_str()));
+  const std::string urlS = arg["url"];
+  wchar_t *url = KoiShell::UTF8ToWideChar(urlS.c_str());
   if (!url) LogAndFailWithLastError(L"Failed to parse url.");
 
   HRSRC userscriptRc =
       FindResourceW(hInstance, MAKEINTRESOURCEW(102), MAKEINTRESOURCEW(256));
   HGLOBAL userscriptRcData = LoadResource(hInstance, userscriptRc);
-  unsigned long userscriptSize = SizeofResource(hInstance, userscriptRc);
+  const unsigned long userscriptSize = SizeofResource(hInstance, userscriptRc);
   const char *userscriptData =
       static_cast<const char *>(LockResource(userscriptRcData));
   char *userscriptS = new char[userscriptSize + 1];
@@ -291,89 +291,77 @@ LRESULT CALLBACK WebViewWindow::WndProc(
 }
 
 void WebViewWindow::OnMessage(std::wstring *message) {
-  unsigned long long const len = message->length();
+  if ((*message)[0] == 'T') SyncTheme(message);
+}
 
-  if ((*message)[0] == 'T') {
-    // Sync theme
-    int dwmUseDarkMode;
+void WebViewWindow::SyncTheme(std::wstring *message) {
+  int dwmUseDarkMode;
 
-    switch ((*message)[1]) {
-    case 'D':
-      dwmUseDarkMode = 1;
-      DwmSetWindowAttribute(
-          hWnd,
-          supports >= 2 ? 20
-                        : // DWMWINDOWATTRIBUTE::DWMWA_USE_IMMERSIVE_DARK_MODE
-                          // = 20 (starting from 18985)
-              19,         // DWMWINDOWATTRIBUTE::DWMWA_USE_IMMERSIVE_DARK_MODE
-                          // = 19 (before 18985),
-          &dwmUseDarkMode,
-          sizeof(dwmUseDarkMode));
-      break;
-    case 'L':
-      dwmUseDarkMode = 0;
-      DwmSetWindowAttribute(
-          hWnd,
-          supports >= 2 ? 20
-                        : // DWMWINDOWATTRIBUTE::DWMWA_USE_IMMERSIVE_DARK_MODE
-                          // = 20 (starting from 18985)
-              19,         // DWMWINDOWATTRIBUTE::DWMWA_USE_IMMERSIVE_DARK_MODE
-                          // = 19 (before 18985),
-          &dwmUseDarkMode,
-          sizeof(dwmUseDarkMode));
-      break;
-    case 'R':
-      dwmUseDarkMode = 0;
-      DwmSetWindowAttribute(
-          hWnd,
-          supports >= 2 ? 20
-                        : // DWMWINDOWATTRIBUTE::DWMWA_USE_IMMERSIVE_DARK_MODE
-                          // = 20 (starting from 18985)
-              19,         // DWMWINDOWATTRIBUTE::DWMWA_USE_IMMERSIVE_DARK_MODE
-                          // = 19 (before 18985),
-          &dwmUseDarkMode,
-          sizeof(dwmUseDarkMode));
-      break;
-    }
-
-    if (len < 3) return;
-    // Sync theme color
-    unsigned long color;
-
-    // Border
-    color = std::stoul(
-        std::wstring() + (*message)[7] + (*message)[8] + (*message)[5] +
-            (*message)[6] + (*message)[3] + (*message)[4],
-        nullptr,
-        16);
+  switch ((*message)[1]) {
+  case 'D':
+    dwmUseDarkMode = 1;
     DwmSetWindowAttribute(
         hWnd,
-        34, // DWMWINDOWATTRIBUTE::DWMWA_BORDER_COLOR
-        &color,
-        sizeof(color));
-    // Caption
-    color = std::stoul(
-        std::wstring() + (*message)[13] + (*message)[14] + (*message)[11] +
-            (*message)[12] + (*message)[9] + (*message)[10],
-        nullptr,
-        16);
+        supports >= 2 ? 20
+                      : // DWMWINDOWATTRIBUTE::DWMWA_USE_IMMERSIVE_DARK_MODE
+                        // = 20 (starting from 18985)
+            19,         // DWMWINDOWATTRIBUTE::DWMWA_USE_IMMERSIVE_DARK_MODE
+                        // = 19 (before 18985),
+        &dwmUseDarkMode,
+        sizeof(dwmUseDarkMode));
+    break;
+  case 'L':
+  case 'R':
+    dwmUseDarkMode = 0;
     DwmSetWindowAttribute(
         hWnd,
-        35, // DWMWINDOWATTRIBUTE::DWMWA_CAPTION_COLOR
-        &color,
-        sizeof(color));
-    // Caption text
-    color = std::stoul(
-        std::wstring() + (*message)[19] + (*message)[20] + (*message)[17] +
-            (*message)[18] + (*message)[15] + (*message)[16],
-        nullptr,
-        16);
-    DwmSetWindowAttribute(
-        hWnd,
-        36, // DWMWINDOWATTRIBUTE::DWMWA_TEXT_COLOR
-        &color,
-        sizeof(color));
+        supports >= 2 ? 20
+                      : // DWMWINDOWATTRIBUTE::DWMWA_USE_IMMERSIVE_DARK_MODE
+                        // = 20 (starting from 18985)
+            19,         // DWMWINDOWATTRIBUTE::DWMWA_USE_IMMERSIVE_DARK_MODE
+                        // = 19 (before 18985),
+        &dwmUseDarkMode,
+        sizeof(dwmUseDarkMode));
+    break;
   }
+
+  if (message->length() < 3) return;
+  // Sync theme color
+  unsigned long color;
+
+  // Border
+  color = std::stoul(
+      std::wstring() + (*message)[7] + (*message)[8] + (*message)[5] +
+          (*message)[6] + (*message)[3] + (*message)[4],
+      nullptr,
+      16);
+  DwmSetWindowAttribute(
+      hWnd,
+      34, // DWMWINDOWATTRIBUTE::DWMWA_BORDER_COLOR
+      &color,
+      sizeof(color));
+  // Caption
+  color = std::stoul(
+      std::wstring() + (*message)[13] + (*message)[14] + (*message)[11] +
+          (*message)[12] + (*message)[9] + (*message)[10],
+      nullptr,
+      16);
+  DwmSetWindowAttribute(
+      hWnd,
+      35, // DWMWINDOWATTRIBUTE::DWMWA_CAPTION_COLOR
+      &color,
+      sizeof(color));
+  // Caption text
+  color = std::stoul(
+      std::wstring() + (*message)[19] + (*message)[20] + (*message)[17] +
+          (*message)[18] + (*message)[15] + (*message)[16],
+      nullptr,
+      16);
+  DwmSetWindowAttribute(
+      hWnd,
+      36, // DWMWINDOWATTRIBUTE::DWMWA_TEXT_COLOR
+      &color,
+      sizeof(color));
 }
 
 int RunWebView(_In_ HINSTANCE hInstance, _In_ int nCmdShow, _In_ njson arg) {
