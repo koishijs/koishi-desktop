@@ -13,16 +13,6 @@ char *WideCharToUTF8(_In_ wchar_t *w) {
   return s;
 }
 
-wchar_t *UTF8ToWideChar(_In_ char *s) {
-  const int len =
-      MultiByteToWideChar(CP_UTF8, MB_ERR_INVALID_CHARS, s, -1, nullptr, 0);
-  if (!len) return nullptr;
-  wchar_t *w = new wchar_t[len + 1];
-  w[len] = 0;
-  MultiByteToWideChar(CP_UTF8, MB_ERR_INVALID_CHARS, s, -1, w, len);
-  return w;
-}
-
 wchar_t *UTF8ToWideChar(_In_ const char *s) {
   const int len =
       MultiByteToWideChar(CP_UTF8, MB_ERR_INVALID_CHARS, s, -1, nullptr, 0);
