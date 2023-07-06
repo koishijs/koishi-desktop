@@ -20,18 +20,25 @@ func environ(i *do.Injector, path string) *[]string {
 	env := os.Environ()
 
 	if cfg.Data.Isolate != "none" {
+		envutil.UseEnv(&env, "KOI_HOST_HOME", os.Getenv("HOME"))
 		envutil.UseEnv(&env, "HOME", cfg.Computed.DirHome)
+		envutil.UseEnv(&env, "KOI_HOST_USERPROFILE", os.Getenv("USERPROFILE"))
 		envutil.UseEnv(&env, "USERPROFILE", cfg.Computed.DirHome)
 
 		if runtime.GOOS == "windows" {
 			localPath := filepath.Join(cfg.Computed.DirHome, "Appdata", "Local")
+			envutil.UseEnv(&env, "KOI_HOST_LOCALAPPDATA", os.Getenv("LOCALAPPDATA"))
 			envutil.UseEnv(&env, "LOCALAPPDATA", localPath)
 			roamingPath := filepath.Join(cfg.Computed.DirHome, "Appdata", "Roaming")
+			envutil.UseEnv(&env, "KOI_HOST_APPDATA", os.Getenv("APPDATA"))
 			envutil.UseEnv(&env, "APPDATA", roamingPath)
 		}
 
+		envutil.UseEnv(&env, "KOI_HOST_TMPDIR", os.Getenv("TMPDIR"))
 		envutil.UseEnv(&env, "TMPDIR", cfg.Computed.DirTemp)
+		envutil.UseEnv(&env, "KOI_HOST_TEMP", os.Getenv("TEMP"))
 		envutil.UseEnv(&env, "TEMP", cfg.Computed.DirTemp)
+		envutil.UseEnv(&env, "KOI_HOST_TMP", os.Getenv("TMP"))
 		envutil.UseEnv(&env, "TMP", cfg.Computed.DirTemp)
 	}
 
