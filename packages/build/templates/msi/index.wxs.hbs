@@ -77,12 +77,6 @@
               />
             </Component>
 
-            <Merge
-              Id="ComponentVCRedist"
-              SourceFile="SourceDir\Microsoft_VC143_CRT_x64.msm"
-              Language="0"
-            />
-
             <Directory Id="DirectoryInstallBinary" Name="bin">
               <Component
                 Id="ComponentDirectoryInstallBinary"
@@ -229,17 +223,6 @@
         <ComponentRef Id="ComponentDirectoryInstall" />
         <ComponentRef Id="ComponentDirectoryInstallBinary" />
         <ComponentRef Id="ComponentDirectoryProgramMenuFolder" />
-      </Feature>
-
-      <Feature
-        Id="FeatureVCRedist"
-        Title="Visual C++ Runtime"
-        Description="Visual C++ runtime. Required for Koishi Desktop Shell."
-        Level="1000"
-        InstallDefault="local"
-        AllowAdvertise="no"
-      >
-        <MergeRef Id="ComponentVCRedist" />
       </Feature>
 
       <Feature
