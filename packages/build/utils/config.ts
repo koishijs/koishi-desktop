@@ -24,6 +24,16 @@ const buildKoiVersion = () => {
 
 export const koiVersion = buildKoiVersion()
 
+const buildKoiBuildNumber = () => {
+  try {
+    return spawnSyncOutput('git', ['rev-list', '--count', 'HEAD']).trim()
+  } catch (error) {
+    return '0'
+  }
+}
+
+export const koiBuildNumber = buildKoiBuildNumber()
+
 const buildKoiSemver = () => {
   const spl = koiVersion.split('-')
   const build = spl.length > 1 ? Number(spl[1]) : 0

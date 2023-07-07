@@ -1,5 +1,5 @@
 import { parallel, series } from 'gulp'
-import { koiVersion } from '../../utils/config'
+import { koiBuildNumber, koiVersion } from '../../utils/config'
 import { Exceptions } from '../../utils/exceptions'
 import { dir } from '../../utils/path'
 import { exec } from '../../utils/spawn'
@@ -16,7 +16,9 @@ export const compileAppDebug = () =>
       '-o',
       dir('buildPortable', process.platform === 'win32' ? 'koi.exe' : 'koi'),
       '-ldflags',
-      `-X gopkg.ilharper.com/koi/app/util.AppVersion=${koiVersion.slice(1)}`,
+      `-X gopkg.ilharper.com/koi/app/util.AppVersion=${koiVersion.slice(
+        1
+      )} -X gopkg.ilharper.com/koi/app/util.AppBuildNumber=${koiBuildNumber}`,
     ],
     dir('src')
   )
@@ -32,7 +34,7 @@ export const compileAppRelease = () =>
       '-ldflags',
       `-w -s -X gopkg.ilharper.com/koi/app/util.AppVersion=${koiVersion.slice(
         1
-      )}`,
+      )} -X gopkg.ilharper.com/koi/app/util.AppBuildNumber=${koiBuildNumber}`,
     ],
     dir('src')
   )

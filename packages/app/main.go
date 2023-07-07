@@ -34,6 +34,7 @@ func main() {
 	l := do.MustInvoke[*logger.Logger](i)
 
 	do.ProvideNamedValue(i, coreUtil.ServiceAppVersion, util.AppVersion)
+	do.ProvideNamedValue(i, coreUtil.ServiceAppBuildNumber, util.AppBuildNumber)
 
 	do.ProvideValue(i, langTag)
 	do.ProvideValue(i, p)

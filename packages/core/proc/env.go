@@ -16,6 +16,7 @@ import (
 func environ(i *do.Injector, path string) *[]string {
 	cfg := do.MustInvoke[*koiconfig.Config](i)
 	appVersion := do.MustInvokeNamed[string](i, util.ServiceAppVersion)
+	appBuildNumber := do.MustInvokeNamed[string](i, util.ServiceAppBuildNumber)
 
 	env := os.Environ()
 
@@ -75,6 +76,8 @@ func environ(i *do.Injector, path string) *[]string {
 	env = append(env, "PATH="+pathEnv)
 
 	envutil.UseEnv(&env, "KOISHI_AGENT", fmt.Sprintf("Koishi Desktop/%s", appVersion))
+	envutil.UseEnv(&env, "KOI_APP_VERSION", appVersion)
+	envutil.UseEnv(&env, "KOI_APP_BUILD_NUMBER", appBuildNumber)
 	envutil.UseColorEnv(&env)
 	koiconfig.UseConfigEnv(&env, cfg)
 
