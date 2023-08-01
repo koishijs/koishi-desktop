@@ -20,7 +20,7 @@ export const sourceGitHub = 'https://github.com'
 // Remember to test all tasks before upgrading
 // versions.
 
-export const versionNode = '16.19.1'
+export const versionNode = '18.17.0'
 export const versionYarn = '3.5.0'
 
 export const versionWebView2 = '1.0.1343.22'
@@ -38,7 +38,7 @@ export const versionToolsWix = '311'
 // These are defaults for koishi-desktop.
 
 export const repoBoilerplate = 'koishijs/boilerplate'
-export const versionBoilerplate = 'v1.7.3'
+export const versionBoilerplate = 'v1.8.0'
 
 /**
  * ID of the default instance.
