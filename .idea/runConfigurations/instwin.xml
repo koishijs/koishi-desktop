@@ -1,0 +1,24 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration
+    default="false"
+    name="instwin"
+    type="CMakeRunConfiguration"
+    factoryName="Application"
+    REDIRECT_INPUT="false"
+    ELEVATE="false"
+    USE_EXTERNAL_CONSOLE="false"
+    PASS_PARENT_ENVS_2="true"
+    PROJECT_NAME="instwin"
+    TARGET_NAME="instwin"
+    CONFIG_NAME="Debug (Qt)"
+    RUN_TARGET_PROJECT_NAME="instwin"
+    RUN_TARGET_NAME="instwin"
+  >
+    <method v="2">
+      <option
+        name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask"
+        enabled="true"
+      />
+    </method>
+  </configuration>
+</component>

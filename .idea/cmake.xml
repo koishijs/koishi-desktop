@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CMakeSharedSettings">
+    <configurations>
+      <configuration PROFILE_NAME="Debug" ENABLED="false" CONFIG_NAME="Debug" />
+      <configuration PROFILE_NAME="MinSizeRel" ENABLED="false" CONFIG_NAME="MinSizeRel" />
+      <configuration PROFILE_NAME="Debug (Qt)" ENABLED="true" CONFIG_NAME="Debug" GENERATION_OPTIONS="-DQT_QMAKE_EXECUTABLE:FILEPATH=C:/Qt/6.5.2/msvc2019_64/bin/qmake.exe -DCMAKE_PREFIX_PATH:PATH=C:/Qt/6.5.2/msvc2019_64 -DCMAKE_CXX_FLAGS_INIT:STRING=-DQT_QML_DEBUG" />
+      <configuration PROFILE_NAME="MinSizeRel (Qt)" ENABLED="true" CONFIG_NAME="MinSizeRel" GENERATION_OPTIONS="-DQT_QMAKE_EXECUTABLE:FILEPATH=C:/Qt/6.5.2/msvc2019_64/bin/qmake.exe -DCMAKE_PREFIX_PATH:PATH=C:/Qt/6.5.2/msvc2019_64 -DCMAKE_CXX_FLAGS_INIT:STRING=-DQT_QML_DEBUG" />
+    </configurations>
+  </component>
+</project>
