@@ -1,20 +1,95 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <ui version="4.0">
-  <class>MainWindow</class>
-  <widget class="QMainWindow" name="MainWindow">
-    <property name="geometry">
-    <rect>
-      <x>0</x>
-      <y>0</y>
-      <width>1366</width>
-      <height>768</height>
-    </rect>
-    </property>
-    <property name="windowTitle">
-    <string>Install Koishi</string>
-    </property>
-    <widget class="QWidget" name="centralwidget" />
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1366</width>
+    <height>768</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Install Koishi</string>
+  </property>
+  <widget class="QWidget" name="CentralWidget">
+   <layout class="QVBoxLayout" name="CentralWidgetV" stretch="1,7,2">
+    <item>
+     <widget class="QWidget" name="HeaderContainer" native="true" />
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="IconContainerH">
+      <item>
+       <widget class="QLabel" name="Icon">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>180</width>
+          <height>180</height>
+         </size>
+        </property>
+        <property name="pixmap">
+         <pixmap resource="../instwin.qrc">:/instwin/koishi.png</pixmap>
+        </property>
+        <property name="scaledContents">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <layout class="QVBoxLayout" name="ControlsContainerV" stretch="2,1,1">
+      <item>
+       <widget class="QWidget" name="ControlsPlaceholder" />
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="DescriptionContainerH">
+        <item>
+         <widget class="QLabel" name="Description">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string>Tap "Install" to start the installation process.</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="ActionsContainerH">
+        <item>
+         <widget class="QPushButton" name="StartButton">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string>Install</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </item>
+   </layout>
   </widget>
-  <resources />
-  <connections />
+ </widget>
+ <resources>
+  <include location="../instwin.qrc" />
+ </resources>
+ <connections />
 </ui>

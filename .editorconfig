@@ -29,3 +29,6 @@ indent_size = 4
 
 [*.rs]
 indent_size = 4
+
+[*.ui]
+indent_size = 1

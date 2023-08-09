@@ -17,7 +17,7 @@ void MainWindow::InitializeWindowStyle() {
   HWND hWnd = reinterpret_cast<HWND>(winId());
 
   // Fix window
-  setWindowFlag(Qt::MSWindowsFixedSizeDialogHint);
+  // setWindowFlag(Qt::MSWindowsFixedSizeDialogHint);
 
   // Make widget transparent
   setAttribute(Qt::WA_TranslucentBackground);

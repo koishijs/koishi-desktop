@@ -49,6 +49,7 @@ set(PROJECT_SOURCES
     src/windows/mainwindow.ui
     ${TS_FILES}
     src/instwin.exe.manifest
+    src/instwin.qrc
     src/instwin.rc
 )
 
