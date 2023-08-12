@@ -13,76 +13,80 @@
   <property name="windowTitle">
    <string>Install Koishi</string>
   </property>
-  <widget class="QWidget" name="CentralWidget">
-   <layout class="QVBoxLayout" name="CentralWidgetV">
-    <item>
-     <widget class="QWidget" name="IconContainer" native="true">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Preferred" vsizetype="MinimumExpanding">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <layout class="QHBoxLayout" name="IconContainerH">
+  <widget class="QStackedWidget" name="CentralWidget">
+   <widget class="QWidget" name="WelcomePage">
+    <layout class="QVBoxLayout" name="CentralWidgetV">
+     <item>
+      <widget class="QWidget" name="IconContainer" native="true">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="MinimumExpanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <layout class="QHBoxLayout" name="IconContainerH">
+        <item>
+         <widget class="QLabel" name="Icon">
+          <property name="maximumSize">
+           <size>
+            <width>180</width>
+            <height>180</height>
+           </size>
+          </property>
+          <property name="pixmap">
+           <pixmap resource="../instwin.qrc">:/instwin/koishi.png</pixmap>
+          </property>
+          <property name="scaledContents">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item>
+      <layout class="QVBoxLayout" name="ControlsContainerV">
        <item>
-        <widget class="QLabel" name="Icon">
-         <property name="maximumSize">
-          <size>
-           <width>180</width>
-           <height>180</height>
-          </size>
-         </property>
-         <property name="pixmap">
-          <pixmap resource="../instwin.qrc">:/instwin/koishi.png</pixmap>
-         </property>
-         <property name="scaledContents">
-          <bool>true</bool>
-         </property>
-        </widget>
+        <layout class="QHBoxLayout" name="DescriptionContainerH">
+         <item>
+          <widget class="QLabel" name="Description">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text">
+            <string
+            >Tap &quot;Install&quot; to start the installation process.</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="ActionsContainerH">
+         <item>
+          <widget class="QPushButton" name="StartButton">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text">
+            <string>Install</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </item>
       </layout>
-     </widget>
-    </item>
-    <item>
-     <layout class="QVBoxLayout" name="ControlsContainerV">
-      <item>
-       <layout class="QHBoxLayout" name="DescriptionContainerH">
-        <item>
-         <widget class="QLabel" name="Description">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="text">
-           <string
-           >Tap &quot;Install&quot; to start the installation process.</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <layout class="QHBoxLayout" name="ActionsContainerH">
-        <item>
-         <widget class="QPushButton" name="StartButton">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="text">
-           <string>Install</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-     </layout>
-    </item>
-   </layout>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QWidget" name="ProgressPage" />
+   <widget class="QWidget" name="FinishPage" />
   </widget>
  </widget>
  <resources>
