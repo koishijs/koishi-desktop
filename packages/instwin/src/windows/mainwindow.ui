@@ -17,32 +17,7 @@
    <widget class="QWidget" name="WelcomePage">
     <layout class="QVBoxLayout" name="CentralWidgetV">
      <item>
-      <widget class="QWidget" name="IconContainer" native="true">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Preferred" vsizetype="MinimumExpanding">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <layout class="QHBoxLayout" name="IconContainerH">
-        <item>
-         <widget class="QLabel" name="Icon">
-          <property name="maximumSize">
-           <size>
-            <width>180</width>
-            <height>180</height>
-           </size>
-          </property>
-          <property name="pixmap">
-           <pixmap resource="../instwin.qrc">:/instwin/koishi.png</pixmap>
-          </property>
-          <property name="scaledContents">
-           <bool>true</bool>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </widget>
+      <widget class="IconWidget" name="IconContainer" />
      </item>
      <item>
       <layout class="QVBoxLayout" name="ControlsContainerV">
@@ -89,6 +64,14 @@
    <widget class="QWidget" name="FinishPage" />
   </widget>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>IconWidget</class>
+   <extends>QWidget</extends>
+   <header>instwin/widgets/iconwidget.hpp</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources>
   <include location="../instwin.qrc" />
  </resources>

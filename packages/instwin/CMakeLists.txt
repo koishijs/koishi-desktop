@@ -44,6 +44,9 @@ set(TS_FILES
 set(PROJECT_SOURCES
     src/main.cpp
     src/util/errors.cpp
+    include/instwin/widgets/iconwidget.hpp
+    src/widgets/iconwidget.cpp
+    src/widgets/iconwidget.ui
     include/instwin/windows/mainwindow.hpp
     src/windows/mainwindow.cpp
     src/windows/mainwindow.ui
