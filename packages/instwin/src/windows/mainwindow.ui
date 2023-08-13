@@ -17,7 +17,7 @@
    <widget class="QWidget" name="WelcomePage">
     <layout class="QVBoxLayout" name="CentralWidgetV">
      <item>
-      <widget class="IconWidget" name="IconContainer" />
+      <widget class="IconWidget" name="IconContainer" native="true" />
      </item>
      <item>
       <layout class="QVBoxLayout" name="ControlsContainerV">
