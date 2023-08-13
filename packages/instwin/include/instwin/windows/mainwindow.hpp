@@ -5,6 +5,7 @@
 
 #include <QMainWindow>
 
+#include "instwin/core/installer.hpp"
 #include "instwin/util/errors.hpp"
 
 QT_BEGIN_NAMESPACE
@@ -25,6 +26,8 @@ public slots:
 
 private:
   Ui::MainWindow *ui;
+
+  InstWin::Installer installer;
 
   void initializeWindowStyle();
 };

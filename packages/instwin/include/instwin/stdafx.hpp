@@ -2,6 +2,7 @@
 #define _INSTWIN_STDAFX_
 
 #include <format>
+#include <string>
 
 #include <windows.h>
 
