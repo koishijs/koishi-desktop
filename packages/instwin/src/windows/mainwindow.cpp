@@ -6,14 +6,14 @@ MainWindow::MainWindow(QWidget *parent)
   // Setup UI
   ui->setupUi(this);
 
-  InitializeWindowStyle();
+  initializeWindowStyle();
 }
 
 MainWindow::~MainWindow() {
   delete ui;
 }
 
-void MainWindow::InitializeWindowStyle() {
+void MainWindow::initializeWindowStyle() {
   HWND hWnd = reinterpret_cast<HWND>(winId());
 
   // Fix window

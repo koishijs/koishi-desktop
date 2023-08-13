@@ -23,7 +23,7 @@ public:
 private:
   Ui::MainWindow *ui;
 
-  void InitializeWindowStyle();
+  void initializeWindowStyle();
 };
 
 #endif /* _INSTWIN_WINDOWS_MAINWINDOW_ */
