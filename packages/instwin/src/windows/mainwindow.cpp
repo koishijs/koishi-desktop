@@ -18,9 +18,6 @@ void MainWindow::initializeWindowStyle() {
   // Fix window
   // setWindowFlag(Qt::MSWindowsFixedSizeDialogHint);
 
-  // Make widget transparent
-  setAttribute(Qt::WA_TranslucentBackground);
-
   // Enable DWM transparent
   OSVERSIONINFOEXW osvi{0};
   osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFOEXW);

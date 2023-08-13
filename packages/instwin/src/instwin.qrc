@@ -2,5 +2,6 @@
   <qresource prefix="/">
     <file>koishi.png</file>
     <file>koishi.ico</file>
+    <file>instwin.qss</file>
   </qresource>
 </RCC>
