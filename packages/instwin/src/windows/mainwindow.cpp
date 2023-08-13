@@ -72,5 +72,5 @@ void MainWindow::initializeWindowStyle() {
 }
 
 void MainWindow::navigateToProgressPage() {
-  ui->CentralWidget->setCurrentIndex(1);
+  ui->centralWidget->setCurrentIndex(1);
 }

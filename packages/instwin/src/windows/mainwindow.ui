@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <ui version="4.0">
  <class>MainWindow</class>
- <widget class="QMainWindow" name="MainWindow">
+ <widget class="QMainWindow" name="mainWindow">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -13,18 +13,18 @@
   <property name="windowTitle">
    <string>Install Koishi</string>
   </property>
-  <widget class="QStackedWidget" name="CentralWidget">
-   <widget class="QWidget" name="WelcomePage">
-    <layout class="QVBoxLayout" name="CentralWidgetV">
+  <widget class="QStackedWidget" name="centralWidget">
+   <widget class="QWidget" name="welcomePage">
+    <layout class="QVBoxLayout" name="welcomePageCentralLayout">
      <item>
-      <widget class="IconWidget" name="IconContainer" native="true" />
+      <widget class="IconWidget" name="welcomePageIcon" native="true" />
      </item>
      <item>
-      <layout class="QVBoxLayout" name="ControlsContainerV">
+      <layout class="QVBoxLayout" name="welcomePageControlsLayout">
        <item>
-        <layout class="QHBoxLayout" name="DescriptionContainerH">
+        <layout class="QHBoxLayout" name="welcomePageDescriptionLayout">
          <item>
-          <widget class="QLabel" name="Description">
+          <widget class="QLabel" name="welcomePageDescription">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
              <horstretch>0</horstretch>
@@ -40,9 +40,9 @@
         </layout>
        </item>
        <item>
-        <layout class="QHBoxLayout" name="ActionsContainerH">
+        <layout class="QHBoxLayout" name="welcomePageActionsLayout">
          <item>
-          <widget class="QPushButton" name="StartButton">
+          <widget class="QPushButton" name="installButton">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
              <horstretch>0</horstretch>
@@ -60,8 +60,8 @@
      </item>
     </layout>
    </widget>
-   <widget class="QWidget" name="ProgressPage" />
-   <widget class="QWidget" name="FinishPage" />
+   <widget class="QWidget" name="progressPage" />
+   <widget class="QWidget" name="finishPage" />
   </widget>
  </widget>
  <customwidgets>
@@ -77,9 +77,9 @@
  </resources>
  <connections>
   <connection>
-   <sender>StartButton</sender>
+   <sender>installButton</sender>
    <signal>clicked()</signal>
-   <receiver>MainWindow</receiver>
+   <receiver>mainWindow</receiver>
    <slot>navigateToProgressPage()</slot>
    <hints>
     <hint type="sourcelabel">
