@@ -43,6 +43,7 @@ set(TS_FILES
 
 set(PROJECT_SOURCES
     src/main.cpp
+    include/instwin/core/installer.hpp
     src/core/installer.cpp
     src/util/errors.cpp
     include/instwin/widgets/iconwidget.hpp
