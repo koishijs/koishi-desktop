@@ -26,7 +26,7 @@
       </size>
      </property>
      <property name="pixmap">
-      <pixmap resource="../instwin.qrc">:/instwin/koishi.png</pixmap>
+      <pixmap resource="../instwin.qrc">:/koishi.png</pixmap>
      </property>
      <property name="scaledContents">
       <bool>true</bool>

@@ -1,5 +1,5 @@
 <RCC>
-  <qresource prefix="/instwin">
+  <qresource prefix="/">
     <file>koishi.png</file>
     <file>koishi.ico</file>
   </qresource>
