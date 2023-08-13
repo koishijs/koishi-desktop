@@ -11,17 +11,15 @@ class IconWidget;
 }
 QT_END_NAMESPACE
 
-class IconWidget : public QWidget
-{
-    Q_OBJECT
+class IconWidget : public QWidget {
+  Q_OBJECT
 
 public:
-    explicit IconWidget(QWidget *parent = nullptr);
-    ~IconWidget();
+  explicit IconWidget(QWidget *parent = nullptr);
+  ~IconWidget();
 
 private:
-    Ui::IconWidget *ui;
+  Ui::IconWidget *ui;
 };
-
 
 #endif /* _INSTWIN_WIDGETS_ICONWIDGET_ */
