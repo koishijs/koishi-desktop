@@ -79,6 +79,7 @@ void MainWindow::initializeWindowStyle() {
 
 void MainWindow::navigateToProgressPage() {
   ui->centralWidget->setCurrentIndex(1);
+  installer.start();
 }
 
 void MainWindow::navigateToFinishPage() {
@@ -86,4 +87,8 @@ void MainWindow::navigateToFinishPage() {
 }
 
 void MainWindow::appendProgressLog(std::string s) {
+  ui->progressPageLog->moveCursor(QTextCursor::End);
+  ui->progressPageLog->insertPlainText(s.c_str());
+  QScrollBar *verticalScrollBar = ui->progressPageLog->verticalScrollBar();
+  verticalScrollBar->setValue(verticalScrollBar->maximum());
 }

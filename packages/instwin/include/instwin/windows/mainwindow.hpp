@@ -4,6 +4,7 @@
 #include "instwin/stdafx.hpp"
 
 #include <QMainWindow>
+#include <QScrollBar>
 
 #include "instwin/core/installer.hpp"
 #include "instwin/util/errors.hpp"
