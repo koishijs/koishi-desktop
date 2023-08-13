@@ -5,6 +5,12 @@ MainWindow::MainWindow() : QMainWindow(nullptr), ui(new Ui::MainWindow) {
   // Setup UI
   ui->setupUi(this);
 
+  connect(
+      &installer,
+      &InstWin::Installer::onLog,
+      this,
+      &MainWindow::appendProgressLog);
+
   initializeWindowStyle();
 }
 
@@ -73,4 +79,11 @@ void MainWindow::initializeWindowStyle() {
 
 void MainWindow::navigateToProgressPage() {
   ui->centralWidget->setCurrentIndex(1);
+}
+
+void MainWindow::navigateToFinishPage() {
+  ui->centralWidget->setCurrentIndex(2);
+}
+
+void MainWindow::appendProgressLog(std::string s) {
 }

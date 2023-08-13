@@ -23,6 +23,8 @@ public:
 
 public slots:
   void navigateToProgressPage();
+  void navigateToFinishPage();
+  void appendProgressLog(std::string s);
 
 private:
   Ui::MainWindow *ui;
