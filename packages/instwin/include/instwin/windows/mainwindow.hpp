@@ -20,6 +20,9 @@ public:
   MainWindow(QWidget *parent = nullptr);
   ~MainWindow();
 
+public slots:
+  void navigateToProgressPage();
+
 private:
   Ui::MainWindow *ui;
 

@@ -74,3 +74,7 @@ void MainWindow::initializeWindowStyle() {
         sizeof(dwmSystemBackdropType));
   }
 }
+
+void MainWindow::navigateToProgressPage() {
+  ui->CentralWidget->setCurrentIndex(1);
+}
