@@ -16,11 +16,11 @@ enum InstallResult {
   Warning = 3,
 };
 
-class InstallerWorker : public QObject {
+class InstallerWorker : public QThread {
   Q_OBJECT
 
-public slots:
-  void run();
+public:
+  InstallerWorker(QObject *parent);
 
 signals:
   void onLog(std::string s);
@@ -28,6 +28,8 @@ signals:
   void onResult(InstallResult result);
 
 private:
+  void run() override;
+
   std::string timeString();
 };
 
@@ -35,7 +37,7 @@ class Installer : public QObject {
   Q_OBJECT
 
 public:
-  Installer();
+  Installer(QObject *parent);
 
 public slots:
   void start();
@@ -46,7 +48,6 @@ signals:
   void onResult(InstallResult result);
 
 private:
-  QThread thread;
   InstallerWorker worker;
 };
 

@@ -1,7 +1,8 @@
 #include "instwin/windows/mainwindow.hpp"
 #include "ui_mainwindow.h"
 
-MainWindow::MainWindow() : QMainWindow(nullptr), ui(new Ui::MainWindow) {
+MainWindow::MainWindow()
+    : QMainWindow(nullptr), ui(new Ui::MainWindow), installer(this) {
   // Setup UI
   ui->setupUi(this);
 
@@ -10,6 +11,11 @@ MainWindow::MainWindow() : QMainWindow(nullptr), ui(new Ui::MainWindow) {
       &InstWin::Installer::onLog,
       this,
       &MainWindow::appendProgressLog);
+  connect(
+      ui->installButton,
+      &QPushButton::clicked,
+      &installer,
+      &InstWin::Installer::start);
 
   initializeWindowStyle();
 }
@@ -47,11 +53,11 @@ void MainWindow::initializeWindowStyle() {
     int dwmUseDarkMode = 1;
     DwmSetWindowAttribute(
         hWnd,
-        supports >= 2 ? 20
-                      : // DWMWINDOWATTRIBUTE::DWMWA_USE_IMMERSIVE_DARK_MODE
-                        // = 20 (starting from 18985)
-            19,         // DWMWINDOWATTRIBUTE::DWMWA_USE_IMMERSIVE_DARK_MODE
-                        // = 19 (before 18985)
+        supports >= 2 ? 20 // DWMWINDOWATTRIBUTE::DWMWA_USE_IMMERSIVE_DARK_MODE
+                      :    // = 20 (starting from 18985)
+                           // DWMWINDOWATTRIBUTE::DWMWA_USE_IMMERSIVE_DARK_MODE
+            19,            // = 19 (before 18985)
+
         &dwmUseDarkMode,
         sizeof(dwmUseDarkMode));
     unsigned int dwmCornerPreference =
@@ -79,7 +85,6 @@ void MainWindow::initializeWindowStyle() {
 
 void MainWindow::navigateToProgressPage() {
   ui->centralWidget->setCurrentIndex(1);
-  installer.start();
 }
 
 void MainWindow::navigateToFinishPage() {
@@ -89,6 +94,8 @@ void MainWindow::navigateToFinishPage() {
 void MainWindow::appendProgressLog(std::string s) {
   ui->progressPageLog->moveCursor(QTextCursor::End);
   ui->progressPageLog->insertPlainText(s.c_str());
+  ui->progressPageLog->moveCursor(QTextCursor::End);
+  ui->progressPageLog->insertPlainText("\n");
   QScrollBar *verticalScrollBar = ui->progressPageLog->verticalScrollBar();
   verticalScrollBar->setValue(verticalScrollBar->maximum());
 }

@@ -2,6 +2,9 @@
 
 namespace InstWin {
 
+InstallerWorker::InstallerWorker(QObject *parent) : QThread(parent) {
+}
+
 void InstallerWorker::run() {
   emit onProgress(0);
   emit onLog(std::format("Installation started at {}.", timeString()));
@@ -14,16 +17,14 @@ std::string InstallerWorker::timeString() {
   return std::format("{:%Y-%m-%d %H:%M:%OS}", std::chrono::system_clock::now());
 }
 
-Installer::Installer() {
-  worker.moveToThread(&thread);
-  connect(this, &Installer::start, &worker, &InstallerWorker::run);
+Installer::Installer(QObject *parent) : QObject(parent), worker(this) {
   connect(&worker, &InstallerWorker::onLog, this, &Installer::onLog);
   connect(&worker, &InstallerWorker::onProgress, this, &Installer::onProgress);
   connect(&worker, &InstallerWorker::onResult, this, &Installer::onResult);
 }
 
 void Installer::start() {
-  thread.start();
+  worker.start();
 }
 
 } // namespace InstWin
