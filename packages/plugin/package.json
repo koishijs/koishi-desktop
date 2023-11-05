@@ -29,14 +29,15 @@
     "desktop"
   ],
   "peerDependencies": {
-    "@koishijs/plugin-console": "^5",
-    "koishi": "^4.10.3"
+    "@koishijs/plugin-console": "^5.18.2",
+    "koishi": "^4.15.4"
   },
   "devDependencies": {
-    "@koishijs/plugin-console": "^5",
+    "@koishijs/client": "^5.18.2",
+    "@koishijs/plugin-console": "^5.18.2",
     "@types/color-string": "^1.5.2",
     "color-string": "^1.9.1",
-    "koishi": "^4.10.3"
+    "koishi": "^4.15.4"
   },
   "koishi": {
     "description": {
