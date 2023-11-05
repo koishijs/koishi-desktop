@@ -20,7 +20,9 @@
     "clients/*/dist"
   ],
   "scripts": {
-    "build:fe": "concurrently -n enhance \"koishi-console build clients/enhance\""
+    "build": "concurrently -n be,fe yarn:build:be yarn:build:fe",
+    "build:fe": "koishi-console build clients/enhance",
+    "build:be": "atsc -b"
   },
   "keywords": [
     "chatbot",
@@ -36,6 +38,7 @@
     "@koishijs/client": "^5.18.2",
     "@koishijs/plugin-console": "^5.18.2",
     "@types/color-string": "^1.5.2",
+    "atsc": "^1.2.2",
     "color-string": "^1.9.1",
     "koishi": "^4.15.4"
   },

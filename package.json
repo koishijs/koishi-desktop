@@ -7,8 +7,6 @@
     "packages/*"
   ],
   "scripts": {
-    "build": "concurrently -n pl,fe \"yakumo build\" \"yarn workspace koishi-plugin-desktop build:fe\"",
-    "dep": "yakumo upgrade",
     "lint": "eslint --ext .ts --ignore-path .gitignore . --fix"
   },
   "resolutions": {
@@ -32,12 +30,6 @@
     "mkdirp": "^1",
     "prettier": "*",
     "ts-node": "^10",
-    "typescript": "*",
-    "yakumo": "^0.3.6",
-    "yakumo-esbuild": "^0.3.18",
-    "yakumo-esbuild-yaml": "^0.3.1",
-    "yakumo-tsc": "^0.3.5",
-    "yakumo-upgrade": "^0.3.2",
-    "yakumo-version": "^0.3.1"
+    "typescript": "*"
   }
 }

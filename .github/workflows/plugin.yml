@@ -31,7 +31,7 @@ jobs:
 
       - name: Build Package
         run: |
-          yarn build
+          yarn workspace koishi-plugin-desktop build
           yarn workspace koishi-plugin-desktop pack --filename koishi-plugin-desktop.tgz
         shell: bash
 
