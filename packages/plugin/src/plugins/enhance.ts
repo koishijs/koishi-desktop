@@ -4,7 +4,7 @@ import { resolve } from 'path'
 
 export const name = 'desktop-enhance'
 
-export const using = ['console'] as const
+export const inject = ['console']
 
 export function apply(ctx: Context) {
   ctx.console.addEntry({
