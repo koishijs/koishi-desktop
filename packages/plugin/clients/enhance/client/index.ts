@@ -70,6 +70,16 @@ const enhanceColorCSS = `
 
 `
 
+const enhanceTransCSS = `
+.layout-container,
+.main-container,
+.layout-container .layout-aside,
+.layout-status {
+  background: transparent !important;
+}
+
+`
+
 let themeObserver: MutationObserver
 let styleSheet: HTMLStyleElement
 
@@ -111,6 +121,9 @@ const syncStyleSheet = (config: RemovableRef<Config>) => {
     case 'enhance':
       styleSheet.innerHTML = baseCSS + enhanceCSS
       break
+    case 'enhanceTrans':
+      styleSheet.innerHTML = baseCSS + enhanceCSS + enhanceTransCSS
+      break
   }
 }
 
@@ -126,6 +139,7 @@ const syncTheme = (config: RemovableRef<Config>) => {
       )
       break
     case 'enhance':
+    case 'enhanceTrans':
       send(
         window.document.documentElement.classList.contains('dark')
           ? 'TD'
@@ -182,7 +196,7 @@ const disposeEnhance = () => {
 declare module '@koishijs/client' {
   interface Config {
     desktop: {
-      enhance: 'off' | 'enhance' | 'enhanceColor'
+      enhance: 'off' | 'enhance' | 'enhanceColor' | 'enhanceTrans'
     }
   }
 }
@@ -204,6 +218,11 @@ export default (ctx: Context) => {
               .description('增强色彩')
               // @ts-expect-error 【管理员】孤梦星影 1:35:20 看了源码，实际上是可用的  只是没有类型  你可以 @ts-ignore
               .disabled(!supports('enhanceColor')),
+
+            Schema.const('enhanceTrans')
+              .description('增强透视')
+              // @ts-expect-error 【管理员】孤梦星影 1:35:20 看了源码，实际上是可用的  只是没有类型  你可以 @ts-ignore
+              .disabled(!supports('enhance')),
           ].filter(Boolean),
         )
           .default(supports('enhance') ? 'enhance' : 'off')
