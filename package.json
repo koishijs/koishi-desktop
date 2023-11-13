@@ -18,6 +18,7 @@
     "@types/mkdirp": "^1",
     "@typescript-eslint/eslint-plugin": "*",
     "@typescript-eslint/parser": "*",
+    "appcenter-cli": "^2.14.0",
     "chalk": "^4",
     "concurrently": "^7",
     "esbuild": "^0.14.51",
