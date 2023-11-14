@@ -7,6 +7,7 @@
     "types": [
       "@koishijs/client/global",
     ],
+    "allowSyntheticDefaultImports": true,
   },
   "include": [
     "."
