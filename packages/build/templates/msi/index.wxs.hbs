@@ -30,6 +30,10 @@
     <Property Id="ARPNOREPAIR" Value="yes" Secure="yes" />
     <Property Id="ARPNOMODIFY" Value="yes" Secure="yes" />
 
+    <WixVariable Id="WixUILicenseRtf" Value="{{{licensePath}}}" />
+    <WixVariable Id="WixUIBannerBmp" Value="{{{bannerBmpPath}}}" />
+    <WixVariable Id="WixUIDialogBmp" Value="{{{dialogBmpPath}}}" />
+
     <Condition
       Message="Koishi only runs on Windows 8.1 or higher."
     >VersionNT >= 603</Condition>
