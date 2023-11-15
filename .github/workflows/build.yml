@@ -42,8 +42,14 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/')
         run: |
           VERSION="${GITHUB_REF##refs/tags/}"
+          BUILD_VERSION="${VERSION:1}"
+          BUILD_NUMBER="$(git rev-list HEAD --count)"
           echo "Found Tag: ${VERSION}"
+          echo "Build Version: ${BUILD_VERSION}"
+          echo "Build Number: ${BUILD_NUMBER}"
           echo "version=${VERSION}" >> $GITHUB_OUTPUT
+          echo "build_version=${BUILD_VERSION}" >> $GITHUB_OUTPUT
+          echo "build_number=${BUILD_NUMBER}" >> $GITHUB_OUTPUT
         shell: bash
 
       - name: Draft Release
@@ -95,56 +101,56 @@ jobs:
           yarn gulp ciBuild
         shell: bash
 
-      - name: Upload zip for Windows
+      - name: Upload zip for Windows to Build Artifact
         if: matrix.target.goos == 'windows'
         uses: actions/upload-artifact@v3
         with:
           name: koi-${{ matrix.target.rid }}-${{ github.sha }}.zip
           path: build/dist/koishi.zip
 
-      - name: Upload msi for Windows
+      - name: Upload msi for Windows to Build Artifact
         if: matrix.target.goos == 'windows'
         uses: actions/upload-artifact@v3
         with:
           name: koi-${{ matrix.target.rid }}-${{ github.sha }}.msi
           path: build/dist/koishi.msi
 
-      - name: Upload zip for macOS
+      - name: Upload zip for macOS to Build Artifact
         if: matrix.target.goos == 'darwin'
         uses: actions/upload-artifact@v3
         with:
           name: koi-${{ matrix.target.rid }}-${{ github.sha }}.zip
           path: build/dist/koishi.zip
 
-      - name: Upload dmg for macOS
+      - name: Upload dmg for macOS to Build Artifact
         if: matrix.target.goos == 'darwin'
         uses: actions/upload-artifact@v3
         with:
           name: koi-${{ matrix.target.rid }}-${{ github.sha }}.dmg
           path: build/dist/koishi.dmg
 
-      - name: Upload pkg for macOS
+      - name: Upload pkg for macOS to Build Artifact
         if: matrix.target.goos == 'darwin'
         uses: actions/upload-artifact@v3
         with:
           name: koi-${{ matrix.target.rid }}-${{ github.sha }}.pkg
           path: build/dist/koishi.pkg
 
-      - name: Upload zip for Linux
+      - name: Upload zip for Linux to Build Artifact
         if: matrix.target.goos == 'linux'
         uses: actions/upload-artifact@v3
         with:
           name: koi-${{ matrix.target.rid }}-${{ github.sha }}.zip
           path: build/dist/koishi.zip
 
-      - name: Upload AppImage for Linux
+      - name: Upload AppImage for Linux to Build Artifact
         if: matrix.target.goos == 'linux'
         uses: actions/upload-artifact@v3
         with:
           name: koi-${{ matrix.target.rid }}-${{ github.sha }}.AppImage
           path: build/dist/Koishi.AppImage
 
-      - name: Upload Release Files for Windows
+      - name: Upload Release Files for Windows to GitHub Release
         if: startsWith(github.ref, 'refs/tags/') && matrix.target.goos == 'windows'
         env:
           GITHUB_TOKEN: ${{ secrets.ACTIONS_DEPLOY_MODULE_KEY }}
@@ -156,7 +162,7 @@ jobs:
           build/dist/koishi-desktop-${{ matrix.target.rid }}-${{ steps.tag.outputs.version }}.msi
         shell: bash
 
-      - name: Upload Release Files for macOS
+      - name: Upload Release Files for macOS to GitHub Release
         if: startsWith(github.ref, 'refs/tags/') && matrix.target.goos == 'darwin'
         env:
           GITHUB_TOKEN: ${{ secrets.ACTIONS_DEPLOY_MODULE_KEY }}
@@ -170,7 +176,7 @@ jobs:
           build/dist/koishi-desktop-${{ matrix.target.rid }}-${{ steps.tag.outputs.version }}.pkg
         shell: bash
 
-      - name: Upload Release Files for Linux
+      - name: Upload Release Files for Linux to GitHub Release
         if: startsWith(github.ref, 'refs/tags/') && matrix.target.goos == 'linux'
         env:
           GITHUB_TOKEN: ${{ secrets.ACTIONS_DEPLOY_MODULE_KEY }}
@@ -180,4 +186,26 @@ jobs:
           gh release upload ${{ steps.tag.outputs.version }} \
           build/dist/koishi-desktop-${{ matrix.target.rid }}-${{ steps.tag.outputs.version }}.zip \
           build/dist/koishi-desktop-${{ matrix.target.rid }}-${{ steps.tag.outputs.version }}.AppImage
+        shell: bash
+
+      - name: Upload Release Files for Windows to App Center
+        if: startsWith(github.ref, 'refs/tags/') && matrix.target.goos == 'windows'
+        run: |
+          yarn appcenter distribute release --disable-telemetry -t 1000000 \
+          --token ${{ secrets.APPCENTER_DEPLOY_KEY }} \
+          -a koishi/Koishi-Desktop-for-Windows \
+          -g stable \
+          -b ${{ steps.tag.outputs.build_version }} \
+          -f build/dist/koishi-desktop-${{ matrix.target.rid }}-${{ steps.tag.outputs.version }}.msi
+        shell: bash
+
+      - name: Upload Release Files for macOS to App Center
+        if: startsWith(github.ref, 'refs/tags/') && matrix.target.goos == 'darwin'
+        run: |
+          yarn appcenter distribute release --disable-telemetry -t 1000000 \
+          --token ${{ secrets.APPCENTER_DEPLOY_KEY }} \
+          -a koishi/Koishi-Desktop-for-macOS \
+          -g stable \
+          -b ${{ steps.tag.outputs.build_version }} -n ${{ steps.tag.outputs.build_number }} \
+          -f build/dist/koishi-desktop-${{ matrix.target.rid }}-${{ steps.tag.outputs.version }}.pkg
         shell: bash
