@@ -7,21 +7,27 @@ on:
 
 jobs:
   build:
-    name: ${{ fromJson(matrix.target).rid }}
+    name: ${{ matrix.target.rid }}
 
     strategy:
       fail-fast: false
 
       matrix:
         target:
-          - '{"goos":"windows","rid":"win-x64","os":"windows-2022"}'
-          - '{"goos":"linux","rid":"linux-x64","os":"ubuntu-20.04"}'
-          - '{"goos":"darwin","rid":"osx-x64","os":"macos-11"}'
+          - goos: windows
+            rid: win-x64
+            os: windows-2022
+          - goos: linux
+            rid: linux-x64
+            os: ubuntu-20.04
+          - goos: darwin
+            rid: osx-x64
+            os: macos-11
 
-    runs-on: ${{ fromJson(matrix.target).os }}
+    runs-on: ${{ matrix.target.os }}
 
     env:
-      GOOS: ${{ fromJson(matrix.target).goos }}
+      GOOS: ${{ matrix.target.goos }}
       GOARCH: amd64
 
     steps:

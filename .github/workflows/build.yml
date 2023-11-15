@@ -7,21 +7,27 @@ on:
 
 jobs:
   build:
-    name: ${{ fromJson(matrix.target).rid }}
+    name: ${{ matrix.target.rid }}
 
     strategy:
       fail-fast: false
 
       matrix:
         target:
-          - '{"goos":"windows","rid":"win-x64","os":"windows-2022"}'
-          - '{"goos":"linux","rid":"linux-x64","os":"ubuntu-20.04"}'
-          - '{"goos":"darwin","rid":"osx-x64","os":"macos-11"}'
+          - goos: windows
+            rid: win-x64
+            os: windows-2022
+          - goos: linux
+            rid: linux-x64
+            os: ubuntu-20.04
+          - goos: darwin
+            rid: osx-x64
+            os: macos-11
 
-    runs-on: ${{ fromJson(matrix.target).os }}
+    runs-on: ${{ matrix.target.os }}
 
     env:
-      GOOS: ${{ fromJson(matrix.target).goos }}
+      GOOS: ${{ matrix.target.goos }}
       GOARCH: amd64
 
     steps:
@@ -41,7 +47,7 @@ jobs:
         shell: bash
 
       - name: Draft Release
-        if: fromJson(matrix.target).goos == 'linux' && startsWith(github.ref, 'refs/tags/')
+        if: matrix.target.goos == 'linux' && startsWith(github.ref, 'refs/tags/')
         env:
           GITHUB_TOKEN: ${{ secrets.ACTIONS_DEPLOY_MODULE_KEY }}
         run: |
@@ -68,12 +74,12 @@ jobs:
           cache-dependency-path: config.ts
 
       - name: Install Dependencies (macOS)
-        if: fromJson(matrix.target).goos == 'darwin'
+        if: matrix.target.goos == 'darwin'
         run: brew install graphicsmagick imagemagick
         shell: bash
 
       - name: Install Dependencies (Linux)
-        if: fromJson(matrix.target).goos == 'linux'
+        if: matrix.target.goos == 'linux'
         run: |
           sudo apt update
           sudo apt install -y fuse libfuse2
@@ -90,88 +96,88 @@ jobs:
         shell: bash
 
       - name: Upload zip for Windows
-        if: fromJson(matrix.target).goos == 'windows'
+        if: matrix.target.goos == 'windows'
         uses: actions/upload-artifact@v3
         with:
-          name: koi-${{ fromJson(matrix.target).rid }}-${{ github.sha }}.zip
+          name: koi-${{ matrix.target.rid }}-${{ github.sha }}.zip
           path: build/dist/koishi.zip
 
       - name: Upload msi for Windows
-        if: fromJson(matrix.target).goos == 'windows'
+        if: matrix.target.goos == 'windows'
         uses: actions/upload-artifact@v3
         with:
-          name: koi-${{ fromJson(matrix.target).rid }}-${{ github.sha }}.msi
+          name: koi-${{ matrix.target.rid }}-${{ github.sha }}.msi
           path: build/dist/koishi.msi
 
       - name: Upload zip for macOS
-        if: fromJson(matrix.target).goos == 'darwin'
+        if: matrix.target.goos == 'darwin'
         uses: actions/upload-artifact@v3
         with:
-          name: koi-${{ fromJson(matrix.target).rid }}-${{ github.sha }}.zip
+          name: koi-${{ matrix.target.rid }}-${{ github.sha }}.zip
           path: build/dist/koishi.zip
 
       - name: Upload dmg for macOS
-        if: fromJson(matrix.target).goos == 'darwin'
+        if: matrix.target.goos == 'darwin'
         uses: actions/upload-artifact@v3
         with:
-          name: koi-${{ fromJson(matrix.target).rid }}-${{ github.sha }}.dmg
+          name: koi-${{ matrix.target.rid }}-${{ github.sha }}.dmg
           path: build/dist/koishi.dmg
 
       - name: Upload pkg for macOS
-        if: fromJson(matrix.target).goos == 'darwin'
+        if: matrix.target.goos == 'darwin'
         uses: actions/upload-artifact@v3
         with:
-          name: koi-${{ fromJson(matrix.target).rid }}-${{ github.sha }}.pkg
+          name: koi-${{ matrix.target.rid }}-${{ github.sha }}.pkg
           path: build/dist/koishi.pkg
 
       - name: Upload zip for Linux
-        if: fromJson(matrix.target).goos == 'linux'
+        if: matrix.target.goos == 'linux'
         uses: actions/upload-artifact@v3
         with:
-          name: koi-${{ fromJson(matrix.target).rid }}-${{ github.sha }}.zip
+          name: koi-${{ matrix.target.rid }}-${{ github.sha }}.zip
           path: build/dist/koishi.zip
 
       - name: Upload AppImage for Linux
-        if: fromJson(matrix.target).goos == 'linux'
+        if: matrix.target.goos == 'linux'
         uses: actions/upload-artifact@v3
         with:
-          name: koi-${{ fromJson(matrix.target).rid }}-${{ github.sha }}.AppImage
+          name: koi-${{ matrix.target.rid }}-${{ github.sha }}.AppImage
           path: build/dist/Koishi.AppImage
 
       - name: Upload Release Files for Windows
-        if: startsWith(github.ref, 'refs/tags/') && fromJson(matrix.target).goos == 'windows'
+        if: startsWith(github.ref, 'refs/tags/') && matrix.target.goos == 'windows'
         env:
           GITHUB_TOKEN: ${{ secrets.ACTIONS_DEPLOY_MODULE_KEY }}
         run: |
-          mv build/dist/koishi.zip build/dist/koishi-desktop-${{ fromJson(matrix.target).rid }}-${{ steps.tag.outputs.version }}.zip
-          mv build/dist/koishi.msi build/dist/koishi-desktop-${{ fromJson(matrix.target).rid }}-${{ steps.tag.outputs.version }}.msi
+          mv build/dist/koishi.zip build/dist/koishi-desktop-${{ matrix.target.rid }}-${{ steps.tag.outputs.version }}.zip
+          mv build/dist/koishi.msi build/dist/koishi-desktop-${{ matrix.target.rid }}-${{ steps.tag.outputs.version }}.msi
           gh release upload ${{ steps.tag.outputs.version }} \
-          build/dist/koishi-desktop-${{ fromJson(matrix.target).rid }}-${{ steps.tag.outputs.version }}.zip \
-          build/dist/koishi-desktop-${{ fromJson(matrix.target).rid }}-${{ steps.tag.outputs.version }}.msi
+          build/dist/koishi-desktop-${{ matrix.target.rid }}-${{ steps.tag.outputs.version }}.zip \
+          build/dist/koishi-desktop-${{ matrix.target.rid }}-${{ steps.tag.outputs.version }}.msi
         shell: bash
 
       - name: Upload Release Files for macOS
-        if: startsWith(github.ref, 'refs/tags/') && fromJson(matrix.target).goos == 'darwin'
+        if: startsWith(github.ref, 'refs/tags/') && matrix.target.goos == 'darwin'
         env:
           GITHUB_TOKEN: ${{ secrets.ACTIONS_DEPLOY_MODULE_KEY }}
         run: |
-          mv build/dist/koishi.zip build/dist/koishi-desktop-${{ fromJson(matrix.target).rid }}-${{ steps.tag.outputs.version }}.zip
-          mv build/dist/koishi.dmg build/dist/koishi-desktop-${{ fromJson(matrix.target).rid }}-${{ steps.tag.outputs.version }}.dmg
-          mv build/dist/koishi.pkg build/dist/koishi-desktop-${{ fromJson(matrix.target).rid }}-${{ steps.tag.outputs.version }}.pkg
+          mv build/dist/koishi.zip build/dist/koishi-desktop-${{ matrix.target.rid }}-${{ steps.tag.outputs.version }}.zip
+          mv build/dist/koishi.dmg build/dist/koishi-desktop-${{ matrix.target.rid }}-${{ steps.tag.outputs.version }}.dmg
+          mv build/dist/koishi.pkg build/dist/koishi-desktop-${{ matrix.target.rid }}-${{ steps.tag.outputs.version }}.pkg
           gh release upload ${{ steps.tag.outputs.version }} \
-          build/dist/koishi-desktop-${{ fromJson(matrix.target).rid }}-${{ steps.tag.outputs.version }}.zip \
-          build/dist/koishi-desktop-${{ fromJson(matrix.target).rid }}-${{ steps.tag.outputs.version }}.dmg \
-          build/dist/koishi-desktop-${{ fromJson(matrix.target).rid }}-${{ steps.tag.outputs.version }}.pkg
+          build/dist/koishi-desktop-${{ matrix.target.rid }}-${{ steps.tag.outputs.version }}.zip \
+          build/dist/koishi-desktop-${{ matrix.target.rid }}-${{ steps.tag.outputs.version }}.dmg \
+          build/dist/koishi-desktop-${{ matrix.target.rid }}-${{ steps.tag.outputs.version }}.pkg
         shell: bash
 
       - name: Upload Release Files for Linux
-        if: startsWith(github.ref, 'refs/tags/') && fromJson(matrix.target).goos == 'linux'
+        if: startsWith(github.ref, 'refs/tags/') && matrix.target.goos == 'linux'
         env:
           GITHUB_TOKEN: ${{ secrets.ACTIONS_DEPLOY_MODULE_KEY }}
         run: |
-          mv build/dist/koishi.zip build/dist/koishi-desktop-${{ fromJson(matrix.target).rid }}-${{ steps.tag.outputs.version }}.zip
-          mv build/dist/Koishi.AppImage build/dist/koishi-desktop-${{ fromJson(matrix.target).rid }}-${{ steps.tag.outputs.version }}.AppImage
+          mv build/dist/koishi.zip build/dist/koishi-desktop-${{ matrix.target.rid }}-${{ steps.tag.outputs.version }}.zip
+          mv build/dist/Koishi.AppImage build/dist/koishi-desktop-${{ matrix.target.rid }}-${{ steps.tag.outputs.version }}.AppImage
           gh release upload ${{ steps.tag.outputs.version }} \
-          build/dist/koishi-desktop-${{ fromJson(matrix.target).rid }}-${{ steps.tag.outputs.version }}.zip \
-          build/dist/koishi-desktop-${{ fromJson(matrix.target).rid }}-${{ steps.tag.outputs.version }}.AppImage
+          build/dist/koishi-desktop-${{ matrix.target.rid }}-${{ steps.tag.outputs.version }}.zip \
+          build/dist/koishi-desktop-${{ matrix.target.rid }}-${{ steps.tag.outputs.version }}.AppImage
         shell: bash
