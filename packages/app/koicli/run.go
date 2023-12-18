@@ -7,7 +7,6 @@ import (
 	"golang.org/x/text/message"
 	"gopkg.ilharper.com/koi/app/ui/tray"
 	"gopkg.ilharper.com/koi/core/god"
-	"gopkg.ilharper.com/koi/core/koiconfig"
 	"gopkg.ilharper.com/koi/core/logger"
 )
 
@@ -50,14 +49,7 @@ func newRunAction(i *do.Injector) (cli.ActionFunc, error) {
 	p := do.MustInvoke[*message.Printer](i)
 
 	return func(c *cli.Context) error {
-		var err error
-
 		l.Debug(p.Sprintf("Trigger action: run"))
-
-		cfg, err := do.Invoke[*koiconfig.Config](i)
-		if err != nil {
-			return err
-		}
 
 		return do.MustInvokeNamed[cli.ActionFunc](i, serviceActionRunUI)(c)
 	}, nil
