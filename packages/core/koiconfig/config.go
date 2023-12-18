@@ -7,7 +7,6 @@ type Config struct {
 
 //goland:noinspection GoNameStartsWithPackageName
 type ConfigData struct {
-	Mode    string `yaml:"mode"`
 	Open    string `yaml:"open"`
 	Isolate string `yaml:"isolate"`
 	Start   []string

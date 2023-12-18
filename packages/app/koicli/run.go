@@ -59,10 +59,6 @@ func newRunAction(i *do.Injector) (cli.ActionFunc, error) {
 			return err
 		}
 
-		if cfg.Data.Mode == "cli" {
-			l.Warn("`koi run` will run in UI mode regardless of `mode` config as of v1.0.0. To start daemon, use `koi run daemon`. The `mode` config is deprecated and scheduled to be removed in several releases. Delete this config ASAP.")
-		}
-
 		return do.MustInvokeNamed[cli.ActionFunc](i, serviceActionRunUI)(c)
 	}, nil
 }
