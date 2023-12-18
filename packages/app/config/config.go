@@ -214,7 +214,7 @@ func joinAndCreate(i *do.Injector, base, path string) (string, error) {
 	// Set perm for directory that already exists
 	err = os.Chmod(joinedPath, fs.ModePerm) // -rwxrwxrwx
 	if err != nil {
-		l.Warn(p.Sprintf("failed to chmod data folder %s: %v", path, err))
+		l.Debug(p.Sprintf("failed to chmod data folder %s: %v", path, err))
 	}
 
 	return joinedPath, nil
