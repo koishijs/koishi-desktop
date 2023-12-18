@@ -59,15 +59,8 @@ func main() {
 
 		switch {
 		case errors.Is(err, fs.ErrNotExist):
-			fmt.Println("User data does not exist. Trying to migrate legacy user data.")
-
-			if migrate(folderData) {
-				fmt.Println("Migration completed. Setting up redirect.")
-				extractMode = 0
-			} else {
-				fmt.Println("Legacy user data not found or migration failed. Extracting all files.")
-				extractMode = ExtractData | ExtractConfig
-			}
+			fmt.Println("User data does not exist. Extracting all files.")
+			extractMode = ExtractData | ExtractConfig
 		case err == nil:
 			fmt.Println("User data exists. Setting up redirect.")
 			extractMode = 0
