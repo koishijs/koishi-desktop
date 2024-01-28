@@ -1,6 +1,8 @@
-import { Config, Context, Schema, useConfig } from '@koishijs/client'
+import type { Config, Context } from '@koishijs/client'
+import { Schema, useConfig } from '@koishijs/client'
 import type { RemovableRef } from '@vueuse/core'
 import * as colorString from 'color-string'
+import { watchEffect } from 'vue'
 
 declare global {
   interface Window {
@@ -115,20 +117,25 @@ const syncStyleSheet = (config: RemovableRef<Config>) => {
   if (!styleSheet) return
 
   switch (config.value.desktop?.enhance) {
+    case 'off':
+      break
     case 'enhanceColor':
       styleSheet.innerHTML = baseCSS + enhanceColorCSS
       break
-    case 'enhance':
-      styleSheet.innerHTML = baseCSS + enhanceCSS
-      break
     case 'enhanceTrans':
       styleSheet.innerHTML = baseCSS + enhanceCSS + enhanceTransCSS
+      break
+    // case 'enhance':
+    default:
+      styleSheet.innerHTML = baseCSS + enhanceCSS
       break
   }
 }
 
 const syncTheme = (config: RemovableRef<Config>) => {
   switch (config.value.desktop?.enhance) {
+    case 'off':
+      break
     case 'enhanceColor':
       send(
         `T${
@@ -138,8 +145,9 @@ const syncTheme = (config: RemovableRef<Config>) => {
         )}${getComputedColorHex('--fg1')}`,
       )
       break
-    case 'enhance':
-    case 'enhanceTrans':
+    // case 'enhance':
+    // case 'enhanceTrans':
+    default:
       send(
         window.document.documentElement.classList.contains('dark')
           ? 'TD'
@@ -151,47 +159,23 @@ const syncTheme = (config: RemovableRef<Config>) => {
 
 const resetTheme = () => send('TR')
 
-const sync = (config: RemovableRef<Config>) => {
-  syncStyleSheet(config)
-  syncTheme(config)
-}
-
 const reset = () => {
   resetTheme()
+}
+
+const sync = (config: RemovableRef<Config>) => {
+  if (config.value.desktop?.enhance === 'off') {
+    reset()
+    return
+  }
+
+  syncStyleSheet(config)
+  syncTheme(config)
 }
 
 const supports = (f: 'enhance' | 'enhanceColor') =>
   Array.isArray(window.__KOI_SHELL__?.supports) &&
   window.__KOI_SHELL__.supports.includes(f)
-
-const enhance = (config: RemovableRef<Config>) => {
-  if (!supports('enhance')) return
-
-  if (!styleSheet) {
-    styleSheet = window.document.getElementById(
-      styleSheetId,
-    ) as HTMLStyleElement
-    styleSheet = document.createElement('style')
-    styleSheet.id = styleSheetId
-    document.head.appendChild(styleSheet)
-  }
-
-  if (!themeObserver) {
-    themeObserver = new MutationObserver(() => sync(config))
-    themeObserver.observe(window.document.documentElement, { attributes: true })
-  }
-
-  sync(config)
-}
-
-const disposeEnhance = () => {
-  if (!supports('enhance')) return
-
-  if (styleSheet) window.document.head.removeChild(styleSheet)
-  if (themeObserver) themeObserver.disconnect()
-
-  reset()
-}
 
 declare module '@koishijs/client' {
   interface Config {
@@ -203,7 +187,7 @@ declare module '@koishijs/client' {
 
 export default (ctx: Context) => {
   ctx.settings({
-    id: 'desktop-enhance',
+    id: 'appearance',
     schema: Schema.object({
       desktop: Schema.object({
         enhance: Schema.union(
@@ -211,32 +195,57 @@ export default (ctx: Context) => {
             Schema.const('off').description('增强关闭'),
             Schema.const('enhance')
               .description('增强')
-              // @ts-expect-error 【管理员】孤梦星影 1:35:20 看了源码，实际上是可用的  只是没有类型  你可以 @ts-ignore
               .disabled(!supports('enhance')),
 
             Schema.const('enhanceColor')
               .description('增强色彩')
-              // @ts-expect-error 【管理员】孤梦星影 1:35:20 看了源码，实际上是可用的  只是没有类型  你可以 @ts-ignore
               .disabled(!supports('enhanceColor')),
 
             Schema.const('enhanceTrans')
               .description('增强透视')
-              // @ts-expect-error 【管理员】孤梦星影 1:35:20 看了源码，实际上是可用的  只是没有类型  你可以 @ts-ignore
               .disabled(!supports('enhance')),
           ].filter(Boolean),
         )
           .default(supports('enhance') ? 'enhance' : 'off')
           .description('Koishi 桌面增强模式。'),
-      }).description('Koishi 桌面设置'),
+      }).description('Koishi 桌面增强'),
     }),
   })
 
   ctx.on('ready', () => {
+    if (!supports('enhance')) return
+
+    // Config
     const config = useConfig()
 
-    if (config.value.desktop?.enhance !== 'off') {
-      enhance(config)
-      ctx.on('dispose', disposeEnhance)
+    // Stylesheet
+    if (!styleSheet) {
+      styleSheet = window.document.getElementById(
+        styleSheetId,
+      ) as HTMLStyleElement
+      styleSheet = document.createElement('style')
+      styleSheet.id = styleSheetId
+      document.head.appendChild(styleSheet)
     }
+    ctx.on('dispose', () => {
+      if (styleSheet) window.document.head.removeChild(styleSheet)
+    })
+
+    // Theme Observer
+    if (!themeObserver) {
+      themeObserver = new MutationObserver(() => sync(config))
+      themeObserver.observe(window.document.documentElement, {
+        attributes: true,
+      })
+    }
+    ctx.on('dispose', () => {
+      if (themeObserver) themeObserver.disconnect()
+    })
+
+    // Connect
+    watchEffect(() => sync(config))
+
+    // Reset
+    ctx.on('dispose', reset)
   })
 }
