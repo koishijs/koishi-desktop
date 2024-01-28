@@ -1,7 +1,7 @@
 {
   "name": "koishi-plugin-desktop",
   "description": "Koishi Desktop support",
-  "version": "0.0.5",
+  "version": "1.0.0",
   "author": {
     "name": "Il Harper",
     "email": "hi@ilharper.com",
@@ -32,7 +32,7 @@
   ],
   "peerDependencies": {
     "@koishijs/plugin-console": "^5.18.2",
-    "koishi": "^4.15.4"
+    "koishi": "^4.16.7"
   },
   "devDependencies": {
     "@koishijs/client": "^5.18.2",
@@ -40,7 +40,7 @@
     "@types/color-string": "^1.5.2",
     "atsc": "^1.2.2",
     "color-string": "^1.9.1",
-    "koishi": "^4.15.4"
+    "koishi": "^4.16.7"
   },
   "koishi": {
     "description": {
