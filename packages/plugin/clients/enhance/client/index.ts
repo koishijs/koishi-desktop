@@ -1,5 +1,5 @@
 import { Config, Context, Schema, useConfig } from '@koishijs/client'
-import { RemovableRef } from '@vueuse/core'
+import type { RemovableRef } from '@vueuse/core'
 import * as colorString from 'color-string'
 
 declare global {
@@ -114,7 +114,7 @@ const send = (message: string) => {
 const syncStyleSheet = (config: RemovableRef<Config>) => {
   if (!styleSheet) return
 
-  switch (config.value.desktop.enhance) {
+  switch (config.value.desktop?.enhance) {
     case 'enhanceColor':
       styleSheet.innerHTML = baseCSS + enhanceColorCSS
       break
@@ -128,7 +128,7 @@ const syncStyleSheet = (config: RemovableRef<Config>) => {
 }
 
 const syncTheme = (config: RemovableRef<Config>) => {
-  switch (config.value.desktop.enhance) {
+  switch (config.value.desktop?.enhance) {
     case 'enhanceColor':
       send(
         `T${
@@ -195,7 +195,7 @@ const disposeEnhance = () => {
 
 declare module '@koishijs/client' {
   interface Config {
-    desktop: {
+    desktop?: {
       enhance: 'off' | 'enhance' | 'enhanceColor' | 'enhanceTrans'
     }
   }
@@ -234,7 +234,7 @@ export default (ctx: Context) => {
   ctx.on('ready', () => {
     const config = useConfig()
 
-    if (config?.value?.desktop?.enhance !== 'off') {
+    if (config.value.desktop?.enhance !== 'off') {
       enhance(config)
       ctx.on('dispose', disposeEnhance)
     }
