@@ -234,7 +234,7 @@ export default (ctx: Context) => {
   ctx.on('ready', () => {
     const config = useConfig()
 
-    if (config.value.desktop.enhance !== 'off') {
+    if (config?.value?.desktop?.enhance !== 'off') {
       enhance(config)
       ctx.on('dispose', disposeEnhance)
     }
