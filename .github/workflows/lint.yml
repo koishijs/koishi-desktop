@@ -22,7 +22,7 @@ jobs:
             os: ubuntu-20.04
           - goos: darwin
             rid: osx-x64
-            os: macos-11
+            os: macos-12
 
     runs-on: ${{ matrix.target.os }}
 
