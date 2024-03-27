@@ -20,7 +20,7 @@ export const sourceGitHub = 'https://github.com'
 // Remember to test all tasks before upgrading
 // versions.
 
-export const versionNode = '20.3.1'
+export const versionNode = '20.12.0'
 export const versionYarn = '4.0.1'
 
 export const versionWebView2 = '1.0.1343.22'
