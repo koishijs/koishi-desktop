@@ -8,9 +8,9 @@ require (
 	github.com/mitchellh/mapstructure v1.5.0
 	github.com/samber/do v1.6.0
 	github.com/shirou/gopsutil/v3 v3.23.4
-	golang.org/x/net v0.10.0
-	golang.org/x/sys v0.8.0
-	golang.org/x/text v0.9.0
+	golang.org/x/net v0.23.0
+	golang.org/x/sys v0.18.0
+	golang.org/x/text v0.14.0
 	gopkg.ilharper.com/koi/app v0.10.2
 	gopkg.ilharper.com/x/browser v1.0.0
 	gopkg.ilharper.com/x/colette v0.2.0
