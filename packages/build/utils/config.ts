@@ -36,7 +36,7 @@ export const koiBuildNumber = buildKoiBuildNumber()
 
 const buildKoiSemver = () => {
   const spl = koiVersion.split('-')
-  const build = spl.length > 1 ? Number(spl[1]) : 0
+  const build = spl.length > 1 ? (spl[1] === 'dirty' ? 0 : Number(spl[1])) : 0
   const majorMinorPatch = spl[0].slice(1).split('.')
 
   return {
