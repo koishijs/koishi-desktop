@@ -2,7 +2,7 @@
   "name": "koi-workspace",
   "private": true,
   "version": "0.1.0",
-  "packageManager": "yarn@1.22.19",
+  "packageManager": "yarn@4.2.2",
   "workspaces": [
     "packages/*"
   ],
