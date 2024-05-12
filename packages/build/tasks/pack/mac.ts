@@ -34,7 +34,14 @@ export const packMacDmg = async () => {
     dir('buildMac', 'Cordis.app/Contents/MacOS/koi.yml'),
     'redirect: USERDATA'
   )
-  await tryExec('yarn', ['create-dmg', appPath, dir('buildMac'), '--overwrite'])
+  await tryExec('yarn', [
+    'workspace',
+    'koi-build',
+    'create-dmg',
+    appPath,
+    dir('buildMac'),
+    '--overwrite',
+  ])
   await fs.rename(
     dir('buildMac', `Cordis ${koiVersion}.dmg`),
     dir('dist', 'cordis.dmg')
