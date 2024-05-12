@@ -188,24 +188,24 @@ jobs:
           build/dist/koishi-desktop-${{ matrix.target.rid }}-${{ steps.tag.outputs.version }}.AppImage
         shell: bash
 
-      - name: Upload Release Files for Windows to App Center
-        if: startsWith(github.ref, 'refs/tags/') && matrix.target.goos == 'windows'
-        run: |
-          yarn appcenter distribute release --disable-telemetry -t 1000000 \
-          --token ${{ secrets.APPCENTER_DEPLOY_KEY }} \
-          -a koishi/Koishi-Desktop-for-Windows \
-          -g stable \
-          -b ${{ steps.tag.outputs.build_version }} \
-          -f build/dist/koishi-desktop-${{ matrix.target.rid }}-${{ steps.tag.outputs.version }}.msi
-        shell: bash
+      # - name: Upload Release Files for Windows to App Center
+      #   if: startsWith(github.ref, 'refs/tags/') && matrix.target.goos == 'windows'
+      #   run: |
+      #     yarn appcenter distribute release --disable-telemetry -t 1000000 \
+      #     --token ${{ secrets.APPCENTER_DEPLOY_KEY }} \
+      #     -a koishi/Koishi-Desktop-for-Windows \
+      #     -g stable \
+      #     -b ${{ steps.tag.outputs.build_version }} \
+      #     -f build/dist/koishi-desktop-${{ matrix.target.rid }}-${{ steps.tag.outputs.version }}.msi
+      #   shell: bash
 
-      - name: Upload Release Files for macOS to App Center
-        if: startsWith(github.ref, 'refs/tags/') && matrix.target.goos == 'darwin'
-        run: |
-          yarn appcenter distribute release --disable-telemetry -t 1000000 \
-          --token ${{ secrets.APPCENTER_DEPLOY_KEY }} \
-          -a koishi/Koishi-Desktop-for-macOS \
-          -g stable \
-          -b ${{ steps.tag.outputs.build_version }} -n ${{ steps.tag.outputs.build_number }} \
-          -f build/dist/koishi-desktop-${{ matrix.target.rid }}-${{ steps.tag.outputs.version }}.pkg
-        shell: bash
+      # - name: Upload Release Files for macOS to App Center
+      #   if: startsWith(github.ref, 'refs/tags/') && matrix.target.goos == 'darwin'
+      #   run: |
+      #     yarn appcenter distribute release --disable-telemetry -t 1000000 \
+      #     --token ${{ secrets.APPCENTER_DEPLOY_KEY }} \
+      #     -a koishi/Koishi-Desktop-for-macOS \
+      #     -g stable \
+      #     -b ${{ steps.tag.outputs.build_version }} -n ${{ steps.tag.outputs.build_number }} \
+      #     -f build/dist/koishi-desktop-${{ matrix.target.rid }}-${{ steps.tag.outputs.version }}.pkg
+      #   shell: bash
