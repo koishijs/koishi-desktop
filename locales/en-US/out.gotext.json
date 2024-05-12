@@ -2,9 +2,9 @@
     "language": "en-US",
     "messages": [
         {
-            "id": "Koishi Desktop v{AppVersion}",
-            "message": "Koishi Desktop v{AppVersion}",
-            "translation": "Koishi Desktop v{AppVersion}",
+            "id": "Cordis Desktop v{AppVersion}",
+            "message": "Cordis Desktop v{AppVersion}",
+            "translation": "Cordis Desktop v{AppVersion}",
             "translatorComment": "Copied from source.",
             "placeholders": [
                 {
@@ -391,6 +391,23 @@
             "fuzzy": true
         },
         {
+            "id": "failed to process dir bin: {Err}",
+            "message": "failed to process dir bin: {Err}",
+            "translation": "failed to process dir bin: {Err}",
+            "translatorComment": "Copied from source.",
+            "placeholders": [
+                {
+                    "id": "Err",
+                    "string": "%[1]v",
+                    "type": "error",
+                    "underlyingType": "interface{Error() string}",
+                    "argNum": 1,
+                    "expr": "err"
+                }
+            ],
+            "fuzzy": true
+        },
+        {
             "id": "failed to process dir data: {Err}",
             "message": "failed to process dir data: {Err}",
             "translation": "failed to process dir data: {Err}",
@@ -411,40 +428,6 @@
             "id": "failed to process dir data/home: {Err}",
             "message": "failed to process dir data/home: {Err}",
             "translation": "failed to process dir data/home: {Err}",
-            "translatorComment": "Copied from source.",
-            "placeholders": [
-                {
-                    "id": "Err",
-                    "string": "%[1]v",
-                    "type": "error",
-                    "underlyingType": "interface{Error() string}",
-                    "argNum": 1,
-                    "expr": "err"
-                }
-            ],
-            "fuzzy": true
-        },
-        {
-            "id": "failed to process dir data/node: {Err}",
-            "message": "failed to process dir data/node: {Err}",
-            "translation": "failed to process dir data/node: {Err}",
-            "translatorComment": "Copied from source.",
-            "placeholders": [
-                {
-                    "id": "Err",
-                    "string": "%[1]v",
-                    "type": "error",
-                    "underlyingType": "interface{Error() string}",
-                    "argNum": 1,
-                    "expr": "err"
-                }
-            ],
-            "fuzzy": true
-        },
-        {
-            "id": "failed to process dir node/bin: {Err}",
-            "message": "failed to process dir node/bin: {Err}",
-            "translation": "failed to process dir node/bin: {Err}",
             "translatorComment": "Copied from source.",
             "placeholders": [
                 {
@@ -552,16 +535,16 @@
             "fuzzy": true
         },
         {
-            "id": "Koishi Desktop",
-            "message": "Koishi Desktop",
-            "translation": "Koishi Desktop",
+            "id": "Cordis Desktop",
+            "message": "Cordis Desktop",
+            "translation": "Cordis Desktop",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },
         {
-            "id": "Launch Koishi from your desktop.",
-            "message": "Launch Koishi from your desktop.",
-            "translation": "Launch Koishi from your desktop.",
+            "id": "Launch Cordis from your desktop.",
+            "message": "Launch Cordis from your desktop.",
+            "translation": "Launch Cordis from your desktop.",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },
@@ -718,9 +701,9 @@
             "fuzzy": true
         },
         {
-            "id": "Import a Koishi Bundle",
-            "message": "Import a Koishi Bundle",
-            "translation": "Import a Koishi Bundle",
+            "id": "Import a Cordis Bundle",
+            "message": "Import a Cordis Bundle",
+            "translation": "Import a Cordis Bundle",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },
@@ -1034,9 +1017,9 @@
             "fuzzy": true
         },
         {
-            "id": "Run Koishi Desktop",
-            "message": "Run Koishi Desktop",
-            "translation": "Run Koishi Desktop",
+            "id": "Run Cordis Desktop",
+            "message": "Run Cordis Desktop",
+            "translation": "Run Cordis Desktop",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },
@@ -1059,23 +1042,6 @@
             "message": "Trigger action: run",
             "translation": "Trigger action: run",
             "translatorComment": "Copied from source.",
-            "fuzzy": true
-        },
-        {
-            "id": "unknown mode: {Mode}",
-            "message": "unknown mode: {Mode}",
-            "translation": "unknown mode: {Mode}",
-            "translatorComment": "Copied from source.",
-            "placeholders": [
-                {
-                    "id": "Mode",
-                    "string": "%[1]s",
-                    "type": "string",
-                    "underlyingType": "string",
-                    "argNum": 1,
-                    "expr": "cfg.Data.Mode"
-                }
-            ],
             "fuzzy": true
         },
         {
