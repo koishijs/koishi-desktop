@@ -3,16 +3,16 @@
 echo "Starting post-install process..."
 
 echo "Removing com.apple.quarantine..."
-sudo xattr -d com.apple.quarantine /Applications/Koishi.app/ || true
+sudo xattr -d com.apple.quarantine /Applications/Cordis.app/ || true
 
 echo "Setting chmod for unfold..."
-sudo chmod -R 777 /Applications/Koishi.app/ || true
+sudo chmod -R 777 /Applications/Cordis.app/ || true
 
 echo "Starting unfold..."
-sudo /Applications/Koishi.app/Contents/MacOS/unfold ensure
+sudo /Applications/Cordis.app/Contents/MacOS/unfold ensure
 
 echo "Setting chmod for app..."
-sudo chmod -R 755 /Applications/Koishi.app/ || true
+sudo chmod -R 755 /Applications/Cordis.app/ || true
 
 echo "Setting chmod for user data..."
 sudo chmod -R 777 ~/Library/Application\ Support/Koishi/Desktop/ || true

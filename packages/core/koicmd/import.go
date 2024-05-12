@@ -65,7 +65,7 @@ func koiCmdImport(i *do.Injector) *proto.Response {
 		}
 	}
 
-	l.Infof("Importing instance %s\nUsing Koishi bundle: %s", name, path)
+	l.Infof("Importing instance %s\nUsing Cordis bundle: %s", name, path)
 	err = os.MkdirAll(targetPath, os.ModePerm)
 	if err != nil {
 		return proto.NewErrorResult(koierr.NewErrInternalError(fmt.Errorf("cannot create target path %s: %w", targetPath, err)))

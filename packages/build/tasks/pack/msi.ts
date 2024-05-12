@@ -155,7 +155,7 @@ const buildPackMsi = (lang: Lang) => async () => {
   )
 }
 
-const pathNeutralMsi = dir('buildMsi', 'koishi.msi')
+const pathNeutralMsi = dir('buildMsi', 'cordis.msi')
 
 export const packMsiCopyNeutral = () =>
   fs.copyFile(dir('buildMsi', '1033.msi'), pathNeutralMsi)
@@ -209,7 +209,7 @@ export const packMsiListStorage = () =>
   exec('cscript', [getPathWiSubStg(), pathNeutralMsi], dir('buildMsi'))
 
 export const packMsiCopyDist = () =>
-  fs.copyFile(pathNeutralMsi, dir('dist', 'koishi.msi'))
+  fs.copyFile(pathNeutralMsi, dir('dist', 'cordis.msi'))
 
 export const packMsi = series(
   packMsiMkdir,

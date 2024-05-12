@@ -67,7 +67,7 @@ extension NSApplicationDelegate {
     }
 
     func populateHelpMenu(_ del: KSWebViewDelegate, _ helpMenu: NSMenu) {
-        let koishiDocumentationMenuItem = helpMenu.addItem(withTitle: "Koishi Documentation", action: #selector(del.openDocumentation), keyEquivalent: "h")
+        let koishiDocumentationMenuItem = helpMenu.addItem(withTitle: "Cordis Documentation", action: #selector(del.openDocumentation), keyEquivalent: "h")
         koishiDocumentationMenuItem.keyEquivalentModifierMask = [.command, .shift]
     }
 }

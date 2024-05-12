@@ -46,7 +46,7 @@ func main() {
 
 	do.Provide(i, koicli.NewCli)
 
-	l.Info(p.Sprintf("Koishi Desktop v%s", util.AppVersion))
+	l.Info(p.Sprintf("Cordis Desktop v%s", util.AppVersion))
 
 	noConsole := false
 

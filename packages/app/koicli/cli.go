@@ -26,8 +26,8 @@ func NewCli(i *do.Injector) (*cli.App, error) {
 	do.ProvideNamed(i, serviceCommandYarn, newYarnCommand)
 
 	return &cli.App{
-		Name:    p.Sprintf("Koishi Desktop"),
-		Usage:   p.Sprintf("Launch Koishi from your desktop."),
+		Name:    p.Sprintf("Cordis Desktop"),
+		Usage:   p.Sprintf("Launch Cordis from your desktop."),
 		Version: fmt.Sprintf("v%s", util.AppVersion),
 		Authors: []*cli.Author{
 			{

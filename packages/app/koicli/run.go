@@ -27,7 +27,7 @@ func newRunCommand(i *do.Injector) (*cli.Command, error) {
 
 	return &cli.Command{
 		Name:   "run",
-		Usage:  p.Sprintf("Run Koishi Desktop"),
+		Usage:  p.Sprintf("Run Cordis Desktop"),
 		Action: do.MustInvokeNamed[cli.ActionFunc](i, serviceActionRun),
 		Subcommands: []*cli.Command{
 			{

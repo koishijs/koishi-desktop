@@ -251,7 +251,7 @@ func (shell *KoiShell) About() {
 		"mode":        "dialog",
 		"title":       "About",
 		"style":       "info",
-		"text1":       "Koishi Desktop",
+		"text1":       "Cordis Desktop",
 		"text2":       fmt.Sprintf("v%s", util.AppVersion),
 		"buttonCount": 1,
 	})
@@ -267,8 +267,8 @@ func (shell *KoiShell) AlreadyRunning() {
 		"mode":        "dialog",
 		"title":       "Already Running",
 		"style":       "info",
-		"text1":       "Koishi is already running.",
-		"text2":       "You can find the Koishi icon from notification area. Tap the Koishi icon to perform action.",
+		"text1":       "Cordis is already running.",
+		"text2":       "You can find the Cordis icon from notification area. Tap the Cordis icon to perform action.",
 		"buttonCount": 1,
 	})
 	if err != nil {

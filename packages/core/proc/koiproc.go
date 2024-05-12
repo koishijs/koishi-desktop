@@ -15,7 +15,7 @@ import (
 	"gopkg.ilharper.com/x/rpl"
 )
 
-// KoiProc is the Koishi subprocess wrapper for Koishi Desktop.
+// KoiProc is the Cordis subprocess wrapper for Cordis Desktop.
 // Also, it is an [rpl.Source] for emitting subprocess outputs
 // as [rpl.Log] objects to [rpl.Target] targets.
 type KoiProc struct {

@@ -106,60 +106,60 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: koi-${{ matrix.target.rid }}-${{ github.sha }}.zip
-          path: build/dist/koishi.zip
+          path: build/dist/cordis.zip
 
       - name: Upload msi for Windows to Build Artifact
         if: matrix.target.goos == 'windows'
         uses: actions/upload-artifact@v3
         with:
           name: koi-${{ matrix.target.rid }}-${{ github.sha }}.msi
-          path: build/dist/koishi.msi
+          path: build/dist/cordis.msi
 
       - name: Upload zip for macOS to Build Artifact
         if: matrix.target.goos == 'darwin'
         uses: actions/upload-artifact@v3
         with:
           name: koi-${{ matrix.target.rid }}-${{ github.sha }}.zip
-          path: build/dist/koishi.zip
+          path: build/dist/cordis.zip
 
       - name: Upload dmg for macOS to Build Artifact
         if: matrix.target.goos == 'darwin'
         uses: actions/upload-artifact@v3
         with:
           name: koi-${{ matrix.target.rid }}-${{ github.sha }}.dmg
-          path: build/dist/koishi.dmg
+          path: build/dist/cordis.dmg
 
       - name: Upload pkg for macOS to Build Artifact
         if: matrix.target.goos == 'darwin'
         uses: actions/upload-artifact@v3
         with:
           name: koi-${{ matrix.target.rid }}-${{ github.sha }}.pkg
-          path: build/dist/koishi.pkg
+          path: build/dist/cordis.pkg
 
       - name: Upload zip for Linux to Build Artifact
         if: matrix.target.goos == 'linux'
         uses: actions/upload-artifact@v3
         with:
           name: koi-${{ matrix.target.rid }}-${{ github.sha }}.zip
-          path: build/dist/koishi.zip
+          path: build/dist/cordis.zip
 
       - name: Upload AppImage for Linux to Build Artifact
         if: matrix.target.goos == 'linux'
         uses: actions/upload-artifact@v3
         with:
           name: koi-${{ matrix.target.rid }}-${{ github.sha }}.AppImage
-          path: build/dist/Koishi.AppImage
+          path: build/dist/Cordis.AppImage
 
       - name: Upload Release Files for Windows to GitHub Release
         if: startsWith(github.ref, 'refs/tags/') && matrix.target.goos == 'windows'
         env:
           GITHUB_TOKEN: ${{ secrets.ACTIONS_DEPLOY_MODULE_KEY }}
         run: |
-          mv build/dist/koishi.zip build/dist/koishi-desktop-${{ matrix.target.rid }}-${{ steps.tag.outputs.version }}.zip
-          mv build/dist/koishi.msi build/dist/koishi-desktop-${{ matrix.target.rid }}-${{ steps.tag.outputs.version }}.msi
+          mv build/dist/cordis.zip build/dist/cordis-desktop-${{ matrix.target.rid }}-${{ steps.tag.outputs.version }}.zip
+          mv build/dist/cordis.msi build/dist/cordis-desktop-${{ matrix.target.rid }}-${{ steps.tag.outputs.version }}.msi
           gh release upload ${{ steps.tag.outputs.version }} \
-          build/dist/koishi-desktop-${{ matrix.target.rid }}-${{ steps.tag.outputs.version }}.zip \
-          build/dist/koishi-desktop-${{ matrix.target.rid }}-${{ steps.tag.outputs.version }}.msi
+          build/dist/cordis-desktop-${{ matrix.target.rid }}-${{ steps.tag.outputs.version }}.zip \
+          build/dist/cordis-desktop-${{ matrix.target.rid }}-${{ steps.tag.outputs.version }}.msi
         shell: bash
 
       - name: Upload Release Files for macOS to GitHub Release
@@ -167,13 +167,13 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.ACTIONS_DEPLOY_MODULE_KEY }}
         run: |
-          mv build/dist/koishi.zip build/dist/koishi-desktop-${{ matrix.target.rid }}-${{ steps.tag.outputs.version }}.zip
-          mv build/dist/koishi.dmg build/dist/koishi-desktop-${{ matrix.target.rid }}-${{ steps.tag.outputs.version }}.dmg
-          mv build/dist/koishi.pkg build/dist/koishi-desktop-${{ matrix.target.rid }}-${{ steps.tag.outputs.version }}.pkg
+          mv build/dist/cordis.zip build/dist/cordis-desktop-${{ matrix.target.rid }}-${{ steps.tag.outputs.version }}.zip
+          mv build/dist/cordis.dmg build/dist/cordis-desktop-${{ matrix.target.rid }}-${{ steps.tag.outputs.version }}.dmg
+          mv build/dist/cordis.pkg build/dist/cordis-desktop-${{ matrix.target.rid }}-${{ steps.tag.outputs.version }}.pkg
           gh release upload ${{ steps.tag.outputs.version }} \
-          build/dist/koishi-desktop-${{ matrix.target.rid }}-${{ steps.tag.outputs.version }}.zip \
-          build/dist/koishi-desktop-${{ matrix.target.rid }}-${{ steps.tag.outputs.version }}.dmg \
-          build/dist/koishi-desktop-${{ matrix.target.rid }}-${{ steps.tag.outputs.version }}.pkg
+          build/dist/cordis-desktop-${{ matrix.target.rid }}-${{ steps.tag.outputs.version }}.zip \
+          build/dist/cordis-desktop-${{ matrix.target.rid }}-${{ steps.tag.outputs.version }}.dmg \
+          build/dist/cordis-desktop-${{ matrix.target.rid }}-${{ steps.tag.outputs.version }}.pkg
         shell: bash
 
       - name: Upload Release Files for Linux to GitHub Release
@@ -181,11 +181,11 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.ACTIONS_DEPLOY_MODULE_KEY }}
         run: |
-          mv build/dist/koishi.zip build/dist/koishi-desktop-${{ matrix.target.rid }}-${{ steps.tag.outputs.version }}.zip
-          mv build/dist/Koishi.AppImage build/dist/koishi-desktop-${{ matrix.target.rid }}-${{ steps.tag.outputs.version }}.AppImage
+          mv build/dist/cordis.zip build/dist/cordis-desktop-${{ matrix.target.rid }}-${{ steps.tag.outputs.version }}.zip
+          mv build/dist/Cordis.AppImage build/dist/cordis-desktop-${{ matrix.target.rid }}-${{ steps.tag.outputs.version }}.AppImage
           gh release upload ${{ steps.tag.outputs.version }} \
-          build/dist/koishi-desktop-${{ matrix.target.rid }}-${{ steps.tag.outputs.version }}.zip \
-          build/dist/koishi-desktop-${{ matrix.target.rid }}-${{ steps.tag.outputs.version }}.AppImage
+          build/dist/cordis-desktop-${{ matrix.target.rid }}-${{ steps.tag.outputs.version }}.zip \
+          build/dist/cordis-desktop-${{ matrix.target.rid }}-${{ steps.tag.outputs.version }}.AppImage
         shell: bash
 
       # - name: Upload Release Files for Windows to App Center
@@ -196,7 +196,7 @@ jobs:
       #     -a koishi/Koishi-Desktop-for-Windows \
       #     -g stable \
       #     -b ${{ steps.tag.outputs.build_version }} \
-      #     -f build/dist/koishi-desktop-${{ matrix.target.rid }}-${{ steps.tag.outputs.version }}.msi
+      #     -f build/dist/cordis-desktop-${{ matrix.target.rid }}-${{ steps.tag.outputs.version }}.msi
       #   shell: bash
 
       # - name: Upload Release Files for macOS to App Center
@@ -207,5 +207,5 @@ jobs:
       #     -a koishi/Koishi-Desktop-for-macOS \
       #     -g stable \
       #     -b ${{ steps.tag.outputs.build_version }} -n ${{ steps.tag.outputs.build_number }} \
-      #     -f build/dist/koishi-desktop-${{ matrix.target.rid }}-${{ steps.tag.outputs.version }}.pkg
+      #     -f build/dist/codris-desktop-${{ matrix.target.rid }}-${{ steps.tag.outputs.version }}.pkg
       #   shell: bash

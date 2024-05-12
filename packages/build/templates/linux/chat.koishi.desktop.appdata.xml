@@ -8,12 +8,12 @@
   <metadata_license>AGPL-1.0</metadata_license>
   <project_license>AGPL-1.0</project_license>
 
-  <name>Koishi</name>
-  <summary>Cross-platform chatbot framework made with love</summary>
+  <name>Cordis</name>
+  <summary>Meta-Framework for Modern Applications</summary>
   <description>
-    <p>Cross-platform chatbot framework made with love</p>
+    <p>Meta-Framework for Modern Applications</p>
   </description>
-  <developer_name>Koishi.js</developer_name>
+  <developer_name>Cordis</developer_name>
 
   <categories>
     <category>Development</category>
@@ -26,7 +26,7 @@
     <keyword>Chatbot</keyword>
     <keyword xml:lang="zh">聊天机器人</keyword>
 
-    <keyword translate="no">Koishi</keyword>
+    <keyword translate="no">Cordis</keyword>
 
     <keyword translate="no">Discord</keyword>
     <keyword translate="no">Telegram</keyword>

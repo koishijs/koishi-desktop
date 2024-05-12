@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Install Koishi</string>
+   <string>Install Cordis</string>
   </property>
   <widget class="QStackedWidget" name="centralWidget">
    <widget class="QWidget" name="welcomePage">
@@ -103,7 +103,7 @@
             </sizepolicy>
            </property>
            <property name="text">
-            <string>Installing Koishi. This may take a while.</string>
+            <string>Installing Cordis. This may take a while.</string>
            </property>
           </widget>
          </item>

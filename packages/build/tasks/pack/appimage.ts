@@ -6,7 +6,7 @@ import { linuxAppImageDesktop } from '../../templates/linux'
 import { dir } from '../../utils/path'
 import { exec } from '../../utils/spawn'
 
-const appDirPath = dir('buildLinux', 'Koishi.AppDir/')
+const appDirPath = dir('buildLinux', 'Cordis.AppDir/')
 const appBinaryPath = path.join(appDirPath, 'usr/bin/')
 const appMetaInfoPath = path.join(appDirPath, 'usr/share/metainfo/')
 
@@ -76,8 +76,8 @@ export const packAppImageGenerate = () =>
 
 export const packAppImageCopyDist = () =>
   fs.copyFile(
-    dir('buildLinux', 'Koishi-x86_64.AppImage'),
-    dir('dist', 'Koishi.AppImage')
+    dir('buildLinux', 'Cordis-x86_64.AppImage'),
+    dir('dist', 'Cordis.AppImage')
   )
 
 export const packAppImage = series(

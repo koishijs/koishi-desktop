@@ -93,7 +93,7 @@ func main() {
 
 func help() {
 	fmt.Print(`
-"unfold" for Koishi Desktop
+"unfold" for Cordis Desktop
 
 Available modes:
 	ensure      - Ensure user data folder exists. Used for installation.

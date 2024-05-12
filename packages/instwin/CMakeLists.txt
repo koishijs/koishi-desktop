@@ -6,7 +6,7 @@ cmake_minimum_required(VERSION 3.5)
 
 project(instwin
     VERSION 0.1.0
-    DESCRIPTION "Koishi Desktop Installer."
+    DESCRIPTION "Cordis Desktop Installer."
     HOMEPAGE_URL "https://koishi.chat"
     LANGUAGES C CXX
 )

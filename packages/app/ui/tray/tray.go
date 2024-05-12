@@ -116,9 +116,9 @@ func (tray *TrayDaemon) onReady() {
 
 	l.Debug(p.Sprintf("Tray ready."))
 
-	// systray.SetTitle("Koishi")
+	// systray.SetTitle("Cordis")
 	if runtime.GOOS != "windows" {
-		systray.SetTooltip("Koishi")
+		systray.SetTooltip("Cordis")
 	}
 	systray.SetTemplateIcon(icon.Koishi, icon.Koishi)
 
@@ -516,7 +516,7 @@ func (tray *TrayDaemon) rebuild() {
 func (tray *TrayDaemon) addItemsBefore() {
 	p := do.MustInvoke[*message.Printer](tray.i)
 
-	mTitle := systray.AddMenuItem(p.Sprintf("Koishi Desktop"), "")
+	mTitle := systray.AddMenuItem(p.Sprintf("Cordis Desktop"), "")
 	mTitle.Disable()
 	mTitle.SetTemplateIcon(icon.Koishi, icon.Koishi)
 	version := "v" + util.AppVersion
@@ -654,12 +654,12 @@ func (tray *TrayDaemon) addItemsAfter() {
 					os.Getenv("COMSPEC"),
 					"/C",
 					"START",
-					"Koishi Desktop Terminal",
+					"Cordis Desktop Terminal",
 					"/D",
 					dirExe,
 					"cmd", // Use "cmd" here
 					"/K",
-					"echo Koishi Desktop Terminal - You can start running koi command here.",
+					"echo Cordis Desktop Terminal - You can start running koi command here.",
 				)
 			} else {
 				cmd = exec.Command(

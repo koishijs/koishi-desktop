@@ -65,7 +65,7 @@ func Daemon(i *do.Injector, startInstances bool) error {
 	do.Provide(i, daemonproc.NewDaemonProcess)
 	if startInstances {
 		// And start it in a new goroutine as early as possible.
-		// This ensures Koishi starts quickly first.
+		// This ensures Cordis starts quickly first.
 		err = do.MustInvoke[*daemonproc.DaemonProcess](i).Init()
 		if err != nil {
 			return fmt.Errorf("daemon process init failed: %w", err)

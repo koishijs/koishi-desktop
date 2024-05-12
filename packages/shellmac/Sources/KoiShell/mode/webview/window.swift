@@ -71,7 +71,7 @@ class KSWebViewDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, WKSc
         appearance = window.appearance
         initAppearance = window.appearance
 
-        window.title = "\(self.name) - Koishi"
+        window.title = "\(self.name) - Cordis"
         window.titlebarAppearsTransparent = true
         // window.titleVisibility = .hidden
         // window.appearance = NSAppearance(named: NSAppearance.Name.vibrantLight)
@@ -96,7 +96,7 @@ class KSWebViewDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, WKSc
         let appMenu = NSMenu(title: "Application")
         appMenuItem.submenu = appMenu
 
-        let appMenuAbout = appMenu.addItem(withTitle: "About Koishi Console", action: #selector(NSApp.orderFrontStandardAboutPanel(_:)), keyEquivalent: "")
+        let appMenuAbout = appMenu.addItem(withTitle: "About Cordis Console", action: #selector(NSApp.orderFrontStandardAboutPanel(_:)), keyEquivalent: "")
         appMenuAbout.target = NSApp
         appMenu.addItem(NSMenuItem.separator())
         let appMenuServices = appMenu.addItem(withTitle: "Services", action: nil, keyEquivalent: "")
@@ -110,7 +110,7 @@ class KSWebViewDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, WKSc
         let appMenuShowAll = appMenu.addItem(withTitle: "Show All", action: #selector(NSApp.unhideAllApplications), keyEquivalent: "")
         appMenuShowAll.target = NSApp
         appMenu.addItem(NSMenuItem.separator())
-        let appMenuQuit = appMenu.addItem(withTitle: "Quit Koishi Console", action: #selector(NSApp.terminate), keyEquivalent: "q")
+        let appMenuQuit = appMenu.addItem(withTitle: "Quit Cordis Console", action: #selector(NSApp.terminate), keyEquivalent: "q")
         appMenuQuit.target = NSApp
 
         let consoleMenuItem = mainMenu.addItem(withTitle: "Console", action: nil, keyEquivalent: "")

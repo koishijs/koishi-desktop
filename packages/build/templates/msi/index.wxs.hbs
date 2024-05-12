@@ -3,8 +3,8 @@
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
   <Product
     Id="{{productGuid}}"
-    Name="Koishi"
-    Manufacturer="Koishi.js"
+    Name="Cordis"
+    Manufacturer="Cordis"
     UpgradeCode="02318298-8D9E-4C30-B963-BB0B16F1F126"
     Language="{{language}}"
     Codepage="{{codepage}}"
@@ -17,9 +17,9 @@
       InstallerVersion="500"
       InstallPrivileges="elevated"
       Platform="x64"
-      Description="Koishi Installer"
-      Comments="Koishi {{koiVersion}} Installer"
-      Manufacturer="Koishi.js"
+      Description="Cordis Installer"
+      Comments="Cordis {{koiVersion}} Installer"
+      Manufacturer="Cordis"
       Languages="{{language}}"
       SummaryCodepage="{{codepage}}"
     />
@@ -35,23 +35,23 @@
     <WixVariable Id="WixUIDialogBmp" Value="{{{dialogBmpPath}}}" />
 
     <Condition
-      Message="Koishi only runs on Windows 8.1 or higher."
+      Message="Cordis only runs on Windows 8.1 or higher."
     >VersionNT >= 603</Condition>
     <Condition
-      Message="You need to install Koishi on 64-bit Windows."
+      Message="You need to install Cordis on 64-bit Windows."
     >VersionNT64</Condition>
 
     <MajorUpgrade
       AllowSameVersionUpgrades="yes"
-      DowngradeErrorMessage="A newer version of Koishi is already installed."
+      DowngradeErrorMessage="A newer version of Cordis is already installed."
     />
 
     <Media Id="1" Cabinet="media.cab" EmbedCab="yes" />
-    <Property Id="DiskPrompt" Value="Koishi {{koiVersion}} Installer" />
+    <Property Id="DiskPrompt" Value="Cordis {{koiVersion}} Installer" />
 
     <Directory Id="TARGETDIR" Name="SourceDir" DiskId="1">
       <Directory Id="ProgramFiles64Folder">
-        <Directory Id="DirectoryProgramFilesKoishiFolder" Name="Koishi">
+        <Directory Id="DirectoryProgramFilesCordisFolder" Name="Cordis">
           <Directory Id="DIRECTORYINSTALL" Name="Desktop">
             <Component
               Id="ComponentDirectoryInstall"
@@ -131,7 +131,7 @@
       </Directory>
 
       <Directory Id="ProgramMenuFolder">
-        <Directory Id="DirectoryProgramMenuFolder" Name="Koishi">
+        <Directory Id="DirectoryProgramMenuFolder" Name="Cordis">
           <Component
             Id="ComponentDirectoryProgramMenuFolder"
             Guid="B698D366-9A3E-4B6F-B949-72715301C66A"
@@ -142,9 +142,9 @@
               On="uninstall"
             />
             <Shortcut
-              Id="ShortcutDirectoryProgramMenuFolderKoishi"
-              Name="Koishi"
-              Description="Start Koishi."
+              Id="ShortcutDirectoryProgramMenuFolderCordis"
+              Name="Cordis"
+              Description="Start Cordis."
               Target="[#FileKoi]"
               WorkingDirectory="DIRECTORYINSTALL"
             />
@@ -166,9 +166,9 @@
           Win64="yes"
         >
           <Shortcut
-            Id="ShortcutDirectoryDesktopFolderKoishi"
-            Name="Koishi"
-            Description="Start Koishi."
+            Id="ShortcutDirectoryDesktopFolderCordis"
+            Name="Cordis"
+            Description="Start Cordis."
             Target="conhost [#FileKoi]"
             WorkingDirectory="DIRECTORYINSTALL"
           />
@@ -205,8 +205,8 @@
 
     <Feature
       Id="Complete"
-      Title="Koishi"
-      Description="The Koishi app."
+      Title="Cordis"
+      Description="The Cordis app."
       Display="expand"
       Level="1"
       Absent="disallow"
@@ -217,7 +217,7 @@
       <Feature
         Id="FeatureCore"
         Title="Core"
-        Description="Core feature of Koishi."
+        Description="Core feature of Cordis."
         Level="1"
         Absent="disallow"
         InstallDefault="local"
@@ -231,7 +231,7 @@
       <Feature
         Id="FeatureDesktopIcon"
         Title="Desktop Icon"
-        Description="Add a shortcut of Koishi on desktop."
+        Description="Add a shortcut of Cordis on desktop."
         Level="1000"
         InstallDefault="local"
         AllowAdvertise="no"
@@ -242,7 +242,7 @@
       <Feature
         Id="FeaturePuppeteerSupport"
         Title="Puppeteer Support"
-        Description="Powers the Koishi Puppeteer plugin to render web pages into images."
+        Description="Powers the Cordis Puppeteer plugin to render web pages into images."
         Level="1"
         InstallDefault="local"
         AllowAdvertise="no"
@@ -253,7 +253,7 @@
       <Feature
         Id="FeatureConsoleWindow"
         Title="Console Window"
-        Description="Powers the Koishi Console window instead of in-browser console."
+        Description="Powers the Cordis Console window instead of in-browser console."
         Level="1"
         InstallDefault="local"
         AllowAdvertise="no"
@@ -264,7 +264,7 @@
       <Feature
         Id="FeatureEventLog"
         Title="Event Log"
-        Description="Install Koishi as an event log source."
+        Description="Install Cordis as an event log source."
         Level="1"
         InstallDefault="local"
         AllowAdvertise="no"

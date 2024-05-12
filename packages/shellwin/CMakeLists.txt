@@ -6,7 +6,7 @@ cmake_minimum_required(VERSION 3.0)
 
 project(koishell
     VERSION 0.1.0
-    DESCRIPTION "Shell for Koishi Desktop."
+    DESCRIPTION "Shell for Cordis Desktop."
     HOMEPAGE_URL "https://koishi.chat"
     LANGUAGES C CXX
 )

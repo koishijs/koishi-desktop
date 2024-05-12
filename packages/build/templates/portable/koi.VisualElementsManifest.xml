@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <Application xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <VisualElements
-    DisplayName="Koishi"
-    Description="Start Koishi."
+    DisplayName="Cordis"
+    Description="Start Cordis."
     ForegroundText="light"
     BackgroundColor="#53489c"
     ShowNameOnSquare150x150Logo="on"

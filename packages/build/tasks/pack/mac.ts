@@ -6,15 +6,15 @@ import { koiVersion } from '../../utils/config'
 import { dir } from '../../utils/path'
 import { exec, tryExec } from '../../utils/spawn'
 
-const appPath = dir('buildMac', 'Koishi.app/')
+const appPath = dir('buildMac', 'Cordis.app/')
 
 export const packMacApp = async () => {
-  const appInfoPlistPath = dir('buildMac', 'Koishi.app/Contents/Info.plist')
-  const appMacosPath = dir('buildMac', 'Koishi.app/Contents/MacOS/')
-  const appResourcesPath = dir('buildMac', 'Koishi.app/Contents/Resources/')
+  const appInfoPlistPath = dir('buildMac', 'Cordis.app/Contents/Info.plist')
+  const appMacosPath = dir('buildMac', 'Cordis.app/Contents/MacOS/')
+  const appResourcesPath = dir('buildMac', 'Cordis.app/Contents/Resources/')
   const appIconPath = dir(
     'buildMac',
-    'Koishi.app/Contents/Resources/koishi-app.icns'
+    'Cordis.app/Contents/Resources/koishi-app.icns'
   )
 
   await mkdirp(appMacosPath)
@@ -22,8 +22,8 @@ export const packMacApp = async () => {
 
   await fs.cp(dir('buildUnfoldBinary'), appMacosPath, { recursive: true })
   await fs.rename(
-    dir('buildMac', 'Koishi.app/Contents/MacOS/KoiShell_KoiShell.bundle/'),
-    dir('buildMac', 'Koishi.app/KoiShell_KoiShell.bundle/')
+    dir('buildMac', 'Cordis.app/Contents/MacOS/KoiShell_KoiShell.bundle/'),
+    dir('buildMac', 'Cordis.app/KoiShell_KoiShell.bundle/')
   )
   await fs.copyFile(dir('buildAssets', 'koishi-app.icns'), appIconPath)
   await fs.writeFile(appInfoPlistPath, macAppPlist)
@@ -31,13 +31,13 @@ export const packMacApp = async () => {
 
 export const packMacDmg = async () => {
   await fs.writeFile(
-    dir('buildMac', 'Koishi.app/Contents/MacOS/koi.yml'),
+    dir('buildMac', 'Cordis.app/Contents/MacOS/koi.yml'),
     'redirect: USERDATA'
   )
   await tryExec('yarn', ['create-dmg', appPath, dir('buildMac'), '--overwrite'])
   await fs.rename(
-    dir('buildMac', `Koishi ${koiVersion}.dmg`),
-    dir('dist', 'koishi.dmg')
+    dir('buildMac', `Cordis ${koiVersion}.dmg`),
+    dir('dist', 'cordis.dmg')
   )
 }
 
@@ -57,12 +57,12 @@ export const packMacPkg = async () => {
       '--identifier',
       'chat.koishi.desktop',
       '--component',
-      'Koishi.app',
+      'Cordis.app',
       '--scripts',
       'scripts',
       '--install-location',
       '/Applications',
-      'koishi-app.pkg',
+      'cordis-app.pkg',
     ],
     dir('buildMac')
   )
@@ -74,7 +74,7 @@ export const packMacPkg = async () => {
       'distribution.xml',
       '--package-path',
       '.',
-      dir('dist', 'koishi.pkg'),
+      dir('dist', 'cordis.pkg'),
     ],
     dir('buildMac')
   )

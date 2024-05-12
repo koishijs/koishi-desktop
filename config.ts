@@ -1,4 +1,4 @@
-//            KOISHI DESKTOP BUILD CONFIG
+//            CORDIS DESKTOP BUILD CONFIG
 // ---------------------------------------------------
 // Here are all config used during building. You can
 // freely change configs like mirrors and build paths,
@@ -35,7 +35,7 @@ export const versionToolsWix = '311'
 //#endregion
 
 //#region Defaults
-// These are defaults for koishi-desktop.
+// These are defaults for Cordis Desktop.
 
 export const repoBoilerplate = 'koishijs/boilerplate'
 export const versionBoilerplate = 'v1.13.6'

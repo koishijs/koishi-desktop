@@ -27,7 +27,7 @@ func newImportCommand(i *do.Injector) (*cli.Command, error) {
 
 	return &cli.Command{
 		Name:      "import",
-		Usage:     p.Sprintf("Import a Koishi Bundle"),
+		Usage:     p.Sprintf("Import a Cordis Bundle"),
 		ArgsUsage: "path",
 		Action:    do.MustInvokeNamed[cli.ActionFunc](i, serviceActionImport),
 

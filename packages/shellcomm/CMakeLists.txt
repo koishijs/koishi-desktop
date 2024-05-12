@@ -6,7 +6,7 @@ cmake_minimum_required(VERSION 3.0)
 
 project(shellcomm
     VERSION 0.1.0
-    DESCRIPTION "Common utilities for Koishi Desktop Shell."
+    DESCRIPTION "Common utilities for Cordis Desktop Shell."
     HOMEPAGE_URL "https://koishi.chat"
     LANGUAGES C CXX
 )
