@@ -93,7 +93,8 @@ jobs:
 
       - name: Install Build Package
         run: |
-          yarn install --frozen-lockfile
+          corepack enable
+          yarn install --immutable
         shell: bash
 
       - name: Build Koi
