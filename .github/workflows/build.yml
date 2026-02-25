@@ -32,7 +32,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           submodules: recursive
           fetch-depth: 0
@@ -61,19 +61,19 @@ jobs:
         shell: bash
 
       - name: Cache Build Caches
-        uses: actions/cache@v3
+        uses: actions/cache@v5
         with:
           path: build/caches/
           key: koi-${{ runner.os }}-${{ hashFiles('config.ts') }}
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: '20'
           # cache: yarn
 
       - name: Setup Go
-        uses: actions/setup-go@v4
+        uses: actions/setup-go@v6
         with:
           go-version: ~1.19.0
           cache: true
