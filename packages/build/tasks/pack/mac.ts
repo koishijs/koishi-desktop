@@ -16,6 +16,7 @@ export const packMacApp = async () => {
     'buildMac',
     'Koishi.app/Contents/Resources/koishi-app.icns'
   )
+  const appCarPath = dir('buildMac', 'Koishi.app/Contents/Resources/Assets.car')
 
   await mkdirp(appMacosPath)
   await mkdirp(appResourcesPath)
@@ -26,6 +27,7 @@ export const packMacApp = async () => {
     dir('buildMac', 'Koishi.app/KoiShell_KoiShell.bundle/')
   )
   await fs.copyFile(dir('buildAssets', 'koishi-app.icns'), appIconPath)
+  await fs.copyFile(dir('srcAssets', 'koishi-app.car'), appCarPath)
   await fs.writeFile(appInfoPlistPath, macAppPlist)
 }
 

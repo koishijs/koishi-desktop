@@ -3,6 +3,7 @@
 *.jpg -text
 *.png -text
 *.bmp -text
+*.car -text
 
 /.yarn/releases/** binary
 /.yarn/plugins/** binary
