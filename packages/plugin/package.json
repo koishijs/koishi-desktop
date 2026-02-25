@@ -40,6 +40,7 @@
     "@types/color-string": "^1.5.2",
     "atsc": "^1.2.2",
     "color-string": "^1.9.1",
+    "concurrently": "^7",
     "koishi": "^4.16.7"
   },
   "koishi": {

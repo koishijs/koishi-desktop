@@ -8230,6 +8230,7 @@ __metadata:
     "@types/color-string": "npm:^1.5.2"
     atsc: "npm:^1.2.2"
     color-string: "npm:^1.9.1"
+    concurrently: "npm:^7"
     koishi: "npm:^4.16.7"
   peerDependencies:
     "@koishijs/plugin-console": ^5.18.2
