@@ -16,13 +16,13 @@ jobs:
         target:
           - goos: windows
             rid: win-x64
-            os: windows-2022
+            os: windows-2025
           - goos: linux
             rid: linux-x64
-            os: ubuntu-20.04
+            os: ubuntu-24.04
           - goos: darwin
             rid: osx-x64
-            os: macos-12
+            os: macos-15-intel
 
     runs-on: ${{ matrix.target.os }}
 
