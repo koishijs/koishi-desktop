@@ -36,7 +36,7 @@ jobs:
           yarn workspace koishi-plugin-desktop pack --filename koishi-plugin-desktop.tgz
         shell: bash
 
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v6
         with:
           name: koishi-plugin-desktop-${{ github.sha }}
           path: packages/plugin/koishi-plugin-desktop.tgz

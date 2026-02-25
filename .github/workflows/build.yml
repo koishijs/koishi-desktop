@@ -104,49 +104,49 @@ jobs:
 
       - name: Upload zip for Windows to Build Artifact
         if: matrix.target.goos == 'windows'
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v6
         with:
           name: koi-${{ matrix.target.rid }}-${{ github.sha }}.zip
           path: build/dist/koishi.zip
 
       - name: Upload msi for Windows to Build Artifact
         if: matrix.target.goos == 'windows'
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v6
         with:
           name: koi-${{ matrix.target.rid }}-${{ github.sha }}.msi
           path: build/dist/koishi.msi
 
       - name: Upload zip for macOS to Build Artifact
         if: matrix.target.goos == 'darwin'
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v6
         with:
           name: koi-${{ matrix.target.rid }}-${{ github.sha }}.zip
           path: build/dist/koishi.zip
 
       - name: Upload dmg for macOS to Build Artifact
         if: matrix.target.goos == 'darwin'
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v6
         with:
           name: koi-${{ matrix.target.rid }}-${{ github.sha }}.dmg
           path: build/dist/koishi.dmg
 
       - name: Upload pkg for macOS to Build Artifact
         if: matrix.target.goos == 'darwin'
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v6
         with:
           name: koi-${{ matrix.target.rid }}-${{ github.sha }}.pkg
           path: build/dist/koishi.pkg
 
       - name: Upload zip for Linux to Build Artifact
         if: matrix.target.goos == 'linux'
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v6
         with:
           name: koi-${{ matrix.target.rid }}-${{ github.sha }}.zip
           path: build/dist/koishi.zip
 
       - name: Upload AppImage for Linux to Build Artifact
         if: matrix.target.goos == 'linux'
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v6
         with:
           name: koi-${{ matrix.target.rid }}-${{ github.sha }}.AppImage
           path: build/dist/Koishi.AppImage
