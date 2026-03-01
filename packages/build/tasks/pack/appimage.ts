@@ -69,7 +69,7 @@ export const packAppImageCopyFiles = parallel(
 export const packAppImageGenerate = () =>
   exec(
     dir('buildCache', 'appimagetool.AppImage'),
-    [appDirPath],
+    ['-n', appDirPath],
     dir('buildLinux'),
     { env: { ARCH: 'x86_64' } }
   )
