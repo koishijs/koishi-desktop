@@ -24,7 +24,6 @@ export const versionNode = '20.12.2'
 export const versionYarn = '4.0.1'
 
 export const versionWebView2 = '1.0.1343.22'
-export const versionAppimagetool = '13'
 
 export const versionToolsVersioninfo = 'v1.4.0'
 export const versionToolsGolangCILint = 'v1.52.2'
