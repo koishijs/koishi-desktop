@@ -11,20 +11,23 @@ import { exec } from '../../utils/spawn'
 
 const buildProductGuid = () => uuid().toUpperCase()
 
+// TODO: Auto-detect Windows SDKs installed on system.
+// Versions available on GitHub runner images: 10.0.26100.0
+// 10.0.22000.0 is not available anymore.
 const getPathWiLangId = () =>
   path.join(
     process.env['PROGRAMFILES(X86)']!,
-    '/Windows Kits/10/bin/10.0.22000.0/x64/wilangid.vbs'
+    '/Windows Kits/10/bin/10.0.26100.0/x64/wilangid.vbs',
   )
 const getPathWiSubStg = () =>
   path.join(
     process.env['PROGRAMFILES(X86)']!,
-    '/Windows Kits/10/bin/10.0.22000.0/x64/wisubstg.vbs'
+    '/Windows Kits/10/bin/10.0.26100.0/x64/wisubstg.vbs',
   )
 // const getPathMsiTran = () =>
 //   path.join(
 //     process.env['PROGRAMFILES(X86)']!,
-//     '/Windows Kits/10/bin/10.0.22000.0/x86/MsiTran.exe'
+//     '/Windows Kits/10/bin/10.0.26100.0/x86/MsiTran.exe'
 //   )
 
 const langFilenameRegexp = /WixUI_.*\.wxl/i
@@ -80,11 +83,11 @@ type Lang = (typeof langs)[number]
 export const packMsiGenerateLangs = async () => {
   const dirWixlib = dir(
     'buildVendor',
-    'wix3-develop/src/ext/UIExtension/wixlib'
+    'wix3-develop/src/ext/UIExtension/wixlib',
   )
 
   const langFilenames = (await fs.readdir(dirWixlib)).filter((x) =>
-    langFilenameRegexp.test(x)
+    langFilenameRegexp.test(x),
   )
 
   const result: { lcid: string; locale: string; codepage: string }[] = []
@@ -128,13 +131,13 @@ const buildPackMsi = (lang: Lang) => async () => {
       productGuid: buildProductGuid(),
       language: lang.lcid,
       codepage: lang.codepage,
-    })
+    }),
   )
 
   await exec(
     dir('buildVendor', 'wix/candle.exe'),
     ['-nologo', pathWxs],
-    dir('buildMsi')
+    dir('buildMsi'),
   )
 
   await exec(
@@ -151,7 +154,7 @@ const buildPackMsi = (lang: Lang) => async () => {
       'WixUIExtension',
       pathWixobj,
     ],
-    dir('buildMsi')
+    dir('buildMsi'),
   )
 }
 
@@ -179,7 +182,7 @@ const buildPackMsiTrans = (lang: Lang) => async () => {
   await exec(
     dir('buildVendor', 'wix/torch.exe'),
     ['-t', 'language', pathNeutralMsi, pathMsi, '-out', pathMst],
-    dir('buildMsi')
+    dir('buildMsi'),
   )
 }
 
@@ -189,7 +192,7 @@ const buildPackMsiSubstorage = (lang: Lang) => async () => {
   await exec(
     'cscript',
     [getPathWiSubStg(), pathNeutralMsi, pathMst, lang.lcid],
-    dir('buildMsi')
+    dir('buildMsi'),
   )
 }
 
@@ -202,7 +205,7 @@ export const packMsiWriteLangIds = () =>
       'Package',
       langs.map((x) => x.lcid).join(),
     ],
-    dir('buildMsi')
+    dir('buildMsi'),
   )
 
 export const packMsiListStorage = () =>
@@ -220,5 +223,5 @@ export const packMsi = series(
   series(varientLangs.map(buildPackMsiSubstorage)),
   packMsiWriteLangIds,
   packMsiListStorage,
-  packMsiCopyDist
+  packMsiCopyDist,
 )
